@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class DBcontroller extends AsyncTask<List<NameValuePair>,Void,String> {
 
-
+//shit happens
     @Override
     protected String doInBackground(List<NameValuePair>... params) {
         return null;
