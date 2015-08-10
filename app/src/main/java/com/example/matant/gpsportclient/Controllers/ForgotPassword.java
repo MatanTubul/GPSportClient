@@ -1,71 +1,39 @@
 package com.example.matant.gpsportclient.Controllers;
 
-import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.example.matant.gpsportclient.R;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-public class ForgotPassword extends Activity {
-    private Button forgotbtn;
-    private EditText editxtemail;
-    private Pattern regexPattern;
-    private Matcher regMatcher;
-    private DBcontroller db;
+public class ForgotPassword extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.forgot_password);
-        editxtemail = (EditText)findViewById(R.id.editTextemail);
-        forgotbtn = (Button)findViewById(R.id.buttonForgotP);
-        forgotbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!validateEmailAddress(editxtemail.getText().toString()))
-                {
-                    editxtemail.setError("email is invalid");
-                }else
-                {
-                    String emailp = editxtemail.getText().toString();
-                    BasicNameValuePair tagreq = new BasicNameValuePair("tag","forgotpassword");
-                    BasicNameValuePair emailparam = new BasicNameValuePair("email",emailp);
-                    List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
-                    nameValuePairList.add(tagreq);
-                    nameValuePairList.add(emailparam);
-                   new DBcontroller().execute(nameValuePairList);
-
-                }
-                editxtemail.setText("");
-
-
-
-            }
-        });
     }
-    public boolean validateEmailAddress(String emailAddress) {
 
-        regexPattern = Pattern.compile("^[(a-zA-Z-0-9-\\_\\+\\.)]+@[(a-z-A-z)]+\\.[(a-zA-z)]{2,3}$");
-        regMatcher   = regexPattern.matcher(emailAddress);
-        if(regMatcher.matches()){
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_splash, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
             return true;
-        } else {
-            return false;
         }
+
+        return super.onOptionsItemSelected(item);
     }
-
-
 }

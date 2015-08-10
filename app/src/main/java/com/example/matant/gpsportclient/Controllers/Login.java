@@ -6,16 +6,35 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
 
 import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.R;
 
-public class Login extends AppCompatActivity {
+public class Login extends AppCompatActivity implements View.OnClickListener {
+
+    EditText userNameEditText, passwordEditText;
+    Button loginB, signUpB;
+    TextView forgotPasswordTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        userNameEditText=(EditText)findViewById(R.id.userNameTF);
+        passwordEditText=(EditText)findViewById(R.id.passwordTF);
+        forgotPasswordTV=(TextView)findViewById(R.id.forgotPasswordTV);
+
+        loginB=(Button)findViewById(R.id.loginB);
+        signUpB=(Button)findViewById(R.id.signUpB);
+
+        loginB.setOnClickListener(this);
+        signUpB.setOnClickListener(this);
+        forgotPasswordTV.setOnClickListener(this);
     }
 
 
@@ -42,20 +61,55 @@ public class Login extends AppCompatActivity {
     }
 
     public void onClick (View v) {
-        int clickedId = v.getId();
         Intent i = null;
-        if (clickedId == R.id.LoginB)
-            //validate input localy
-            //validat input on server
-             i = new Intent(Login.this,MainScreen.class);
-        else if (clickedId == R.id.signUpB)
-                 i = new Intent(Login.this,SignUp.class);
-             else if (clickedId == R.id.forgotPasswordB)
-                     i = new Intent(Login.this,ForgotPassword.class);
-    if (i!=null)
+        switch(v.getId()) {
+
+            case R.id.loginB:
+                final String checkUserName = userNameEditText.getText().toString();
+                final String checkPassword = passwordEditText.getText().toString();
+                if (validateLoginFields(checkUserName, checkPassword) == true)
+                    //validat input on server
+                    i = new Intent(Login.this, MainScreen.class);
+                break;
+            case R.id.signUpB:
+                i = new Intent(Login.this, SignUp.class);
+                break;
+            case R.id.forgotPasswordTV:
+                i = new Intent(Login.this, ForgotPassword.class);
+                break;
+        }
+      if (i!=null)
       startActivity(i);
     }
 
+    private boolean validateLoginFields(String userName,String password)
+    {
+        if(userName.length()==0)
+        {
+            userNameEditText.requestFocus();
+            userNameEditText.setError("FIELD CANNOT BE EMPTY");
+            return false;
+        }
+        if (!userName.matches("[a-zA-Z ]+"))
+        {
+            userNameEditText.requestFocus();
+            userNameEditText.setError("ENTER ONLY ALPHABETICAL CHARACTERS");
+            return false;
+        }
+        if(password.length()==0)
+        {
+            passwordEditText.requestFocus();
+            passwordEditText.setError("FIELD CANNOT BE EMPTY");
+            return false;
+        }
+        if(!password.matches("^[a-zA-Z0-9]+$"))
+        {
+            passwordEditText.requestFocus();
+            passwordEditText.setError("ENTER ONLY NUMBERS OR ALPHABETICAL CHARACTERS");
+            return false;
+        }
+        return true;
+    }
 
 
 }

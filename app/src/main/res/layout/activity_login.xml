@@ -6,64 +6,61 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.example.matant.gpsportclient.Controllers.Login">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="User name"
-        android:id="@+id/userName"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="87dp" />
-
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/userNameTF"
-        android:layout_below="@+id/userName"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Password"
-        android:id="@+id/password"
-        android:layout_below="@+id/userNameTF"
-        android:layout_centerHorizontal="true" />
+        android:hint="User Name"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/passwordTF"
-        android:layout_below="@+id/password"
-        android:layout_centerHorizontal="true" />
+        android:hint="Password"
+        android:layout_below="@+id/userNameTF"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Login"
-        android:id="@+id/LoginB"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/forgotPasswordB"
-        android:layout_alignStart="@+id/forgotPasswordB"
-        android:onClick="onClick" />
+        android:id="@+id/loginB"
+        android:onClick="onClick"
+        android:layout_below="@+id/passwordTF"
+        android:layout_alignRight="@+id/forgotPasswordTV"
+        android:layout_alignEnd="@+id/forgotPasswordTV" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Sign Up"
         android:id="@+id/signUpB"
-        android:layout_above="@+id/forgotPasswordB"
-        android:layout_alignRight="@+id/forgotPasswordB"
-        android:layout_alignEnd="@+id/forgotPasswordB"
-        android:onClick="onClick" />
+        android:onClick="onClick"
+        android:layout_below="@+id/passwordTF"
+        android:layout_toEndOf="@+id/loginB"
+        android:layout_toRightOf="@+id/loginB" />
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Forgot Your Password?"
-        android:id="@+id/forgotPasswordB"
-        android:clickable="false"
-        android:layout_below="@+id/LoginB"
-        android:layout_centerHorizontal="true"
-        android:onClick="onClick" />
+        android:text="Forgot your password?"
+        android:id="@+id/forgotPasswordTV"
+        android:textStyle = "bold"
+        android:layout_below="@+id/loginB"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView2"
+        android:src="@drawable/gpsport_logo"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
 </RelativeLayout>
