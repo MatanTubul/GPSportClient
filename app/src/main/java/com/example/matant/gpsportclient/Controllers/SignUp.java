@@ -1,28 +1,25 @@
 package com.example.matant.gpsportclient.Controllers;
 
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.content.Intent;
 
-import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.R;
 
-public class Login extends AppCompatActivity {
+public class SignUp extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_sign_up);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
+        getMenuInflater().inflate(R.menu.menu_sign_up, menu);
         return true;
     }
 
@@ -40,22 +37,4 @@ public class Login extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    public void onClick (View v) {
-        int clickedId = v.getId();
-        Intent i = null;
-        if (clickedId == R.id.LoginB)
-            //validate input localy
-            //validat input on server
-             i = new Intent(Login.this,MainScreen.class);
-        else if (clickedId == R.id.signUpB)
-                 i = new Intent(Login.this,SignUp.class);
-             else if (clickedId == R.id.forgotPasswordB)
-                     i = new Intent(Login.this,ForgotPassword.class);
-    if (i!=null)
-      startActivity(i);
-    }
-
-
-
 }
