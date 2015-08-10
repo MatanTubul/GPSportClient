@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">GPSportClient</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">Please enter your email  to recover your password.</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_splash_screen">SplashScreen</string>
 </resources>
