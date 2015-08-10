@@ -1,16 +1,18 @@
-package com.example.matant.gpsportclient;
+package com.example.matant.gpsportclient.Controllers;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class splash extends AppCompatActivity {
+import com.example.matant.gpsportclient.R;
+
+public class ForgotPassword extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.forgot_password);
     }
 
     @Override
