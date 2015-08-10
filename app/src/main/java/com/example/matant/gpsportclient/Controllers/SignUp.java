@@ -34,7 +34,7 @@ public class SignUp extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
+        //check
         return super.onOptionsItemSelected(item);
     }
 }
