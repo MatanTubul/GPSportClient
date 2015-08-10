@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.example.matant.gpsportclient.Controllers.ForgotPassword;
+import com.example.matant.gpsportclient.Controllers.Login;
 
 public class SplashScreen extends Activity {
 
@@ -28,7 +29,7 @@ public class SplashScreen extends Activity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                Intent i = new Intent(SplashScreen.this, ForgotPassword.class);
+                Intent i = new Intent(SplashScreen.this, Login.class);
                 startActivity(i);
 
                 // close this activity
