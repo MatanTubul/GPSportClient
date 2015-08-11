@@ -81,6 +81,7 @@
         android:layout_alignRight="@+id/editTextMobile"
         android:layout_alignEnd="@+id/editTextMobile"
         android:layout_alignParentLeft="true"
+        android:fontFamily="sans-serif"
         android:layout_alignParentStart="true" />
 
     <EditText
@@ -90,6 +91,7 @@
         android:ems="10"
         android:id="@+id/editTextConfirmPass"
         android:hint="Confirm Password"
+        android:fontFamily="sans-serif"
         android:layout_below="@+id/editTextPassword"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
