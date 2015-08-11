@@ -28,7 +28,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
 
     EditText userNameEditText, passwordEditText;
     Button loginB, signUpB;
-    DBController dbController;
+    DBcontroller dbController;
     TextView forgotPasswordTV;
     boolean userCanLogIn;
 
@@ -36,7 +36,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        dbController =   new DBController();
+        dbController =   new DBcontroller();
         dbController.delegate = this;
         userCanLogIn = false;
 
