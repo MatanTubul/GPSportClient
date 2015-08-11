@@ -18,7 +18,7 @@ import com.example.matant.gpsportclient.R;
 public class SignUp extends ActionBarActivity implements View.OnClickListener {
 
     private Button buttonLgn, buttonSignup, buttonSelectIMg;
-    private EditText editTextname, editTextuser, editTextEmail, editTextmobile, editTextPassword, editTextConfirmPass;
+    private EditText editTextname, editTextuser, editTextemail, editTextmobile, editTextPassword, editTextConfirmPass;
     private ImageView imgv;
     private final static int SELECT_PHOTO = 12345;
 
@@ -32,7 +32,7 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
         buttonSelectIMg = (Button) findViewById(R.id.buttonSelectImg);
 
         editTextname = (EditText) findViewById(R.id.editTextName);
-        editTextEmail = (EditText) findViewById(R.id.editTextemail);
+        editTextemail = (EditText) findViewById(R.id.editTextEmail);
         editTextuser = (EditText) findViewById(R.id.editTextUsername);
         editTextmobile = (EditText) findViewById(R.id.editTextMobile);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
@@ -67,12 +67,12 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
 
     //reset the edittect
     public void resetFields() {
-        editTextname.setText("");
-        editTextConfirmPass.setText("");
-        editTextPassword.setText("");
-        editTextuser.setText("");
-        editTextmobile.setText("");
-        editTextEmail.setText("");
+        editTextname.setHint("Name");
+        editTextConfirmPass.setHint("Confirm Password");
+        editTextPassword.setHint("Password");
+        editTextuser.setHint("User Name");
+        editTextmobile.setHint("Mobile");
+        editTextemail.setHint("Email");
         imgv.setImageResource(R.drawable.camera);
     }
 

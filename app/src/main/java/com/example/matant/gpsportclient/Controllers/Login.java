@@ -1,6 +1,7 @@
 package com.example.matant.gpsportclient.Controllers;
 
 import android.content.ContentValues;
+import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -48,6 +49,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
 
         loginB.setOnClickListener(this);
         signUpB.setOnClickListener(this);
+        forgotPasswordTV.setPaintFlags(forgotPasswordTV.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         forgotPasswordTV.setOnClickListener(this);
     }
 

@@ -26,6 +26,7 @@
         android:layout_alignParentStart="true" />
 
     <Button
+        android:layout_marginRight="5dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Login"
@@ -33,7 +34,9 @@
         android:onClick="onClick"
         android:layout_below="@+id/passwordTF"
         android:layout_alignRight="@+id/forgotPasswordTV"
-        android:layout_alignEnd="@+id/forgotPasswordTV" />
+        android:layout_alignEnd="@+id/forgotPasswordTV"
+        android:background="#606060"
+        android:textColor="#ffffffff" />
 
     <Button
         android:layout_width="fill_parent"
@@ -43,16 +46,21 @@
         android:onClick="onClick"
         android:layout_below="@+id/passwordTF"
         android:layout_toEndOf="@+id/loginB"
-        android:layout_toRightOf="@+id/loginB" />
+        android:layout_toRightOf="@+id/loginB"
+        android:background="#606060"
+        android:textColor="#ffffffff" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Forgot your password?"
+        android:textColor="#0000CD"
         android:id="@+id/forgotPasswordTV"
-        android:textStyle = "bold"
         android:layout_below="@+id/loginB"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:textStyle="bold"
+        android:textIsSelectable="false" />
 
     <ImageView
         android:layout_width="wrap_content"

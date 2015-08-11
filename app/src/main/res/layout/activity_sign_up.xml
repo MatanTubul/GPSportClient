@@ -104,8 +104,27 @@
         android:layout_toEndOf="@+id/imageViewGallery"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
-        <Button android:id="@+id/ButtonSubmit" android:text="Create Account" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"></Button>
-        <Button android:id="@+id/ButtonLgn" android:text="Login" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"></Button>
+        <Button android:id="@+id/ButtonSubmit"
+            android:text="Create Account"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="#606060"
+            android:layout_marginRight="5dp"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffffff">
+
+        </Button>
+        <Button
+            android:id="@+id/ButtonLgn"
+            android:text="Login"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="#606060"
+            android:layout_marginLeft="5dp"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffffff">
+
+        </Button>
 
     </LinearLayout>
 
@@ -118,7 +137,9 @@
         android:layout_toRightOf="@+id/imageViewGallery"
         android:layout_marginBottom="28dp"
         android:layout_alignRight="@+id/editTextName"
-        android:layout_alignEnd="@+id/editTextName" />
+        android:layout_alignEnd="@+id/editTextName"
+        android:background="#606060"
+        android:textColor="#ffffffff" />
 
 
 </RelativeLayout>
