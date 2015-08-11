@@ -11,18 +11,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/userNameTF"
         android:hint="User Name"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
 
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/passwordTF"
-        android:hint="Password"
-        android:layout_below="@+id/userNameTF"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true" />
 
     <Button
         android:layout_width="fill_parent"
@@ -31,8 +23,8 @@
         android:id="@+id/loginB"
         android:onClick="onClick"
         android:layout_below="@+id/passwordTF"
-        android:layout_alignRight="@+id/forgotPasswordTV"
-        android:layout_alignEnd="@+id/forgotPasswordTV" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="fill_parent"
@@ -40,9 +32,8 @@
         android:text="Sign Up"
         android:id="@+id/signUpB"
         android:onClick="onClick"
-        android:layout_below="@+id/passwordTF"
-        android:layout_toEndOf="@+id/loginB"
-        android:layout_toRightOf="@+id/loginB" />
+        android:layout_below="@+id/loginB"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -50,8 +41,9 @@
         android:text="Forgot your password?"
         android:id="@+id/forgotPasswordTV"
         android:textStyle = "bold"
-        android:layout_below="@+id/loginB"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="59dp" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -59,6 +51,18 @@
         android:id="@+id/imageView2"
         android:src="@drawable/gpsport_logo"
         android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/passwordTF"
+        android:hint="Password"
+        android:layout_below="@+id/userNameTF"
+        android:fontFamily="sans-serif"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
