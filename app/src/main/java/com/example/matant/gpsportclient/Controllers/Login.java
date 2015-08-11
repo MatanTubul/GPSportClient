@@ -1,5 +1,6 @@
 package com.example.matant.gpsportclient.Controllers;
 
+import android.content.ContentValues;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,19 +12,32 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
+import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.R;
 
-public class Login extends AppCompatActivity implements View.OnClickListener {
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Login extends AppCompatActivity implements View.OnClickListener,AsyncResponse {
 
     EditText userNameEditText, passwordEditText;
     Button loginB, signUpB;
+    DBController dbController;
     TextView forgotPasswordTV;
+    boolean userCanLogIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        dbController =   new DBController();
+        dbController.delegate = this;
+        userCanLogIn = false;
 
         userNameEditText=(EditText)findViewById(R.id.userNameTF);
         passwordEditText=(EditText)findViewById(R.id.passwordTF);
@@ -67,15 +81,24 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             case R.id.loginB:
                 final String checkUserName = userNameEditText.getText().toString();
                 final String checkPassword = passwordEditText.getText().toString();
-                if (validateLoginFields(checkUserName, checkPassword) == true)
-                    //validat input on server
-                    i = new Intent(Login.this, MainScreen.class);
+                if (validateLoginFields(checkUserName, checkPassword) == true) {
+                    sendDataToDBController();
+                    if (userCanLogIn) {
+                        i = new Intent(Login.this, MainScreen.class);
+                        userNameEditText.setText("");
+                        passwordEditText.setText("");
+                    }
+                }
                 break;
             case R.id.signUpB:
                 i = new Intent(Login.this, SignUp.class);
+                userNameEditText.setText("");
+                passwordEditText.setText("");
                 break;
             case R.id.forgotPasswordTV:
                 i = new Intent(Login.this, ForgotPassword.class);
+                userNameEditText.setText("");
+                passwordEditText.setText("");
                 break;
         }
       if (i!=null)
@@ -109,6 +132,30 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             return false;
         }
         return true;
+    }
+
+    public void sendDataToDBController()
+    {
+        String userNameP = userNameEditText.getText().toString();
+        String passwordP = passwordEditText.getText().toString();
+        BasicNameValuePair tagReq = new BasicNameValuePair("tag","login");
+        BasicNameValuePair userNameParam = new BasicNameValuePair("username",userNameP);
+        BasicNameValuePair passwordParam = new BasicNameValuePair("password",passwordP);
+        List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+        nameValuePairList.add(tagReq);
+        nameValuePairList.add(userNameParam);
+        nameValuePairList.add(passwordParam);
+        dbController.execute(nameValuePairList);
+
+    }
+
+    @Override
+    public void handleResponse(InputStream output) {
+
+        userNameEditText.setError("THIS USER NAME ISN'T IN OUR SYSTEM");
+        passwordEditText.setError("THIS PASSWORD IS INCORRECT");
+
+
     }
 
 

@@ -24,7 +24,6 @@ public class ForgotPassword extends Activity {
     private EditText editxtemail;
     private Pattern regexPattern;
     private Matcher regMatcher;
-    private DBcontroller db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +45,8 @@ public class ForgotPassword extends Activity {
                     List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
                     nameValuePairList.add(tagreq);
                     nameValuePairList.add(emailparam);
-                   new DBcontroller().execute(nameValuePairList);
+                    DBController dbController =   new DBController();
+                    dbController.execute(nameValuePairList);
 
                 }
                 editxtemail.setText("");
@@ -56,7 +56,7 @@ public class ForgotPassword extends Activity {
             }
         });
     }
-    public boolean validateEmailAddress(String emailAddress) {
+    private boolean validateEmailAddress(String emailAddress) {
 
         regexPattern = Pattern.compile("^[(a-zA-Z-0-9-\\_\\+\\.)]+@[(a-z-A-z)]+\\.[(a-zA-z)]{2,3}$");
         regMatcher   = regexPattern.matcher(emailAddress);
