@@ -85,24 +85,21 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
                     sendDataToDBController();
                     if (userCanLogIn) {
                         i = new Intent(Login.this, MainScreen.class);
-                        userNameEditText.setText("");
-                        passwordEditText.setText("");
                     }
                 }
                 break;
             case R.id.signUpB:
                 i = new Intent(Login.this, SignUp.class);
-                userNameEditText.setText("");
-                passwordEditText.setText("");
                 break;
             case R.id.forgotPasswordTV:
                 i = new Intent(Login.this, ForgotPassword.class);
-                userNameEditText.setText("");
-                passwordEditText.setText("");
                 break;
         }
-      if (i!=null)
-      startActivity(i);
+      if (i!=null) {
+          startActivity(i);
+          userNameEditText.setText("");
+          passwordEditText.setText("");
+      }
     }
 
     private boolean validateLoginFields(String userName,String password)
