@@ -9,9 +9,10 @@
 
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView2"
+        android:src="@drawable/camera"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:id="@+id/imageViewGallery"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -23,11 +24,12 @@
         android:ems="10"
         android:id="@+id/editTextName"
         android:hint="Name"
-        android:layout_below="@+id/imageView2"
-        android:layout_toRightOf="@+id/imageView2"
+
         android:layout_marginTop="120dp"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -62,10 +64,11 @@
         android:ems="10"
         android:id="@+id/editTextMobile"
         android:layout_below="@+id/editTextEmail"
-        android:layout_toRightOf="@+id/imageView2"
         android:layout_alignRight="@+id/editTextEmail"
         android:layout_alignEnd="@+id/editTextEmail"
-        android:hint="Mobile" />
+        android:hint="Mobile"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -75,9 +78,11 @@
         android:id="@+id/editTextPassword"
         android:hint="Password"
         android:layout_below="@+id/editTextMobile"
-        android:layout_toRightOf="@+id/imageView2"
         android:layout_alignRight="@+id/editTextMobile"
-        android:layout_alignEnd="@+id/editTextMobile" />
+        android:layout_alignEnd="@+id/editTextMobile"
+        android:layout_alignParentLeft="true"
+        android:fontFamily="sans-serif"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -86,21 +91,55 @@
         android:ems="10"
         android:id="@+id/editTextConfirmPass"
         android:hint="Confirm Password"
+        android:fontFamily="sans-serif"
         android:layout_below="@+id/editTextPassword"
-        android:layout_toRightOf="@+id/imageView2"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
     <LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:layout_width="match_parent"
         android:layout_below="@+id/editTextConfirmPass"
-        android:layout_toRightOf="@+id/imageView2"
-        android:layout_toEndOf="@+id/imageView2">
-        <Button android:id="@+id/ButtonSubmit" android:text="Create Account" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"></Button>
-        <Button android:id="@+id/ButtonLgn" android:text="Login" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"></Button>
+        android:layout_toEndOf="@+id/imageViewGallery"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <Button android:id="@+id/ButtonSubmit"
+            android:text="Create Account"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="#606060"
+            android:layout_marginRight="5dp"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffffff">
+
+        </Button>
+        <Button
+            android:id="@+id/ButtonLgn"
+            android:text="Login"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="#606060"
+            android:layout_marginLeft="5dp"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffffff">
+
+        </Button>
 
     </LinearLayout>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Photo"
+        android:id="@+id/buttonSelectImg"
+        android:layout_alignBottom="@+id/imageViewGallery"
+        android:layout_toRightOf="@+id/imageViewGallery"
+        android:layout_marginBottom="28dp"
+        android:layout_alignRight="@+id/editTextName"
+        android:layout_alignEnd="@+id/editTextName"
+        android:background="#606060"
+        android:textColor="#ffffffff" />
 
 
 </RelativeLayout>

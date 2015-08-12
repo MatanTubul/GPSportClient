@@ -43,7 +43,7 @@ public class ForgotPassword extends Activity {
                     List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
                     nameValuePairList.add(tagreq);
                     nameValuePairList.add(emailparam);
-                    DBController dbController =   new DBController();
+                    DBcontroller dbController =   new DBcontroller();
                     dbController.execute(nameValuePairList);
 
                 }

@@ -1,6 +1,7 @@
 package com.example.matant.gpsportclient.Controllers;
 
 import android.content.ContentValues;
+import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -27,7 +28,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
 
     EditText userNameEditText, passwordEditText;
     Button loginB, signUpB;
-    DBController dbController;
+    DBcontroller dbController;
     TextView forgotPasswordTV;
     boolean userCanLogIn;
 
@@ -35,7 +36,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        dbController =   new DBController();
+        dbController =   new DBcontroller();
         dbController.delegate = this;
         userCanLogIn = false;
 
@@ -48,6 +49,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
 
         loginB.setOnClickListener(this);
         signUpB.setOnClickListener(this);
+        forgotPasswordTV.setPaintFlags(forgotPasswordTV.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         forgotPasswordTV.setOnClickListener(this);
     }
 

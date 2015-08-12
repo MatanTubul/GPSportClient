@@ -21,8 +21,9 @@ import java.util.List;
 
 /**
  * Created by Nir b on 11/08/2015.
+ * test
  */
-public class DBController extends AsyncTask <List<NameValuePair>, Void, InputStream>{
+public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, InputStream>{
 
     private final String url= "http://10.0.2.2/test.php";
     public AsyncResponse delegate= null;
