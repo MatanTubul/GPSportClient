@@ -15,7 +15,11 @@ public class ErrorHandler {
     private Pattern regexPattern;
     private Matcher regMatcher;
 
-//validate if the input in the edittext is correct mail.
+    /**
+     * validate if the input in the edittext is correct mail
+     * @param emailAddress-input of the edittext field.
+     * @return
+     */
     public boolean validateEmailAddress(String emailAddress) {
         regexPattern = Pattern.compile("^[(a-zA-Z-0-9-\\_\\+\\.)]+@[(a-z-A-z)]+\\.[(a-zA-z)]{2,3}$");
         regMatcher   = regexPattern.matcher(emailAddress);
@@ -25,7 +29,13 @@ public class ErrorHandler {
             return false;
         }
     }
-    //function that check each EdiText in the UI and notify if is empty.
+
+
+    /**
+     * function that check each EdiText in the UI and notify if is empty.
+      * @param et - array of all the edittext
+     * @param message- error message that will appear in the relevant field.
+     */
     public  void fieldIsEmpty(ArrayList<EditText> et,String message){
         for(int i=0; i < et.size();i++) {
             if (et.get(i).getText().toString().equals("")) {

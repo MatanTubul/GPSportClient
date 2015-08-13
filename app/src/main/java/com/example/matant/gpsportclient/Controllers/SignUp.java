@@ -48,9 +48,8 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         editTextConfirmPass = (EditText) findViewById(R.id.editTextConfirmPass);
         imgv = (ImageView) findViewById(R.id.imageViewGallery);
+
         editTextname.setOnClickListener(this);
-
-
 
        editTextname.addTextChangedListener(new TextWatcher() {
             @Override
@@ -77,7 +76,12 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
         buttonSelectIMg.setOnClickListener(this);
     }
 
-    //function which respond to button clicks
+
+
+    /**
+     * function which respond to button clicks
+     * @param v-relevant UI widget.
+     */
     public void onClick(View v) {
         Intent i = null;
         switch (v.getId()) {
@@ -92,7 +96,13 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
 
             case R.id.ButtonSubmit:
             {
+                //Confirm Password
+                if(!(editTextPassword.getText().toString().equalsIgnoreCase(editTextConfirmPass.getText().toString())))
+                {
+                    editTextConfirmPass.setError("Passwords do not match!");
+                }
 
+                //begin check of empty fields
                ArrayList<EditText> arr = new ArrayList<EditText>();
                 arr.add(editTextemail);
                 arr.add(editTextname);
@@ -107,6 +117,7 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
                 {
                     editTextemail.setError("Email is invalid");
                 }
+
             }
 
                 break;
@@ -119,7 +130,11 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
         }
     }
 
-    //reset the edittect
+
+
+    /**
+     * reset the edittext fields
+     */
     public void resetFields() {
         editTextname.setHint("Name");
         editTextConfirmPass.setHint("Confirm Password");
@@ -131,7 +146,10 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
     }
 
     @Override
-    //loading photo from gallery phone to the application
+
+    /**
+     * loading photo from gallery phone to the application
+     */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
