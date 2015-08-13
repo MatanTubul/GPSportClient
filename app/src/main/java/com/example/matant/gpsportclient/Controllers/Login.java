@@ -156,15 +156,16 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
     @Override
     public void handleResponse(String jsonStr) {
 
+        Log.d("handleResponse", jsonStr);
         if (jsonStr != null) {
             try {
                 JSONObject jsonObj = new JSONObject(jsonStr);
-                int flg = jsonObj.getInt(TAG_FLG);
-                if (flg == 1)
+                String flg = jsonObj.getString(TAG_FLG);
+                if (flg.equals("user"))
                     userNameEditText.setError("This user isn't exists");
-                else if (flg == 2)
+                else if (flg.equals("password"))
                     passwordEditText.setError("This password is incorrect");
-                        else if (flg == 3 )
+                        else if (flg.equals("already connected"))
                             passwordEditText.setError("user already connected");
                         else
                             userCanLogIn = true;
