@@ -10,12 +10,17 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.matant.gpsportclient.ErrorHandler;
 import com.example.matant.gpsportclient.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SignUp extends ActionBarActivity implements View.OnClickListener {
 
@@ -23,11 +28,14 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
     private EditText editTextname, editTextuser, editTextemail, editTextmobile, editTextPassword, editTextConfirmPass;
     private ImageView imgv;
     private final static int SELECT_PHOTO = 12345;
+    public ErrorHandler err;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        err = new ErrorHandler();
 
         buttonLgn = (Button) findViewById(R.id.ButtonLgn);
         buttonSignup = (Button) findViewById(R.id.ButtonSubmit);
@@ -74,11 +82,33 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
         Intent i = null;
         switch (v.getId()) {
             case R.id.ButtonLgn:
-                i = new Intent(SignUp.this, Login.class);
-                startActivity(i);
-                resetFields();
-                break;
+
+                {
+                    i = new Intent(SignUp.this, Login.class);
+                    startActivity(i);
+                    resetFields();
+                    break;
+                }
+
             case R.id.ButtonSubmit:
+            {
+
+               ArrayList<EditText> arr = new ArrayList<EditText>();
+                arr.add(editTextemail);
+                arr.add(editTextname);
+                arr.add(editTextConfirmPass);
+                arr.add(editTextmobile);
+                arr.add(editTextPassword);
+                arr.add(editTextuser);
+                for(int j=0;j<arr.size();j++)
+                    Log.i("arr",arr.get(j).getText().toString());
+
+                err.fieldIsEmpty(arr, "Field cannot be empty!");
+                if(!err.validateEmailAddress(editTextemail.getText().toString()))
+                {
+                    editTextemail.setError("Email is invalid");
+                }
+            }
 
                 break;
             case R.id.buttonSelectImg:
@@ -86,6 +116,7 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, SELECT_PHOTO);
                 break;
+
         }
     }
 
