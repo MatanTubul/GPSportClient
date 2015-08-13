@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.matant.gpsportclient.ErrorHandler;
 import com.example.matant.gpsportclient.R;
 
 import org.apache.http.NameValuePair;
@@ -22,6 +23,7 @@ public class ForgotPassword extends Activity {
     private EditText editxtemail;
     private Pattern regexPattern;
     private Matcher regMatcher;
+    private ErrorHandler err;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +31,11 @@ public class ForgotPassword extends Activity {
         setContentView(R.layout.forgot_password);
         editxtemail = (EditText)findViewById(R.id.editTextemail);
         forgotbtn = (Button)findViewById(R.id.buttonForgotP);
+        err = new ErrorHandler();
         forgotbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!validateEmailAddress(editxtemail.getText().toString()))
+                if(!err.validateEmailAddress(editxtemail.getText().toString()))
                 {
                     editxtemail.setError("email is invalid");
                 }else
@@ -54,16 +57,4 @@ public class ForgotPassword extends Activity {
             }
         });
     }
-    private boolean validateEmailAddress(String emailAddress) {
-
-        regexPattern = Pattern.compile("^[(a-zA-Z-0-9-\\_\\+\\.)]+@[(a-z-A-z)]+\\.[(a-zA-z)]{2,3}$");
-        regMatcher   = regexPattern.matcher(emailAddress);
-        if(regMatcher.matches()){
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
 }

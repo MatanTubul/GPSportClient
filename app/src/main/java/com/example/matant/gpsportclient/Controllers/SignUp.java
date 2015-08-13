@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,6 +40,29 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         editTextConfirmPass = (EditText) findViewById(R.id.editTextConfirmPass);
         imgv = (ImageView) findViewById(R.id.imageViewGallery);
+        editTextname.setOnClickListener(this);
+
+
+
+       editTextname.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String regexeng = "^[a-zA-z.?]*";
+                if(!editTextname.getText().toString().trim().matches(regexeng)){
+                    editTextname.setError("Only English letters is valid");
+                    editTextname.setText("");
+                    editTextname.setHint("Name");
+                }
+
+            }
+        });
 
         buttonLgn.setOnClickListener(this);
         buttonSignup.setOnClickListener(this);
@@ -60,7 +85,6 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, SELECT_PHOTO);
-
                 break;
         }
     }
@@ -77,6 +101,7 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
     }
 
     @Override
+    //loading photo from gallery phone to the application
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -104,4 +129,5 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
             cursor.close();
         }
     }
+
 }
