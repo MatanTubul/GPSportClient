@@ -27,9 +27,7 @@ public class ErrorHandler {
     }
     //function that check each EdiText in the UI and notify if is empty.
     public  void fieldIsEmpty(ArrayList<EditText> et,String message){
-        Log.i("function","fieldisEmpty");
         for(int i=0; i < et.size();i++) {
-            Log.i("indes", String.valueOf(i));
             if (et.get(i).getText().toString().equals("")) {
                 et.get(i).setError(message);
             }

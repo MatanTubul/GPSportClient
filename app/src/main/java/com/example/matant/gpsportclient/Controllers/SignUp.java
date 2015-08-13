@@ -100,8 +100,7 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
                 arr.add(editTextmobile);
                 arr.add(editTextPassword);
                 arr.add(editTextuser);
-                for(int j=0;j<arr.size();j++)
-                    Log.i("arr",arr.get(j).getText().toString());
+
 
                 err.fieldIsEmpty(arr, "Field cannot be empty!");
                 if(!err.validateEmailAddress(editTextemail.getText().toString()))
