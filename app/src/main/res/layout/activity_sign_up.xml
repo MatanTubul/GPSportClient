@@ -71,8 +71,8 @@
         android:layout_alignRight="@+id/editTextEmail"
         android:layout_alignEnd="@+id/editTextEmail"
         android:hint="Mobile"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_toRightOf="@+id/imageViewGallery"
+        android:layout_toEndOf="@+id/imageViewGallery" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -145,6 +145,21 @@
         android:layout_alignEnd="@+id/editTextName"
         android:background="#606060"
         android:textColor="#ffffffff" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerMobile"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:spinnerMode="dialog"
+        android:layout_marginBottom="5dp"
+
+        android:background="#606060"
+        android:layout_toLeftOf="@+id/buttonSelectImg"
+        android:layout_toStartOf="@+id/buttonSelectImg"
+        android:layout_below="@+id/editTextEmail"
+        android:layout_alignBottom="@+id/editTextMobile" />
 
 
 </RelativeLayout>

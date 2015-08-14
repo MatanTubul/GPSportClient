@@ -8,5 +8,16 @@
     <string name="title_activity_sign_up">SignUp</string>
     <string name="title_activity_main_screen">MainScreen</string>
     <string name="title_activity_register">Register</string>
+    <string-array name="area_code">
+        <item>050</item>
+        <item>052</item>
+        <item>053</item>
+        <item>054</item>
+        <item>055-22</item>
+        <item>055-66</item>
+        <item>055-88</item>
+        <item>057</item>
+        <item>058</item>
+    </string-array>
 
 </resources>
