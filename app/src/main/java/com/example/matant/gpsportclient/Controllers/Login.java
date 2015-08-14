@@ -149,7 +149,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
         nameValuePairList.add(tagReq);
         nameValuePairList.add(userNameParam);
         nameValuePairList.add(passwordParam);
-        dbController.execute(nameValuePairList);
+        new DBcontroller().execute(nameValuePairList);
 
     }
 

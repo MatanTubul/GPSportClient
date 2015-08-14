@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.ErrorHandler;
 import com.example.matant.gpsportclient.R;
 
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ForgotPassword extends Activity {
+public class ForgotPassword extends Activity implements AsyncResponse {
     private Button forgotbtn;
     private EditText editxtemail;
     private Pattern regexPattern;
@@ -40,15 +41,7 @@ public class ForgotPassword extends Activity {
                     editxtemail.setError("email is invalid");
                 }else
                 {
-                    String emailp = editxtemail.getText().toString();
-                    BasicNameValuePair tagreq = new BasicNameValuePair("tag","forgotpassword");
-                    BasicNameValuePair emailparam = new BasicNameValuePair("email",emailp);
-                    List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
-                    nameValuePairList.add(tagreq);
-                    nameValuePairList.add(emailparam);
-                    DBcontroller dbController =   new DBcontroller();
-                    dbController.execute(nameValuePairList);
-
+                    sendDataToDBController();
                 }
                 editxtemail.setText("");
 
@@ -56,5 +49,25 @@ public class ForgotPassword extends Activity {
 
             }
         });
+    }
+
+    @Override
+    public void handleResponse(String resStr) {
+
+    }
+
+    @Override
+    public void sendDataToDBController() {
+
+        String emailp = editxtemail.getText().toString();
+        BasicNameValuePair tagreq = new BasicNameValuePair("tag","forgotpassword");
+        BasicNameValuePair emailparam = new BasicNameValuePair("email",emailp);
+        List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+        nameValuePairList.add(tagreq);
+        nameValuePairList.add(emailparam);
+        DBcontroller dbController =   new DBcontroller();
+        dbController.delegate = this;
+        dbController.execute(nameValuePairList);
+
     }
 }

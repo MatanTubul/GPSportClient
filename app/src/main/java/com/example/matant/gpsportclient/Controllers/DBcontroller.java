@@ -32,6 +32,8 @@ public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
     public AsyncResponse delegate= null;
     private InputStream is = null;
 
+
+
     @Override
     protected String doInBackground(List<NameValuePair>... params) {
         return postDataToServer(params[0]);

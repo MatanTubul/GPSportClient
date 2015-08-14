@@ -40,26 +40,13 @@
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:id="@+id/editTextUsername"
-        android:layout_below="@+id/editTextName"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:hint="UserName" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
         android:id="@+id/editTextEmail"
-        android:layout_below="@+id/editTextUsername"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:hint="Email" />
+        android:hint="Email"
+        android:layout_below="@+id/editTextName" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -103,11 +90,13 @@
         android:layout_alignParentStart="true" />
 
 
-    <LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:layout_width="match_parent"
-        android:layout_below="@+id/editTextConfirmPass"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="23dp">
+    <LinearLayout
+        android:id="@+id/LinearLayout02"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
         <Button android:id="@+id/ButtonSubmit"
             android:text="Create Account"
             android:layout_width="0dp"
@@ -160,6 +149,34 @@
         android:layout_toStartOf="@+id/buttonSelectImg"
         android:layout_below="@+id/editTextEmail"
         android:layout_alignBottom="@+id/editTextMobile" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextConfirmPass"
+        android:layout_alignRight="@+id/buttonSelectImg"
+        android:layout_alignEnd="@+id/buttonSelectImg">
+
+        <Spinner
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:id="@+id/spinnerGender"
+            android:layout_below="@+id/editTextConfirmPass"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+
+            android:layout_toStartOf="@+id/editTextMobile" />
+
+        <Spinner
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+
+            android:id="@+id/spinnerAge"
+            android:layout_below="@+id/editTextConfirmPass"
+            android:layout_alignLeft="@+id/buttonSelectImg"
+            android:layout_alignStart="@+id/buttonSelectImg" />
+    </LinearLayout>
 
 
 </RelativeLayout>
