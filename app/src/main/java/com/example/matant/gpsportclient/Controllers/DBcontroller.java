@@ -2,6 +2,7 @@ package com.example.matant.gpsportclient.Controllers;
 
 import android.content.ContentValues;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.matant.gpsportclient.AsyncResponse;
 
@@ -13,9 +14,11 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,38 +26,43 @@ import java.util.List;
  * Created by Nir b on 11/08/2015.
  * test
  */
-public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, InputStream>{
+public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
 
     private final String url= "http://10.0.2.2/test.php";
     public AsyncResponse delegate= null;
     private InputStream is = null;
 
     @Override
-    protected InputStream doInBackground(List<NameValuePair>... params) {
+    protected String doInBackground(List<NameValuePair>... params) {
         return postDataToServer(params[0]);
     }
 
     @Override
-    protected void onPostExecute(InputStream is) {
-        delegate.handleResponse(is);
+    protected void onPostExecute(String resStr) {
+        delegate.handleResponse(resStr);
+        super.onPostExecute(resStr);
     }
 
-    private InputStream postDataToServer(List<NameValuePair> list) {
+    private String postDataToServer(List<NameValuePair> list) {
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(url);
+        String responseString = null;
         try {
             post.setEntity(new UrlEncodedFormEntity(list));
             HttpResponse response = client.execute(post);
             HttpEntity entity = response.getEntity();
-            is = entity.getContent();
+            responseString = EntityUtils.toString(entity);
 
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         } catch (ClientProtocolException e) {
-            // process execption
+            e.printStackTrace();
         } catch (IOException e) {
-            // process execption
+            e.printStackTrace();
         }
 
-        return is;
+        Log.d("responseString", responseString);
+        return responseString;
     }
 
     }

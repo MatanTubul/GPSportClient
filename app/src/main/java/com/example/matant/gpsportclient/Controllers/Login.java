@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,8 @@ import com.example.matant.gpsportclient.R;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -31,6 +34,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
     DBcontroller dbController;
     TextView forgotPasswordTV;
     boolean userCanLogIn;
+    private static final String TAG_FLG = "flag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,11 +87,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
             case R.id.loginB:
                 final String checkUserName = userNameEditText.getText().toString();
                 final String checkPassword = passwordEditText.getText().toString();
-                if (validateLoginFields(checkUserName, checkPassword) == true) {
+                if (validateLoginFields(checkUserName, checkPassword) == true)
+                {
                     sendDataToDBController();
-                    if (userCanLogIn) {
+                    if (userCanLogIn)
                         i = new Intent(Login.this, MainScreen.class);
-                    }
                 }
                 break;
             case R.id.signUpB:
@@ -97,10 +101,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
                 i = new Intent(Login.this, ForgotPassword.class);
                 break;
         }
-      if (i!=null) {
-          startActivity(i);
+      if (i!=null)
+      {
           userNameEditText.setText("");
           passwordEditText.setText("");
+          startActivity(i);
       }
     }
 
@@ -109,25 +114,25 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
         if(userName.length()==0)
         {
             userNameEditText.requestFocus();
-            userNameEditText.setError("FIELD CANNOT BE EMPTY");
+            userNameEditText.setError("Field can't be empty");
             return false;
         }
         if (!userName.matches("[a-zA-Z ]+"))
         {
             userNameEditText.requestFocus();
-            userNameEditText.setError("ENTER ONLY ALPHABETICAL CHARACTERS");
+            userNameEditText.setError("Enter only alphabetical characters");
             return false;
         }
         if(password.length()==0)
         {
             passwordEditText.requestFocus();
-            passwordEditText.setError("FIELD CANNOT BE EMPTY");
+            passwordEditText.setError("Field can't be empty");
             return false;
         }
         if(!password.matches("^[a-zA-Z0-9]+$"))
         {
             passwordEditText.requestFocus();
-            passwordEditText.setError("ENTER ONLY NUMBERS OR ALPHABETICAL CHARACTERS");
+            passwordEditText.setError("Enter only numbers or alphabetical characters");
             return false;
         }
         return true;
@@ -149,10 +154,28 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
     }
 
     @Override
-    public void handleResponse(InputStream output) {
+    public void handleResponse(String jsonStr) {
 
-        userNameEditText.setError("THIS USER NAME ISN'T IN OUR SYSTEM");
-        passwordEditText.setError("THIS PASSWORD IS INCORRECT");
+        Log.d("handleResponse", jsonStr);
+        if (jsonStr != null) {
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                String flg = jsonObj.getString(TAG_FLG);
+                if (flg.equals("user"))
+                    userNameEditText.setError("This user isn't exists");
+                else if (flg.equals("password"))
+                    passwordEditText.setError("This password is incorrect");
+                        else if (flg.equals("already connected"))
+                            passwordEditText.setError("user already connected");
+                        else
+                            userCanLogIn = true;
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.d("ServiceHandler", "Couldn't get any data from the url");
+        }
 
 
     }
