@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
@@ -12,9 +13,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.matant.gpsportclient.ErrorHandler;
 import com.example.matant.gpsportclient.R;
@@ -28,7 +33,9 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
     private EditText editTextname, editTextuser, editTextemail, editTextmobile, editTextPassword, editTextConfirmPass;
     private ImageView imgv;
     private final static int SELECT_PHOTO = 12345;
+    private Spinner spnr;
     public ErrorHandler err;
+    private String areaCode = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +55,30 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         editTextConfirmPass = (EditText) findViewById(R.id.editTextConfirmPass);
         imgv = (ImageView) findViewById(R.id.imageViewGallery);
+
+        spnr = (Spinner)findViewById(R.id.spinnerMobile);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.area_code, android.R.layout.simple_spinner_item);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spnr.setAdapter(adapter);
+
+        spnr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                TextView selectedText = (TextView) parent.getChildAt(0);
+                if (selectedText != null) {
+                    selectedText.setTextColor(Color.WHITE);
+                }
+                areaCode = spnr.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         editTextname.setOnClickListener(this);
 
@@ -92,7 +123,7 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
                     startActivity(i);
                     resetFields();
                     break;
-                }
+                }//case R.id.ButtonLgn
 
             case R.id.ButtonSubmit:
             {
@@ -117,15 +148,20 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
                 {
                     editTextemail.setError("Email is invalid");
                 }
+                areaCode +=editTextmobile.getText().toString();
 
-            }
+
+            } // case R.id.ButtonSubmit
 
                 break;
+
             case R.id.buttonSelectImg:
+            {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, SELECT_PHOTO);
                 break;
+            }//case R.id.buttonSelectImg
 
         }
     }
