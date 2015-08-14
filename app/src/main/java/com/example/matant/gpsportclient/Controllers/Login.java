@@ -90,8 +90,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
                 if (validateLoginFields(checkUserName, checkPassword) == true)
                 {
                     sendDataToDBController();
-                    if (userCanLogIn)
+                    if (userCanLogIn) {
+                        Log.d("userCanLogIn", "true");
                         i = new Intent(Login.this, MainScreen.class);
+                    }
+                    else
+                        Log.d("userCanLogIn", "false");
                 }
                 break;
             case R.id.signUpB:
