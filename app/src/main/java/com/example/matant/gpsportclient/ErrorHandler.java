@@ -36,12 +36,19 @@ public class ErrorHandler {
       * @param et - array of all the edittext
      * @param message- error message that will appear in the relevant field.
      */
-    public  void fieldIsEmpty(ArrayList<EditText> et,String message){
-        for(int i=0; i < et.size();i++) {
-            if (et.get(i).getText().toString().equals("")) {
+    public boolean fieldIsEmpty(ArrayList<EditText> et,String message){
+        boolean flag = false;
+        for(int i=0; i < et.size();i++)
+            if (et.get(i).getText().toString().equals(""))
+            {
                 et.get(i).setError(message);
+                if (flag == false)
+                    flag = true;
             }
-        }
+        return flag;
 
     }
+
+
+
 }

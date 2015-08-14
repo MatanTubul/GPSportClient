@@ -30,7 +30,6 @@ public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
 
     private final String url= "http://10.0.2.2/test.php";
     public AsyncResponse delegate= null;
-    private InputStream is = null;
 
     @Override
     protected String doInBackground(List<NameValuePair>... params) {
@@ -44,6 +43,7 @@ public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
     }
 
     private String postDataToServer(List<NameValuePair> list) {
+        Log.d("responseString", list.get(0).toString() +""+ list.get(1).toString()+""+ list.get(2).toString());
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(url);
         String responseString = null;

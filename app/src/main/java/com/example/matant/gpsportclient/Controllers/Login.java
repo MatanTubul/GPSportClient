@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 
 import com.example.matant.gpsportclient.AsyncResponse;
+import com.example.matant.gpsportclient.ErrorHandler;
 import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.R;
 
@@ -35,13 +36,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
     TextView forgotPasswordTV;
     boolean userCanLogIn;
     private static final String TAG_FLG = "flag";
+    public ErrorHandler err;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        dbController =   new DBcontroller();
-        dbController.delegate = this;
         userCanLogIn = false;
 
         userNameEditText=(EditText)findViewById(R.id.userNameTF);
@@ -57,29 +57,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
         forgotPasswordTV.setOnClickListener(this);
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     public void onClick (View v) {
         Intent i = null;
         switch(v.getId()) {
@@ -88,15 +65,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
                 final String checkUserName = userNameEditText.getText().toString();
                 final String checkPassword = passwordEditText.getText().toString();
                 if (validateLoginFields(checkUserName, checkPassword) == true)
-                {
                     sendDataToDBController();
-                    if (userCanLogIn) {
-                        Log.d("userCanLogIn", "true");
-                        i = new Intent(Login.this, MainScreen.class);
-                    }
-                    else
-                        Log.d("userCanLogIn", "false");
-                }
                 break;
             case R.id.signUpB:
                 i = new Intent(Login.this, SignUp.class);
@@ -115,30 +84,16 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
 
     private boolean validateLoginFields(String userName,String password)
     {
-        if(userName.length()==0)
-        {
-            userNameEditText.requestFocus();
-            userNameEditText.setError("Field can't be empty");
+
+        ArrayList editTextArrayList = new ArrayList<EditText>();
+        editTextArrayList.add(userNameEditText);
+        editTextArrayList.add(userNameEditText);
+
+        if (err.fieldIsEmpty(editTextArrayList,"Field can't be empty"))
             return false;
-        }
-        if (!userName.matches("[a-zA-Z ]+"))
-        {
-            userNameEditText.requestFocus();
-            userNameEditText.setError("Enter only alphabetical characters");
+        if (!err.validateEmailAddress(userName))
             return false;
-        }
-        if(password.length()==0)
-        {
-            passwordEditText.requestFocus();
-            passwordEditText.setError("Field can't be empty");
-            return false;
-        }
-        if(!password.matches("^[a-zA-Z0-9]+$"))
-        {
-            passwordEditText.requestFocus();
-            passwordEditText.setError("Enter only numbers or alphabetical characters");
-            return false;
-        }
+
         return true;
     }
 
@@ -153,6 +108,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
         nameValuePairList.add(tagReq);
         nameValuePairList.add(userNameParam);
         nameValuePairList.add(passwordParam);
+        dbController =  new DBcontroller();
+        dbController.delegate = this;
         dbController.execute(nameValuePairList);
 
     }
@@ -165,14 +122,22 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
             try {
                 JSONObject jsonObj = new JSONObject(jsonStr);
                 String flg = jsonObj.getString(TAG_FLG);
-                if (flg.equals("user"))
-                    userNameEditText.setError("This user isn't exists");
-                else if (flg.equals("password"))
-                    passwordEditText.setError("This password is incorrect");
-                        else if (flg.equals("already connected"))
-                            passwordEditText.setError("user already connected");
-                        else
-                            userCanLogIn = true;
+
+                switch(flg)
+                {
+                    case "user":
+                        userNameEditText.setError("This user isn't exists");
+                        break;
+                    case "password":
+                        passwordEditText.setError("This password is incorrect");
+                        break;
+                    case "already connected":
+                        passwordEditText.setError("user already connected");//pdialog
+                        break;
+                    case "verified":
+                        startActivity(new Intent(Login.this, MainScreen.class));
+                        break;
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();

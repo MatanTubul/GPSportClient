@@ -11,7 +11,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/userNameTF"
-        android:hint="User Name"
+        android:hint="Email"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/passwordTF"
         android:hint="Password"
+        android:inputType="textPassword"
         android:layout_below="@+id/userNameTF"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
