@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
 
-    private final String url= "http://10.0.2.2/ActivityIndex.php";
+    private final String url= "http://10.0.2.2/test.php";
     public AsyncResponse delegate= null;
 
 
@@ -63,7 +63,7 @@ public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
             e.printStackTrace();
         }
 
-        Log.d("responseString", responseString);
+                Log.d("responseString", responseString);
         return responseString;
     }
 

@@ -63,9 +63,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
         switch(v.getId()) {
 
             case R.id.loginB:
-                final String checkUserName = userNameEditText.getText().toString();
-                final String checkPassword = passwordEditText.getText().toString();
-                if (validateLoginFields(checkUserName, checkPassword) == true)
+                if (validateLoginFields() == true)
                     sendDataToDBController();
                 break;
             case R.id.signUpB:
@@ -83,18 +81,19 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
       }
     }
 
-    private boolean validateLoginFields(String userName,String password)
+    private boolean validateLoginFields()
     {
 
         ArrayList editTextArrayList = new ArrayList<EditText>();
         editTextArrayList.add(userNameEditText);
-        editTextArrayList.add(userNameEditText);
+        editTextArrayList.add(passwordEditText);
 
         if (err.fieldIsEmpty(editTextArrayList,"Field can't be empty"))
             return false;
-        if (!err.validateEmailAddress(userName))
+        if (!err.validateEmailAddress(userNameEditText.getText().toString())) {
+            userNameEditText.setError("email is invalid");
             return false;
-
+        }
         return true;
     }
 
