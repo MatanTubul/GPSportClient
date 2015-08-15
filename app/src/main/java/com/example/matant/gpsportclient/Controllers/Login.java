@@ -1,12 +1,11 @@
 package com.example.matant.gpsportclient.Controllers;
 
-import android.content.ContentValues;
+
 import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+
 import android.view.View;
 import android.content.Intent;
 import android.widget.Button;
@@ -24,7 +23,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
