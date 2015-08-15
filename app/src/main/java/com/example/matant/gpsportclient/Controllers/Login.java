@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 
 import com.example.matant.gpsportclient.AsyncResponse;
+import com.example.matant.gpsportclient.ErrorHandler;
 import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.R;
 
@@ -35,6 +36,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
     TextView forgotPasswordTV;
     boolean userCanLogIn;
     private static final String TAG_FLG = "flag";
+    private ErrorHandler err;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
         dbController =   new DBcontroller();
         dbController.delegate = this;
         userCanLogIn = false;
+        err = new ErrorHandler();
 
         userNameEditText=(EditText)findViewById(R.id.userNameTF);
         passwordEditText=(EditText)findViewById(R.id.passwordTF);

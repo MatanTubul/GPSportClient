@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -21,19 +22,20 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.ErrorHandler;
 import com.example.matant.gpsportclient.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SignUp extends ActionBarActivity implements View.OnClickListener {
+public class SignUp extends AppCompatActivity implements View.OnClickListener,AsyncResponse {
 
     private Button buttonLgn, buttonSignup, buttonSelectIMg;
-    private EditText editTextname, editTextuser, editTextemail, editTextmobile, editTextPassword, editTextConfirmPass;
+    private EditText editTextname, editTextemail, editTextmobile, editTextPassword, editTextConfirmPass;
     private ImageView imgv;
     private final static int SELECT_PHOTO = 12345;
-    private Spinner spnr;
+    private Spinner spinerCellCode,spinerAge,spinnerGender;
     public ErrorHandler err;
     private String areaCode = "";
 
@@ -50,27 +52,79 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
 
         editTextname = (EditText) findViewById(R.id.editTextName);
         editTextemail = (EditText) findViewById(R.id.editTextEmail);
-        editTextuser = (EditText) findViewById(R.id.editTextUsername);
+
         editTextmobile = (EditText) findViewById(R.id.editTextMobile);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         editTextConfirmPass = (EditText) findViewById(R.id.editTextConfirmPass);
         imgv = (ImageView) findViewById(R.id.imageViewGallery);
 
-        spnr = (Spinner)findViewById(R.id.spinnerMobile);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.area_code, android.R.layout.simple_spinner_item);
+        
+        spinerAge = (Spinner)findViewById(R.id.spinnerAge);
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> ageAdapter = ArrayAdapter.createFromResource(this, R.array.age, android.R.layout.simple_spinner_item);
 
-        spnr.setAdapter(adapter);
+        ageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        spnr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinerAge.setAdapter(ageAdapter);
+
+        spinerAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 TextView selectedText = (TextView) parent.getChildAt(0);
                 if (selectedText != null) {
                     selectedText.setTextColor(Color.WHITE);
                 }
-                areaCode = spnr.getSelectedItem().toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        
+        spinnerGender=(Spinner)findViewById(R.id.spinnerGender);
+
+        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
+
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerGender.setAdapter(genderAdapter);
+
+        spinnerGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                TextView selectedText = (TextView) parent.getChildAt(0);
+                if (selectedText != null) {
+                    selectedText.setTextColor(Color.WHITE);
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        
+        
+        
+
+        spinerCellCode = (Spinner)findViewById(R.id.spinnerMobile);
+        ArrayAdapter<CharSequence> mobileAdapter = ArrayAdapter.createFromResource(this, R.array.area_code, android.R.layout.simple_spinner_item);
+
+        mobileAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinerCellCode.setAdapter(mobileAdapter);
+
+        spinerCellCode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                TextView selectedText = (TextView) parent.getChildAt(0);
+                if (selectedText != null) {
+                    selectedText.setTextColor(Color.WHITE);
+                }
+                areaCode = spinerCellCode.getSelectedItem().toString();
             }
 
             @Override
@@ -127,28 +181,39 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
 
             case R.id.ButtonSubmit:
             {
-                //Confirm Password
-                if(!(editTextPassword.getText().toString().equalsIgnoreCase(editTextConfirmPass.getText().toString())))
-                {
-                    editTextConfirmPass.setError("Passwords do not match!");
-                }
 
                 //begin check of empty fields
-               ArrayList<EditText> arr = new ArrayList<EditText>();
+                ArrayList<EditText> arr = new ArrayList<EditText>();
                 arr.add(editTextemail);
                 arr.add(editTextname);
                 arr.add(editTextConfirmPass);
                 arr.add(editTextmobile);
                 arr.add(editTextPassword);
-                arr.add(editTextuser);
 
 
-                err.fieldIsEmpty(arr, "Field cannot be empty!");
-                if(!err.validateEmailAddress(editTextemail.getText().toString()))
+                //handle all the if statment
+                if(err.fieldIsEmpty(arr, "Field cannot be empty!")==true)
                 {
+                    //do not send data
+                }
+                else if(!err.validateEmailAddress(editTextemail.getText().toString()))
+                {
+                    //do not send data
+
                     editTextemail.setError("Email is invalid");
                 }
-                areaCode +=editTextmobile.getText().toString();
+                //Confirm Password
+                else if(!(editTextPassword.getText().toString().equalsIgnoreCase(editTextConfirmPass.getText().toString())))
+                {
+                    //do not send data
+
+                    editTextConfirmPass.setError("Passwords do not match!");
+                }
+                else
+                {
+                    areaCode +=editTextmobile.getText().toString();
+                }
+
 
 
             } // case R.id.ButtonSubmit
@@ -175,7 +240,7 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
         editTextname.setHint("Name");
         editTextConfirmPass.setHint("Confirm Password");
         editTextPassword.setHint("Password");
-        editTextuser.setHint("User Name");
+
         editTextmobile.setHint("Mobile");
         editTextemail.setHint("Email");
         imgv.setImageResource(R.drawable.camera);
@@ -214,4 +279,13 @@ public class SignUp extends ActionBarActivity implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void handleResponse(String resStr) {
+
+    }
+
+    @Override
+    public void sendDataToDBController() {
+
+    }
 }
