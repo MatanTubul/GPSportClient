@@ -74,11 +74,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
                 break;
         }
       if (i!=null)
-      {
-          userNameEditText.setText("");
-          passwordEditText.setText("");
-          startActivity(i);
-      }
+           startActivity(i);
+
     }
 
     private boolean validateLoginFields()
