@@ -40,8 +40,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        dbController =   new DBcontroller();
-        dbController.delegate = this;
         userCanLogIn = false;
         err = new ErrorHandler();
 

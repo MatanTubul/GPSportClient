@@ -45,7 +45,10 @@ public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
     }
 
     private String postDataToServer(List<NameValuePair> list) {
-        Log.d("responseString", list.get(0).toString() +""+ list.get(1).toString()+""+ list.get(2).toString());
+        //check
+        for (int i=0;i<list.size();i++)
+            Log.d("responseString", list.get(i).toString());
+        //check
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(url);
         String responseString = null;
@@ -63,7 +66,7 @@ public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
             e.printStackTrace();
         }
 
-                Log.d("responseString", responseString);
+        Log.d("responseString", responseString);
         return responseString;
     }
 
