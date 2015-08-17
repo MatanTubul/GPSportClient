@@ -28,5 +28,6 @@
         <item>18-22</item>
         <item>22+</item>
     </string-array>
+    <string name="title_activity_test">test</string>
 
 </resources>

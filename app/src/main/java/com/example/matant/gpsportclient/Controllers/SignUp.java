@@ -27,11 +27,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.matant.gpsportclient.AsyncResponse;
-import com.example.matant.gpsportclient.ErrorHandler;
+import com.example.matant.gpsportclient.MainScreen;
+import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.R;
+import com.example.matant.gpsportclient.Utilities.MailSender;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -45,6 +49,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     private ImageView imgv;
     private final static int SELECT_PHOTO = 12345;
     private static int MINIMAL_YEAR_OF_BIRTH = 2001;
+    private static final String TAG_FLG = "flag";
 
     private Spinner spinerCellCode, spinerAge, spinnerGender;
     public ErrorHandler err;
@@ -173,7 +178,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
             @Override
             public void afterTextChanged(Editable s) {
-                String regexeng = "^[a-zA-z.?]*";
+                String regexeng = "^[a-zA-Z\\s]*$";
                 if (!editTextname.getText().toString().trim().matches(regexeng)) {
                     editTextname.setError("Only English letters is valid");
                     editTextname.setText("");
@@ -292,8 +297,39 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         }
     }
 
+    /**
+     * this function handle with the server response and run the correct method on the UI
+     * @param resStr - response fron the server
+     */
     @Override
     public void handleResponse(String resStr) {
+
+        Log.d("handleResponse", resStr);
+        if (resStr != null) {
+            try {
+                JSONObject jsonObj = new JSONObject(resStr);
+                String flg = jsonObj.getString(TAG_FLG);
+
+                switch(flg)
+                {
+                    case "user already exists":
+                        editTextemail.setError("This email already exists");
+                        break;
+                    case "mobile already exists":
+                        editTextmobile.setError("Mobile already exists");
+                        break;
+                    case "succeed":
+                        startActivity(new Intent(SignUp.this, Login.class));
+                        resetFields();
+                        break;
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.d("ServiceHandler", "Couldn't get any data from the url");
+        }
 
     }
 
@@ -304,7 +340,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         userMobile += editTextmobile.getText().toString();
         BasicNameValuePair tagreq = new BasicNameValuePair("tag", "signup");
         BasicNameValuePair name = new BasicNameValuePair("firstname", editTextname.getText().toString());
-        BasicNameValuePair email = new BasicNameValuePair("username", editTextemail.getText().toString());
+        BasicNameValuePair email = new BasicNameValuePair("email", editTextemail.getText().toString());
         BasicNameValuePair mobile = new BasicNameValuePair("mobile", userMobile);
         BasicNameValuePair password = new BasicNameValuePair("password", editTextPassword.getText().toString());
         BasicNameValuePair age = new BasicNameValuePair("birthyear", yearOfBirth);
@@ -356,7 +392,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmapm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-
             byte[] byteArrayImage = baos.toByteArray();
             String imagebase64string = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
             return imagebase64string;
