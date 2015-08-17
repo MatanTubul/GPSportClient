@@ -1,10 +1,13 @@
 package com.example.matant.gpsportclient.Controllers;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
@@ -12,6 +15,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,18 +30,27 @@ import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.ErrorHandler;
 import com.example.matant.gpsportclient.R;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener,AsyncResponse {
 
-    private Button buttonLgn, buttonSignup, buttonSelectIMg;
+    private Button buttonSignup, buttonSelectIMg;
     private EditText editTextname, editTextemail, editTextmobile, editTextPassword, editTextConfirmPass;
     private ImageView imgv;
     private final static int SELECT_PHOTO = 12345;
-    private Spinner spinerCellCode,spinerAge,spinnerGender;
+    private static int MINIMAL_YEAR_OF_BIRTH = 2001;
+
+    private Spinner spinerCellCode, spinerAge, spinnerGender;
     public ErrorHandler err;
-    private String areaCode = "";
+    private String areaCode = "", userGender = "", yearOfBirth = "";
+    private int MIN_AGE = 14;
+    private int MOBILE_LENGTH = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +58,14 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         setContentView(R.layout.activity_sign_up);
 
         err = new ErrorHandler();
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
 
-        buttonLgn = (Button) findViewById(R.id.ButtonLgn);
+        if ((year - MINIMAL_YEAR_OF_BIRTH) >= MIN_AGE) {
+            MINIMAL_YEAR_OF_BIRTH++;
+        }
+
+
         buttonSignup = (Button) findViewById(R.id.ButtonSubmit);
         buttonSelectIMg = (Button) findViewById(R.id.buttonSelectImg);
 
@@ -58,14 +77,22 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         editTextConfirmPass = (EditText) findViewById(R.id.editTextConfirmPass);
         imgv = (ImageView) findViewById(R.id.imageViewGallery);
 
-        
-        spinerAge = (Spinner)findViewById(R.id.spinnerAge);
 
-        ArrayAdapter<CharSequence> ageAdapter = ArrayAdapter.createFromResource(this, R.array.age, android.R.layout.simple_spinner_item);
+        spinerAge = (Spinner) findViewById(R.id.spinnerAge);
+        ArrayList<String> years = new ArrayList<String>();
+        int thisYear = Calendar.getInstance().get(Calendar.YEAR);
+        for (int i = 1970; i <= MINIMAL_YEAR_OF_BIRTH; i++) {
+            years.add(Integer.toString(i));
+
+        }
+
+        ArrayAdapter<String> ageAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, years);
+        //ArrayAdapter<CharSequence> ageAdapter = ArrayAdapter.createFromResource(this, R.array.age, android.R.layout.simple_spinner_item);
 
         ageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinerAge.setAdapter(ageAdapter);
+        //spinerAge.getBackground().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
 
         spinerAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -74,6 +101,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                 if (selectedText != null) {
                     selectedText.setTextColor(Color.WHITE);
                 }
+                yearOfBirth = spinerAge.getSelectedItem().toString();
 
             }
 
@@ -82,8 +110,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
             }
         });
-        
-        spinnerGender=(Spinner)findViewById(R.id.spinnerGender);
+
+        spinnerGender = (Spinner) findViewById(R.id.spinnerGender);
 
         ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
 
@@ -98,7 +126,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                 if (selectedText != null) {
                     selectedText.setTextColor(Color.WHITE);
                 }
-
+                userGender = spinnerGender.getSelectedItem().toString();
             }
 
             @Override
@@ -106,11 +134,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
             }
         });
-        
-        
-        
 
-        spinerCellCode = (Spinner)findViewById(R.id.spinnerMobile);
+
+        spinerCellCode = (Spinner) findViewById(R.id.spinnerMobile);
         ArrayAdapter<CharSequence> mobileAdapter = ArrayAdapter.createFromResource(this, R.array.area_code, android.R.layout.simple_spinner_item);
 
         mobileAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -136,10 +162,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
         editTextname.setOnClickListener(this);
 
-       editTextname.addTextChangedListener(new TextWatcher() {
+        editTextname.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
@@ -147,7 +174,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             @Override
             public void afterTextChanged(Editable s) {
                 String regexeng = "^[a-zA-z.?]*";
-                if(!editTextname.getText().toString().trim().matches(regexeng)){
+                if (!editTextname.getText().toString().trim().matches(regexeng)) {
                     editTextname.setError("Only English letters is valid");
                     editTextname.setText("");
                     editTextname.setHint("Name");
@@ -156,31 +183,23 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             }
         });
 
-        buttonLgn.setOnClickListener(this);
+
         buttonSignup.setOnClickListener(this);
         buttonSelectIMg.setOnClickListener(this);
     }
 
 
-
     /**
      * function which respond to button clicks
+     *
      * @param v-relevant UI widget.
      */
     public void onClick(View v) {
         Intent i = null;
         switch (v.getId()) {
-            case R.id.ButtonLgn:
 
-                {
-                    i = new Intent(SignUp.this, Login.class);
-                    startActivity(i);
-                    resetFields();
-                    break;
-                }//case R.id.ButtonLgn
 
-            case R.id.ButtonSubmit:
-            {
+            case R.id.ButtonSubmit: {
 
                 //begin check of empty fields
                 ArrayList<EditText> arr = new ArrayList<EditText>();
@@ -192,36 +211,32 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
 
                 //handle all the if statment
-                if(err.fieldIsEmpty(arr, "Field cannot be empty!")==true)
-                {
-                    //do not send data
-                }
-                else if(!err.validateEmailAddress(editTextemail.getText().toString()))
-                {
+                if (err.fieldIsEmpty(arr, "Field cannot be empty!") == true) {
+                    break;
+                } else if (!err.validateEmailAddress(editTextemail.getText().toString())) {
                     //do not send data
 
                     editTextemail.setError("Email is invalid");
+                    break;
                 }
                 //Confirm Password
-                else if(!(editTextPassword.getText().toString().equalsIgnoreCase(editTextConfirmPass.getText().toString())))
-                {
+                else if (!(editTextPassword.getText().toString().equalsIgnoreCase(editTextConfirmPass.getText().toString()))) {
                     //do not send data
 
                     editTextConfirmPass.setError("Passwords do not match!");
+                    break;
+                } else if (editTextmobile.length() + areaCode.length() != MOBILE_LENGTH) {
+                    editTextmobile.setError("Mobile is not in the correct format");
+                } else {
+                    sendDataToDBController();
                 }
-                else
-                {
-                    areaCode +=editTextmobile.getText().toString();
-                }
 
-
-
-            } // case R.id.ButtonSubmit
 
                 break;
+            } // case R.id.ButtonSubmit
 
-            case R.id.buttonSelectImg:
-            {
+
+            case R.id.buttonSelectImg: {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, SELECT_PHOTO);
@@ -232,7 +247,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     }
 
 
-
     /**
      * reset the edittext fields
      */
@@ -240,7 +254,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         editTextname.setHint("Name");
         editTextConfirmPass.setHint("Confirm Password");
         editTextPassword.setHint("Password");
-
         editTextmobile.setHint("Mobile");
         editTextemail.setHint("Email");
         imgv.setImageResource(R.drawable.camera);
@@ -287,5 +300,70 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     @Override
     public void sendDataToDBController() {
 
+        String userMobile = areaCode;
+        userMobile += editTextmobile.getText().toString();
+        BasicNameValuePair tagreq = new BasicNameValuePair("tag", "signup");
+        BasicNameValuePair name = new BasicNameValuePair("firstname", editTextname.getText().toString());
+        BasicNameValuePair email = new BasicNameValuePair("username", editTextemail.getText().toString());
+        BasicNameValuePair mobile = new BasicNameValuePair("mobile", userMobile);
+        BasicNameValuePair password = new BasicNameValuePair("password", editTextPassword.getText().toString());
+        BasicNameValuePair age = new BasicNameValuePair("birthyear", yearOfBirth);
+        BasicNameValuePair gender = new BasicNameValuePair("gender", userGender);
+        imgv.buildDrawingCache();
+        Bitmap bmap = imgv.getDrawingCache();
+        String picture = setPhoto(bmap);
+        if(picture!=null)
+        {
+            BasicNameValuePair image = new BasicNameValuePair("picture", picture);
+
+            List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+            nameValuePairList.add(tagreq);
+            nameValuePairList.add(name);
+            nameValuePairList.add(email);
+            nameValuePairList.add(mobile);
+            nameValuePairList.add(password);
+            nameValuePairList.add(age);
+            nameValuePairList.add(gender);
+            nameValuePairList.add(image);
+
+
+            DBcontroller dbController = new DBcontroller();
+            dbController.delegate = this;
+            dbController.execute(nameValuePairList);
+        }
+        else{
+            AlertDialog alertDialog = new AlertDialog.Builder(SignUp.this).create();
+            alertDialog.setTitle("Image Failure");
+            alertDialog.setMessage("Failed to convert image!");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+
+        }
+
+
+
+
+
+
     }
+
+    private String setPhoto(Bitmap bitmapm) {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmapm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+            byte[] byteArrayImage = baos.toByteArray();
+            String imagebase64string = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
+            return imagebase64string;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

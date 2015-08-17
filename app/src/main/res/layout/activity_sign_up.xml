@@ -99,21 +99,9 @@
         android:layout_alignParentStart="true">
         <Button android:id="@+id/ButtonSubmit"
             android:text="Create Account"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
             android:background="#606060"
             android:layout_marginRight="5dp"
-            android:layout_height="wrap_content"
-            android:textColor="#ffffffff">
-
-        </Button>
-        <Button
-            android:id="@+id/ButtonLgn"
-            android:text="Login"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:background="#606060"
-            android:layout_marginLeft="5dp"
             android:layout_height="wrap_content"
             android:textColor="#ffffffff">
 
@@ -150,56 +138,55 @@
         android:layout_below="@+id/editTextEmail"
         android:layout_alignBottom="@+id/editTextMobile" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_below="@+id/editTextConfirmPass"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Age:"
+            android:text="Year of Birth:"
+            android:layout_marginTop="5dp"
             android:gravity="center"
             android:id="@+id/textView"
-            android:layout_alignParentTop="true"
+            android:layout_below="@+id/editTextConfirmPass"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
         <Spinner
-            android:layout_width="60dp"
-            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
             android:id="@+id/spinnerAge"
             android:background="#606060"
-            android:layout_alignTop="@+id/textView"
-            android:layout_toEndOf="@+id/textView"
-            android:layout_toRightOf="@+id/textView" />
+            android:layout_below="@+id/editTextConfirmPass"
+            android:layout_alignRight="@+id/editTextConfirmPass"
+            android:layout_alignEnd="@+id/editTextConfirmPass"
+            android:layout_toRightOf="@+id/textView"
+            android:layout_toEndOf="@+id/textView" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Gender:"
-            android:layout_marginLeft="10dp"
-            android:gravity="top"
+            android:layout_marginTop="5dp"
             android:id="@+id/textView2"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_marginBottom="23dp"
+            android:layout_above="@+id/LinearLayout02"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <Spinner
-            android:layout_width="80dp"
-            android:layout_height="20dp"
+            android:layout_width="230dp"
+            android:layout_height="30dp"
             android:id="@+id/spinnerGender"
-
             android:background="#606060"
 
+            android:layout_alignTop="@+id/textView2"
+            android:layout_alignRight="@+id/buttonSelectImg"
+            android:layout_alignEnd="@+id/buttonSelectImg"
+            android:layout_toRightOf="@+id/textView"
+            android:layout_toEndOf="@+id/textView" />
 
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/textView2"
-            android:layout_toEndOf="@+id/textView2" />
-    </LinearLayout >
 
 
 </RelativeLayout>
