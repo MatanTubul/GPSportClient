@@ -7,12 +7,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,11 +21,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.matant.gpsportclient.AsyncResponse;
-import com.example.matant.gpsportclient.ErrorHandler;
+import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener,AsyncResponse {
 

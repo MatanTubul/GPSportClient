@@ -10,8 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.matant.gpsportclient.AsyncResponse;
-import com.example.matant.gpsportclient.ErrorHandler;
+import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.R;
+import com.example.matant.gpsportclient.Utilities.MailSender;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -41,7 +42,10 @@ public class ForgotPassword extends Activity implements AsyncResponse {
     private ErrorHandler err;
     DBcontroller dbController;
     private static final String TAG_FLG = "flag";
+    private static final String PASS_FLG= "password";
     Session session = null;
+    private String mailAcountAuthenticationAddress="GPSport.braude@gmail.com",
+            mailAcountAuthenticationPassword="123qweasdzxc123qwe";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +63,7 @@ public class ForgotPassword extends Activity implements AsyncResponse {
                     sendDataToDBController();
             }
         });
-
-
             }
-
-
 
         @Override
     public void handleResponse(String jsonStr) {
@@ -80,7 +80,8 @@ public class ForgotPassword extends Activity implements AsyncResponse {
                         editxtemail.setError("This user isn't exists");
                         break;
                     case "recovered":
-                        sendMail();
+                        MailSender mailSender = new MailSender();
+                        mailSender.sendMailTo(editxtemail.getText().toString(),jsonObj.getString(PASS_FLG));
                         startActivity(new Intent(ForgotPassword.this, Login.class));
                         break;
                 }
@@ -92,47 +93,6 @@ public class ForgotPassword extends Activity implements AsyncResponse {
             Log.d("ServiceHandler", "Couldn't get any data from the url");
         }
     }
-
-    private void sendMail()
-    {
-        Log.d("sendMail", "sendMail");
-        Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
-        session = Session.getDefaultInstance(props, new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("nirbercovic@gmail.com", "021663398ss");
-            }
-        });
-        Log.d("sendMail", "connection was created");
-                try {
-                    final Message message = new MimeMessage(session);
-                    message.setFrom(new InternetAddress("nirbercovic@gmail.com"));
-                    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("nirbercovic@gmail.com"));
-                    message.setSubject("s");
-                    message.setContent("sss", "text/html; charset=utf-8");
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                           try{ Transport.send(message);}
-                           catch (MessagingException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }).start();
-                    Log.d("sendMail", "email was sent");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-
-
-            }
-
 
             @Override
             public void sendDataToDBController() {

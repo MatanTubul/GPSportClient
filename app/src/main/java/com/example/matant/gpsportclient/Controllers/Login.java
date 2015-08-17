@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 
 import com.example.matant.gpsportclient.AsyncResponse;
-import com.example.matant.gpsportclient.ErrorHandler;
+import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.R;
 

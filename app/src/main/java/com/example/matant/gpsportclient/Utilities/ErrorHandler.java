@@ -1,4 +1,4 @@
-package com.example.matant.gpsportclient;
+package com.example.matant.gpsportclient.Utilities;
 
 import android.util.Log;
 import android.widget.EditText;
