@@ -1,12 +1,11 @@
 package com.example.matant.gpsportclient.Controllers;
 
-import android.content.ContentValues;
+
 import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+
 import android.view.View;
 import android.content.Intent;
 import android.widget.Button;
@@ -15,7 +14,7 @@ import android.widget.TextView;
 
 
 import com.example.matant.gpsportclient.AsyncResponse;
-import com.example.matant.gpsportclient.ErrorHandler;
+import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.R;
 
@@ -24,7 +23,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,8 +40,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        dbController =   new DBcontroller();
-        dbController.delegate = this;
         userCanLogIn = false;
         err = new ErrorHandler();
 
@@ -65,9 +61,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
         switch(v.getId()) {
 
             case R.id.loginB:
-                final String checkUserName = userNameEditText.getText().toString();
-                final String checkPassword = passwordEditText.getText().toString();
-                if (validateLoginFields(checkUserName, checkPassword) == true)
+                if (validateLoginFields() == true)
                     sendDataToDBController();
                 break;
             case R.id.signUpB:
@@ -78,25 +72,23 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
                 break;
         }
       if (i!=null)
-      {
-          userNameEditText.setText("");
-          passwordEditText.setText("");
-          startActivity(i);
-      }
+           startActivity(i);
+
     }
 
-    private boolean validateLoginFields(String userName,String password)
+    private boolean validateLoginFields()
     {
 
         ArrayList editTextArrayList = new ArrayList<EditText>();
         editTextArrayList.add(userNameEditText);
-        editTextArrayList.add(userNameEditText);
+        editTextArrayList.add(passwordEditText);
 
         if (err.fieldIsEmpty(editTextArrayList,"Field can't be empty"))
             return false;
-        if (!err.validateEmailAddress(userName))
+        if (!err.validateEmailAddress(userNameEditText.getText().toString())) {
+            userNameEditText.setError("email is invalid");
             return false;
-
+        }
         return true;
     }
 

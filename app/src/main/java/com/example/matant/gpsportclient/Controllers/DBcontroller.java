@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
 
-    private final String url= "http://10.0.2.2/test.php";
+    private final String url= "http://10.0.2.2/ActivityIndex.php";
     public AsyncResponse delegate= null;
 
 
@@ -45,7 +45,10 @@ public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
     }
 
     private String postDataToServer(List<NameValuePair> list) {
-        Log.d("responseString", list.get(0).toString() +""+ list.get(1).toString()+""+ list.get(2).toString());
+        //check
+        for (int i=0;i<list.size();i++)
+            Log.d("responseString", list.get(i).toString());
+        //check
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(url);
         String responseString = null;
