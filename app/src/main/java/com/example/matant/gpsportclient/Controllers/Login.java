@@ -1,6 +1,7 @@
 package com.example.matant.gpsportclient.Controllers;
 
 
+import android.app.ProgressDialog;
 import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
     boolean userCanLogIn;
     private static final String TAG_FLG = "flag";
     private ErrorHandler err;
+    private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +110,15 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
         dbController.execute(nameValuePairList);
 
     }
+
+    @Override
+    public void preProcces() {
+            progress = ProgressDialog.show(this, "Login",
+                    "Please wait while the login", true);
+
+        }
+
+
 
     @Override
     public void handleResponse(String jsonStr) {

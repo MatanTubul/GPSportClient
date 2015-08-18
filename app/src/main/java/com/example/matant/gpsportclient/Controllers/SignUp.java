@@ -1,16 +1,15 @@
 package com.example.matant.gpsportclient.Controllers;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -27,10 +26,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.matant.gpsportclient.AsyncResponse;
-import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.R;
-import com.example.matant.gpsportclient.Utilities.MailSender;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -56,6 +53,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     private String areaCode = "", userGender = "", yearOfBirth = "";
     private int MIN_AGE = 14;
     private int MOBILE_LENGTH = 10;
+    private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -333,6 +331,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
     }
 
+    /**
+     * executing the register request to the server.
+     */
     @Override
     public void sendDataToDBController() {
 
@@ -378,16 +379,22 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                         }
                     });
             alertDialog.show();
-
         }
-
-
-
-
-
 
     }
 
+    @Override
+    public void preProcces() {
+        progress = ProgressDialog.show(this, "Sign up",
+                "Creating your account", true);
+        
+    }
+
+    /**
+     * converting Bitmap image to String
+     * @param bitmapm- image in Bitmap format
+     * @return Bitmap image as a String
+     */
     private String setPhoto(Bitmap bitmapm) {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

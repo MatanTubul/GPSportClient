@@ -1,9 +1,11 @@
 package com.example.matant.gpsportclient.Controllers;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -46,6 +48,7 @@ public class ForgotPassword extends Activity implements AsyncResponse {
     Session session = null;
     private String mailAcountAuthenticationAddress="GPSport.braude@gmail.com",
             mailAcountAuthenticationPassword="123qweasdzxc123qwe";
+    private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class ForgotPassword extends Activity implements AsyncResponse {
         editxtemail = (EditText)findViewById(R.id.editTextemail);
         forgotbtn = (Button)findViewById(R.id.buttonForgotP);
         err = new ErrorHandler();
+        progress = new ProgressDialog(this);
         forgotbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,4 +112,12 @@ public class ForgotPassword extends Activity implements AsyncResponse {
                 dbController.execute(nameValuePairList);
 
             }
+
+    @Override
+    public void preProcces() {
+        this.progress = ProgressDialog.show(this, "Forgot Password",
+                    "Recovering your password...", true);
+
         }
+
+}

@@ -1,5 +1,6 @@
 package com.example.matant.gpsportclient.Controllers;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -30,8 +31,14 @@ public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
 
     private final String url= "http://10.0.2.2/gpSportserver/index.php";
     public AsyncResponse delegate= null;
+    private ProgressDialog pdia;
 
+    @Override
+    protected void onPreExecute() {
+        delegate.preProcces();
+        super.onPreExecute();
 
+    }
 
     @Override
     protected String doInBackground(List<NameValuePair>... params) {

@@ -8,4 +8,5 @@ import java.io.InputStream;
 public interface AsyncResponse {
     void handleResponse(String resStr);
     void sendDataToDBController();
+    void preProcces();
 }
