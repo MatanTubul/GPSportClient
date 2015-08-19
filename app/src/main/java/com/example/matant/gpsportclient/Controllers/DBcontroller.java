@@ -30,8 +30,9 @@ import java.util.List;
 public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
 
     private final String url= "http://10.0.2.2/gpSportserver/index.php";
+    private final String server_url = "http://gpsport.co.nf/index.php";
     public AsyncResponse delegate= null;
-    private ProgressDialog pdia;
+
 
     @Override
     protected void onPreExecute() {
@@ -57,7 +58,7 @@ public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
             Log.d("responseString", list.get(i).toString());
         //check
         HttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost(url);
+        HttpPost post = new HttpPost(server_url);
         String responseString = null;
         try {
             post.setEntity(new UrlEncodedFormEntity(list));
