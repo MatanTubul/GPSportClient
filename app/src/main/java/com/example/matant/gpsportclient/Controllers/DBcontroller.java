@@ -36,7 +36,7 @@ public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
 
     @Override
     protected void onPreExecute() {
-        delegate.preProcces();
+        delegate.preProcess();
         super.onPreExecute();
 
     }

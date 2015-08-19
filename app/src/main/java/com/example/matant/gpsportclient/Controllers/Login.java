@@ -112,7 +112,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
     }
 
     @Override
-    public void preProcces() {
+    public void preProcess() {
             progress = ProgressDialog.show(this, "Login",
                     "Please wait while the login", true);
 

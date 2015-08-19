@@ -117,7 +117,7 @@ public class ForgotPassword extends Activity implements AsyncResponse {
     /**
      * presenting process dialog while sending request to server.
      */
-    public void preProcces() {
+    public void preProcess() {
         this.progress = ProgressDialog.show(this, "Forgot Password",
                     "Recovering your password...", true);
 

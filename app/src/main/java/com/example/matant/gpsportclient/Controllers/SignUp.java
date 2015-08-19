@@ -384,7 +384,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     }
 
     @Override
-    public void preProcces() {
+    public void preProcess() {
         progress = ProgressDialog.show(this, "Sign up",
                 "Creating your account", true);
         
