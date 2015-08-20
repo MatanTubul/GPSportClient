@@ -105,7 +105,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
         nameValuePairList.add(tagReq);
         nameValuePairList.add(userNameParam);
         nameValuePairList.add(passwordParam);
-        dbController =  new DBcontroller();
+        dbController =  new DBcontroller(this);
         dbController.delegate = this;
         dbController.execute(nameValuePairList);
 
@@ -122,6 +122,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
 
     @Override
     public void handleResponse(String jsonStr) {
+        progress.dismiss();
 
         Log.d("handleResponse", jsonStr);
         if (jsonStr != null) {

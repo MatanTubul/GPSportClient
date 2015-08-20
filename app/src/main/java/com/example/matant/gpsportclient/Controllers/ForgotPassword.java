@@ -58,6 +58,7 @@ public class ForgotPassword extends Activity implements AsyncResponse {
         forgotbtn = (Button)findViewById(R.id.buttonForgotP);
         err = new ErrorHandler();
         progress = new ProgressDialog(this);
+        editxtemail.setHint("Email");
         forgotbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,10 +68,13 @@ public class ForgotPassword extends Activity implements AsyncResponse {
                     sendDataToDBController();
             }
         });
-            }
+
+    }
 
         @Override
     public void handleResponse(String jsonStr) {
+
+            progress.dismiss();
 
         Log.d("handleResponse", jsonStr);
         if (jsonStr != null) {
@@ -107,7 +111,7 @@ public class ForgotPassword extends Activity implements AsyncResponse {
                 List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
                 nameValuePairList.add(tagreq);
                 nameValuePairList.add(emailparam);
-                dbController = new DBcontroller();
+                dbController = new DBcontroller(this);
                 dbController.delegate = this;
                 dbController.execute(nameValuePairList);
 

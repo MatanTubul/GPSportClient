@@ -97,15 +97,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
-        <Button android:id="@+id/ButtonSubmit"
-            android:text="Create Account"
-            android:layout_width="match_parent"
-            android:background="#606060"
-            android:layout_marginRight="5dp"
-            android:layout_height="wrap_content"
-            android:textColor="#ffffffff">
-
-        </Button>
 
     </LinearLayout>
 
@@ -168,10 +159,9 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Gender:"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:id="@+id/textView2"
-            android:layout_marginBottom="23dp"
-            android:layout_above="@+id/LinearLayout02"
+            android:layout_below="@+id/spinnerAge"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
@@ -187,6 +177,18 @@
             android:layout_toRightOf="@+id/textView"
             android:layout_toEndOf="@+id/textView" />
 
+    <Button android:id="@+id/ButtonSubmit"
+        android:text="Create Account"
+        android:layout_width="match_parent"
+        android:background="#606060"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffffff"
+        android:layout_below="@+id/spinnerGender"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="42dp">
+
+    </Button>
 
 
 </RelativeLayout>

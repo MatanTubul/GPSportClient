@@ -2,10 +2,15 @@ package com.example.matant.gpsportclient.Controllers;
 
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.example.matant.gpsportclient.AsyncResponse;
+import com.example.matant.gpsportclient.Utilities.PropertyReader;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -17,11 +22,14 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by Nir b on 11/08/2015.
@@ -29,15 +37,27 @@ import java.util.List;
  */
 public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
 
-    private final String url= "http://10.0.2.2/gpSportserver/index.php";
-    private final String server_url = "http://gpsport.co.nf/index.php";
+    private static String url = "";
+    private  Context context = null ;
     public AsyncResponse delegate= null;
+
+    private PropertyReader propertyReader;
+    private Properties properties;
+
+    public DBcontroller(Context mycontext) {
+        context= mycontext;
+        propertyReader = new PropertyReader(context);
+        properties = propertyReader.getMyProperties("config.properties");
+        url = properties.getProperty("url");
+    }
+
 
 
     @Override
     protected void onPreExecute() {
         delegate.preProcess();
         super.onPreExecute();
+
 
     }
 
@@ -58,7 +78,7 @@ public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
             Log.d("responseString", list.get(i).toString());
         //check
         HttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost(server_url);
+        HttpPost post = new HttpPost(url);
         String responseString = null;
         try {
             post.setEntity(new UrlEncodedFormEntity(list));
@@ -78,7 +98,11 @@ public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
         return responseString;
     }
 
-    }
+
+}
+
+
+
 
 
 

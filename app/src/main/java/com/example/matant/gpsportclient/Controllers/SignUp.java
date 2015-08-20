@@ -80,6 +80,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         editTextConfirmPass = (EditText) findViewById(R.id.editTextConfirmPass);
         imgv = (ImageView) findViewById(R.id.imageViewGallery);
 
+        resetFields();
+
 
         spinerAge = (Spinner) findViewById(R.id.spinnerAge);
         ArrayList<String> years = new ArrayList<String>();
@@ -301,6 +303,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
      */
     @Override
     public void handleResponse(String resStr) {
+        progress.dismiss();
 
         Log.d("handleResponse", resStr);
         if (resStr != null) {
@@ -364,7 +367,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             nameValuePairList.add(image);
 
 
-            DBcontroller dbController = new DBcontroller();
+            DBcontroller dbController = new DBcontroller(this);
             dbController.delegate = this;
             dbController.execute(nameValuePairList);
         }
