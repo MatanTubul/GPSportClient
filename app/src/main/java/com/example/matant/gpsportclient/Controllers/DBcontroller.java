@@ -41,8 +41,9 @@ public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
     private PropertyReader propertyReader;
     private Properties properties;
 
-    public DBcontroller(Context mycontext) {
-        context= mycontext;
+    public DBcontroller(Context mycontext,AsyncResponse myresponse) {
+        context = mycontext;
+        delegate = myresponse;
         propertyReader = new PropertyReader(context);
         properties = propertyReader.getMyProperties("config.properties");
         url = properties.getProperty("url");

@@ -24,25 +24,21 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
-import javax.mail.Session;
+
+
 
 
 public class ForgotPassword extends Activity implements AsyncResponse {
     private Button forgotbtn;
     private EditText editxtemail;
-    private Pattern regexPattern;
-    private Matcher regMatcher;
+
     private ErrorHandler err;
     DBcontroller dbController;
     private static final String TAG_FLG = "flag";
     private static final String PASS_FLG= "password";
-    Session session = null;
-    private String mailAcountAuthenticationAddress="GPSport.braude@gmail.com",
-            mailAcountAuthenticationPassword="123qweasdzxc123qwe";
+
     private ProgressDialog progress;
 
     @Override
@@ -106,8 +102,8 @@ public class ForgotPassword extends Activity implements AsyncResponse {
                 List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
                 nameValuePairList.add(tagreq);
                 nameValuePairList.add(emailparam);
-                dbController = new DBcontroller(this);
-                dbController.delegate = this;
+                dbController = new DBcontroller(this,this);
+
                 dbController.execute(nameValuePairList);
 
             }

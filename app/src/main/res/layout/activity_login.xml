@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/userNameTF"
         android:hint="Email"
+        android:inputType="textEmailAddress"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />

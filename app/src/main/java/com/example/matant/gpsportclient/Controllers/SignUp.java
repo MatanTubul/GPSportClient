@@ -404,8 +404,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             nameValuePairList.add(image);
 
 
-            DBcontroller dbController = new DBcontroller(this);
-            dbController.delegate = this;
+            DBcontroller dbController = new DBcontroller(this,this);
+
             dbController.execute(nameValuePairList);
         }
         else{
