@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -47,6 +49,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     private final static int SELECT_PHOTO = 12345;
     private static int MINIMAL_YEAR_OF_BIRTH = 2001;
     private static final String TAG_FLG = "flag";
+    private ImageButton rotateLeft,rotateRight;
 
     private Spinner spinerCellCode, spinerAge, spinnerGender;
     public ErrorHandler err;
@@ -54,6 +57,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     private int MIN_AGE = 14;
     private int MOBILE_LENGTH = 10;
     private ProgressDialog progress;
+    private Bitmap originbitmap;
+    private Bitmap scaled;
+    private int rotate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +78,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
         buttonSignup = (Button) findViewById(R.id.ButtonSubmit);
         buttonSelectIMg = (Button) findViewById(R.id.buttonSelectImg);
+        rotateLeft = (ImageButton)findViewById(R.id.imageButtonRleftt);
+        rotateRight = (ImageButton)findViewById(R.id.imageButtonRright);
+
+
 
         editTextname = (EditText) findViewById(R.id.editTextName);
         editTextemail = (EditText) findViewById(R.id.editTextEmail);
@@ -191,6 +202,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
         buttonSignup.setOnClickListener(this);
         buttonSelectIMg.setOnClickListener(this);
+
+        rotateRight.setOnClickListener(this);
+        rotateLeft.setOnClickListener(this);
     }
 
 
@@ -248,6 +262,27 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                 break;
             }//case R.id.buttonSelectImg
 
+            case R.id.imageButtonRleftt: {
+                Matrix matrix = new Matrix();
+                rotate -=90;
+                rotate  %= 360;
+                matrix.postRotate(rotate);
+                Bitmap rotatedBitmap = Bitmap.createBitmap(scaled , 0, 0, scaled .getWidth(), scaled .getHeight(), matrix, true);
+                imgv.setImageBitmap(rotatedBitmap);
+                break;
+            }
+            case R.id.imageButtonRright: {
+                Matrix matrix = new Matrix();
+                rotate +=90;
+                rotate  %= 360;
+                matrix.postRotate(rotate);
+                Bitmap rotatedBitmap = Bitmap.createBitmap(scaled , 0, 0, scaled .getWidth(), scaled .getHeight(), matrix, true);
+                imgv.setImageBitmap(rotatedBitmap);
+
+
+                break;
+            }
+
         }
     }
 
@@ -286,8 +321,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath, options);
-            imgv.setImageBitmap(bitmap);
+            originbitmap = BitmapFactory.decodeFile(imagePath, options);
+            int nh = (int) ( originbitmap.getHeight() * (512.0 / originbitmap.getWidth()) );
+            scaled = Bitmap.createScaledBitmap(originbitmap,512,nh,true);
+            imgv.setImageBitmap(scaled);
 
             // Do something with the bitmap
 
@@ -410,5 +447,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         }
         return null;
     }
+
+
+
 
 }
