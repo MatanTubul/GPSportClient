@@ -1,0 +1,18 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=BC:F5:4E:66:56:3B:C3:22:09:EA:95:6A:C5:C4:08:4C:B6:8D:CD:B7%3Bcom.example.matant.gpsportclient.Controllers
+
+    You can also add your credentials to an existing key, using this line:
+    BC:F5:4E:66:56:3B:C3:22:09:EA:95:6A:C5:C4:08:4C:B6:8D:CD:B7;com.example.matant.gpsportclient.Controllers
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
+        YOUR_KEY_HERE
+    </string>
+</resources>

@@ -24,5 +24,6 @@
         <item>Female</item>
     </string-array>
     <string name="title_activity_test">test</string>
+    <string name="title_activity_main_maps">Map</string>
 
 </resources>
