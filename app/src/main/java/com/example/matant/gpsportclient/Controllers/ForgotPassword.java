@@ -5,7 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
-import android.os.CountDownTimer;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,18 +23,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
+
 import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+
 
 public class ForgotPassword extends Activity implements AsyncResponse {
     private Button forgotbtn;
@@ -62,7 +57,7 @@ public class ForgotPassword extends Activity implements AsyncResponse {
         forgotbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!err.validateEmailAddress(editxtemail.getText().toString()))
+                if (!err.validateEmailAddress(editxtemail.getText().toString()))
                     editxtemail.setError("email is invalid");
                 else
                     sendDataToDBController();
@@ -84,7 +79,7 @@ public class ForgotPassword extends Activity implements AsyncResponse {
 
                 switch(flg)
                 {
-                    case "user":
+                    case "user not found":
                         editxtemail.setError("This user isn't exists");
                         break;
                     case "recovered":
