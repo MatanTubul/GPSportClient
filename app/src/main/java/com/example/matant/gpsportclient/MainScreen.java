@@ -17,6 +17,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.matant.gpsportclient.Controllers.MainMapsActivity;
+import com.example.matant.gpsportclient.Controllers.MapFragment;
 import com.example.matant.gpsportclient.Utilities.DrawerItem;
 import com.example.matant.gpsportclient.Utilities.DrawerItemCustomAdapter;
 
@@ -112,7 +114,7 @@ public class MainScreen extends AppCompatActivity {
 
         switch (position) {
             case 0:
-
+                    fragment = new MapFragment();
                 break;
             case 1:
 
