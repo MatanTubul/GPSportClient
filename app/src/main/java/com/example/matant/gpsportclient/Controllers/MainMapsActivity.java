@@ -47,7 +47,6 @@ public class MainMapsActivity extends FragmentActivity {
             // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                     .getMap();
-            mMap.getUiSettings().setZoomControlsEnabled(true);
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
                 setUpMap();
