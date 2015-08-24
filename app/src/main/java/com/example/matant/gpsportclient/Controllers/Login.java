@@ -142,7 +142,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
                         passwordEditText.setError("user already connected");//pdialog
                         break;
                     case "verified":
-                        startActivity(new Intent(Login.this, MainMapsActivity.class));
+                        startActivity(new Intent(Login.this, MainScreen.class));
                         break;
                 }
 
