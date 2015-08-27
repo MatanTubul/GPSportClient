@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+
 public class GoogleMapFragmentController extends Fragment {
 
     static final LatLng HAMBURG = new LatLng(53.558, 9.927);
@@ -26,8 +27,7 @@ public class GoogleMapFragmentController extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_google_map_fragment_controller, null, false);
 
-        map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
-                .getMap();
+        map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 
         Marker hamburg = map.addMarker(new MarkerOptions().position(HAMBURG)
                 .title("Hamburg"));
