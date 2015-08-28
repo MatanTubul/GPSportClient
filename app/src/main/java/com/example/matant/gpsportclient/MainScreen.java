@@ -17,7 +17,6 @@ import com.example.matant.gpsportclient.Controllers.GoogleMapFragmentController;
 import com.example.matant.gpsportclient.Utilities.DrawerItem;
 import com.example.matant.gpsportclient.Utilities.DrawerItemCustomAdapter;
 
-//import com.example.matant.gpsportclient.Controllers.MapFragment;
 
 
 
