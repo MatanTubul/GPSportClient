@@ -3,8 +3,7 @@ package com.example.matant.gpsportclient;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
+
 import android.content.res.Configuration;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
@@ -22,8 +21,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
-import com.example.matant.gpsportclient.Controllers.MainMapsActivity;
-import com.example.matant.gpsportclient.Controllers.MapFragment;
+
+import com.example.matant.gpsportclient.Controllers.GoogleMapFragmentController;
+
 import com.example.matant.gpsportclient.Utilities.DrawerItem;
 import com.example.matant.gpsportclient.Utilities.DrawerItemCustomAdapter;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
@@ -128,7 +128,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
                 JSONObject jsonObj = new JSONObject(resStr);
                 String flg = jsonObj.getString(TAG_FLG);
                 switch (flg) {
-                    case "user logged out":
+                    case "user loged out":
                     {
                         sm.logoutUser();
                         break;
@@ -182,7 +182,9 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
 
         switch (position) {
             case 0:
-                    fragment = new MapFragment();
+                  //  fragment = new GoogleMapFragmentController();
+                fragment = new GoogleMapFragmentController();
+
                 break;
             case 1:
 

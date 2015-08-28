@@ -19,7 +19,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 /**
  * Created by matant on 8/24/2015.
  */
-public class MapFragment extends Fragment {
+public class GoogleMapFragmentController extends Fragment {
     MapView mMapView;
     private GoogleMap googleMap;
 
@@ -27,7 +27,7 @@ public class MapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // inflat and return the layout
-        View v = inflater.inflate(R.layout.fragment_location_info, container,
+        View v = inflater.inflate(R.layout.fragment_google_map_fragment_controller, container,
                 false);
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
@@ -50,8 +50,7 @@ public class MapFragment extends Fragment {
                 new LatLng(latitude, longitude)).title("Hello Maps");
 
         // Changing marker icon
-        marker.icon(BitmapDescriptorFactory
-                .defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
 
         // adding marker
         googleMap.addMarker(marker);
