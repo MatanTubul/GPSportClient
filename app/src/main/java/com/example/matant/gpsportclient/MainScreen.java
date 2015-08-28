@@ -257,6 +257,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
     }
     public void logout()
     {
+
         sendDataToDBController();
     }
 }

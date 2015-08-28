@@ -32,7 +32,7 @@ public class GoogleMapFragmentController extends Fragment {
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
 
-        mMapView.onResume();// needed to get the map to display immediately
+        mMapView.onResume();//    display map immediately
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
