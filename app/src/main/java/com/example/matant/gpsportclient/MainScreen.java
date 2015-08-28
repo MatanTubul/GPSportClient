@@ -128,7 +128,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
                 JSONObject jsonObj = new JSONObject(resStr);
                 String flg = jsonObj.getString(TAG_FLG);
                 switch (flg) {
-                    case "user loged out":
+                    case "user logged out":
                     {
                         sm.logoutUser();
                         break;

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,7 +20,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 /**
  * Created by matant on 8/24/2015.
  */
-public class GoogleMapFragmentController extends Fragment {
+public class GoogleMapFragmentController extends Fragment implements AsyncResponse {
     MapView mMapView;
     private GoogleMap googleMap;
 
@@ -86,5 +87,20 @@ public class GoogleMapFragmentController extends Fragment {
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
+    }
+
+    @Override
+    public void handleResponse(String resStr) {
+
+    }
+
+    @Override
+    public void sendDataToDBController() {
+
+    }
+
+    @Override
+    public void preProcess() {
+
     }
 }
