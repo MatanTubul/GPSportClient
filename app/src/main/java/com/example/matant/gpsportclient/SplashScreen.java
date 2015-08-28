@@ -9,7 +9,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
-import android.widget.Toast;
+
 
 
 import com.example.matant.gpsportclient.Controllers.Login;

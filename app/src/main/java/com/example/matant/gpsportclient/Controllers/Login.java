@@ -2,6 +2,8 @@ package com.example.matant.gpsportclient.Controllers;
 
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.R;
+import com.example.matant.gpsportclient.Utilities.SessionManager;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -37,6 +40,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
     private static final String TAG_FLG = "flag";
     private ErrorHandler err;
     private ProgressDialog progress;
+    private SessionManager sm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +49,15 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
         userCanLogIn = false;
         err = new ErrorHandler();
 
+
         userNameEditText=(EditText)findViewById(R.id.userNameTF);
         passwordEditText=(EditText)findViewById(R.id.passwordTF);
         forgotPasswordTV=(TextView)findViewById(R.id.forgotPasswordTV);
 
         loginB=(Button)findViewById(R.id.loginB);
         signUpB=(Button)findViewById(R.id.signUpB);
+
+        sm = new SessionManager(this);
 
         loginB.setOnClickListener(this);
         signUpB.setOnClickListener(this);
@@ -96,6 +103,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
 
     public void sendDataToDBController()
     {
+        sm.StoreUserSession(userNameEditText.getText().toString());
         String userNameP = userNameEditText.getText().toString();
         String passwordP = passwordEditText.getText().toString();
         BasicNameValuePair tagReq = new BasicNameValuePair("tag","login");
@@ -142,6 +150,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
                         passwordEditText.setError("user already connected");//pdialog
                         break;
                     case "verified":
+                        //initialize session manager
+                        SharedPreferences sessionManager =getSharedPreferences("Session", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor ed = sessionManager.edit();
+                        ed.putString("username", userNameEditText.getText().toString());
+                        ed.commit();
+                        ///
+
                         startActivity(new Intent(Login.this, MainScreen.class));
                         break;
                 }

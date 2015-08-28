@@ -2,6 +2,9 @@ package com.example.matant.gpsportclient;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
@@ -16,25 +19,38 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.Controllers.MainMapsActivity;
 import com.example.matant.gpsportclient.Controllers.MapFragment;
 import com.example.matant.gpsportclient.Utilities.DrawerItem;
 import com.example.matant.gpsportclient.Utilities.DrawerItemCustomAdapter;
+import com.example.matant.gpsportclient.Utilities.SessionManager;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-
-
-public class MainScreen extends AppCompatActivity {
+public class MainScreen extends AppCompatActivity implements AsyncResponse {
 
     private String[] mNavigationDrawerItemTitles;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     ActionBarDrawerToggle mDrawerToggle;
+    private static final String TAG_FLG = "flag";
 
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     public final int MENU_SIZE = 7;
+    private DBcontroller dbController;
+    private ProgressDialog progress;
+    private SessionManager sm;
 
 
     @Override
@@ -45,6 +61,8 @@ public class MainScreen extends AppCompatActivity {
         mNavigationDrawerItemTitles= getResources().getStringArray(R.array.navigation_drawer_items_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+        sm = new SessionManager(this);
 
         mTitle = mDrawerTitle = "Home";
         DrawerItem [] drawerItems = new DrawerItem[MENU_SIZE];
@@ -100,6 +118,56 @@ public class MainScreen extends AppCompatActivity {
 
     }
 
+    @Override
+    public void handleResponse(String resStr) {
+            this.progress.dismiss();
+        Log.d("handleResponse", resStr);
+        if(resStr!=null)
+        {
+            try {
+                JSONObject jsonObj = new JSONObject(resStr);
+                String flg = jsonObj.getString(TAG_FLG);
+                switch (flg) {
+                    case "user logged out":
+                    {
+                        sm.logoutUser();
+                        break;
+                    }
+                    case "query failed": {
+                        Toast.makeText(getApplicationContext(),"Error Connection",Toast.LENGTH_LONG).show();
+                        break;
+                    }
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    @Override
+    public void sendDataToDBController() {
+
+        String user = sm.getUserDetails().get(sm.KEY_EMAIL);
+        BasicNameValuePair tagReq = new BasicNameValuePair("tag","logout");
+        BasicNameValuePair userNameParam = new BasicNameValuePair("username",user);
+        List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+        nameValuePairList.add(tagReq);
+        nameValuePairList.add(userNameParam);
+        dbController =  new DBcontroller(this,this);
+
+        dbController.execute(nameValuePairList);
+
+    }
+
+    @Override
+    public void preProcess() {
+        this.progress = ProgressDialog.show(this, "Log Out",
+                "Logging out...", true);
+
+    }
+
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
         @Override
@@ -131,8 +199,10 @@ public class MainScreen extends AppCompatActivity {
             case 5:
 
                 break;
-            case 6:
+            case 6: {
 
+                logout();
+            }
                 break;
 
 
@@ -182,5 +252,9 @@ public class MainScreen extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+    public void logout()
+    {
+        sendDataToDBController();
     }
 }

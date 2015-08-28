@@ -57,8 +57,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     private int MIN_AGE = 14;
     private int MOBILE_LENGTH = 10;
     private ProgressDialog progress;
-    private Bitmap originbitmap;
-    private Bitmap scaled;
+    private Bitmap originbitmap=null;
+    private Bitmap scaled=null;
     private int rotate;
 
 
@@ -263,23 +263,29 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             }//case R.id.buttonSelectImg
 
             case R.id.imageButtonRleftt: {
-                Matrix matrix = new Matrix();
-                rotate -=90;
-                rotate  %= 360;
-                matrix.postRotate(rotate);
-                Bitmap rotatedBitmap = Bitmap.createBitmap(scaled , 0, 0, scaled .getWidth(), scaled .getHeight(), matrix, true);
-                imgv.setImageBitmap(rotatedBitmap);
+                if (scaled != null) {
+                    Matrix matrix = new Matrix();
+                    rotate -= 90;
+                    rotate %= 360;
+                    matrix.postRotate(rotate);
+                    Bitmap rotatedBitmap = Bitmap.createBitmap(scaled, 0, 0, scaled.getWidth(), scaled.getHeight(), matrix, true);
+                    imgv.setImageBitmap(rotatedBitmap);
+
+                }
                 break;
             }
             case R.id.imageButtonRright: {
-                Matrix matrix = new Matrix();
-                rotate +=90;
-                rotate  %= 360;
-                matrix.postRotate(rotate);
-                Bitmap rotatedBitmap = Bitmap.createBitmap(scaled , 0, 0, scaled .getWidth(), scaled .getHeight(), matrix, true);
-                imgv.setImageBitmap(rotatedBitmap);
+                if (scaled != null) {
+                    Matrix matrix = new Matrix();
+                    rotate += 90;
+                    rotate %= 360;
+                    matrix.postRotate(rotate);
+                    Bitmap rotatedBitmap = Bitmap.createBitmap(scaled, 0, 0, scaled.getWidth(), scaled.getHeight(), matrix, true);
+                    imgv.setImageBitmap(rotatedBitmap);
 
 
+
+                }
                 break;
             }
 
@@ -447,8 +453,4 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         }
         return null;
     }
-
-
-
-
 }
