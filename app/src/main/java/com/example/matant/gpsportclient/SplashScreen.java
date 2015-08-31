@@ -72,5 +72,4 @@ public class SplashScreen extends Activity {
         boolean isConnected =  activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
         return  isConnected;
     }
-
 }

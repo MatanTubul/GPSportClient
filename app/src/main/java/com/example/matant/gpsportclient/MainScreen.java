@@ -3,12 +3,19 @@ package com.example.matant.gpsportclient;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
+
+import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+
+
 import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.ActionBarDrawerToggle;
+
+
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,7 +23,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
+
 import com.example.matant.gpsportclient.Controllers.GoogleMapFragmentController;
+
 import com.example.matant.gpsportclient.Utilities.DrawerItem;
 import com.example.matant.gpsportclient.Utilities.DrawerItemCustomAdapter;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
@@ -51,6 +60,11 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
+        if (getIntent().getBooleanExtra("EXIT", false)) {
+            finish();
+            return;
+        }
+
         mNavigationDrawerItemTitles= getResources().getStringArray(R.array.navigation_drawer_items_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -72,6 +86,8 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
         DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(this, R.layout.listview_item_row, drawerItems);
         mDrawerList.setAdapter(adapter);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+
 
 
 
@@ -197,6 +213,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
             case 6: {
 
                 logout();
+                finish(); //destroy the main activity
             }
                 break;
 
@@ -235,6 +252,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
         mTitle = title;
         getSupportActionBar().setTitle(mTitle);
     }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -253,4 +271,5 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
 
         sendDataToDBController();
     }
+
 }

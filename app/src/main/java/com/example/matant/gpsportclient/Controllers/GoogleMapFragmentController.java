@@ -2,9 +2,11 @@ package com.example.matant.gpsportclient.Controllers;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.R;
@@ -18,6 +20,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
+ * Thia Fragment handle the Home screen and loading the events that close to the current user location
  * Created by matant on 8/24/2015.
  */
 public class GoogleMapFragmentController extends Fragment implements AsyncResponse {
@@ -42,9 +45,9 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         }
 
         googleMap = mMapView.getMap();
-        // latitude and longitude
-        double latitude = 17.385044;
-        double longitude = 78.486671;
+        // latitude and longitude of jerusalem
+        double latitude = 31.768319;
+        double longitude = 35.213710;
 
         // create marker
         MarkerOptions marker = new MarkerOptions().position(
@@ -56,7 +59,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         // adding marker
         googleMap.addMarker(marker);
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(17.385044, 78.486671)).zoom(12).build();
+                .target(new LatLng(latitude, longitude)).zoom(12).build();
         googleMap.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));
         googleMap.getUiSettings().setZoomControlsEnabled(true);
@@ -102,5 +105,29 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     @Override
     public void preProcess() {
 
+    }
+
+    /**
+     *
+     * @param savedInstanceState
+     */
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        Toast.makeText(getActivity(), "Back Pressed", Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 }

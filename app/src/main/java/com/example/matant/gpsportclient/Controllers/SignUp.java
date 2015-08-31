@@ -26,6 +26,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
@@ -47,7 +48,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     private EditText editTextname, editTextemail, editTextmobile, editTextPassword, editTextConfirmPass;
     private ImageView imgv;
     private final static int SELECT_PHOTO = 12345;
-    private static int MINIMAL_YEAR_OF_BIRTH = 2001;
+    private  int MINIMAL_YEAR_OF_BIRTH = 2001;
     private static final String TAG_FLG = "flag";
     private ImageButton rotateLeft,rotateRight;
 
@@ -68,13 +69,15 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         setContentView(R.layout.activity_sign_up);
 
         err = new ErrorHandler();
+
+        //updating the minimal age
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
 
         if ((year - MINIMAL_YEAR_OF_BIRTH) >= MIN_AGE) {
             MINIMAL_YEAR_OF_BIRTH++;
         }
-
+        ///
 
         buttonSignup = (Button) findViewById(R.id.ButtonSubmit);
         buttonSelectIMg = (Button) findViewById(R.id.buttonSelectImg);
@@ -365,6 +368,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                     case "succeed":
                         startActivity(new Intent(SignUp.this, Login.class));
                         resetFields();
+                        finish();
                         break;
                 }
 
@@ -452,5 +456,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             e.printStackTrace();
         }
         return null;
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Toast.makeText(this, "Please log out!", Toast.LENGTH_LONG);
     }
 }

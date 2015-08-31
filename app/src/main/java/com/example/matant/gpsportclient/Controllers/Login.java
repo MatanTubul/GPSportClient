@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.matant.gpsportclient.AsyncResponse;
@@ -140,11 +141,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
 
                 switch(flg)
                 {
-                    case "user":
-                        userNameEditText.setError("This user isn't exists");
+                    case "User was not found":
+                        userNameEditText.setError("User/Password is incorrect");
                         break;
-                    case "password":
-                        passwordEditText.setError("This password is incorrect");
+                    case "Password is incorrect":
+                        userNameEditText.setError("User/Password is incorrect");
                         break;
                     case "already connected":
                         passwordEditText.setError("user already connected");//pdialog
@@ -158,6 +159,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
                         ///
 
                         startActivity(new Intent(Login.this, MainScreen.class));
+                        finish();
                         break;
                 }
 
@@ -167,9 +169,5 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
         } else {
             Log.d("ServiceHandler", "Couldn't get any data from the url");
         }
-
-
     }
-
-
 }
