@@ -213,6 +213,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
             case 6: {
 
                 logout();
+                finish(); //destroy the main activity
             }
                 break;
 

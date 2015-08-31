@@ -27,7 +27,7 @@ public class PropertyReader {
             properties.load(inputStream);
 
         }catch (Exception e){
-            Log.d("failed to get properties", e.getMessage());
+            Log.d("Failed load properties", e.getMessage());
         }
 
         return properties;

@@ -142,10 +142,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
                 switch(flg)
                 {
                     case "User was not found":
-                        userNameEditText.setError("This user isn't exists");
+                        userNameEditText.setError("User/Password is incorrect");
                         break;
-                    case "User/Password is incorrect":
-                        passwordEditText.setError("This password is incorrect");
+                    case "Password is incorrect":
+                        userNameEditText.setError("User/Password is incorrect");
                         break;
                     case "already connected":
                         passwordEditText.setError("user already connected");//pdialog
@@ -169,13 +169,5 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
         } else {
             Log.d("ServiceHandler", "Couldn't get any data from the url");
         }
-
-
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Toast.makeText(this, "Please log out!", Toast.LENGTH_LONG);
     }
 }

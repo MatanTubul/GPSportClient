@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
+ * Thia Fragment handle the Home screen and loading the events that close to the current user location
  * Created by matant on 8/24/2015.
  */
 public class GoogleMapFragmentController extends Fragment implements AsyncResponse {
@@ -44,7 +45,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         }
 
         googleMap = mMapView.getMap();
-        // latitude and longitude
+        // latitude and longitude of jerusalem
         double latitude = 31.768319;
         double longitude = 35.213710;
 
