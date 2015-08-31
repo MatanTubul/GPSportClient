@@ -3,17 +3,12 @@ package com.example.matant.gpsportclient;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
-
 import android.content.res.Configuration;
-import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
-
-
-import android.util.Log;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.ActionBarDrawerToggle;
-
-
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,9 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
-
 import com.example.matant.gpsportclient.Controllers.GoogleMapFragmentController;
-
 import com.example.matant.gpsportclient.Utilities.DrawerItem;
 import com.example.matant.gpsportclient.Utilities.DrawerItemCustomAdapter;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
