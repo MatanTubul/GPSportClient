@@ -9,7 +9,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
-
+import android.widget.Toast;
 
 
 import com.example.matant.gpsportclient.Controllers.Login;
@@ -71,6 +71,11 @@ public class SplashScreen extends Activity {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         boolean isConnected =  activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
         return  isConnected;
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Toast.makeText(this, "Please log out!", Toast.LENGTH_LONG);
     }
 
 }

@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.matant.gpsportclient.AsyncResponse;
@@ -158,6 +159,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
                         ///
 
                         startActivity(new Intent(Login.this, MainScreen.class));
+                        finish();
                         break;
                 }
 
@@ -171,5 +173,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Toast.makeText(this, "Please log out!", Toast.LENGTH_LONG);
+    }
 }

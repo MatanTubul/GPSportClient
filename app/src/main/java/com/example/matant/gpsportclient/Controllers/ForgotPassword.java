@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
@@ -82,6 +83,7 @@ public class ForgotPassword extends Activity implements AsyncResponse {
                         MailSender mailSender = new MailSender();
                         mailSender.sendMailTo(editxtemail.getText().toString(),jsonObj.getString(PASS_FLG));
                         startActivity(new Intent(ForgotPassword.this, Login.class));
+                        finish();
                         break;
                 }
 
@@ -117,5 +119,10 @@ public class ForgotPassword extends Activity implements AsyncResponse {
                     "Recovering your password...", true);
 
         }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Toast.makeText(this, "Please log out!", Toast.LENGTH_LONG);
+    }
 
 }
