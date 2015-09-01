@@ -27,7 +27,8 @@ public class SessionManager {
     int PRIVATE_MODE = 0;
 
     // Email address (make variable public to access from outside)
-    public static final String KEY_EMAIL = "email";
+    public  final String KEY_EMAIL = "email";
+    public  String KEY_NAME = "name";
 
     public  SessionManager(Context context)
     {
@@ -36,8 +37,8 @@ public class SessionManager {
         editor = pref.edit();
     }
 
-    public void StoreUserSession(String Email){
-        editor.putString(KEY_EMAIL,Email);
+    public void StoreUserSession(String Email,String Key){
+        editor.putString(Key,Email);
         editor.commit();
     }
 
@@ -45,6 +46,7 @@ public class SessionManager {
         HashMap<String,String> user = new HashMap<String,String>();
 
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
+        user.put(KEY_NAME, pref.getString(KEY_NAME, null));
         return user;
     }
 
