@@ -104,7 +104,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
 
     public void sendDataToDBController()
     {
-        sm.StoreUserSession(userNameEditText.getText().toString());
+        sm.StoreUserSession(userNameEditText.getText().toString(),sm.KEY_EMAIL);
         String userNameP = userNameEditText.getText().toString();
         String passwordP = passwordEditText.getText().toString();
         BasicNameValuePair tagReq = new BasicNameValuePair("tag","login");
@@ -151,12 +151,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
                         passwordEditText.setError("user already connected");//pdialog
                         break;
                     case "verified":
-                        //initialize session manager
-                        SharedPreferences sessionManager =getSharedPreferences("Session", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor ed = sessionManager.edit();
-                        ed.putString("username", userNameEditText.getText().toString());
-                        ed.commit();
-                        ///
+                        //initialize name of user in the session manager
+                        sm.StoreUserSession(jsonObj.getString("name"),sm.KEY_NAME);
 
                         startActivity(new Intent(Login.this, MainScreen.class));
                         finish();
