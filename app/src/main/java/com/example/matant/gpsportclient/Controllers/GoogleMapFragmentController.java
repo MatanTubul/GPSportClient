@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.R;
+import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -17,6 +18,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
@@ -26,6 +28,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class GoogleMapFragmentController extends Fragment implements AsyncResponse {
     MapView mMapView;
     private GoogleMap googleMap;
+    private MarkerOptions currentMarkerOption;
+    private Marker currentMarker;
+    private SessionManager sm;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,6 +42,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume();//    display map immediately
+        sm = new SessionManager(getActivity());
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -49,8 +55,25 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         double latitude = 31.768319;
         double longitude = 35.213710;
 
+
+        if (googleMap != null) {
+            LatLng iniLoc = new LatLng(latitude, longitude);
+            CameraPosition cp = new CameraPosition.Builder().target(iniLoc).zoom(12).build();
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cp));
+            googleMap.getUiSettings().setZoomGesturesEnabled(true);
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
+            currentMarkerOption = new MarkerOptions();
+            currentMarkerOption.position(iniLoc);
+            currentMarker = googleMap.addMarker(currentMarkerOption);
+            currentMarker.setIcon((BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+            currentMarker.setTitle(sm.getUserDetails().get("name"));
+            currentMarker.showInfoWindow();
+            currentMarker.setVisible(true);
+        }
+
+
         // create marker
-        MarkerOptions marker = new MarkerOptions().position(
+        /*MarkerOptions marker = new MarkerOptions().position(
                 new LatLng(latitude, longitude)).title("Hello Maps");
 
         // Changing marker icon
@@ -62,7 +85,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
                 .target(new LatLng(latitude, longitude)).zoom(12).build();
         googleMap.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
+        googleMap.getUiSettings().setZoomControlsEnabled(true);*/
 
         // Perform any camera updates here
         return v;
