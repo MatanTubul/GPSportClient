@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.matant.gpsportclient.Controllers.CreateEventFragmentController;
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 
 import com.example.matant.gpsportclient.Controllers.GoogleMapFragmentController;
@@ -202,6 +203,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
 
                 break;
             case 3:
+                    fragment = new CreateEventFragmentController();
 
                 break;
             case 4:
@@ -263,7 +265,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
+        // Pass any configuration change to the drawer toggle
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
     public void logout()
