@@ -1,0 +1,333 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffffff"
+    android:id="@+id/mainLayout">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="fill_parent"
+        android:layout_marginBottom="60dp"
+        android:fillViewport="true"
+        android:scrollbars = "vertical"
+        android:scrollbarStyle="insideInset"
+
+        android:layout_height="fill_parent">
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollViewlayout">
+
+
+            <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:id="@+id/relativeLayoutFromTo">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Start"
+                android:id="@+id/textView3"
+                android:layout_gravity="left|top"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:textStyle="bold"
+                android:textColor="#000000" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Button"
+                android:id="@+id/buttonFromDate"
+                android:layout_below="@+id/textView3"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_toLeftOf="@+id/buttonFromTime"
+                android:layout_toStartOf="@+id/buttonFromTime" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Button"
+                android:id="@+id/buttonFromTime"
+                android:layout_alignBottom="@+id/buttonFromDate"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="End"
+                android:id="@+id/textView4"
+                android:layout_below="@+id/buttonFromDate"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:textStyle="bold"
+                android:textColor="#000000" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Button"
+                android:id="@+id/buttonEndDate"
+                android:layout_below="@+id/textView4"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_toLeftOf="@+id/buttonEndTime"
+                android:layout_toStartOf="@+id/buttonEndTime" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Button"
+                android:id="@+id/buttonEndTime"
+                android:layout_alignTop="@+id/buttonEndDate"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recurring Event"
+
+                android:id="@+id/checkBoxRecurring"
+                android:checked="false"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/buttonEndDate"/>
+            <View
+                android:id="@+id/divider1"
+                android:layout_below="@+id/checkBoxRecurring"
+                android:layout_width="fill_parent"
+                android:layout_height="6dp"
+                android:background="@android:color/darker_gray"/>
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+            android:layout_width="match_parent"
+            android:id="@+id/relativeLayoutSportRadius"
+            android:layout_below="@+id/relativeLayoutFromTo"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Sport"
+                android:id="@+id/textViewSport"
+
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:textStyle="bold"
+                android:textColor="#000000">
+
+            </TextView>
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:id="@+id/spinnerSports"
+                android:layout_below="@+id/textViewSport"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Radius"
+                android:layout_marginTop="5dp"
+                android:id="@+id/textViewRadius"
+                android:textStyle="bold"
+                android:layout_below="@+id/spinnerSports"
+                android:layout_toRightOf="@+id/textViewSport"
+                android:layout_toEndOf="@+id/textViewSport"
+                android:textColor="#000000" />
+
+            <Spinner
+                android:layout_width="180dp"
+                android:layout_height="40dp"
+                android:id="@+id/spinnerGender"
+                android:layout_marginLeft="10dp"
+
+                android:layout_below="@+id/textViewGender"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <Spinner
+                android:layout_width="180dp"
+                android:layout_height="40dp"
+                android:id="@+id/spinnerRadius"
+
+                android:layout_below="@+id/textViewRadius"
+                android:layout_toStartOf="@+id/spinnerGender" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Gender"
+
+                android:id="@+id/textViewGender"
+                android:textStyle="bold"
+                android:layout_above="@+id/spinnerRadius"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="54dp"
+                android:layout_marginEnd="54dp"
+                android:textColor="#000000" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_below="@+id/spinnerRadius"
+                android:layout_width="fill_parent"
+                android:layout_height="6dp"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/darker_gray"/>
+             </RelativeLayout>
+
+
+
+
+            <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayoutSportRadius"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Participants:"
+                android:id="@+id/textViewParticipants"
+                android:layout_below="@+id/relativeLayoutSportRadius"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <EditText
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/editTextMaxPaticipants"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="left|top" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Minimal Age"
+
+                android:id="@+id/textViewMinAge"
+                android:layout_gravity="center_horizontal|top"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <EditText
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:layout_marginTop="15dp"
+                android:id="@+id/editTextMinAge"
+                android:layout_gravity="center_horizontal|top" />
+            </FrameLayout>
+
+             <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_below="@+id/frameLayout"
+            android:layout_height="wrap_content">
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Search from specific address"
+                android:id="@+id/checkBoxSpecifcAddress"
+                android:checked="false"
+
+
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextLocation"
+                android:hint="Location"
+
+                android:layout_below="@+id/checkBoxSpecifcAddress"
+
+                 />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Private Event"
+                android:id="@+id/checkBoxPrivateEvent"
+                android:checked="false"
+
+                android:layout_below="@+id/editTextLocation"
+
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/buttonInviteUsers"
+                android:text="Invite Users"
+                android:layout_below="@+id/checkBoxPrivateEvent"
+                android:layout_marginLeft="5dp"
+                android:background="#606060"
+                android:textColor="#ffffffff" />
+
+             </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutBtn"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+            <Button android:text="Save"
+                android:id="@+id/ButtonSave"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+            </Button>
+            <Button android:text="Cancel"
+                android:id="@+id/ButtonCancel"
+                android:layout_toRightOf="@+id/ButtonSave"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+            </Button>
+    </LinearLayout>
+
+
+
+</RelativeLayout>
+
+
+
+
+
