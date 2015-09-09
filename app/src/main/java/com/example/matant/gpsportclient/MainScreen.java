@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -32,8 +33,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainScreen extends AppCompatActivity implements AsyncResponse {
+public class MainScreen extends AppCompatActivity implements AsyncResponse, ProfileFragmentController.OnFragmentInteractionListener {
 
+    public void onFragmentInteraction(Uri uri){}
     private String[] mNavigationDrawerItemTitles;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
