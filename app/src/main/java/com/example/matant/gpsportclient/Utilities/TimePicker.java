@@ -6,20 +6,26 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.matant.gpsportclient.OnCompleteListener;
+
 import java.util.Calendar;
 
 /**
  * Created by matant on 9/7/2015.
  */
 public class TimePicker extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
-    public  interface OnCompleteListener {
-        public  void onComplete(String flag,String time);
-    }
+
 
     private int Time_Picker ;
-     static final int START_TIME = 1;
-     static final int END_TIME = 2;
+    static final int START_TIME = 1;
+    static final int END_TIME = 2;
     private OnCompleteListener mListener;
+    private int hour;
+    public int test;
+    private int start_hour = -1;
+    private int end_hour = -1;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,7 +41,7 @@ public class TimePicker extends DialogFragment implements TimePickerDialog.OnTim
     @Override
     public Dialog onCreateDialog(Bundle savedInstance){
         final Calendar cal = Calendar.getInstance();
-        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        hour = cal.get(Calendar.HOUR_OF_DAY);
         int minute = cal.get(Calendar.MINUTE);
         Bundle bundle = this.getArguments();
         Log.d("Calendar",String.valueOf(hour)+":"+String.valueOf(minute));
@@ -58,22 +64,45 @@ public class TimePicker extends DialogFragment implements TimePickerDialog.OnTim
     }
     @Override
     public void onTimeSet(android.widget.TimePicker view, int hourOfDay, int minute) {
-        Log.d("Calendar",String.valueOf(hourOfDay)+":"+String.valueOf(minute));
+        Log.d("Calendar", String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
         String s ="";
+        String min;
 
-        if(Time_Picker == START_TIME)
-        {
-             s = String.valueOf(hourOfDay)+":"+String.valueOf(minute);
-            mListener.onComplete("start_time",s);
-        }
+        if(minute < 10)
+             min = "0"+Integer.toString(minute);
         else
+            min = String.valueOf(minute);
+        if (Time_Picker == START_TIME)
         {
-            s = String.valueOf(hourOfDay)+":"+String.valueOf(minute);
-            mListener.onComplete("end_time",s);
+            start_hour = hourOfDay;
+        }
+        else{
+            end_hour = hourOfDay;
+        }
 
+            if((end_hour < start_hour && start_hour != -1 && end_hour != -1) || hour > hourOfDay) {
+                this.end_hour = -1;
+                this.start_hour = -1;
+                mListener.onComplete("incorrect_time", "Please insert valid time");
+            }
+        else {
+
+            if (Time_Picker == START_TIME) {
+
+                s = String.valueOf(hourOfDay) + ":" + min;
+                Log.d("hour diffrent","start="+start_hour+"end="+end_hour);
+                mListener.onComplete("start_time", s);
+            } else {
+                Log.d("hour diffrent","start="+start_hour+"end="+end_hour);
+                s = String.valueOf(hourOfDay) + ":" + min;
+                mListener.onComplete("end_time", s);
+
+            }
         }
 
     }
+
+
 
 
 }
