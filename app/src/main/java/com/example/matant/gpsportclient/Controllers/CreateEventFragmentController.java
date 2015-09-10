@@ -4,9 +4,13 @@ import android.app.Activity;
 import android.app.DialogFragment;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +28,11 @@ import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.DatePicker;
 import com.example.matant.gpsportclient.Utilities.MyAdapter;
 import com.example.matant.gpsportclient.Utilities.TimePicker;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class CreateEventFragmentController extends Fragment implements View.OnClickListener,OnCompleteListener {
@@ -164,7 +171,10 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
             @Override
             public void onClick(View v) {
                 if(specificAddressCbox.isChecked())
+                {
                     addressEditText.setVisibility(v.VISIBLE);
+
+                }
                 else
                     addressEditText.setVisibility(v.GONE);
             }
@@ -174,6 +184,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         btnendTime.setOnClickListener(this);
         btnStartdate.setOnClickListener(this);
         btnEndDate.setOnClickListener(this);
+        btnSave.setOnClickListener(this);
 
         return v;
     }
@@ -196,7 +207,6 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     @Override
     public void onClick(View v) {
         DialogFragment df = null;
-
         Bundle bundle = null;
         String dialog_type ="";
         switch(v.getId()) {
@@ -233,6 +243,11 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                 }
                 break;
             }
+            case R.id.ButtonSave:
+                Log.d("SavePressed","press on button save");
+                LatLng lonlat = getLocationFromAddress(addressEditText.getText().toString());
+                Log.d("Cordinates", "latitude = " + lonlat.latitude + "longtitude=" + lonlat.longitude);
+                break;
 
         }
         if(df!=null && bundle!=null)
@@ -305,6 +320,29 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
         current_date = cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR);
         return current_date;
+    }
+    public LatLng getLocationFromAddress(String strAddress) {
+
+        Geocoder coder = new Geocoder(getActivity());
+        List<Address> address;
+        LatLng p1 = null;
+
+        try {
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                return null;
+            }
+            Address location = address.get(0);
+            location.getLatitude();
+            location.getLongitude();
+            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+
+        } catch (Exception ex) {
+            Log.d("Location Exception","error converting address");
+            ex.printStackTrace();
+        }
+
+        return p1;
     }
 
 }
