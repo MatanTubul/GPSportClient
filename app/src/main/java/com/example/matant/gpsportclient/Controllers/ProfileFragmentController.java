@@ -1,6 +1,7 @@
 package com.example.matant.gpsportclient.Controllers;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,9 +9,9 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +28,14 @@ import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 
 public class ProfileFragmentController extends Fragment implements AsyncResponse, View.OnClickListener {
@@ -49,6 +56,7 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
     private Bitmap originbitmap=null;
     private Bitmap scaled=null;
     private int rotate;
+    DBcontroller dbController;
 
     private OnFragmentInteractionListener mListener;
 
@@ -77,6 +85,7 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
         ///
 
         buttonSignup = (Button) rootView.findViewById(R.id.ButtonSubmit);
+        buttonSignup.setText("submit changes");
         buttonSelectIMg = (Button)  rootView.findViewById(R.id.buttonSelectImg);
         rotateLeft = (ImageButton) rootView.findViewById(R.id.imageButtonRleftt);
         rotateRight = (ImageButton) rootView.findViewById(R.id.imageButtonRright);
@@ -201,7 +210,6 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
         rotateRight.setOnClickListener(this);
         rotateLeft.setOnClickListener(this);
 
-
         // Inflate the layout for this fragment
         return rootView;
     }
@@ -226,8 +234,38 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
     }
 
     @Override
-    public void handleResponse(String resStr) {
+    public void handleResponse(String jsonStr) {
+        Log.d("handleResponse", jsonStr);
 
+        if (jsonStr != null) {
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                String flg = jsonObj.getString(TAG_FLG);
+
+                switch(flg)
+                {
+                    case "profile details retrieval":
+                       //put profile details on right spots
+                        break;
+                    case "user already exists":
+                        editTextemail.setError("This email already exists");
+                        break;
+                    case "mobile already exists":
+                        editTextmobile.setError("Mobile already exists");
+                        break;
+                    case "succeed":
+                        //dialog and go to main freg
+                        //resetFields();
+                        getActivity().getFragmentManager().popBackStack();
+                        break;
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.d("ServiceHandler", "Couldn't get any data from the url");
+        }
     }
 
     @Override
@@ -237,8 +275,20 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
 
     @Override
     public void preProcess() {
-
+        getDataFromDBController();
     }
+
+    private void getDataFromDBController()
+    {
+        BasicNameValuePair tagReq = new BasicNameValuePair("tag","profile");
+        List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+        nameValuePairList.add(tagReq);
+        dbController =  new DBcontroller(this.getActivity(),this);
+        dbController.execute(nameValuePairList);
+    }
+
+
+
 
     public void onClick(View v) {
         Intent i = null;
@@ -309,7 +359,6 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
                     matrix.postRotate(rotate);
                     Bitmap rotatedBitmap = Bitmap.createBitmap(scaled, 0, 0, scaled.getWidth(), scaled.getHeight(), matrix, true);
                     imgv.setImageBitmap(rotatedBitmap);
-
 
 
                 }
