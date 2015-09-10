@@ -173,7 +173,6 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                 if(specificAddressCbox.isChecked())
                 {
                     addressEditText.setVisibility(v.VISIBLE);
-
                 }
                 else
                     addressEditText.setVisibility(v.GONE);
