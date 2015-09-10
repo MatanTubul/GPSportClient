@@ -139,7 +139,8 @@
                 android:id="@+id/spinnerSports"
                 android:layout_below="@+id/textViewSport"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                android:background="#C0C0C0" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -162,7 +163,8 @@
 
                 android:layout_below="@+id/textViewGender"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:background="#C0C0C0" />
 
             <Spinner
                 android:layout_width="180dp"
@@ -170,7 +172,8 @@
                 android:id="@+id/spinnerRadius"
 
                 android:layout_below="@+id/textViewRadius"
-                android:layout_toStartOf="@+id/spinnerGender" />
+                android:layout_toStartOf="@+id/spinnerGender"
+                android:background="#C0C0C0" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -231,7 +234,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Minimal Age"
+                android:text="Minimal Age:"
 
                 android:id="@+id/textViewMinAge"
                 android:layout_gravity="center_horizontal|top"
