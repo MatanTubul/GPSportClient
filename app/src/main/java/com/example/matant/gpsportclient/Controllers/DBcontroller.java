@@ -53,8 +53,9 @@ public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
 
     @Override
     protected void onPreExecute() {
-        delegate.preProcess();
         super.onPreExecute();
+        delegate.preProcess();
+
 
 
     }
@@ -66,8 +67,9 @@ public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
 
     @Override
     protected void onPostExecute(String resStr) {
-        delegate.handleResponse(resStr);
         super.onPostExecute(resStr);
+        delegate.handleResponse(resStr);
+
     }
 
     private String postDataToServer(List<NameValuePair> list) {
