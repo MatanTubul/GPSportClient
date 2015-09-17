@@ -52,7 +52,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
     private CharSequence mTitle;
     public final int MENU_SIZE = 7;
     private DBcontroller dbController;
-    private ProgressDialog progress;
+    private ProgressDialog progress = null;
     private SessionManager sm;
 
 
@@ -102,7 +102,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                getSupportActionBar().setTitle(mTitle);
+                getSupportActionBar().setTitle(mDrawerTitle);
                 invalidateOptionsMenu();
             }
 
@@ -130,7 +130,21 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void handleResponse(String resStr) {
-            this.progress.dismiss();
+        try
+        {
+            if((this.progress!= null )&& this.progress.isShowing())
+            {
+                this.progress.dismiss();
+            }
+        }catch (final IllegalArgumentException e){
+            Log.d("Dialog error",e.getMessage());
+        }catch (final Exception e){
+            Log.d("Dialog error",e.getMessage());
+        }
+            finally {
+            this.progress = null;
+        }
+
         Log.d("handleResponse", resStr);
         if(resStr!=null)
         {
@@ -174,7 +188,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
     @Override
     public void preProcess() {
         this.progress = ProgressDialog.show(this, "Log Out",
-                "Logging out...", true);
+                "Logging out...", true,false);
 
     }
 
@@ -232,7 +246,6 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
             mDrawerList.setSelection(position);
             getSupportActionBar().setTitle(mNavigationDrawerItemTitles[position]);
             mDrawerLayout.closeDrawer(mDrawerList);
-
         } else {
             Log.e("MainActivity", "Error in creating fragment");
         }
