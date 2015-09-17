@@ -16,11 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
+
 import android.widget.Spinner;
 
 
@@ -39,7 +39,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
+
 import java.util.List;
 
 
@@ -47,8 +47,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
     private Button btnStartdate,btnstartTime,btnendTime,btninviteUsers,btnEndDate,btnSave,btnCancel;
     private EditText addressEditText,maxParticipantsEdittext,minAgeEditText;
-    private CheckBox privateEventCbox,reccuringEventCbox,specificAddressCbox;
-    private Spinner sportSpinner,genderSpinner,radiusSpinner;
+    private CheckBox privateEventCbox,reccuringEventCbox;
+    private Spinner sportSpinner,genderSpinner;
     private Calendar cal;
     private String current_time,current_date;
     private Boolean SET_TIME = false;
@@ -95,7 +95,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
         privateEventCbox = (CheckBox) v.findViewById(R.id.checkBoxPrivateEvent);
         reccuringEventCbox = (CheckBox) v.findViewById(R.id.checkBoxRecurring);
-        specificAddressCbox = (CheckBox) v.findViewById(R.id.checkBoxSpecifcAddress);
+
 
         sportSpinner = (Spinner) v.findViewById(R.id.spinnerSports);
         genderSpinner = (Spinner) v.findViewById(R.id.spinnerGender);
@@ -104,14 +104,12 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
 
         //gender spinner
-
-
         genderSpinner.setAdapter(new MyAdapter(getActivity(), R.layout.custom_spinner, getResources().getStringArray(R.array.eventgender)));
         genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-;
+                ;
             }
 
             @Override
@@ -124,7 +122,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
         //Sport Spinner
 
-        sportSpinner.setAdapter(new MyAdapter(getActivity(),R.layout.custom_spinner,getResources().getStringArray(R.array.kind_of_sport)));
+        sportSpinner.setAdapter(new MyAdapter(getActivity(), R.layout.custom_spinner, getResources().getStringArray(R.array.kind_of_sport)));
 
         sportSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -137,15 +135,13 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });
-
-        //Sport Spinner
+        });//Sport Spinner
 
 
 
 
 
-        addressEditText.setVisibility(v.GONE);
+
         btninviteUsers.setVisibility(v.GONE);
 
 
@@ -161,18 +157,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
             }
         });//private event check box listener
 
-        //create event from specific location check box listener
-        specificAddressCbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(specificAddressCbox.isChecked())
-                {
-                    addressEditText.setVisibility(v.VISIBLE);
-                }
-                else
-                    addressEditText.setVisibility(v.GONE);
-            }
-        });//create event from specific location check box listener
+
 
         btnstartTime.setOnClickListener(this);
         btnendTime.setOnClickListener(this);
@@ -388,9 +373,29 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     @Override
     public void sendDataToDBController() {
 
+        LatLng lonlat = getLocationFromAddress(addressEditText.getText().toString());
         BasicNameValuePair tagreq = new BasicNameValuePair("tag","create_event");
+        BasicNameValuePair sport = new BasicNameValuePair("sport_type",sportSpinner.getSelectedItem().toString());
+        BasicNameValuePair date = new BasicNameValuePair("date",btnStartdate.getText().toString());
+        BasicNameValuePair startTime = new BasicNameValuePair("s_time",btnstartTime.getText().toString());
+        BasicNameValuePair endTime = new BasicNameValuePair("e_time",btnendTime.getText().toString());
+        BasicNameValuePair longtitude = new BasicNameValuePair("lon",String.valueOf(lonlat.longitude));
+        BasicNameValuePair latitude = new BasicNameValuePair("lat",String.valueOf(lonlat.latitude));
+        BasicNameValuePair event_type = new BasicNameValuePair("event_type",String.valueOf(privateEventCbox.isChecked()));
+        BasicNameValuePair participants = new BasicNameValuePair("max_participants",maxParticipantsEdittext.getText().toString());
+        BasicNameValuePair scheduled = new BasicNameValuePair("scheduled",String.valueOf(reccuringEventCbox.isChecked()));
+
         List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
         nameValuePairList.add(tagreq);
+        nameValuePairList.add(sport);
+        nameValuePairList.add(date);
+        nameValuePairList.add(startTime);
+        nameValuePairList.add(endTime);
+        nameValuePairList.add(longtitude);
+        nameValuePairList.add(latitude);
+        nameValuePairList.add(event_type);
+        nameValuePairList.add(participants);
+        nameValuePairList.add(scheduled);
         dbController = new DBcontroller(getActivity().getApplicationContext(),this);
         dbController.execute(nameValuePairList);
     }
