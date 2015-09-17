@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,6 +26,7 @@ import android.widget.TextView;
 import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
+import com.example.matant.gpsportclient.Utilities.SessionManager;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -57,15 +57,14 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
     private Bitmap scaled=null;
     private int rotate;
     DBcontroller dbController;
-
-    private OnFragmentInteractionListener mListener;
-
+    private SessionManager sm;
 
     public ProfileFragmentController() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sm = new SessionManager(getActivity());
     }
 
     @Override
@@ -209,28 +208,25 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
 
         rotateRight.setOnClickListener(this);
         rotateLeft.setOnClickListener(this);
-
         // Inflate the layout for this fragment
         return rootView;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getDataFromDBController();
+    }
 
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -245,7 +241,7 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
                 switch(flg)
                 {
                     case "profile details retrieval":
-                       //put profile details on right spots
+                        Log.d("profile", jsonStr);
                         break;
                     case "user already exists":
                         editTextemail.setError("This email already exists");
@@ -275,15 +271,24 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
 
     @Override
     public void preProcess() {
-        getDataFromDBController();
+        //Log.d("preProcess", "getting data to UI");
+        //getDataFromDBController();
+
     }
 
     private void getDataFromDBController()
     {
+        String user = sm.getUserDetails().get(sm.KEY_EMAIL);
+        Log.d("getDataFromDBController", "getting data to UI");
         BasicNameValuePair tagReq = new BasicNameValuePair("tag","profile");
+        BasicNameValuePair method = new BasicNameValuePair("method","getprofile");
+        BasicNameValuePair userNameParam = new BasicNameValuePair("username",user);
         List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
         nameValuePairList.add(tagReq);
-        dbController =  new DBcontroller(this.getActivity(),this);
+        nameValuePairList.add(method);
+        nameValuePairList.add(userNameParam);
+        Log.d("user",user);
+        dbController =  new DBcontroller(this.getActivity().getApplicationContext(),this);
         dbController.execute(nameValuePairList);
     }
 
@@ -369,20 +374,5 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
     }
 
 
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
 
 }
