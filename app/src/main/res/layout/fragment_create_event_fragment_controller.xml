@@ -142,67 +142,43 @@
                 android:layout_alignParentStart="true"
                 android:background="#C0C0C0" />
 
-            <TextView
+                <Spinner
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Radius"
-                android:layout_marginTop="5dp"
-                android:id="@+id/textViewRadius"
-                android:textStyle="bold"
-                android:layout_below="@+id/spinnerSports"
-                android:layout_toRightOf="@+id/textViewSport"
-                android:layout_toEndOf="@+id/textViewSport"
-                android:textColor="#000000" />
-
-            <Spinner
-                android:layout_width="180dp"
                 android:layout_height="40dp"
                 android:id="@+id/spinnerGender"
-                android:layout_marginLeft="10dp"
+
 
                 android:layout_below="@+id/textViewGender"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:background="#C0C0C0" />
 
-            <Spinner
-                android:layout_width="180dp"
-                android:layout_height="40dp"
-                android:id="@+id/spinnerRadius"
-
-                android:layout_below="@+id/textViewRadius"
-                android:layout_toStartOf="@+id/spinnerGender"
-                android:background="#C0C0C0" />
-
-            <TextView
+                <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Gender"
+                    android:layout_below="@+id/spinnerSports"
 
                 android:id="@+id/textViewGender"
                 android:textStyle="bold"
-                android:layout_above="@+id/spinnerRadius"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginRight="54dp"
-                android:layout_marginEnd="54dp"
+
+
                 android:textColor="#000000" />
 
             <View
                 android:id="@+id/divider2"
-                android:layout_below="@+id/spinnerRadius"
                 android:layout_width="fill_parent"
                 android:layout_height="6dp"
                 android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray"/>
+                android:background="@android:color/darker_gray"
+                android:layout_below="@+id/spinnerGender" />
              </RelativeLayout>
 
 
 
 
-            <FrameLayout
+            <RelativeLayout
             android:id="@+id/frameLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -222,19 +198,26 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:ems="10"
+                android:layout_below="@+id/textViewParticipants"
                 android:id="@+id/editTextMaxPaticipants"
                 android:layout_marginTop="15dp"
-                android:layout_gravity="left|top" />
+                android:layout_gravity="left|top"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:hint="Please define the Max Participants" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Minimal Age:"
+                android:layout_below="@+id/editTextMaxPaticipants"
 
                 android:id="@+id/textViewMinAge"
                 android:layout_gravity="center_horizontal|top"
@@ -242,14 +225,16 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:ems="10"
                 android:layout_marginTop="15dp"
                 android:id="@+id/editTextMinAge"
+                android:layout_below="@+id/textViewMinAge"
+                android:hint="Please define minimal age (14)"
                 android:layout_gravity="center_horizontal|top" />
-            </FrameLayout>
+            </RelativeLayout>
 
              <RelativeLayout
             android:layout_width="match_parent"
