@@ -2,25 +2,20 @@ package com.example.matant.gpsportclient.Controllers;
 
 
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Paint;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-
-import android.view.View;
 import android.content.Intent;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.example.matant.gpsportclient.AsyncResponse;
-import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.R;
+import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 
 import org.apache.http.NameValuePair;
@@ -141,6 +136,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
 
                 switch(flg)
                 {
+
                     case "User was not found":
                         userNameEditText.setError("User/Password is incorrect");
                         break;

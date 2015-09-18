@@ -45,9 +45,20 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
     private final static int SELECT_PHOTO = 12345;
     private  int MINIMAL_YEAR_OF_BIRTH = 2001;
     private static final String TAG_FLG = "flag";
+    private static final String TAG_NAME = "name";
+    private static final String TAG_MOB = "mobile";
+    private static final String TAG_PASS = "password";
+    private static final String TAG_EMAIL= "email";
+    private static final String TAG_AGE= "age";
+    private static final String TAG_GEN= "gender";
+    private static final int CELL_CODE_LENGTH= 3;
+    private static final int CELL_PHONE_LENGTH= 7;
+
     private ImageButton rotateLeft,rotateRight;
 
-    private Spinner spinerCellCode, spinerAge, spinnerGender;
+    private Spinner spinnerCellCode, spinnerAge, spinnerGender;
+    ArrayAdapter<CharSequence> genderAdapter, mobileAdapter;
+    ArrayAdapter<String> ageAdapter;
     public ErrorHandler err;
     private String areaCode = "", userGender = "", yearOfBirth = "";
     private int MIN_AGE = 14;
@@ -100,7 +111,7 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
        // setFieldsByUserDetails();
 
 
-        spinerAge = (Spinner)  rootView.findViewById(R.id.spinnerAge);
+        spinnerAge = (Spinner)  rootView.findViewById(R.id.spinnerAge);
         ArrayList<String> years = new ArrayList<String>();
         int thisYear = Calendar.getInstance().get(Calendar.YEAR);
         for (int i = 1970; i <= MINIMAL_YEAR_OF_BIRTH; i++) {
@@ -108,22 +119,22 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
 
         }
 
-        ArrayAdapter<String> ageAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, years);
+        ageAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, years);
         //ArrayAdapter<CharSequence> ageAdapter = ArrayAdapter.createFromResource(this, R.array.age, android.R.layout.simple_spinner_item);
 
         ageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        spinerAge.setAdapter(ageAdapter);
-        //spinerAge.getBackground().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+        spinnerAge.setAdapter(ageAdapter);
+        //spinnerAge.getBackground().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
 
-        spinerAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 TextView selectedText = (TextView) parent.getChildAt(0);
                 if (selectedText != null) {
                     selectedText.setTextColor(Color.WHITE);
                 }
-                yearOfBirth = spinerAge.getSelectedItem().toString();
+                yearOfBirth = spinnerAge.getSelectedItem().toString();
 
             }
 
@@ -135,7 +146,7 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
 
         spinnerGender = (Spinner) rootView.findViewById(R.id.spinnerGender);
 
-        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.gender, android.R.layout.simple_spinner_item);
+        genderAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.gender, android.R.layout.simple_spinner_item);
 
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -158,21 +169,21 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
         });
 
 
-        spinerCellCode = (Spinner) rootView.findViewById(R.id.spinnerMobile);
-        ArrayAdapter<CharSequence> mobileAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.area_code, android.R.layout.simple_spinner_item);
+        spinnerCellCode = (Spinner) rootView.findViewById(R.id.spinnerMobile);
+        mobileAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.area_code, android.R.layout.simple_spinner_item);
 
         mobileAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        spinerCellCode.setAdapter(mobileAdapter);
+        spinnerCellCode.setAdapter(mobileAdapter);
 
-        spinerCellCode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerCellCode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 TextView selectedText = (TextView) parent.getChildAt(0);
                 if (selectedText != null) {
                     selectedText.setTextColor(Color.WHITE);
                 }
-                areaCode = spinerCellCode.getSelectedItem().toString();
+                areaCode = spinnerCellCode.getSelectedItem().toString();
             }
 
             @Override
@@ -242,6 +253,7 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
                 {
                     case "profile details retrieval":
                         Log.d("profile", jsonStr);
+                        fillDateFromDBToUI(jsonObj);
                         break;
                     case "user already exists":
                         editTextemail.setError("This email already exists");
@@ -262,6 +274,55 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
         } else {
             Log.d("ServiceHandler", "Couldn't get any data from the url");
         }
+    }
+
+    private void fillDateFromDBToUI(JSONObject jsonObj)
+    {
+         setTexts(jsonObj);
+         setSpinners(jsonObj);
+
+    }
+
+    private void setTexts (JSONObject jsonObj)
+    {
+        try{
+            editTextname.setText(jsonObj.getString(TAG_NAME));
+            editTextemail.setText(jsonObj.getString(TAG_EMAIL));
+            editTextmobile.setText(jsonObj.getString(TAG_MOB).substring(CELL_CODE_LENGTH));
+           }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void setSpinners(JSONObject jsonObj)
+    {
+        int spinnerPosition;
+        String stringForSpinner;
+        try {
+            stringForSpinner = jsonObj.getString(TAG_GEN);
+            if (!stringForSpinner.equals(null)) {
+                spinnerPosition = genderAdapter.getPosition(stringForSpinner);
+                spinnerGender.setSelection(spinnerPosition);
+            }
+
+            stringForSpinner = jsonObj.getString(TAG_AGE);
+            if (!stringForSpinner.equals(null)) {
+                spinnerPosition = ageAdapter.getPosition(stringForSpinner);
+                spinnerAge.setSelection(spinnerPosition);
+                }
+
+            stringForSpinner = jsonObj.getString(TAG_MOB);
+            stringForSpinner = stringForSpinner.substring(0, stringForSpinner.length() - CELL_PHONE_LENGTH);
+            if (!stringForSpinner.equals(null)) {
+                spinnerPosition = mobileAdapter.getPosition(stringForSpinner);
+                spinnerCellCode.setSelection(spinnerPosition);
+                }
+            }
+        catch (JSONException e) {
+          e.printStackTrace();
+            }
     }
 
     @Override

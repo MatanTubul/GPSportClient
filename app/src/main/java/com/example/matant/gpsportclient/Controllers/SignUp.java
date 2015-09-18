@@ -52,7 +52,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     private static final String TAG_FLG = "flag";
     private ImageButton rotateLeft,rotateRight;
 
-    private Spinner spinerCellCode, spinerAge, spinnerGender;
+    private Spinner spinnerCellCode, spinnerAge, spinnerGender;
     public ErrorHandler err;
     private String areaCode = "", userGender = "", yearOfBirth = "";
     private int MIN_AGE = 14;
@@ -97,7 +97,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         resetFields();
 
 
-        spinerAge = (Spinner) findViewById(R.id.spinnerAge);
+        spinnerAge = (Spinner) findViewById(R.id.spinnerAge);
         ArrayList<String> years = new ArrayList<String>();
         int thisYear = Calendar.getInstance().get(Calendar.YEAR);
         for (int i = 1970; i <= MINIMAL_YEAR_OF_BIRTH; i++) {
@@ -110,17 +110,17 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
         ageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        spinerAge.setAdapter(ageAdapter);
-        //spinerAge.getBackground().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+        spinnerAge.setAdapter(ageAdapter);
+        //spinnerAge.getBackground().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
 
-        spinerAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 TextView selectedText = (TextView) parent.getChildAt(0);
                 if (selectedText != null) {
                     selectedText.setTextColor(Color.WHITE);
                 }
-                yearOfBirth = spinerAge.getSelectedItem().toString();
+                yearOfBirth = spinnerAge.getSelectedItem().toString();
 
             }
 
@@ -155,21 +155,21 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         });
 
 
-        spinerCellCode = (Spinner) findViewById(R.id.spinnerMobile);
+        spinnerCellCode = (Spinner) findViewById(R.id.spinnerMobile);
         ArrayAdapter<CharSequence> mobileAdapter = ArrayAdapter.createFromResource(this, R.array.area_code, android.R.layout.simple_spinner_item);
 
         mobileAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        spinerCellCode.setAdapter(mobileAdapter);
+        spinnerCellCode.setAdapter(mobileAdapter);
 
-        spinerCellCode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerCellCode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 TextView selectedText = (TextView) parent.getChildAt(0);
                 if (selectedText != null) {
                     selectedText.setTextColor(Color.WHITE);
                 }
-                areaCode = spinerCellCode.getSelectedItem().toString();
+                areaCode = spinnerCellCode.getSelectedItem().toString();
             }
 
             @Override
@@ -412,7 +412,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             nameValuePairList.add(age);
             nameValuePairList.add(gender);
             nameValuePairList.add(image);
-
 
             DBcontroller dbController = new DBcontroller(this,this);
 
