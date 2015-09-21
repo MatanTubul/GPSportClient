@@ -5,7 +5,6 @@ import android.app.DialogFragment;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -22,8 +21,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import android.widget.Spinner;
-
-
 import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.OnCompleteListener;
 import com.example.matant.gpsportclient.R;
@@ -376,6 +373,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         LatLng lonlat = getLocationFromAddress(addressEditText.getText().toString());
         BasicNameValuePair tagreq = new BasicNameValuePair("tag","create_event");
         BasicNameValuePair sport = new BasicNameValuePair("sport_type",sportSpinner.getSelectedItem().toString());
+        Log.d("sport_type",sportSpinner.getSelectedItem().toString());
         BasicNameValuePair date = new BasicNameValuePair("date",btnStartdate.getText().toString());
         BasicNameValuePair startTime = new BasicNameValuePair("s_time",btnstartTime.getText().toString());
         BasicNameValuePair endTime = new BasicNameValuePair("e_time",btnendTime.getText().toString());
