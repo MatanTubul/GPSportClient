@@ -71,23 +71,6 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
             currentMarker.setVisible(true);
         }
 
-
-        // create marker
-        /*MarkerOptions marker = new MarkerOptions().position(
-                new LatLng(latitude, longitude)).title("Hello Maps");
-
-        // Changing marker icon
-        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-
-        // adding marker
-        googleMap.addMarker(marker);
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(latitude, longitude)).zoom(12).build();
-        googleMap.animateCamera(CameraUpdateFactory
-                .newCameraPosition(cameraPosition));
-        googleMap.getUiSettings().setZoomControlsEnabled(true);*/
-
-        // Perform any camera updates here
         return v;
     }
 

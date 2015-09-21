@@ -3,19 +3,12 @@ package com.example.matant.gpsportclient;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
-
-import android.content.Intent;
 import android.content.res.Configuration;
-import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
-
-
-import android.util.Log;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.ActionBarDrawerToggle;
-
-
-import android.view.KeyEvent;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,9 +17,8 @@ import android.widget.Toast;
 
 import com.example.matant.gpsportclient.Controllers.CreateEventFragmentController;
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
-
 import com.example.matant.gpsportclient.Controllers.GoogleMapFragmentController;
-
+import com.example.matant.gpsportclient.Controllers.ProfileFragmentController;
 import com.example.matant.gpsportclient.Utilities.DrawerItem;
 import com.example.matant.gpsportclient.Utilities.DrawerItemCustomAdapter;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
@@ -80,22 +72,12 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
         drawerItems[3] = new DrawerItem(R.drawable.create,"Create Event");
         drawerItems[4] = new DrawerItem(R.drawable.manage,"Manage Event");
         drawerItems[5] = new DrawerItem(R.drawable.attending,"Attending List");
+        //drawerItems[6] = new DrawerItem(R.drawable.attending,"Recent Searches");
         drawerItems[6] = new DrawerItem(R.drawable.logout,"Log Out");
-
-
 
         DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(this, R.layout.listview_item_row, drawerItems);
         mDrawerList.setAdapter(adapter);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-
-
-
-
-
-
-
-
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,R.drawable.ic_menu, R.string.drawer_open, R.string.drawer_close) {
 
@@ -205,34 +187,33 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
         Fragment fragment = null;
 
         switch (position) {
-            case 0:
-                  //  fragment = new GoogleMapFragmentController();
+            case 0: //Home
                 fragment = new GoogleMapFragmentController();
-
                 break;
-            case 1:
-
+            case 1: //Profile
+                fragment = new ProfileFragmentController();
                 break;
-            case 2:
-
+            case 2: //Search Events
+                //fragment = new SearchEventFragmentController();
                 break;
-            case 3:
-                    fragment = new CreateEventFragmentController();
-
+            case 3: //Create Events
+                fragment = new CreateEventFragmentController();
                 break;
-            case 4:
-
+            case 4: //Manage Events
+                //fragment = new ManageEventFragmentController();
                 break;
-            case 5:
-
+            case 5: //Attending List
+                //fragment = new AttendingListFragmentController();
                 break;
-            case 6: {
+           /* case 6: //Recent Searches
+                //fragment = new RecentSearchesFragmentController();
+                break;*/
+            case 6: { //Log Out
 
                 logout();
                 finish(); //destroy the main activity
             }
                 break;
-
 
             default:
                 break;
@@ -278,7 +259,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggle
+        // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
     public void logout()
