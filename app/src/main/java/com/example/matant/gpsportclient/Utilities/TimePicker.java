@@ -24,6 +24,8 @@ public class TimePicker extends DialogFragment implements TimePickerDialog.OnTim
     public int test;
     private int start_hour = -1;
     private int end_hour = -1;
+    private int start_min = -1;
+    private int end_min = -1;
 
 
 
@@ -75,12 +77,16 @@ public class TimePicker extends DialogFragment implements TimePickerDialog.OnTim
         if (Time_Picker == START_TIME)
         {
             start_hour = hourOfDay;
+            start_min = minute;
         }
         else{
             end_hour = hourOfDay;
+            end_min = minute;
         }
 
-            if((end_hour < start_hour && start_hour != -1 && end_hour != -1) || hour > hourOfDay) {
+            if((end_hour < start_hour && start_hour != -1 && end_hour != -1) || hour > hourOfDay || (end_hour == start_hour && (start_min > end_min)) ) {
+                Log.d("time different","start="+start_hour+"end="+end_hour+"time_picker="+Time_Picker+"end_min="+end_hour+"s_min="+start_hour);
+
                 this.end_hour = -1;
                 this.start_hour = -1;
                 mListener.onComplete("incorrect_time", "Please insert valid time");
@@ -90,10 +96,10 @@ public class TimePicker extends DialogFragment implements TimePickerDialog.OnTim
             if (Time_Picker == START_TIME) {
 
                 s = String.valueOf(hourOfDay) + ":" + min;
-                Log.d("hour diffrent","start="+start_hour+"end="+end_hour);
+                Log.d("hour different","start="+start_hour+"end="+end_hour);
                 mListener.onComplete("start_time", s);
             } else {
-                Log.d("hour diffrent","start="+start_hour+"end="+end_hour);
+                Log.d("hour different","start="+start_hour+"end="+end_hour);
                 s = String.valueOf(hourOfDay) + ":" + min;
                 mListener.onComplete("end_time", s);
 

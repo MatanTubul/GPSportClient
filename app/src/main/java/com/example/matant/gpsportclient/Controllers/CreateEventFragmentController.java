@@ -25,6 +25,7 @@ import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.OnCompleteListener;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.DatePicker;
+import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.Utilities.MyAdapter;
 import com.example.matant.gpsportclient.Utilities.TimePicker;
 import com.google.android.gms.maps.model.LatLng;
@@ -52,7 +53,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     DialogFragment tp = null;
     private DBcontroller dbController;
     private ProgressDialog progress= null;
-
+    private int settime = 0;
 
 
     public CreateEventFragmentController() {
@@ -223,7 +224,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
               /*  Log.d("SavePressed","press on button save");
                 LatLng lonlat = getLocationFromAddress(addressEditText.getText().toString());
                 Log.d("Cordinates", "latitude = " + lonlat.latitude + "longtitude=" + lonlat.longitude);*/
-                sendDataToDBController();
+                if(validateFields())
+                    sendDataToDBController();
 
                 break;
 
@@ -251,14 +253,20 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
     @Override
     public void onComplete(String flag,String res) {
-
+          settime = 0;
          switch(flag) {
-             case "start_time":
+             case "start_time": {
                  btnstartTime.setText(res);
+                 if (settime == 0)
+                     btnendTime.setText(res);
+                 settime = 0;
                  break;
-             case "end_time":
+             }
+             case "end_time": {
                  btnendTime.setText(res);
+                 settime = 1;
                  break;
+             }
              case "date":
                  btnStartdate.setText(res);
                  btnEndDate.setText(res);
@@ -332,6 +340,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
             location.getLatitude();
             location.getLongitude();
             p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+            Log.d("coordinates",p1.latitude+""+p1.longitude);
 
         } catch (Exception ex) {
             Log.d("Location Exception","error converting address");
@@ -356,7 +365,27 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                         break;
                     case "failed":
                         Log.d("Created failed","failed to create event");
+                    {
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("Create event failed!")
+                                .setMessage(jsonObj.getString("msg"))
+                                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        btnstartTime.setText(getCorrentTime());
+                                        btnendTime.setText(getCorrentTime());
+
+
+
+                                    }
+                                })
+                                .setIconAttribute(android.R.attr.alertDialogIcon)
+                                .show();
                         break;
+                    }
+
+                    case "select failed":
+                        Log.d("select query","failed to find events");
                 }
             }catch (JSONException e){
                 Log.d("json exception",e.getMessage());
@@ -371,6 +400,13 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     public void sendDataToDBController() {
 
         LatLng lonlat = getLocationFromAddress(addressEditText.getText().toString());
+        if(lonlat == null)
+        {
+            Log.d("location is:","location not found");
+            addressEditText.setError("Location was not found!");
+            return;
+        }
+        Log.d("found location",lonlat.latitude+""+lonlat.longitude);
         BasicNameValuePair tagreq = new BasicNameValuePair("tag","create_event");
         BasicNameValuePair sport = new BasicNameValuePair("sport_type",sportSpinner.getSelectedItem().toString());
         Log.d("sport_type",sportSpinner.getSelectedItem().toString());
@@ -380,6 +416,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         BasicNameValuePair longtitude = new BasicNameValuePair("lon",String.valueOf(lonlat.longitude));
         BasicNameValuePair latitude = new BasicNameValuePair("lat",String.valueOf(lonlat.latitude));
         BasicNameValuePair event_type = new BasicNameValuePair("event_type",String.valueOf(privateEventCbox.isChecked()));
+        BasicNameValuePair gender = new BasicNameValuePair("gender",String.valueOf(genderSpinner.getSelectedItem().toString()));
+
         BasicNameValuePair participants = new BasicNameValuePair("max_participants",maxParticipantsEdittext.getText().toString());
         BasicNameValuePair scheduled = new BasicNameValuePair("scheduled",String.valueOf(reccuringEventCbox.isChecked()));
 
@@ -394,6 +432,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         nameValuePairList.add(event_type);
         nameValuePairList.add(participants);
         nameValuePairList.add(scheduled);
+        nameValuePairList.add(gender);
         dbController = new DBcontroller(getActivity().getApplicationContext(),this);
         dbController.execute(nameValuePairList);
     }
@@ -402,7 +441,38 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     public void preProcess() {
         this.progress = ProgressDialog.show(getActivity(), "Create Event",
                 "Building Event...", true);
+    }
 
-
+    public boolean validateFields()
+    {
+        Boolean valid = true;
+       /* ErrorHandler eh = new ErrorHandler();
+        ArrayList<EditText> et = new ArrayList<EditText>() ;
+        et.add(addressEditText);
+        et.add(maxParticipantsEdittext);
+        et.add(minAgeEditText);
+        valid = eh.fieldIsEmpty(et,"Field cannot be empty");*/
+        if(addressEditText.getText().toString().equals(""))
+        {
+            addressEditText.setError("Location field cannot be empty!");
+            Log.d("max edittext", "max edit text is empty");
+            valid =  false;
+        }
+        if(maxParticipantsEdittext.getText().toString().equals(""))
+        {
+          maxParticipantsEdittext.setError("Please insert the max Participants in the event");
+            valid = false;
+        } if(minAgeEditText.getText().toString().equals("") == true || Integer.valueOf(minAgeEditText.getText().toString()) < 14)
+        {
+            minAgeEditText.setError("Please insert minimal age of participant");
+            Log.d("min edittext", "min edit text is empty");
+            valid = false;
+        } if(btnendTime.getText().toString().equals(btnstartTime.getText().toString()))
+        {
+            onComplete("incorrect_time", "Please Provide end time of the event ");
+            Log.d("equal time", "time is equal");
+            valid = false;
+        }
+        return valid;
     }
 }
