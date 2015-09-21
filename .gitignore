@@ -5,3 +5,5 @@
 .DS_Store
 /build
 /captures
+/app/build.gradle
+/app/src/main/assets/config.properties
