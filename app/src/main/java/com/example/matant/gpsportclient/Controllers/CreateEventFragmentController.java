@@ -98,9 +98,6 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         sportSpinner = (Spinner) v.findViewById(R.id.spinnerSports);
         genderSpinner = (Spinner) v.findViewById(R.id.spinnerGender);
 
-
-
-
         //gender spinner
         genderSpinner.setAdapter(new MyAdapter(getActivity(), R.layout.custom_spinner, getResources().getStringArray(R.array.eventgender)));
         genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

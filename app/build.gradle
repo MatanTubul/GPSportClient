@@ -1,11 +1,31 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.2.3'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+
 apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 22
-    buildToolsVersion '23.0.1'
+    buildToolsVersion "23.0.0 rc3"
+
     defaultConfig {
         applicationId "com.example.matant.gpsportclient"
-        minSdkVersion 17
+        minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -16,15 +36,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    productFlavors {
-    }
 }
 
 dependencies {
-    compile files('C:/Users/Adi/AndroidStudioProjects/GPSportClient/libs/additionnal.jar')
-    compile files('C:/Users/Adi/AndroidStudioProjects/GPSportClient/libs/mail.jar')
-    compile files('C:/Users/Adi/AndroidStudioProjects/GPSportClient/libs/activation.jar')
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile files('C:/Users/matant/AndroidStudioProjects/GPSportClient/libs/additionnal.jar')
+    compile files('C:/Users/matant/AndroidStudioProjects/GPSportClient/libs/mail.jar')
+    compile files('C:/Users/matant/AndroidStudioProjects/GPSportClient/libs/activation.jar')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.google.android.gms:play-services:6.+'
 }
