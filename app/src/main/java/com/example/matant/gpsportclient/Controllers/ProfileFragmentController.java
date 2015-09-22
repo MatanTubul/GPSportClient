@@ -6,11 +6,14 @@ import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -77,6 +80,42 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
     private SessionManager sm;
 
     public ProfileFragmentController() {}
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Here we need to check if the activity that was triggers was the Image Gallery.
+        // If it is the requestCode will match the LOAD_IMAGE_RESULTS value.
+        // If the resultCode is RESULT_OK and there is some data we know that an image was picked.
+        if (requestCode == SELECT_PHOTO && resultCode == this.getActivity().RESULT_OK && data != null) {
+            // Let's read picked image data - its URI
+            Uri pickedImage = data.getData();
+            // Let's read picked image path using content resolver
+            String[] filePath = {MediaStore.Images.Media.DATA};
+            Cursor cursor = this.getActivity().getContentResolver().query(pickedImage, filePath, null, null, null);
+            cursor.moveToFirst();
+            String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            originbitmap = BitmapFactory.decodeFile(imagePath, options);
+            int nh = (int) ( originbitmap.getHeight() * (512.0 / originbitmap.getWidth()) );
+            scaled = Bitmap.createScaledBitmap(originbitmap,512,nh,true);
+            imgv.setImageBitmap(scaled);
+
+            // Do something with the bitmap
+
+
+            // At the end remember to close the cursor or you will end with the RuntimeException!
+            cursor.close();
+        }
+
+
+
+
+
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -288,13 +327,19 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
 
     private void setImage (JSONObject jsonObj)
     {
-        try{
+        try {
             Log.d("setOnUI", "Image");
             String imageString = jsonObj.getString(TAG_IMG);
-            Bitmap bMap = decodeBase64(imageString);
-            imgv.setImageBitmap(bMap);
+            if (imageString.equals("nofile"))
+                Log.d("setOnUI", "nofile");
+            else {
+                Bitmap scaled = decodeBase64(imageString);
+                imgv.setImageBitmap(scaled);
+            }
+
 
         }
+
         catch (JSONException e) {
             e.printStackTrace();
         }
