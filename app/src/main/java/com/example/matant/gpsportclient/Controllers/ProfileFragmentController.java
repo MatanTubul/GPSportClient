@@ -58,6 +58,8 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
     private static final String TAG_MOB = "mobile";
     private static final String TAG_PASS = "password";
     private static final String TAG_EMAIL= "email";
+    private static final String TAG_USRCHK = "usercheck";
+    private static final String TAG_MOBCHK = "mobilecheck";
     private static final String TAG_AGE= "age";
     private static final String TAG_GEN= "gender";
     private static final int CELL_CODE_LENGTH= 3;
@@ -69,7 +71,7 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
     ArrayAdapter<CharSequence> genderAdapter, mobileAdapter;
     ArrayAdapter<String> ageAdapter;
     public ErrorHandler err;
-    private String areaCode = "", userGender = "", yearOfBirth = "";
+    private String areaCode = "", userGender = "", yearOfBirth = "",prevMobile ="", prevEmail="";
     private int MIN_AGE = 14;
     private int MOBILE_LENGTH = 10;
     private ProgressDialog progress;
@@ -293,17 +295,16 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
                 {
                     case "profile details retrieval":
                         Log.d("profile", jsonStr);
-                        fillDateFromDBToUI(jsonObj);
+                        fillDataFromDBToUI(jsonObj);
                         break;
-                    case "user already exists":
-                        editTextemail.setError("This email already exists");
-                        break;
-                    case "mobile already exists":
-                        editTextmobile.setError("Mobile already exists");
+                    case "wrong input":
+                        if (jsonObj.getString(TAG_USRCHK) == "user already exists")
+                            editTextemail.setError("This email is taken");
+                        if (jsonObj.getString(TAG_MOBCHK) == "mobile already exists")
+                            editTextmobile.setError("This mobile is taken");
                         break;
                     case "succeed":
                         //dialog and go to main freg
-                        //resetFields();
                         getActivity().getFragmentManager().popBackStack();
                         break;
                 }
@@ -316,7 +317,7 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
         }
     }
 
-    private void fillDateFromDBToUI(JSONObject jsonObj)
+    private void fillDataFromDBToUI(JSONObject jsonObj)
     {
          Log.d("setOnUI", "UI DATA");
          setTexts(jsonObj);
@@ -355,12 +356,19 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
     private void setTexts (JSONObject jsonObj)
     {
         try{
+
             Log.d("setOnUI", "Texts");
             editTextPassword.setText(jsonObj.getString(TAG_PASS));
             editTextConfirmPass.setText(jsonObj.getString(TAG_PASS));
             editTextname.setText(jsonObj.getString(TAG_NAME));
-            editTextemail.setText(jsonObj.getString(TAG_EMAIL));
-            editTextmobile.setText(jsonObj.getString(TAG_MOB).substring(CELL_CODE_LENGTH));
+
+            prevEmail = jsonObj.getString(TAG_EMAIL);
+            editTextemail.setText(prevEmail);
+
+            prevMobile = areaCode;
+            String cellPhone = jsonObj.getString(TAG_MOB).substring(CELL_CODE_LENGTH);
+            prevMobile += cellPhone;
+            editTextmobile.setText(cellPhone);
            }
         catch (JSONException e) {
             e.printStackTrace();
@@ -403,11 +411,25 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
         userMobile += editTextmobile.getText().toString();
         BasicNameValuePair tagreq = new BasicNameValuePair("tag", "updateprofile");
         BasicNameValuePair name = new BasicNameValuePair("firstname", editTextname.getText().toString());
-        BasicNameValuePair email = new BasicNameValuePair("email", editTextemail.getText().toString());
-        BasicNameValuePair mobile = new BasicNameValuePair("mobile", userMobile);
+        BasicNameValuePair nEmail = new BasicNameValuePair("newemail", editTextemail.getText().toString());
+        BasicNameValuePair pEmail = new BasicNameValuePair("prevemail", prevEmail);
+        BasicNameValuePair nMobile = new BasicNameValuePair("newmobile", userMobile);
+        BasicNameValuePair pMobile = new BasicNameValuePair("prevmobile", prevMobile);
         BasicNameValuePair password = new BasicNameValuePair("password", editTextPassword.getText().toString());
         BasicNameValuePair age = new BasicNameValuePair("birthyear", yearOfBirth);
         BasicNameValuePair gender = new BasicNameValuePair("gender", userGender);
+
+        String whoAsChanged  = "0";
+        if (!prevEmail.equals(editTextemail.getText().toString()))
+            whoAsChanged = "1";
+        if (!prevMobile.equals(userMobile)) {
+            if (whoAsChanged.equals("1"))
+                whoAsChanged = "3";
+            else
+                whoAsChanged = "2";
+        }
+        BasicNameValuePair changed = new BasicNameValuePair("changed", whoAsChanged);
+
         imgv.buildDrawingCache();
         Bitmap bmap = imgv.getDrawingCache();
         String picture = setPhoto(bmap);
@@ -418,15 +440,17 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
             List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
             nameValuePairList.add(tagreq);
             nameValuePairList.add(name);
-            nameValuePairList.add(email);
-            nameValuePairList.add(mobile);
+            nameValuePairList.add(nEmail);
+            nameValuePairList.add(nMobile);
+            nameValuePairList.add(pEmail);
+            nameValuePairList.add(pMobile);
             nameValuePairList.add(password);
             nameValuePairList.add(age);
             nameValuePairList.add(gender);
             nameValuePairList.add(image);
+            nameValuePairList.add(changed);
 
             DBcontroller dbController = new DBcontroller(this.getActivity().getApplicationContext(),this);
-
             dbController.execute(nameValuePairList);
         }
         else{
