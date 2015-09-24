@@ -2,6 +2,7 @@ package com.example.matant.gpsportclient.Controllers;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.R;
+import com.example.matant.gpsportclient.Utilities.GPSTracker;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,6 +34,8 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     private Marker currentMarker;
     private SessionManager sm;
 
+    GPSTracker gps;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -40,7 +44,6 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
                 false);
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
-
         mMapView.onResume();//    display map immediately
         sm = new SessionManager(getActivity());
 
@@ -51,26 +54,34 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         }
 
         googleMap = mMapView.getMap();
-        // latitude and longitude of jerusalem
-        double latitude = 31.768319;
-        double longitude = 35.213710;
+
+        gps = new GPSTracker(this.getActivity());
+        if (gps.canGetLocation()) {
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+            Log.d("gps tracker", "canGetLocation");
 
 
-        if (googleMap != null) {
-            LatLng iniLoc = new LatLng(latitude, longitude);
-            CameraPosition cp = new CameraPosition.Builder().target(iniLoc).zoom(12).build();
-            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cp));
-            googleMap.getUiSettings().setZoomGesturesEnabled(true);
-            googleMap.getUiSettings().setZoomControlsEnabled(true);
-            currentMarkerOption = new MarkerOptions();
-            currentMarkerOption.position(iniLoc);
-            currentMarker = googleMap.addMarker(currentMarkerOption);
-            currentMarker.setIcon((BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-            currentMarker.setTitle(sm.getUserDetails().get("name"));
-            currentMarker.showInfoWindow();
-            currentMarker.setVisible(true);
+            if (googleMap != null) {
+                Log.d("gps tracker", "googleMap");
+                LatLng iniLoc = new LatLng(latitude, longitude);
+                CameraPosition cp = new CameraPosition.Builder().target(iniLoc).zoom(12).build();
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cp));
+                googleMap.getUiSettings().setZoomGesturesEnabled(true);
+                googleMap.getUiSettings().setZoomControlsEnabled(true);
+                currentMarkerOption = new MarkerOptions();
+                currentMarkerOption.position(iniLoc);
+                currentMarker = googleMap.addMarker(currentMarkerOption);
+                currentMarker.setIcon((BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                currentMarker.setTitle(sm.getUserDetails().get("name") + " " + latitude + " "  + longitude);
+                currentMarker.showInfoWindow();
+                currentMarker.setVisible(true);
+            }
+        }else{
+            gps.showSettingsAlert();
+            Log.d("gps tracker", "settings");
+
         }
-
         return v;
     }
 

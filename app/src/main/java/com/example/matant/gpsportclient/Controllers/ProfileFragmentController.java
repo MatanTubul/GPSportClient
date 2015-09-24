@@ -1,15 +1,22 @@
 package com.example.matant.gpsportclient.Controllers;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +40,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -46,9 +54,12 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
     private  int MINIMAL_YEAR_OF_BIRTH = 2001;
     private static final String TAG_FLG = "flag";
     private static final String TAG_NAME = "name";
+    private static final String TAG_IMG = "image";
     private static final String TAG_MOB = "mobile";
     private static final String TAG_PASS = "password";
     private static final String TAG_EMAIL= "email";
+    private static final String TAG_USRCHK = "usercheck";
+    private static final String TAG_MOBCHK = "mobilecheck";
     private static final String TAG_AGE= "age";
     private static final String TAG_GEN= "gender";
     private static final int CELL_CODE_LENGTH= 3;
@@ -60,7 +71,7 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
     ArrayAdapter<CharSequence> genderAdapter, mobileAdapter;
     ArrayAdapter<String> ageAdapter;
     public ErrorHandler err;
-    private String areaCode = "", userGender = "", yearOfBirth = "";
+    private String areaCode = "", userGender = "", yearOfBirth = "",prevMobile ="", prevEmail="";
     private int MIN_AGE = 14;
     private int MOBILE_LENGTH = 10;
     private ProgressDialog progress;
@@ -71,6 +82,42 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
     private SessionManager sm;
 
     public ProfileFragmentController() {}
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Here we need to check if the activity that was triggers was the Image Gallery.
+        // If it is the requestCode will match the LOAD_IMAGE_RESULTS value.
+        // If the resultCode is RESULT_OK and there is some data we know that an image was picked.
+        if (requestCode == SELECT_PHOTO && resultCode == this.getActivity().RESULT_OK && data != null) {
+            // Let's read picked image data - its URI
+            Uri pickedImage = data.getData();
+            // Let's read picked image path using content resolver
+            String[] filePath = {MediaStore.Images.Media.DATA};
+            Cursor cursor = this.getActivity().getContentResolver().query(pickedImage, filePath, null, null, null);
+            cursor.moveToFirst();
+            String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            originbitmap = BitmapFactory.decodeFile(imagePath, options);
+            int nh = (int) ( originbitmap.getHeight() * (512.0 / originbitmap.getWidth()) );
+            scaled = Bitmap.createScaledBitmap(originbitmap,512,nh,true);
+            imgv.setImageBitmap(scaled);
+
+            // Do something with the bitmap
+
+
+            // At the end remember to close the cursor or you will end with the RuntimeException!
+            cursor.close();
+        }
+
+
+
+
+
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -145,13 +192,9 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
         });
 
         spinnerGender = (Spinner) rootView.findViewById(R.id.spinnerGender);
-
         genderAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.gender, android.R.layout.simple_spinner_item);
-
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         spinnerGender.setAdapter(genderAdapter);
-
         spinnerGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -167,7 +210,6 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
 
             }
         });
-
 
         spinnerCellCode = (Spinner) rootView.findViewById(R.id.spinnerMobile);
         mobileAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.area_code, android.R.layout.simple_spinner_item);
@@ -253,17 +295,16 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
                 {
                     case "profile details retrieval":
                         Log.d("profile", jsonStr);
-                        fillDateFromDBToUI(jsonObj);
+                        fillDataFromDBToUI(jsonObj);
                         break;
-                    case "user already exists":
-                        editTextemail.setError("This email already exists");
-                        break;
-                    case "mobile already exists":
-                        editTextmobile.setError("Mobile already exists");
+                    case "wrong input":
+                        if (jsonObj.getString(TAG_USRCHK) == "user already exists")
+                            editTextemail.setError("This email is taken");
+                        if (jsonObj.getString(TAG_MOBCHK) == "mobile already exists")
+                            editTextmobile.setError("This mobile is taken");
                         break;
                     case "succeed":
                         //dialog and go to main freg
-                        //resetFields();
                         getActivity().getFragmentManager().popBackStack();
                         break;
                 }
@@ -276,31 +317,70 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
         }
     }
 
-    private void fillDateFromDBToUI(JSONObject jsonObj)
+    private void fillDataFromDBToUI(JSONObject jsonObj)
     {
+         Log.d("setOnUI", "UI DATA");
          setTexts(jsonObj);
          setSpinners(jsonObj);
+         setImage(jsonObj);
 
     }
 
-    private void setTexts (JSONObject jsonObj)
+    private void setImage (JSONObject jsonObj)
     {
-        try{
-            editTextname.setText(jsonObj.getString(TAG_NAME));
-            editTextemail.setText(jsonObj.getString(TAG_EMAIL));
-            editTextmobile.setText(jsonObj.getString(TAG_MOB).substring(CELL_CODE_LENGTH));
-           }
+        try {
+            Log.d("setOnUI", "Image");
+            String imageString = jsonObj.getString(TAG_IMG);
+            if (imageString.equals("nofile"))
+                Log.d("setOnUI", "nofile");
+            else {
+                Bitmap scaled = decodeBase64(imageString);
+                imgv.setImageBitmap(scaled);
+            }
+
+
+        }
+
         catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
 
+    public static Bitmap decodeBase64(String input)
+    {
+        byte[] decodedByte = Base64.decode(input, 0);
+        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+    }
+
+    private void setTexts (JSONObject jsonObj)
+    {
+        try{
+
+            Log.d("setOnUI", "Texts");
+            editTextPassword.setText(jsonObj.getString(TAG_PASS));
+            editTextConfirmPass.setText(jsonObj.getString(TAG_PASS));
+            editTextname.setText(jsonObj.getString(TAG_NAME));
+
+            prevEmail = jsonObj.getString(TAG_EMAIL);
+            editTextemail.setText(prevEmail);
+
+            prevMobile = areaCode;
+            String cellPhone = jsonObj.getString(TAG_MOB).substring(CELL_CODE_LENGTH);
+            prevMobile += cellPhone;
+            editTextmobile.setText(cellPhone);
+           }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void setSpinners(JSONObject jsonObj)
     {
         int spinnerPosition;
         String stringForSpinner;
         try {
+            Log.d("setOnUI", "Spinners");
             stringForSpinner = jsonObj.getString(TAG_GEN);
             if (!stringForSpinner.equals(null)) {
                 spinnerPosition = genderAdapter.getPosition(stringForSpinner);
@@ -327,14 +407,81 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
 
     @Override
     public void sendDataToDBController() {
+        String userMobile = areaCode;
+        userMobile += editTextmobile.getText().toString();
+        BasicNameValuePair tagreq = new BasicNameValuePair("tag", "updateprofile");
+        BasicNameValuePair name = new BasicNameValuePair("firstname", editTextname.getText().toString());
+        BasicNameValuePair nEmail = new BasicNameValuePair("newemail", editTextemail.getText().toString());
+        BasicNameValuePair pEmail = new BasicNameValuePair("prevemail", prevEmail);
+        BasicNameValuePair nMobile = new BasicNameValuePair("newmobile", userMobile);
+        BasicNameValuePair pMobile = new BasicNameValuePair("prevmobile", prevMobile);
+        BasicNameValuePair password = new BasicNameValuePair("password", editTextPassword.getText().toString());
+        BasicNameValuePair age = new BasicNameValuePair("birthyear", yearOfBirth);
+        BasicNameValuePair gender = new BasicNameValuePair("gender", userGender);
 
+        String whoAsChanged  = "0";
+        if (!prevEmail.equals(editTextemail.getText().toString()))
+            whoAsChanged = "1";
+        if (!prevMobile.equals(userMobile)) {
+            if (whoAsChanged.equals("1"))
+                whoAsChanged = "3";
+            else
+                whoAsChanged = "2";
+        }
+        BasicNameValuePair changed = new BasicNameValuePair("changed", whoAsChanged);
+
+        imgv.buildDrawingCache();
+        Bitmap bmap = imgv.getDrawingCache();
+        String picture = setPhoto(bmap);
+        if(picture!=null)
+        {
+            BasicNameValuePair image = new BasicNameValuePair("picture", picture);
+
+            List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+            nameValuePairList.add(tagreq);
+            nameValuePairList.add(name);
+            nameValuePairList.add(nEmail);
+            nameValuePairList.add(nMobile);
+            nameValuePairList.add(pEmail);
+            nameValuePairList.add(pMobile);
+            nameValuePairList.add(password);
+            nameValuePairList.add(age);
+            nameValuePairList.add(gender);
+            nameValuePairList.add(image);
+            nameValuePairList.add(changed);
+
+            DBcontroller dbController = new DBcontroller(this.getActivity().getApplicationContext(),this);
+            dbController.execute(nameValuePairList);
+        }
+        else{
+            AlertDialog alertDialog = new AlertDialog.Builder(ProfileFragmentController.this.getActivity()).create();
+            alertDialog.setTitle("Image Failure");
+            alertDialog.setMessage("Failed to convert image!");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+        }
     }
 
+    private String setPhoto(Bitmap bitmapm) {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmapm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] byteArrayImage = baos.toByteArray();
+            String imagebase64string = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
+            return imagebase64string;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     @Override
     public void preProcess() {
         //Log.d("preProcess", "getting data to UI");
-        //getDataFromDBController();
-
     }
 
     private void getDataFromDBController()
@@ -354,8 +501,6 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
     }
 
 
-
-
     public void onClick(View v) {
         Intent i = null;
         switch (v.getId()) {
@@ -372,7 +517,7 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
                 arr.add(editTextPassword);
 
 
-                //handle all the if statment
+                //handle all the if statments
                 if (err.fieldIsEmpty(arr, "Field cannot be empty!") == true) {
                     break;
                 } else if (!err.validateEmailAddress(editTextemail.getText().toString())) {

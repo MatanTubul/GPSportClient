@@ -85,6 +85,7 @@ public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
             HttpResponse response = client.execute(post);
             HttpEntity entity = response.getEntity();
             responseString = EntityUtils.toString(entity);
+            Log.d("responseString1", responseString);
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -94,7 +95,7 @@ public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
             e.printStackTrace();
         }
 
-        Log.d("responseString", responseString);
+        Log.d("responseString2", responseString);
         return responseString;
     }
 
