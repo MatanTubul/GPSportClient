@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -54,6 +55,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     private DBcontroller dbController;
     private ProgressDialog progress= null;
     private int settime = 0;
+    private static final int REQUEST_CODE_GET_USER_LIST = 1;
 
 
     public CreateEventFragmentController() {
@@ -159,6 +161,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         btnStartdate.setOnClickListener(this);
         btnEndDate.setOnClickListener(this);
         btnSave.setOnClickListener(this);
+        btninviteUsers.setOnClickListener(this);
 
         return v;
     }
@@ -225,6 +228,11 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                     sendDataToDBController();
 
                 break;
+            case R.id.buttonInviteUsers: {
+                Intent i = new Intent(getActivity(),InviteUsersActivity.class);
+                getActivity().startActivityForResult(i,REQUEST_CODE_GET_USER_LIST);
+                break;
+            }
 
 
 
@@ -471,5 +479,21 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
             valid = false;
         }
         return valid;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(REQUEST_CODE_GET_USER_LIST == requestCode){
+
+            /*if(RESULT_OK == resultCode){
+
+            }
+            if(resultCode == RESULT_CANCLED){
+
+            }*/
+        }
+
     }
 }

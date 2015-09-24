@@ -45,6 +45,15 @@
         android:layout_toLeftOf="@+id/imageButtonInviteUser"
         android:layout_toStartOf="@+id/imageButtonInviteUser"
         android:layout_below="@+id/title" />
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/add_user_50"
+            android:id="@+id/imageButtonInviteUser"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:background="#ffffffff" />
 
     <View
         android:id="@+id/divider2"
@@ -53,14 +62,6 @@
         android:layout_height="6dp"
         android:background="@android:color/darker_gray"/>
 
-    <ImageButton
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/add_user_50"
-        android:id="@+id/imageButtonInviteUser"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:background="#ffffffff" />
+
     </RelativeLayout>
 </RelativeLayout>
