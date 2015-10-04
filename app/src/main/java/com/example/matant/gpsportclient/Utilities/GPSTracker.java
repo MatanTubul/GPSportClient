@@ -14,7 +14,10 @@ import android.provider.Settings;
 import android.util.Log;
 
 /**
- * Created by nir B on 23/09/2015.
+ *
+ * not in use!!!
+ *
+ * Created by Nir B on 23/09/2015.
  */
 public class GPSTracker extends Service implements LocationListener {
 
@@ -44,6 +47,7 @@ public class GPSTracker extends Service implements LocationListener {
             locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
             isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            Log.d("status GPS", locationManager.toString() + " " + isGPSEnabled+ " " + isNetworkEnabled );
 
             if (isGPSEnabled && isNetworkEnabled) {
 
@@ -64,7 +68,7 @@ public class GPSTracker extends Service implements LocationListener {
                     }
                 }
                 if (isGPSEnabled) {
-                    if (location != null) {
+                    if (location == null) {
                         Log.d("Service GPS", "GPSEnabled");
                         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                                 MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
