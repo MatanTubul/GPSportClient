@@ -1,11 +1,13 @@
 package com.example.matant.gpsportclient.Controllers;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -23,12 +25,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InviteUsersActivity extends AppCompatActivity implements AsyncResponse {
+public class InviteUsersActivity extends AppCompatActivity implements AsyncResponse, View.OnClickListener {
     private EditText editTextSearch;
     private Button btnSave,btnDiscard;
     private ListView usersListView;
     private List<InviteUsersListRow> rowUser;
     private DBcontroller dbController;
+    public static final String EXTRA_USERS  = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                sendDataToDBController();
 
             }
 
@@ -54,12 +58,13 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
 
             }
         });
+        btnDiscard.setOnClickListener(this);
 
     }
 
     @Override
     public void handleResponse(String resStr) {
-        Log.d("handleResponse", resStr);
+        Log.d("invite_Response", resStr);
         if (resStr != null) {
             try {
                 JSONArray jsonarr = new JSONArray(resStr);
@@ -69,6 +74,9 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
 
                     case "user found":{
 
+                        for(int i = 1; i < jsonarr.length();i++){
+                            Log.d("user is",jsonarr.getJSONObject(i).toString());
+                        }
                     }
                 }
             } catch (JSONException e) {
@@ -95,6 +103,21 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
 
     @Override
     public void preProcess() {
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId())
+        {
+            case R.id.ButtonDiscard:
+            {
+                Intent i = new Intent();
+                setResult(RESULT_CANCELED,i);;
+                finish();
+            }
+        }
 
     }
 }

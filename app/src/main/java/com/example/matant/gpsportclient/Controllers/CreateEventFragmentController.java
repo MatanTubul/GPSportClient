@@ -487,12 +487,12 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
         if(REQUEST_CODE_GET_USER_LIST == requestCode){
 
-            /*if(RESULT_OK == resultCode){
+            if(Activity.RESULT_OK == resultCode){
 
             }
-            if(resultCode == RESULT_CANCLED){
+            if(resultCode == Activity.RESULT_CANCELED){
 
-            }*/
+            }
         }
 
     }
