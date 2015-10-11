@@ -4,20 +4,25 @@ package com.example.matant.gpsportclient.Utilities;
  * Created by matant on 9/24/2015.
  */
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.example.matant.gpsportclient.Controllers.InviteUsersActivity;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.InviteUsersListRow;
 import android.app.Activity;
         import android.content.Context;
-        import android.view.LayoutInflater;
+import android.util.Log;
+import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
         import android.widget.TextView;
+import android.widget.Toast;
 
 public class InviteUsersArrayAdapter extends ArrayAdapter<InviteUsersListRow> {
 
@@ -40,7 +45,8 @@ public class InviteUsersArrayAdapter extends ArrayAdapter<InviteUsersListRow> {
 
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
-        InviteUsersListRow rowItem = getItem(position);
+        //final  View vi;
+        final InviteUsersListRow rowItem = getItem(position);
 
         LayoutInflater mInflater = (LayoutInflater) context
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -62,6 +68,24 @@ public class InviteUsersArrayAdapter extends ArrayAdapter<InviteUsersListRow> {
         holder.imageView.setImageResource(rowItem.getImageId());
         holder.imgStatus.setImageResource(rowItem.getImageStatus());
 
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("data changed", "changing data");
+
+                if(rowItem.getImageStatus() == R.drawable.add_user_50){
+                    rowItem.setImagestatus(R.drawable.remove_user_50);
+                }
+                else{
+                    rowItem.setImagestatus(R.drawable.add_user_50);
+                }
+                    notifyDataSetChanged();
+                Toast.makeText(getContext(),"user checked",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
         return convertView;
     }
 
@@ -78,6 +102,9 @@ public class InviteUsersArrayAdapter extends ArrayAdapter<InviteUsersListRow> {
     @Override
     public long getItemId(int position) {
         return rowUsers.indexOf(getItem(position));
+    }
+    public void setData(List<InviteUsersListRow> list){
+        this.rowUsers = list;
     }
 
 

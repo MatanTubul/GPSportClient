@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.support.v7.internal.widget.AdapterViewCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.R;
@@ -27,7 +29,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InviteUsersActivity extends AppCompatActivity implements AsyncResponse, View.OnClickListener,AdapterView.OnItemClickListener {
+public class InviteUsersActivity extends AppCompatActivity implements AsyncResponse, View.OnClickListener,AdapterView.OnItemClickListener{
     private EditText editTextSearch;
     private Button btnSave,btnDiscard;
     private ListView usersListView;
@@ -36,6 +38,7 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
     public static final String EXTRA_USERS  = "";
     ListView listViewUsers;
     List<InviteUsersListRow> rowUsers;
+    private InviteUsersArrayAdapter Useradapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,11 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
             }
         });
         btnDiscard.setOnClickListener(this);
+        listViewUsers = (ListView) findViewById(R.id.listViewusers);
+        listViewUsers.setItemsCanFocus(true);
+        listViewUsers.setOnItemClickListener(this);
+
+
 
     }
 
@@ -91,10 +99,11 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                                 InviteUsersListRow rowUser = new InviteUsersListRow(R.drawable.camera, R.drawable.add_user_50, name, mobile);
                                 rowUsers.add(rowUser);
                             }
-                            listViewUsers = (ListView) findViewById(R.id.listViewusers);
-                            InviteUsersArrayAdapter Useradapter = new InviteUsersArrayAdapter(this,R.layout.invite_users_listview_row,rowUsers);
+                            //listViewUsers = (ListView) findViewById(R.id.listViewusers);
+                             Useradapter = new InviteUsersArrayAdapter(this,R.layout.invite_users_listview_row,rowUsers);
                             listViewUsers.setAdapter(Useradapter);
-                            listViewUsers.setOnItemClickListener(this);
+                            //listViewUsers.setItemsCanFocus(true);
+                           // listViewUsers.setOnItemClickListener(this);
                         }
                         break;
                     }
@@ -141,12 +150,24 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                 setResult(RESULT_CANCELED,i);;
                 finish();
             }
+
         }
 
     }
 
-    @Override
+   @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.d("data changed","changing data");
 
+        if(rowUsers.get(position).getImageStatus() == R.drawable.add_user_50){
+            rowUsers.get(position).setImagestatus(R.drawable.remove_user_50);
+        }
+        else{
+            rowUsers.get(position).setImagestatus(R.drawable.add_user_50);
+        }
+        Useradapter.setData(rowUsers);
+        Useradapter.notifyDataSetChanged();
+        Toast.makeText(InviteUsersActivity.this,"user checked",Toast.LENGTH_SHORT).show();
     }
+
 }
