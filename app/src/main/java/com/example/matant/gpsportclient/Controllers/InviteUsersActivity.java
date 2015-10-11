@@ -67,16 +67,23 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
         Log.d("invite_Response", resStr);
         if (resStr != null) {
             try {
-                JSONArray jsonarr = new JSONArray(resStr);
+               /* JSONArray jsonarr = new JSONArray(resStr);
+                Log.d("check",jsonarr.getJSONObject(0).toString());
                 JSONObject jsonObj = jsonarr.getJSONObject(0);
-                String flg = jsonObj.getString("flag");
+                String flg = jsonObj.getString("flag");*/
+                JSONObject json = new JSONObject(resStr);
+                String flg = json.getString("flag");
+
+                Log.d("flag",flg);
                 switch (flg){
 
                     case "user found":{
-
-                        for(int i = 1; i < jsonarr.length();i++){
+                        JSONArray jsonarr = json.getJSONArray("users");
+                        Log.d("array",jsonarr.toString());
+                        for(int i = 0; i < jsonarr.length();i++){
                             Log.d("user is",jsonarr.getJSONObject(i).toString());
                         }
+                        break;
                     }
                 }
             } catch (JSONException e) {
