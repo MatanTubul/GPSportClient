@@ -8,12 +8,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.R;
+import com.example.matant.gpsportclient.Utilities.InviteUsersArrayAdapter;
 import com.example.matant.gpsportclient.Utilities.InviteUsersListRow;
 
 import org.apache.http.NameValuePair;
@@ -25,13 +27,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InviteUsersActivity extends AppCompatActivity implements AsyncResponse, View.OnClickListener {
+public class InviteUsersActivity extends AppCompatActivity implements AsyncResponse, View.OnClickListener,AdapterView.OnItemClickListener {
     private EditText editTextSearch;
     private Button btnSave,btnDiscard;
     private ListView usersListView;
     private List<InviteUsersListRow> rowUser;
     private DBcontroller dbController;
     public static final String EXTRA_USERS  = "";
+    ListView listViewUsers;
+    List<InviteUsersListRow> rowUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +71,7 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
         Log.d("invite_Response", resStr);
         if (resStr != null) {
             try {
-               /* JSONArray jsonarr = new JSONArray(resStr);
-                Log.d("check",jsonarr.getJSONObject(0).toString());
-                JSONObject jsonObj = jsonarr.getJSONObject(0);
-                String flg = jsonObj.getString("flag");*/
+
                 JSONObject json = new JSONObject(resStr);
                 String flg = json.getString("flag");
 
@@ -80,8 +81,20 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                     case "user found":{
                         JSONArray jsonarr = json.getJSONArray("users");
                         Log.d("array",jsonarr.toString());
+                        rowUsers = new ArrayList<InviteUsersListRow>();
                         for(int i = 0; i < jsonarr.length();i++){
-                            Log.d("user is",jsonarr.getJSONObject(i).toString());
+                            {
+                                Log.d("user is", jsonarr.getJSONObject(i).toString());
+                                String name = jsonarr.getJSONObject(i).getString("name");
+                                String mobile = jsonarr.getJSONObject(i).getString("mobile");
+
+                                InviteUsersListRow rowUser = new InviteUsersListRow(R.drawable.camera, R.drawable.add_user_50, name, mobile);
+                                rowUsers.add(rowUser);
+                            }
+                            listViewUsers = (ListView) findViewById(R.id.listViewusers);
+                            InviteUsersArrayAdapter Useradapter = new InviteUsersArrayAdapter(this,R.layout.invite_users_listview_row,rowUsers);
+                            listViewUsers.setAdapter(Useradapter);
+                            listViewUsers.setOnItemClickListener(this);
                         }
                         break;
                     }
@@ -129,6 +142,11 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                 finish();
             }
         }
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
     }
 }

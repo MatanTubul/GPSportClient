@@ -14,6 +14,7 @@ import android.app.Activity;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
         import android.widget.TextView;
@@ -21,11 +22,12 @@ import android.widget.ImageView;
 public class InviteUsersArrayAdapter extends ArrayAdapter<InviteUsersListRow> {
 
     Context context;
+    List<InviteUsersListRow> rowUsers;
 
-    public InviteUsersArrayAdapter(Context context, int resourceId,
-                                 List<InviteUsersListRow> items) {
+    public InviteUsersArrayAdapter(Context context,int resourceId, List<InviteUsersListRow> items) {
         super(context, resourceId, items);
         this.context = context;
+        this.rowUsers = items;
     }
 
     /*private view holder class*/
@@ -50,8 +52,10 @@ public class InviteUsersArrayAdapter extends ArrayAdapter<InviteUsersListRow> {
             holder.imageView = (ImageView) convertView.findViewById(R.id.profileImage);
             holder.imgStatus = (ImageButton) convertView.findViewById(R.id.imageButtonInviteUser);
             convertView.setTag(holder);
-        } else
+        } else {
             holder = (ViewHolder) convertView.getTag();
+        }
+
 
         holder.txtDesc.setText(rowItem.getDesc());
         holder.txtTitle.setText(rowItem.getTitle());
@@ -60,4 +64,21 @@ public class InviteUsersArrayAdapter extends ArrayAdapter<InviteUsersListRow> {
 
         return convertView;
     }
+
+    @Override
+    public int getCount() {
+        return rowUsers.size();
+    }
+
+    @Override
+    public InviteUsersListRow getItem(int position) {
+        return rowUsers.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return rowUsers.indexOf(getItem(position));
+    }
+
+
 }
