@@ -4,48 +4,50 @@ package com.example.matant.gpsportclient.Utilities;
  * Created by matant on 9/24/2015.
  */
 
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.example.matant.gpsportclient.Controllers.InviteUsersActivity;
 import com.example.matant.gpsportclient.R;
-import com.example.matant.gpsportclient.Utilities.InviteUsersListRow;
 import android.app.Activity;
-        import android.content.Context;
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-        import android.widget.TextView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class InviteUsersArrayAdapter extends ArrayAdapter<InviteUsersListRow> {
 
     Context context;
     List<InviteUsersListRow> rowUsers;
+    private List<InviteUsersListRow> checkedUsers;
+    int index;
 
     public InviteUsersArrayAdapter(Context context,int resourceId, List<InviteUsersListRow> items) {
         super(context, resourceId, items);
         this.context = context;
         this.rowUsers = items;
+        checkedUsers = new ArrayList<InviteUsersListRow>();
+        index = 0;
     }
 
     /*private view holder class*/
     private class ViewHolder {
-        ImageView imageView;
+       // ImageView imageView;
         TextView txtTitle;
         TextView txtDesc;
         ImageButton imgStatus;
+        ImageView imgProf;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         //final  View vi;
+
         final InviteUsersListRow rowItem = getItem(position);
 
         LayoutInflater mInflater = (LayoutInflater) context
@@ -55,7 +57,8 @@ public class InviteUsersArrayAdapter extends ArrayAdapter<InviteUsersListRow> {
             holder = new ViewHolder();
             holder.txtDesc = (TextView) convertView.findViewById(R.id.desc);
             holder.txtTitle = (TextView) convertView.findViewById(R.id.title);
-            holder.imageView = (ImageView) convertView.findViewById(R.id.profileImage);
+           // holder.imageView = (ImageView) convertView.findViewById(R.id.profileImage);
+            holder.imgProf = (ImageView) convertView.findViewById(R.id.profileImage);
             holder.imgStatus = (ImageButton) convertView.findViewById(R.id.imageButtonInviteUser);
             convertView.setTag(holder);
         } else {
@@ -65,8 +68,9 @@ public class InviteUsersArrayAdapter extends ArrayAdapter<InviteUsersListRow> {
 
         holder.txtDesc.setText(rowItem.getDesc());
         holder.txtTitle.setText(rowItem.getTitle());
-        holder.imageView.setImageResource(rowItem.getImageId());
+        //holder.imageView.setImageResource(rowItem.getImageId());
         holder.imgStatus.setImageResource(rowItem.getImageStatus());
+        holder.imgProf.setImageBitmap(rowItem.getImgProfile());
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,9 +79,14 @@ public class InviteUsersArrayAdapter extends ArrayAdapter<InviteUsersListRow> {
 
                 if(rowItem.getImageStatus() == R.drawable.add_user_50){
                     rowItem.setImagestatus(R.drawable.remove_user_50);
+                    checkedUsers.add(index, rowItem);
+                    index++;
+
                 }
                 else{
                     rowItem.setImagestatus(R.drawable.add_user_50);
+                    checkedUsers.remove(index);
+                    index--;
                 }
                     notifyDataSetChanged();
                 Toast.makeText(getContext(),"user checked",Toast.LENGTH_SHORT).show();
@@ -105,6 +114,10 @@ public class InviteUsersArrayAdapter extends ArrayAdapter<InviteUsersListRow> {
     }
     public void setData(List<InviteUsersListRow> list){
         this.rowUsers = list;
+    }
+    public List<InviteUsersListRow> getUsers()
+    {
+        return checkedUsers;
     }
 
 

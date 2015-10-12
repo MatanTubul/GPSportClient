@@ -1,6 +1,7 @@
 package com.example.matant.gpsportclient.Controllers;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -12,11 +13,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.R;
+import com.example.matant.gpsportclient.Utilities.ImageConvertor;
 import com.example.matant.gpsportclient.Utilities.InviteUsersArrayAdapter;
 import com.example.matant.gpsportclient.Utilities.InviteUsersListRow;
 
@@ -26,10 +29,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class InviteUsersActivity extends AppCompatActivity implements AsyncResponse, View.OnClickListener,AdapterView.OnItemClickListener{
+public class InviteUsersActivity extends AppCompatActivity implements AsyncResponse, View.OnClickListener{
     private EditText editTextSearch;
     private Button btnSave,btnDiscard;
     private ListView usersListView;
@@ -39,6 +44,7 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
     ListView listViewUsers;
     List<InviteUsersListRow> rowUsers;
     private InviteUsersArrayAdapter Useradapter;
+    private ImageConvertor imgConvert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +74,8 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
         btnDiscard.setOnClickListener(this);
         listViewUsers = (ListView) findViewById(R.id.listViewusers);
         listViewUsers.setItemsCanFocus(true);
-        listViewUsers.setOnItemClickListener(this);
+        btnSave.setOnClickListener(this);
+
 
 
 
@@ -95,15 +102,15 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                                 Log.d("user is", jsonarr.getJSONObject(i).toString());
                                 String name = jsonarr.getJSONObject(i).getString("name");
                                 String mobile = jsonarr.getJSONObject(i).getString("mobile");
+                                Bitmap profileImage = ImageConvertor.decodeBase64(jsonarr.getJSONObject(i).getString("image"));
 
-                                InviteUsersListRow rowUser = new InviteUsersListRow(R.drawable.camera, R.drawable.add_user_50, name, mobile);
+                                InviteUsersListRow rowUser = new InviteUsersListRow(R.drawable.camera, R.drawable.add_user_50, name, mobile,profileImage);
                                 rowUsers.add(rowUser);
                             }
-                            //listViewUsers = (ListView) findViewById(R.id.listViewusers);
+
                              Useradapter = new InviteUsersArrayAdapter(this,R.layout.invite_users_listview_row,rowUsers);
                             listViewUsers.setAdapter(Useradapter);
-                            //listViewUsers.setItemsCanFocus(true);
-                           // listViewUsers.setOnItemClickListener(this);
+
                         }
                         break;
                     }
@@ -150,24 +157,43 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                 setResult(RESULT_CANCELED,i);;
                 finish();
             }
+            case R.id.ButtonSave:
+            {
+                if(Useradapter.getUsers().size() > 0)
+                {
+                    Intent i = getIntent();
+
+                    JSONObject jsonObj = new JSONObject();
+                    JSONArray jsonArr = new JSONArray();
+                    for(int j = 0 ;j < Useradapter.getUsers().size();j++)
+                    {
+
+                        try {
+                            Log.d("name",Useradapter.getUsers().get(j).getTitle());
+                            Log.d("mobile",Useradapter.getUsers().get(j).getDesc());
+
+                            jsonObj.put("name",Useradapter.getUsers().get(j).getTitle());
+                            jsonObj.put("mobile",Useradapter.getUsers().get(j).getDesc());
+                            jsonArr.put(jsonObj);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                    Log.d("json users",jsonArr.toString());
+                    i.putExtra("userList", jsonArr.toString());
+                    setResult(RESULT_OK, i);
+                    finish();
+                }
+                else{
+
+                }
+
+
+            }
+            break;
 
         }
 
     }
-
-   @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d("data changed","changing data");
-
-        if(rowUsers.get(position).getImageStatus() == R.drawable.add_user_50){
-            rowUsers.get(position).setImagestatus(R.drawable.remove_user_50);
-        }
-        else{
-            rowUsers.get(position).setImagestatus(R.drawable.add_user_50);
-        }
-        Useradapter.setData(rowUsers);
-        Useradapter.notifyDataSetChanged();
-        Toast.makeText(InviteUsersActivity.this,"user checked",Toast.LENGTH_SHORT).show();
-    }
-
 }
