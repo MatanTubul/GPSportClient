@@ -252,10 +252,7 @@
                 android:text="Private Event"
                 android:id="@+id/checkBoxPrivateEvent"
                 android:checked="false"
-
-                android:layout_below="@+id/editTextLocation"
-
-                android:layout_alignParentLeft="true"
+                     android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
             <Button
                 android:layout_width="wrap_content"
@@ -263,9 +260,22 @@
                 android:id="@+id/buttonInviteUsers"
                 android:text="Invite Users"
                 android:layout_below="@+id/checkBoxPrivateEvent"
-                android:layout_marginLeft="5dp"
                 android:background="#606060"
-                android:textColor="#ffffffff" />
+                android:textColor="#ffffffff"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+                 <ListView
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:id="@+id/listViewInvitedusers"
+                     android:layout_below="@+id/buttonInviteUsers"
+                     android:layout_centerVertical="true"
+                     android:layout_centerHorizontal="true">
+
+                 </ListView>
 
              </RelativeLayout>
 
