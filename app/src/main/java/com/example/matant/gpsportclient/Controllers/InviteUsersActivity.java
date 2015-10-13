@@ -29,9 +29,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
 
 public class InviteUsersActivity extends AppCompatActivity implements AsyncResponse, View.OnClickListener{
@@ -43,8 +42,9 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
     public static final String EXTRA_USERS  = "";
     ListView listViewUsers;
     List<InviteUsersListRow> rowUsers;
-    private InviteUsersArrayAdapter Useradapter;
-    private ImageConvertor imgConvert;
+    private InviteUsersArrayAdapter Useradapter = null;
+    int  imgStatus = -1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,18 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                sendDataToDBController();
+                if(editTextSearch.getText().length() > 0) {
+                    Log.d("send request","searching...");
+                    sendDataToDBController();
+                }
+                else{
+                    Log.d("do nothing","doing nothing");
+                   if(Useradapter != null) {
+                       Useradapter.clear();
+                       Useradapter.notifyDataSetChanged();
+                   }
+                }
+
 
             }
 
@@ -75,10 +86,6 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
         listViewUsers = (ListView) findViewById(R.id.listViewusers);
         listViewUsers.setItemsCanFocus(true);
         btnSave.setOnClickListener(this);
-
-
-
-
     }
 
     @Override
@@ -104,11 +111,34 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                                 String mobile = jsonarr.getJSONObject(i).getString("mobile");
                                 Bitmap profileImage = ImageConvertor.decodeBase64(jsonarr.getJSONObject(i).getString("image"));
 
-                                InviteUsersListRow rowUser = new InviteUsersListRow(R.drawable.camera, R.drawable.add_user_50, name, mobile,profileImage);
+                                if(Useradapter != null){
+                                    for(int j = 0 ;j<Useradapter.getUsers().size();j++)
+                                    {
+                                        if(Useradapter.getUsers().get(j).getDesc().equals(mobile))
+                                        {
+                                             imgStatus = R.drawable.remove_user_50;
+                                            Log.d("set status2",String.valueOf(imgStatus));
+                                        }/*else{
+                                            imgStatus = R.drawable.add_user_50;
+                                            Log.d("set status2",String.valueOf(imgStatus));
+                                        }*/
+                                    }
+                                }else{
+
+                                    imgStatus = R.drawable.add_user_50;
+                                    Log.d("set status1",String.valueOf(imgStatus));
+                                }
+                                InviteUsersListRow rowUser = new InviteUsersListRow(imgStatus, name, mobile,profileImage);
                                 rowUsers.add(rowUser);
                             }
-
-                             Useradapter = new InviteUsersArrayAdapter(this,R.layout.invite_users_listview_row,rowUsers);
+                            if(Useradapter == null)
+                                Useradapter = new InviteUsersArrayAdapter(this,R.layout.invite_users_listview_row,rowUsers);
+                            else {
+                                {
+                                    Useradapter.setData(rowUsers);
+                                    Useradapter.notifyDataSetChanged();
+                                }
+                            }
                             listViewUsers.setAdapter(Useradapter);
 
                         }
@@ -156,40 +186,44 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                 Intent i = new Intent();
                 setResult(RESULT_CANCELED,i);;
                 finish();
+                break;
             }
+
             case R.id.ButtonSave:
             {
-                if(Useradapter.getUsers().size() > 0)
+
+                if(Useradapter != null )
                 {
-                    Intent i = getIntent();
-
-                    JSONObject jsonObj = new JSONObject();
-                    JSONArray jsonArr = new JSONArray();
-                    for(int j = 0 ;j < Useradapter.getUsers().size();j++)
+                    if(Useradapter.getUsers().size() > 0)
                     {
+                        Log.d("adapter size:",String.valueOf(Useradapter.getUsers().size()));
+                        Intent i = getIntent();
 
-                        try {
-                            Log.d("name",Useradapter.getUsers().get(j).getTitle());
-                            Log.d("mobile",Useradapter.getUsers().get(j).getDesc());
 
-                            jsonObj.put("name",Useradapter.getUsers().get(j).getTitle());
-                            jsonObj.put("mobile",Useradapter.getUsers().get(j).getDesc());
-                            jsonArr.put(jsonObj);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        JSONArray jsonArr = new JSONArray();
+                        for(int j = 0 ;j < Useradapter.getUsers().size();j++)
+                        {
+
+                            try {
+                                JSONObject jsonObj = new JSONObject();
+                                jsonObj.put("name",Useradapter.getUsers().get(j).getTitle());
+                                jsonObj.put("mobile",Useradapter.getUsers().get(j).getDesc());
+                                jsonArr.put(jsonObj);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
                         }
-
+                        Log.d("json users",jsonArr.toString());
+                        i.putExtra("userList", jsonArr.toString());
+                        setResult(RESULT_OK, i);
+                        finish();
                     }
-                    Log.d("json users",jsonArr.toString());
-                    i.putExtra("userList", jsonArr.toString());
-                    setResult(RESULT_OK, i);
-                    finish();
+                    else{
+                        Log.d("adapter size <0", "search is empty");
+                        Toast.makeText(this, "Please select user!", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else{
-
-                }
-
-
             }
             break;
 

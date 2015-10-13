@@ -32,7 +32,7 @@ public class InviteUsersArrayAdapter extends ArrayAdapter<InviteUsersListRow> {
         this.context = context;
         this.rowUsers = items;
         checkedUsers = new ArrayList<InviteUsersListRow>();
-        index = 0;
+        index = -1;
     }
 
     /*private view holder class*/
@@ -57,18 +57,15 @@ public class InviteUsersArrayAdapter extends ArrayAdapter<InviteUsersListRow> {
             holder = new ViewHolder();
             holder.txtDesc = (TextView) convertView.findViewById(R.id.desc);
             holder.txtTitle = (TextView) convertView.findViewById(R.id.title);
-           // holder.imageView = (ImageView) convertView.findViewById(R.id.profileImage);
+
             holder.imgProf = (ImageView) convertView.findViewById(R.id.profileImage);
             holder.imgStatus = (ImageButton) convertView.findViewById(R.id.imageButtonInviteUser);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-
-
         holder.txtDesc.setText(rowItem.getDesc());
         holder.txtTitle.setText(rowItem.getTitle());
-        //holder.imageView.setImageResource(rowItem.getImageId());
         holder.imgStatus.setImageResource(rowItem.getImageStatus());
         holder.imgProf.setImageBitmap(rowItem.getImgProfile());
 
@@ -79,17 +76,18 @@ public class InviteUsersArrayAdapter extends ArrayAdapter<InviteUsersListRow> {
 
                 if(rowItem.getImageStatus() == R.drawable.add_user_50){
                     rowItem.setImagestatus(R.drawable.remove_user_50);
-                    checkedUsers.add(index, rowItem);
                     index++;
-
+                    checkedUsers.add(index, rowItem);
+                    Toast.makeText(getContext(),"user added",Toast.LENGTH_SHORT).show();
                 }
                 else{
                     rowItem.setImagestatus(R.drawable.add_user_50);
                     checkedUsers.remove(index);
                     index--;
+                    Toast.makeText(getContext(),"user removed",Toast.LENGTH_SHORT).show();
                 }
                     notifyDataSetChanged();
-                Toast.makeText(getContext(),"user checked",Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -119,6 +117,4 @@ public class InviteUsersArrayAdapter extends ArrayAdapter<InviteUsersListRow> {
     {
         return checkedUsers;
     }
-
-
 }

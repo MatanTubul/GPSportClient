@@ -13,6 +13,7 @@ import android.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,6 +22,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import com.example.matant.gpsportclient.AsyncResponse;
@@ -97,13 +99,12 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         btnEndDate.setText(getCurrentDate());
 
 
-        maxParticipantsEdittext = (EditText)v.findViewById(R.id.editTextMaxPaticipants);
-        minAgeEditText = (EditText)v.findViewById(R.id.editTextMinAge);
-        addressEditText = (EditText)v.findViewById(R.id.editTextLocation);
+        maxParticipantsEdittext = (EditText) v.findViewById(R.id.editTextMaxPaticipants);
+        minAgeEditText = (EditText) v.findViewById(R.id.editTextMinAge);
+        addressEditText = (EditText) v.findViewById(R.id.editTextLocation);
 
         privateEventCbox = (CheckBox) v.findViewById(R.id.checkBoxPrivateEvent);
         reccuringEventCbox = (CheckBox) v.findViewById(R.id.checkBoxRecurring);
-
 
 
         sportSpinner = (Spinner) v.findViewById(R.id.spinnerSports);
@@ -157,7 +158,6 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         });//private event check box listener
 
 
-
         btnstartTime.setOnClickListener(this);
         btnendTime.setOnClickListener(this);
         btnStartdate.setOnClickListener(this);
@@ -166,10 +166,13 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         btninviteUsers.setOnClickListener(this);
 
         listViewInvitedUsers = (ListView) v.findViewById(R.id.listViewInvitedusers);
+
+
         listViewInvitedUsers.setItemsCanFocus(true);
 
         return v;
     }
+
 
 
 
@@ -400,6 +403,10 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
     }
 
+    /**
+     * send request to server
+     */
+
     @Override
     public void sendDataToDBController() {
 
@@ -447,6 +454,10 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                 "Building Event...", true);
     }
 
+    /**
+     * check the input of the user.
+     * @return
+     */
     public boolean validateFields()
     {
         Boolean valid = true;
@@ -474,6 +485,12 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         return valid;
     }
 
+    /**
+     * connect with the InviteUserActivity and getting the result from her.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -489,12 +506,17 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                     for(int i=0 ;i< res.length(); i++){
                         String name = res.getJSONObject(i).getString("name");
                         String mobile = res.getJSONObject(i).getString("mobile");
+                        Log.d("loop index is:",String.valueOf(i));
 
                         CreateInviteUsersRow invitedUserRow = new CreateInviteUsersRow(name,mobile,R.drawable.remove_user_50);
                         invitedUsers.add(invitedUserRow);
                     }
                     invidedAdapter = new CreateInvitedUsersAdapter(getActivity(),R.layout.create_users_invited_item,invitedUsers);
                     listViewInvitedUsers.setAdapter(invidedAdapter);
+                    invidedAdapter.setAdapterListview(listViewInvitedUsers);
+                    invidedAdapter.setListViewHeightBasedOnChildren();
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -510,4 +532,6 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         }
 
     }
+
+
 }

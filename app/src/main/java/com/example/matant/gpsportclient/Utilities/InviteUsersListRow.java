@@ -12,8 +12,8 @@ public class InviteUsersListRow {
     private  String title;
     private  String desc;
 
-    public InviteUsersListRow(int imageId,int status, String title,String desc,Bitmap i){
-        this.imageId = imageId;
+    public InviteUsersListRow(int status, String title,String desc,Bitmap i){
+        //this.imageId = imageId;
         this.title = title;
         this.desc = desc;
         this.imagestatus = status;
