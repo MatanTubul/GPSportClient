@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -80,9 +79,6 @@ public class CreateInvitedUsersAdapter extends ArrayAdapter<CreateInviteUsersRow
                 Toast.makeText(getContext(), "user Removed", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
         return convertView;
     }
     /**

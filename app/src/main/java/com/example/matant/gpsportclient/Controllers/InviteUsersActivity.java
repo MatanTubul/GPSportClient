@@ -43,7 +43,7 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
     ListView listViewUsers;
     List<InviteUsersListRow> rowUsers;
     private InviteUsersArrayAdapter Useradapter = null;
-    int  imgStatus = -1;
+
 
 
     @Override
@@ -69,8 +69,10 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                 else{
                     Log.d("do nothing","doing nothing");
                    if(Useradapter != null) {
-                       Useradapter.clear();
-                       Useradapter.notifyDataSetChanged();
+                       Log.d("do nothing","clear adapter");
+                       /*Useradapter.clear();
+                       Useradapter.notifyDataSetChanged();*/
+                       listViewUsers.setAdapter(null);
                    }
                 }
 
@@ -110,18 +112,17 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                                 String name = jsonarr.getJSONObject(i).getString("name");
                                 String mobile = jsonarr.getJSONObject(i).getString("mobile");
                                 Bitmap profileImage = ImageConvertor.decodeBase64(jsonarr.getJSONObject(i).getString("image"));
-
+                                int  imgStatus = R.drawable.add_user_50;
                                 if(Useradapter != null){
+                                    Log.d("Useradapter invited size:",String.valueOf(Useradapter.getUsers().size()));
                                     for(int j = 0 ;j<Useradapter.getUsers().size();j++)
                                     {
                                         if(Useradapter.getUsers().get(j).getDesc().equals(mobile))
                                         {
                                              imgStatus = R.drawable.remove_user_50;
-                                            Log.d("set status2",String.valueOf(imgStatus));
-                                        }/*else{
-                                            imgStatus = R.drawable.add_user_50;
-                                            Log.d("set status2",String.valueOf(imgStatus));
-                                        }*/
+                                            Log.d("set status2.1",String.valueOf(imgStatus));
+                                            break;
+                                        }
                                     }
                                 }else{
 

@@ -515,6 +515,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                     listViewInvitedUsers.setAdapter(invidedAdapter);
                     invidedAdapter.setAdapterListview(listViewInvitedUsers);
                     invidedAdapter.setListViewHeightBasedOnChildren();
+                    listViewInvitedUsers = invidedAdapter.getAdapterListview();
 
 
                 } catch (JSONException e) {
