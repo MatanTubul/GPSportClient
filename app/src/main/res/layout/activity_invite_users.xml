@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    >
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editTextSearch"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:hint="Search..." />
+    <View
+        android:id="@+id/divider1"
+        android:layout_below="@+id/editTextSearch"
+        android:layout_width="fill_parent"
+        android:layout_height="6dp"
+        android:background="@android:color/darker_gray"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/divider1"
+        android:id="@+id/scrollViewListView"
+        android:fillViewport="true"
+        android:layout_above="@+id/linearLayoutBtn">
+
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/listViewusers"
+            android:layout_below="@+id/divider1"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+    </ScrollView>
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_below="@+id/scrollViewListView"
+
+        android:layout_width="fill_parent"
+        android:layout_height="6dp"
+        android:background="@android:color/darker_gray"/>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutBtn"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <Button android:text="Save"
+            android:id="@+id/ButtonSave"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+        </Button>
+        <Button android:text="Discard"
+            android:id="@+id/ButtonDiscard"
+            android:layout_toRightOf="@+id/ButtonSave"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+        </Button>
+    </LinearLayout>
+
+</RelativeLayout>

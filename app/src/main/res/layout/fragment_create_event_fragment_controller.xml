@@ -7,13 +7,10 @@
 
     <ScrollView
         android:id="@+id/scrollView"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_marginBottom="60dp"
         android:fillViewport="true"
-        android:scrollbars = "vertical"
-        android:scrollbarStyle="insideInset"
-
-        android:layout_height="fill_parent">
+        android:layout_height="wrap_content">
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -45,6 +42,7 @@
                 android:layout_height="wrap_content"
                 android:text="New Button"
                 android:id="@+id/buttonFromDate"
+
                 android:layout_below="@+id/textView3"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
@@ -190,7 +188,6 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Participants:"
                 android:id="@+id/textViewParticipants"
-                android:layout_below="@+id/relativeLayoutSportRadius"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:textColor="#000000"
@@ -242,7 +239,7 @@
              <RelativeLayout
             android:layout_width="match_parent"
             android:layout_below="@+id/frameLayout"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
 
                  <CheckBox
@@ -251,10 +248,7 @@
                 android:text="Private Event"
                 android:id="@+id/checkBoxPrivateEvent"
                 android:checked="false"
-
-                android:layout_below="@+id/editTextLocation"
-
-                android:layout_alignParentLeft="true"
+                     android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
             <Button
                 android:layout_width="wrap_content"
@@ -262,9 +256,23 @@
                 android:id="@+id/buttonInviteUsers"
                 android:text="Invite Users"
                 android:layout_below="@+id/checkBoxPrivateEvent"
-                android:layout_marginLeft="5dp"
                 android:background="#606060"
-                android:textColor="#ffffffff" />
+                android:textColor="#ffffffff"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+                 <ListView
+                     android:layout_width="fill_parent"
+                     android:layout_height="wrap_content"
+                     android:id="@+id/listViewInvitedusers"
+                     android:layout_below="@+id/buttonInviteUsers"
+                     android:layout_centerVertical="true"
+                     android:layout_centerHorizontal="true">
+                 </ListView>
+
+
 
              </RelativeLayout>
 
@@ -309,6 +317,7 @@
 
         </RelativeLayout>
     </ScrollView>
+
 
     <LinearLayout
         android:id="@+id/linearLayoutBtn"

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffffff">
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:textColor="#000000"
+            android:textSize="16dp"
+            android:text="Full name"
+
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+             />
+
+        <TextView
+            android:id="@+id/mobile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:textColor="#000000"
+            android:textSize="14dp"
+            android:text="User details"
+            android:layout_below="@+id/name" />
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/remove_user_50"
+            android:id="@+id/imageButtonRemoveUser"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            />
+        <View
+            android:id="@+id/divider2"
+            android:layout_below="@+id/imageButtonRemoveUser"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="1dp"
+            android:layout_height="6dp"
+            android:background="@android:color/darker_gray"/>
+
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffffff"
+         >
+
+
+    <ImageView
+        android:id="@+id/profileImage"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/camera"
+
+
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:textColor="#000000"
+        android:textSize="16dp"
+        android:text="Full name"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/profileImage"
+        android:layout_toEndOf="@+id/profileImage" />
+
+    <TextView
+        android:id="@+id/desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:textColor="#000000"
+        android:textSize="14dp"
+        android:text="User details"
+        android:layout_toRightOf="@+id/profileImage"
+        android:layout_alignBottom="@+id/profileImage"
+        android:layout_toLeftOf="@+id/imageButtonInviteUser"
+        android:layout_toStartOf="@+id/imageButtonInviteUser"
+        android:layout_below="@+id/title" />
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/add_user_50"
+            android:id="@+id/imageButtonInviteUser"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_below="@+id/profileImage"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="1dp"
+        android:layout_height="6dp"
+        android:background="@android:color/darker_gray"/>
+
+
+
+    </RelativeLayout>
+</RelativeLayout>

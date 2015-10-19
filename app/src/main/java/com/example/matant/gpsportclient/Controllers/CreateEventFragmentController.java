@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,10 +22,14 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.OnCompleteListener;
 import com.example.matant.gpsportclient.R;
+import com.example.matant.gpsportclient.Utilities.CreateInviteUsersRow;
+import com.example.matant.gpsportclient.Utilities.CreateInvitedUsersAdapter;
 import com.example.matant.gpsportclient.Utilities.DatePicker;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.Utilities.MyAdapter;
@@ -32,12 +38,14 @@ import com.google.android.gms.maps.model.LatLng;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -54,6 +62,10 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     private DBcontroller dbController;
     private ProgressDialog progress= null;
     private int settime = 0;
+    private static final int REQUEST_CODE_GET_USER_LIST = 1;
+    private ListView listViewInvitedUsers;
+    private List<CreateInviteUsersRow> invitedUsers;
+    private CreateInvitedUsersAdapter invidedAdapter;
 
 
     public CreateEventFragmentController() {
@@ -87,9 +99,9 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         btnEndDate.setText(getCurrentDate());
 
 
-        maxParticipantsEdittext = (EditText)v.findViewById(R.id.editTextMaxPaticipants);
-        minAgeEditText = (EditText)v.findViewById(R.id.editTextMinAge);
-        addressEditText = (EditText)v.findViewById(R.id.editTextLocation);
+        maxParticipantsEdittext = (EditText) v.findViewById(R.id.editTextMaxPaticipants);
+        minAgeEditText = (EditText) v.findViewById(R.id.editTextMinAge);
+        addressEditText = (EditText) v.findViewById(R.id.editTextLocation);
 
         privateEventCbox = (CheckBox) v.findViewById(R.id.checkBoxPrivateEvent);
         reccuringEventCbox = (CheckBox) v.findViewById(R.id.checkBoxRecurring);
@@ -97,9 +109,6 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
         sportSpinner = (Spinner) v.findViewById(R.id.spinnerSports);
         genderSpinner = (Spinner) v.findViewById(R.id.spinnerGender);
-
-
-
 
         //gender spinner
         genderSpinner.setAdapter(new MyAdapter(getActivity(), R.layout.custom_spinner, getResources().getStringArray(R.array.eventgender)));
@@ -115,8 +124,6 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
             }
         });//gender spinner
-
-
 
         //Sport Spinner
 
@@ -135,11 +142,6 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
             }
         });//Sport Spinner
 
-
-
-
-
-
         btninviteUsers.setVisibility(v.GONE);
 
 
@@ -147,7 +149,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         privateEventCbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(privateEventCbox.isChecked())
+                if (privateEventCbox.isChecked())
                     btninviteUsers.setVisibility(v.VISIBLE);
                 else
                     btninviteUsers.setVisibility(v.GONE);
@@ -156,15 +158,21 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         });//private event check box listener
 
 
-
         btnstartTime.setOnClickListener(this);
         btnendTime.setOnClickListener(this);
         btnStartdate.setOnClickListener(this);
         btnEndDate.setOnClickListener(this);
         btnSave.setOnClickListener(this);
+        btninviteUsers.setOnClickListener(this);
+
+        listViewInvitedUsers = (ListView) v.findViewById(R.id.listViewInvitedusers);
+
+
+        listViewInvitedUsers.setItemsCanFocus(true);
 
         return v;
     }
+
 
 
 
@@ -180,7 +188,6 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
     }
 
-
     @Override
     public void onClick(View v) {
         DialogFragment df = null;
@@ -194,8 +201,6 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                     dialog_type = "Time";
                     bundle.putInt(dialog_type, 1);
                     SET_TIME =true;
-
-
                 }
 
             }
@@ -221,13 +226,15 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                 break;
             }
             case R.id.ButtonSave:
-              /*  Log.d("SavePressed","press on button save");
-                LatLng lonlat = getLocationFromAddress(addressEditText.getText().toString());
-                Log.d("Cordinates", "latitude = " + lonlat.latitude + "longtitude=" + lonlat.longitude);*/
                 if(validateFields())
                     sendDataToDBController();
 
                 break;
+            case R.id.buttonInviteUsers: {
+                Intent i = new Intent(getActivity(),InviteUsersActivity.class);
+                startActivityForResult(i,REQUEST_CODE_GET_USER_LIST);
+                break;
+            }
 
 
 
@@ -396,6 +403,10 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
     }
 
+    /**
+     * send request to server
+     */
+
     @Override
     public void sendDataToDBController() {
 
@@ -443,15 +454,13 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                 "Building Event...", true);
     }
 
+    /**
+     * check the input of the user.
+     * @return
+     */
     public boolean validateFields()
     {
         Boolean valid = true;
-       /* ErrorHandler eh = new ErrorHandler();
-        ArrayList<EditText> et = new ArrayList<EditText>() ;
-        et.add(addressEditText);
-        et.add(maxParticipantsEdittext);
-        et.add(minAgeEditText);
-        valid = eh.fieldIsEmpty(et,"Field cannot be empty");*/
         if(addressEditText.getText().toString().equals(""))
         {
             addressEditText.setError("Location field cannot be empty!");
@@ -475,4 +484,55 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         }
         return valid;
     }
+
+    /**
+     * connect with the InviteUserActivity and getting the result from her.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("inside OnActivityResult","result");
+
+        if(REQUEST_CODE_GET_USER_LIST == requestCode){
+
+            if(Activity.RESULT_OK == resultCode){
+                JSONArray res = null;
+                try {
+                    res = new JSONArray(data.getStringExtra("userList"));
+                    invitedUsers = new ArrayList<CreateInviteUsersRow>();
+                    for(int i=0 ;i< res.length(); i++){
+                        String name = res.getJSONObject(i).getString("name");
+                        String mobile = res.getJSONObject(i).getString("mobile");
+                        Log.d("loop index is:",String.valueOf(i));
+
+                        CreateInviteUsersRow invitedUserRow = new CreateInviteUsersRow(name,mobile,R.drawable.remove_user_50);
+                        invitedUsers.add(invitedUserRow);
+                    }
+                    invidedAdapter = new CreateInvitedUsersAdapter(getActivity(),R.layout.create_users_invited_item,invitedUsers);
+                    listViewInvitedUsers.setAdapter(invidedAdapter);
+                    invidedAdapter.setAdapterListview(listViewInvitedUsers);
+                    invidedAdapter.setListViewHeightBasedOnChildren();
+                    listViewInvitedUsers = invidedAdapter.getAdapterListview();
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                Log.d("Users are:",res.toString());
+
+            }
+            if(resultCode == Activity.RESULT_CANCELED){
+                Log.d("Acttivity canceled","canceled");
+
+            }
+        }
+
+    }
+
+
 }
