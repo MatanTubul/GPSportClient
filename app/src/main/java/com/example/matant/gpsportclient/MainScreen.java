@@ -19,6 +19,7 @@ import com.example.matant.gpsportclient.Controllers.CreateEventFragmentControlle
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.Controllers.GoogleMapFragmentController;
 import com.example.matant.gpsportclient.Controllers.ProfileFragmentController;
+import com.example.matant.gpsportclient.Controllers.SearchEventFragmentController;
 import com.example.matant.gpsportclient.Utilities.DrawerItem;
 import com.example.matant.gpsportclient.Utilities.DrawerItemCustomAdapter;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
@@ -193,7 +194,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
                 fragment = new ProfileFragmentController();
                 break;
             case 2: //Search Events
-                //fragment = new SearchEventFragmentController();
+                fragment = new SearchEventFragmentController();
                 break;
             case 3: //Create Events
                 fragment = new CreateEventFragmentController();
