@@ -19,6 +19,7 @@ import com.example.matant.gpsportclient.Controllers.CreateEventFragmentControlle
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.Controllers.GoogleMapFragmentController;
 import com.example.matant.gpsportclient.Controllers.ProfileFragmentController;
+import com.example.matant.gpsportclient.Controllers.SearchEventFragmentController;
 import com.example.matant.gpsportclient.Utilities.DrawerItem;
 import com.example.matant.gpsportclient.Utilities.DrawerItemCustomAdapter;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
@@ -46,8 +47,6 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
     private DBcontroller dbController;
     private ProgressDialog progress = null;
     private SessionManager sm;
-    //private AddressResultReceiver mResultReceiver;
-    private boolean mAddressRequested = false;
 
 
     @Override
@@ -175,20 +174,6 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
                 "Logging out...", true,false);
     }
 
-
-
-/*
-    protected void startIntentService() {
-        Intent intent = new Intent(this, AddressFetcher.class);
-        intent.putExtra(Constants.RECEIVER, mResultReceiver);
-        intent.putExtra(Constants.LOCATION_DATA_EXTRA, mLastLocation);
-        startService(intent);
-    }
-*/
-
-
-
-
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
         @Override
@@ -209,7 +194,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
                 fragment = new ProfileFragmentController();
                 break;
             case 2: //Search Events
-                //fragment = new SearchEventFragmentController();
+                fragment = new SearchEventFragmentController();
                 break;
             case 3: //Create Events
                 fragment = new CreateEventFragmentController();
@@ -247,7 +232,6 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
         }
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -283,42 +267,4 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
         sendDataToDBController();
     }
 
-/*
-    class AddressResultReceiver extends ResultReceiver {
-        public AddressResultReceiver(Handler handler) {
-            super(handler);
-        }
-
-        //Display the result address from the addFetcher
-        @Override
-        protected void onReceiveResult(int resultCode, Bundle resultData) {
-
-            // Display the address string
-            // or an error message sent from the intent service.
-            String mAddressOutput = resultData.getString(Constants.RESULT_DATA_KEY);
-            //displayAddressOutput();
-
-            // Show a toast message if an address was found.
-            if (resultCode == Constants.SUCCESS_RESULT) {
-                //showToast("address found");
-            }
-
-        }
-    }*/
-
-    /*Fetch location (mLastLocation)
-    public void fetchAddressButtonHandler(View view) {
-        // Only start the service to fetch the address if GoogleApiClient is
-        // connected.
-        if (mGoogleApiClient.isConnected() && mLastLocation != null) {
-            startIntentService();
-        }
-        // If GoogleApiClient isn't connected, process the user's request by
-        // setting mAddressRequested to true. Later, when GoogleApiClient connects,
-        // launch the service to fetch the address. As far as the user is
-        // concerned, pressing the Fetch Address button
-        // immediately kicks off the process of getting the address.
-        mAddressRequested = true;
-        //updateUIWidgets();
-    }*/
 }

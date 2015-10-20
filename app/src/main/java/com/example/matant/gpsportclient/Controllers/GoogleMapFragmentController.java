@@ -1,8 +1,12 @@
 package com.example.matant.gpsportclient.Controllers;
 
 import android.app.Fragment;
+import android.content.Intent;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -11,7 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.matant.gpsportclient.AsyncResponse;
+import com.example.matant.gpsportclient.Constants;
 import com.example.matant.gpsportclient.R;
+import com.example.matant.gpsportclient.Utilities.AddressFetcher;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -44,6 +50,9 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     private boolean mRequestingLocationUpdates = true;
     private LatLng iniLoc;
     private boolean firstLocation = true;
+    private AddressResultReceiver mResultReceiver;
+    private boolean mAddressRequested = false;
+
 
 
     @Override
@@ -67,15 +76,6 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         buildGoogleApiClient();
         mGoogleApiClient.connect();
 
-        //updateUI();
-
-        //gps = new GPSTracker(this.getActivity());
-
-        /*}else{
-            gps.showSettingsAlert();
-            Log.d("gps tracker", "settings");
-
-        }*/
         return v;
     }
 
@@ -85,7 +85,6 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
-
 
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this.getActivity())
@@ -187,12 +186,16 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
             if (mLastLocation != null) {
                 Log.d("mLastLocation != null", "mLastLocation != null");
-                updateUI();
-/*
 
-            if (mAddressRequested) {
-                startIntentService();
-            }*/
+                // Determine whether a Geocoder is available.
+                if (!Geocoder.isPresent()) {
+                    Log.d("no geocoder", "no geocoder");
+                    Toast.makeText(this.getActivity(), "no gecoder", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (mAddressRequested)
+                    startIntentService();
+                updateUI();
             }
 
         }
@@ -233,8 +236,6 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
                 currentMarker.showInfoWindow();
                 currentMarker.setVisible(true);
 
-
-
             }
         //mLastUpdateTimeTextView.setText(mLastUpdateTime);
     }
@@ -244,4 +245,49 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
     }
 
+
+    class AddressResultReceiver extends ResultReceiver {
+        public AddressResultReceiver(Handler handler) {
+            super(handler);
+        }
+
+        //Display the result address from the addFetcher
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+
+            // Display the address string
+            // or an error message sent from the intent service.
+            String mAddressOutput = resultData.getString(Constants.RESULT_DATA_KEY);
+            //displayAddressOutput();
+
+            // Show a toast message if an address was found.
+            if (resultCode == Constants.SUCCESS_RESULT) {
+                //showToast("address found");
+            }
+
+        }
+    }
+
+
+    public void fetchAddressButtonHandler(View view) {
+        // Only start the service to fetch the address if GoogleApiClient is
+        // connected.
+        if (mGoogleApiClient.isConnected() && mLastLocation != null) {
+            startIntentService();
+        }
+        // If GoogleApiClient isn't connected, process the user's request by
+        // setting mAddressRequested to true. Later, when GoogleApiClient connects,
+        // launch the service to fetch the address. As far as the user is
+        // concerned, pressing the Fetch Address button
+        // immediately kicks off the process of getting the address.
+        mAddressRequested = true;
+        //updateUIWidgets();
+    }
+
+    protected void startIntentService() {
+        Intent intent = new Intent(this.getActivity(), AddressFetcher.class);
+        intent.putExtra(Constants.RECEIVER, mResultReceiver);
+        intent.putExtra(Constants.LOCATION_DATA_EXTRA, mLastLocation);
+        getActivity().startService(intent);
+    }
 }
