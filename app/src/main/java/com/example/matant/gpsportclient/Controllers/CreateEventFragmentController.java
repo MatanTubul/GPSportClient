@@ -26,6 +26,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import com.example.matant.gpsportclient.AsyncResponse;
+import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.OnCompleteListener;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.CreateInviteUsersRow;
@@ -36,12 +37,20 @@ import com.example.matant.gpsportclient.Utilities.MyAdapter;
 import com.example.matant.gpsportclient.Utilities.TimePicker;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -51,7 +60,7 @@ import java.util.List;
 
 public class CreateEventFragmentController extends Fragment implements View.OnClickListener,OnCompleteListener,AsyncResponse {
 
-    private Button btnStartdate,btnstartTime,btnendTime,btninviteUsers,btnEndDate,btnSave,btnCancel;
+    private Button btnStartdate,btnstartTime,btnendTime,btninviteUsers,btnEndDate,btnSave;
     private EditText addressEditText,maxParticipantsEdittext,minAgeEditText;
     private CheckBox privateEventCbox,reccuringEventCbox;
     private Spinner sportSpinner,genderSpinner;
@@ -64,14 +73,13 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     private int settime = 0;
     private static final int REQUEST_CODE_GET_USER_LIST = 1;
     private ListView listViewInvitedUsers;
-    private List<CreateInviteUsersRow> invitedUsers;
+    private List<CreateInviteUsersRow> invitedUsers = null;
     private CreateInvitedUsersAdapter invidedAdapter;
 
 
     public CreateEventFragmentController() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,7 +95,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         btnendTime = (Button) v.findViewById(R.id.buttonEndTime);
         btninviteUsers = (Button) v.findViewById(R.id.buttonInviteUsers);
         btnSave = (Button) v.findViewById(R.id.ButtonSave);
-        btnCancel = (Button) v.findViewById(R.id.ButtonCancel);
+
 
         cal = Calendar.getInstance();
 
@@ -300,7 +308,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     }
 
     /**
-     * return the corrent time as string
+     * return the current time as string
      * @return -current time
      */
     public String getCorrentTime()
@@ -367,9 +375,24 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                 String flg = jsonObj.getString("flag");
                 switch (flg)
                 {
-                    case "success":
-                        Log.d("event created","success to create event");
+                    case "success": {
+                        Log.d("event created", "success to create event");
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("Event")
+                                .setMessage("Event was created successfully")
+                                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent i = new Intent(getActivity(), MainScreen.class);
+                                        startActivity(i);
+                                        getActivity().finish();
+                                    }
+                                })
+                                .setIconAttribute(android.R.attr.alertDialogIcon)
+                                .show();
                         break;
+
+                    }
                     case "failed":
                         Log.d("Created failed","failed to create event");
                     {
@@ -428,16 +451,39 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         BasicNameValuePair latitude = new BasicNameValuePair("lat",String.valueOf(lonlat.latitude));
         BasicNameValuePair event_type = new BasicNameValuePair("event_type",String.valueOf(privateEventCbox.isChecked()));
         BasicNameValuePair gender = new BasicNameValuePair("gender",String.valueOf(genderSpinner.getSelectedItem().toString()));
-
+        BasicNameValuePair min_age = new BasicNameValuePair("minAge",String.valueOf(minAgeEditText.getText()));
         BasicNameValuePair participants = new BasicNameValuePair("max_participants",maxParticipantsEdittext.getText().toString());
         BasicNameValuePair scheduled = new BasicNameValuePair("scheduled",String.valueOf(reccuringEventCbox.isChecked()));
 
         List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+
+        if(invitedUsers != null)
+        {
+            if(invitedUsers.size() > 0)
+            {
+                JSONArray jsnArr = new JSONArray();
+                for(int i=0 ; i < invitedUsers.size(); i++)
+                {
+                    JSONObject jsnObj = new JSONObject();
+                    try {
+                        jsnObj.put(invitedUsers.get(i).getName(), invitedUsers.get(i).getMobile());
+                        jsnArr.put(jsnObj);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                BasicNameValuePair invitedusers = new BasicNameValuePair("invitedUsers",jsnArr.toString());
+                nameValuePairList.add(invitedusers);
+            }
+        }
+
+
         nameValuePairList.add(tagreq);
         nameValuePairList.add(sport);
         nameValuePairList.add(date);
         nameValuePairList.add(startTime);
         nameValuePairList.add(endTime);
+        nameValuePairList.add(min_age);
         nameValuePairList.add(longtitude);
         nameValuePairList.add(latitude);
         nameValuePairList.add(event_type);
@@ -473,7 +519,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
             valid = false;
         } if(minAgeEditText.getText().toString().equals("") == true || Integer.valueOf(minAgeEditText.getText().toString()) < 14)
         {
-            minAgeEditText.setError("Please insert minimal age of participant");
+            minAgeEditText.setError("Minimal age should be at least 14!");
             Log.d("min edittext", "min edit text is empty");
             valid = false;
         } if(btnendTime.getText().toString().equals(btnstartTime.getText().toString()))
@@ -533,6 +579,4 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         }
 
     }
-
-
 }

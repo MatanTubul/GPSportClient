@@ -447,7 +447,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     private String setPhoto(Bitmap bitmapm) {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmapm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            bitmapm.compress(Bitmap.CompressFormat.JPEG, 50, baos);
             byte[] byteArrayImage = baos.toByteArray();
             String imagebase64string = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
             return imagebase64string;
