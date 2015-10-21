@@ -51,7 +51,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import java.util.HashMap;
@@ -461,18 +463,14 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         {
             if(invitedUsers.size() > 0)
             {
-                JSONArray jsnArr = new JSONArray();
+
+                String[] users = new String[invitedUsers.size()];
                 for(int i=0 ; i < invitedUsers.size(); i++)
                 {
-                    JSONObject jsnObj = new JSONObject();
-                    try {
-                        jsnObj.put(invitedUsers.get(i).getName(), invitedUsers.get(i).getMobile());
-                        jsnArr.put(jsnObj);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    users[i]= invitedUsers.get(i).getMobile();
                 }
-                BasicNameValuePair invitedusers = new BasicNameValuePair("invitedUsers",jsnArr.toString());
+                Log.d("string array", Arrays.toString(users));
+                BasicNameValuePair invitedusers = new BasicNameValuePair("invitedUsers",Arrays.toString(users));
                 nameValuePairList.add(invitedusers);
             }
         }
@@ -552,7 +550,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                     for(int i=0 ;i< res.length(); i++){
                         String name = res.getJSONObject(i).getString("name");
                         String mobile = res.getJSONObject(i).getString("mobile");
-                        Log.d("loop index is:",String.valueOf(i));
+
 
                         CreateInviteUsersRow invitedUserRow = new CreateInviteUsersRow(name,mobile,R.drawable.remove_user_50);
                         invitedUsers.add(invitedUserRow);

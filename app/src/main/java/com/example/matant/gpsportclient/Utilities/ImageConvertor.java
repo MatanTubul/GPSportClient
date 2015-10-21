@@ -15,7 +15,7 @@ import android.util.Log;
 import java.io.ByteArrayOutputStream;
 
 /**
- * class which encode bitmap image to string and in the opposite way.
+ * Utility which encode bitmap image to string and in the opposite way.
  * Created by matant on 10/12/2015.
  */
 public class ImageConvertor {

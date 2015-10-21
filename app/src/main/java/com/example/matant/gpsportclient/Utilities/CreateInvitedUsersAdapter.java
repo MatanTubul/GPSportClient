@@ -18,6 +18,7 @@ import com.example.matant.gpsportclient.R;
 import java.util.List;
 
 /**
+ * Custom adapter for the invited user list
  * Created by matant on 10/12/2015.
  */
 public class CreateInvitedUsersAdapter extends ArrayAdapter<CreateInviteUsersRow> {
