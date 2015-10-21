@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.R;
+import com.example.matant.gpsportclient.Utilities.ProfileManager;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -66,6 +67,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_sign_up);
 
         err = new ErrorHandler();

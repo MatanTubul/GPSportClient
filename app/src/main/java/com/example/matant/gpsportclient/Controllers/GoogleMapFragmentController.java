@@ -66,6 +66,9 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         mMapView.onResume();//    display map immediately
         sm = new SessionManager(getActivity());
 
+        if (mMapView!=null)
+            Log.d("mMapView!=null", "mMapView!=null");
+
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
@@ -110,6 +113,8 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+        if (mGoogleApiClient != null)
+            mGoogleApiClient.connect();
         if (mGoogleApiClient.isConnected() && !mRequestingLocationUpdates) {
             startLocationUpdates();
         }
@@ -173,6 +178,13 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (mGoogleApiClient != null)
+            mGoogleApiClient.connect();
+    }
+
+    @Override
     public void onConnected(Bundle bundle) {
 // Gets the best and most recent location currently available,
             // which may be null in rare cases when a location is not available.
@@ -216,6 +228,9 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
         double latitude = mLastLocation.getLatitude(),
                longitude =  mLastLocation.getLongitude();
+
+        Log.d("lat and long", latitude+" "+longitude );
+
 
         if (googleMap != null) {
                 Log.d("googleMap", "googleMap");
