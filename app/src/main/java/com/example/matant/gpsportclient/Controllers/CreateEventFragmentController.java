@@ -476,6 +476,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         }
 
 
+
         nameValuePairList.add(tagreq);
         nameValuePairList.add(sport);
         nameValuePairList.add(date);
