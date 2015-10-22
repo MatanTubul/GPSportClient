@@ -465,13 +465,18 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
             {
 
                 String[] users = new String[invitedUsers.size()];
+                JSONArray invited = new JSONArray();
                 for(int i=0 ; i < invitedUsers.size(); i++)
                 {
                     users[i]= invitedUsers.get(i).getMobile();
+                    invited.put(users[i]);
                 }
+                String json = invited.toString();
                 Log.d("string array", Arrays.toString(users));
                 BasicNameValuePair invitedusers = new BasicNameValuePair("invitedUsers",Arrays.toString(users));
+                BasicNameValuePair jsonInvited = new BasicNameValuePair("jsoninvited",json);
                 nameValuePairList.add(invitedusers);
+                nameValuePairList.add(jsonInvited);
             }
         }
 
