@@ -149,6 +149,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
                     case "verified":
                         //initialize name of user in the session manager
                         sm.StoreUserSession(jsonObj.getString("name"),sm.KEY_NAME);
+                        sm.StoreUserSession(jsonObj.getString("mobile"),sm.KEY_MOBILE);
 
                         startActivity(new Intent(Login.this, MainScreen.class));
                         finish();

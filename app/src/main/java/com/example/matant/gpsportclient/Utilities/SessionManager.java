@@ -29,6 +29,7 @@ public class SessionManager {
     // Email address (make variable public to access from outside)
     public  final String KEY_EMAIL = "email";
     public  String KEY_NAME = "name";
+    public final String KEY_MOBILE = "mobile";
 
     public Double getLatitude() {
         return latitude;
@@ -67,6 +68,8 @@ public class SessionManager {
 
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
         user.put(KEY_NAME, pref.getString(KEY_NAME, null));
+        user.put(KEY_MOBILE,pref.getString(KEY_MOBILE,null));
+
         return user;
     }
 
