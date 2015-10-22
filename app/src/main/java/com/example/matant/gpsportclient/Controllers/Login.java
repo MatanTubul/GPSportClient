@@ -150,6 +150,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
                         //initialize name of user in the session manager
                         sm.StoreUserSession(jsonObj.getString("name"),sm.KEY_NAME);
                         sm.StoreUserSession(jsonObj.getString("mobile"),sm.KEY_MOBILE);
+                        sm.StoreUserSession(jsonObj.getString("user_id"), sm.KEY_USERID);
 
                         startActivity(new Intent(Login.this, MainScreen.class));
                         finish();

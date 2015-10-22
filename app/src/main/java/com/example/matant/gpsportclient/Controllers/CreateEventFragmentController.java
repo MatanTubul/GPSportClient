@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInstaller;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import com.example.matant.gpsportclient.Utilities.CreateInvitedUsersAdapter;
 import com.example.matant.gpsportclient.Utilities.DatePicker;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.Utilities.MyAdapter;
+import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.example.matant.gpsportclient.Utilities.TimePicker;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -77,6 +79,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     private ListView listViewInvitedUsers;
     private List<CreateInviteUsersRow> invitedUsers = null;
     private CreateInvitedUsersAdapter invidedAdapter;
+    private SessionManager sm;
 
 
     public CreateEventFragmentController() {
@@ -107,6 +110,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
         btnStartdate.setText(getCurrentDate());
         btnEndDate.setText(getCurrentDate());
+
+        sm = new SessionManager(getActivity());
 
 
         maxParticipantsEdittext = (EditText) v.findViewById(R.id.editTextMaxPaticipants);
@@ -456,6 +461,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         BasicNameValuePair min_age = new BasicNameValuePair("minAge",String.valueOf(minAgeEditText.getText()));
         BasicNameValuePair participants = new BasicNameValuePair("max_participants",maxParticipantsEdittext.getText().toString());
         BasicNameValuePair scheduled = new BasicNameValuePair("scheduled",String.valueOf(reccuringEventCbox.isChecked()));
+        BasicNameValuePair mob_manager = new BasicNameValuePair("manager",sm.getUserDetails().get(sm.KEY_USERID));
 
         List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
 
@@ -481,7 +487,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         }
 
 
-
+        nameValuePairList.add(mob_manager);
         nameValuePairList.add(tagreq);
         nameValuePairList.add(sport);
         nameValuePairList.add(date);

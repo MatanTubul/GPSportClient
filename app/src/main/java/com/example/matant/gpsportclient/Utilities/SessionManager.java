@@ -30,6 +30,7 @@ public class SessionManager {
     public  final String KEY_EMAIL = "email";
     public  String KEY_NAME = "name";
     public final String KEY_MOBILE = "mobile";
+    public final String KEY_USERID = "user_id";
 
     public Double getLatitude() {
         return latitude;
@@ -69,6 +70,7 @@ public class SessionManager {
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
         user.put(KEY_NAME, pref.getString(KEY_NAME, null));
         user.put(KEY_MOBILE,pref.getString(KEY_MOBILE,null));
+        user.put(KEY_USERID,pref.getString(KEY_USERID,null));
 
         return user;
     }
