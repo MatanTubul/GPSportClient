@@ -33,6 +33,7 @@ import android.widget.TextView;
 import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
+import com.example.matant.gpsportclient.Utilities.ProfileManager;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 
 import org.apache.http.NameValuePair;
@@ -64,6 +65,8 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
     private static final String TAG_GEN= "gender";
     private static final int CELL_CODE_LENGTH= 3;
     private static final int CELL_PHONE_LENGTH= 7;
+    private static final int REQUEST_CODE = 1;
+
 
     private ImageButton rotateLeft,rotateRight;
 
@@ -80,6 +83,7 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
     private int rotate;
     DBcontroller dbController;
     private SessionManager sm;
+    public View rootView;
 
     public ProfileFragmentController() {}
 
@@ -87,31 +91,7 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Here we need to check if the activity that was triggers was the Image Gallery.
-        // If it is the requestCode will match the LOAD_IMAGE_RESULTS value.
-        // If the resultCode is RESULT_OK and there is some data we know that an image was picked.
-        if (requestCode == SELECT_PHOTO && resultCode == this.getActivity().RESULT_OK && data != null) {
-            // Let's read picked image data - its URI
-            Uri pickedImage = data.getData();
-            // Let's read picked image path using content resolver
-            String[] filePath = {MediaStore.Images.Media.DATA};
-            Cursor cursor = this.getActivity().getContentResolver().query(pickedImage, filePath, null, null, null);
-            cursor.moveToFirst();
-            String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
 
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            originbitmap = BitmapFactory.decodeFile(imagePath, options);
-            int nh = (int) ( originbitmap.getHeight() * (512.0 / originbitmap.getWidth()) );
-            scaled = Bitmap.createScaledBitmap(originbitmap,512,nh,true);
-            imgv.setImageBitmap(scaled);
-
-            // Do something with the bitmap
-
-
-            // At the end remember to close the cursor or you will end with the RuntimeException!
-            cursor.close();
-        }
 
 
 
@@ -123,13 +103,16 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sm = new SessionManager(getActivity());
+        Intent i = new Intent(getActivity(), SignUp.class);
+        i.putExtra("USER_DETAILS", sm.getUserDetails());
+        startActivityForResult(i, REQUEST_CODE);
     }
-
+/*
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.activity_sign_up, container, false);
+        rootView = inflater.inflate(R.layout.activity_sign_up, container, false);
         err = new ErrorHandler();
 
         //updating the minimal age
@@ -264,11 +247,11 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
         // Inflate the layout for this fragment
         return rootView;
     }
-
+*/
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getDataFromDBController();
+        //getDataFromDBController();
     }
 
 
@@ -284,6 +267,7 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
 
     @Override
     public void handleResponse(String jsonStr) {
+        progress.dismiss();
         Log.d("handleResponse", jsonStr);
 
         if (jsonStr != null) {
@@ -295,6 +279,7 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
                 {
                     case "profile details retrieval":
                         Log.d("profile", jsonStr);
+                        Log.d("class", this.getClass().getSimpleName());
                         fillDataFromDBToUI(jsonObj);
                         break;
                     case "wrong input":
@@ -334,7 +319,7 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
             if (imageString.equals("nofile"))
                 Log.d("setOnUI", "nofile");
             else {
-                Bitmap scaled = decodeBase64(imageString);
+                scaled = decodeBase64(imageString);
                 imgv.setImageBitmap(scaled);
             }
 
@@ -481,7 +466,8 @@ public class ProfileFragmentController extends Fragment implements AsyncResponse
     }
     @Override
     public void preProcess() {
-        //Log.d("preProcess", "getting data to UI");
+        progress = ProgressDialog.show(this.getActivity(), "Profile",
+                "Please wait while system loading details", true);
     }
 
     private void getDataFromDBController()

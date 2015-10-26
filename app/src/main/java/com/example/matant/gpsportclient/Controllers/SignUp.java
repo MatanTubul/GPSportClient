@@ -41,6 +41,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener,AsyncResponse {
@@ -50,24 +51,38 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     private ImageView imgv;
     private final static int SELECT_PHOTO = 12345;
     private  int MINIMAL_YEAR_OF_BIRTH = 2001;
-    private static final String TAG_FLG = "flag";
     private ImageButton rotateLeft,rotateRight;
-
+    ArrayAdapter<CharSequence> genderAdapter, mobileAdapter;
+    ArrayAdapter<String> ageAdapter;
+    private static final String TAG_FLG = "flag";
+    private static final String TAG_NAME = "name";
+    private static final String TAG_IMG = "image";
+    private static final String TAG_MOB = "mobile";
+    private static final String TAG_PASS = "password";
+    private static final String TAG_EMAIL= "email";
+    private static final String TAG_USRCHK = "usercheck";
+    private static final String TAG_MOBCHK = "mobilecheck";
+    private static final String TAG_AGE= "age";
+    private static final String TAG_GEN= "gender";
+    private static final int CELL_CODE_LENGTH= 3;
+    private static final int CELL_PHONE_LENGTH= 7;
     private Spinner spinnerCellCode, spinnerAge, spinnerGender;
     public ErrorHandler err;
-    private String areaCode = "", userGender = "", yearOfBirth = "";
+    private String areaCode = "", userGender = "", yearOfBirth = "",prevMobile ="", prevEmail="";
+    public  final String KEY_EMAIL = "email";
     private int MIN_AGE = 14;
     private int MOBILE_LENGTH = 10;
     private ProgressDialog progress;
     private Bitmap originbitmap=null;
     private Bitmap scaled=null;
     private int rotate;
-
+    private Intent editProfileIntent;
+    private DBcontroller dbController;
+    private HashMap<String, String> userDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_sign_up);
 
         err = new ErrorHandler();
@@ -210,7 +225,33 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
         rotateRight.setOnClickListener(this);
         rotateLeft.setOnClickListener(this);
+
+        editProfileIntent = getIntent();
+        userDetails = (HashMap<String, String>) editProfileIntent.getSerializableExtra("USER_DETAILS");
+        if (userDetails != null) {
+            Log.d("HashMap", userDetails.get(KEY_EMAIL));
+            getDataFromDBController();
+        }
+
     }
+
+    private void getDataFromDBController()
+    {
+        String userStr = userDetails.get(KEY_EMAIL);
+        Log.d("getDataFromDBController", "getting data to UI");
+        BasicNameValuePair tagReq = new BasicNameValuePair("tag","profile");
+        BasicNameValuePair method = new BasicNameValuePair("method","getprofile");
+        BasicNameValuePair userNameParam = new BasicNameValuePair("username",userStr);
+        List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+        nameValuePairList.add(tagReq);
+        nameValuePairList.add(method);
+        nameValuePairList.add(userNameParam);
+        Log.d("user",userStr);
+        dbController =  new DBcontroller(this,this);
+        dbController.execute(nameValuePairList);
+    }
+
+
 
 
     /**
@@ -361,6 +402,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
                 switch(flg)
                 {
+                    case "profile details retrieval":
+                        Log.d("profile", resStr);
+                        Log.d("class", this.getClass().getSimpleName());
+                        fillDataFromDBToUI(jsonObj);
+                        break;
                     case "user already exists":
                         editTextemail.setError("This email already exists");
                         break;
@@ -381,6 +427,119 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             Log.d("ServiceHandler", "Couldn't get any data from the url");
         }
 
+/*
+
+                    case "wrong input":
+                        if (jsonObj.getString(TAG_USRCHK) == "user already exists")
+                            editTextemail.setError("This email is taken");
+                        if (jsonObj.getString(TAG_MOBCHK) == "mobile already exists")
+                            editTextmobile.setError("This mobile is taken");
+                        break;
+                    case "succeed":
+                        //dialog and go to main freg
+                        getActivity().getFragmentManager().popBackStack();
+                        break;
+                }
+*/
+
+
+
+
+
+
+
+
+    }
+
+    private void fillDataFromDBToUI(JSONObject jsonObj)
+    {
+        Log.d("setOnUI", "UI DATA");
+        setTexts(jsonObj);
+        setSpinners(jsonObj);
+        setImage(jsonObj);
+
+    }
+
+    private void setImage (JSONObject jsonObj)
+    {
+        try {
+            Log.d("setOnUI", "Image");
+            String imageString = jsonObj.getString(TAG_IMG);
+            if (imageString.equals("nofile"))
+                Log.d("setOnUI", "nofile");
+            else {
+                scaled = decodeBase64(imageString);
+                imgv.setImageBitmap(scaled);
+            }
+
+
+        }
+
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static Bitmap decodeBase64(String input)
+    {
+        byte[] decodedByte = Base64.decode(input, 0);
+        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+    }
+
+    private void setTexts (JSONObject jsonObj)
+    {
+        try{
+
+            Log.d("setOnUI", "Texts");
+            editTextPassword.setText(jsonObj.getString(TAG_PASS));
+            editTextConfirmPass.setText(jsonObj.getString(TAG_PASS));
+            editTextname.setText(jsonObj.getString(TAG_NAME));
+
+            prevEmail = jsonObj.getString(TAG_EMAIL);
+            editTextemail.setText(prevEmail);
+
+            prevMobile = areaCode;
+            String cellPhone = jsonObj.getString(TAG_MOB).substring(CELL_CODE_LENGTH);
+            prevMobile += cellPhone;
+            editTextmobile.setText(cellPhone);
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setSpinners(JSONObject jsonObj)
+    {
+        int spinnerPosition;
+        String stringForSpinner;
+        try {
+            Log.d("setOnUI", "Spinners");
+            stringForSpinner = jsonObj.getString(TAG_GEN);
+            if (stringForSpinner != null) {
+                Log.d("gender", stringForSpinner);
+                spinnerPosition = genderAdapter.getPosition(stringForSpinner);
+                spinnerGender.setSelection(spinnerPosition);
+            }
+
+            stringForSpinner = jsonObj.getString(TAG_AGE);
+            if (stringForSpinner != null) {
+                Log.d("age", stringForSpinner);
+                spinnerPosition = ageAdapter.getPosition(stringForSpinner);
+                spinnerAge.setSelection(spinnerPosition);
+            }
+
+            stringForSpinner = jsonObj.getString(TAG_MOB);
+            stringForSpinner = stringForSpinner.substring(0, stringForSpinner.length() - CELL_PHONE_LENGTH);
+            if (stringForSpinner != null) {
+                Log.d("mobile", stringForSpinner);
+                spinnerPosition = mobileAdapter.getPosition(stringForSpinner);
+                spinnerCellCode.setSelection(spinnerPosition);
+            }
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -415,8 +574,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             nameValuePairList.add(gender);
             nameValuePairList.add(image);
 
-            DBcontroller dbController = new DBcontroller(this,this);
-
+            dbController = new DBcontroller(this,this);
             dbController.execute(nameValuePairList);
         }
         else{

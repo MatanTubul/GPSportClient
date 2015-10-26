@@ -105,8 +105,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         cal = Calendar.getInstance();
 
 
-        btnstartTime.setText(getCorrentTime());
-        btnendTime.setText(getCorrentTime());
+        btnstartTime.setText(getCurrentTime());
+        btnendTime.setText(getCurrentTime());
 
         btnStartdate.setText(getCurrentDate());
         btnEndDate.setText(getCurrentDate());
@@ -300,8 +300,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                          .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                              @Override
                              public void onClick(DialogInterface dialog, int which) {
-                                 btnstartTime.setText(getCorrentTime());
-                                 btnendTime.setText(getCorrentTime());
+                                 btnstartTime.setText(getCurrentTime());
+                                 btnendTime.setText(getCurrentTime());
 
 
 
@@ -318,7 +318,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
      * return the current time as string
      * @return -current time
      */
-    public String getCorrentTime()
+    public String getCurrentTime()
     {
         String min = "";
 
@@ -409,8 +409,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                                 .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        btnstartTime.setText(getCorrentTime());
-                                        btnendTime.setText(getCorrentTime());
+                                        btnstartTime.setText(getCurrentTime());
+                                        btnendTime.setText(getCurrentTime());
 
 
 
@@ -583,7 +583,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
             }
             if(resultCode == Activity.RESULT_CANCELED){
-                Log.d("Acttivity canceled","canceled");
+                Log.d("Activity canceled","canceled");
 
             }
         }

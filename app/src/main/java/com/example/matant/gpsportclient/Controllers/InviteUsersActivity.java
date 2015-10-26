@@ -195,7 +195,7 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
             case R.id.ButtonDiscard:
             {
                 Intent i = new Intent();
-                setResult(RESULT_CANCELED,i);;
+                setResult(RESULT_CANCELED,i);
                 finish();
                 break;
             }
