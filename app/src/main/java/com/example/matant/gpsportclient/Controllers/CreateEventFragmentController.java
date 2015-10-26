@@ -6,7 +6,6 @@ import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInstaller;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -23,7 +21,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import com.example.matant.gpsportclient.AsyncResponse;
@@ -33,32 +30,22 @@ import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.CreateInviteUsersRow;
 import com.example.matant.gpsportclient.Utilities.CreateInvitedUsersAdapter;
 import com.example.matant.gpsportclient.Utilities.DatePicker;
-import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.Utilities.MyAdapter;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.example.matant.gpsportclient.Utilities.TimePicker;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.maps.model.LatLng;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -80,6 +67,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     private List<CreateInviteUsersRow> invitedUsers = null;
     private CreateInvitedUsersAdapter invidedAdapter;
     private SessionManager sm;
+
+
 
 
     public CreateEventFragmentController() {
@@ -104,9 +93,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
         cal = Calendar.getInstance();
 
-
-        btnstartTime.setText(getCurrentTime());
-        btnendTime.setText(getCurrentTime());
+        btnstartTime.setText(getCorrentTime());
+        btnendTime.setText(getCorrentTime());
 
         btnStartdate.setText(getCurrentDate());
         btnEndDate.setText(getCurrentDate());
@@ -300,8 +288,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                          .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                              @Override
                              public void onClick(DialogInterface dialog, int which) {
-                                 btnstartTime.setText(getCurrentTime());
-                                 btnendTime.setText(getCurrentTime());
+                                 btnstartTime.setText(getCorrentTime());
+                                 btnendTime.setText(getCorrentTime());
 
 
 
@@ -318,7 +306,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
      * return the current time as string
      * @return -current time
      */
-    public String getCurrentTime()
+    public String getCorrentTime()
     {
         String min = "";
 
@@ -409,8 +397,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                                 .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        btnstartTime.setText(getCurrentTime());
-                                        btnendTime.setText(getCurrentTime());
+                                        btnstartTime.setText(getCorrentTime());
+                                        btnendTime.setText(getCorrentTime());
 
 
 
@@ -583,7 +571,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
             }
             if(resultCode == Activity.RESULT_CANCELED){
-                Log.d("Activity canceled","canceled");
+                Log.d("Acttivity canceled","canceled");
 
             }
         }
