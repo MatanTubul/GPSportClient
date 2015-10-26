@@ -22,6 +22,7 @@ import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.ImageConvertor;
 import com.example.matant.gpsportclient.Utilities.InviteUsersArrayAdapter;
 import com.example.matant.gpsportclient.Utilities.InviteUsersListRow;
+import com.example.matant.gpsportclient.Utilities.SessionManager;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -31,6 +32,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class InviteUsersActivity extends AppCompatActivity implements AsyncResponse, View.OnClickListener{
@@ -43,7 +45,7 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
     ListView listViewUsers;
     List<InviteUsersListRow> rowUsers;
     private InviteUsersArrayAdapter Useradapter = null;
-
+    private SessionManager sm;
 
 
     @Override
@@ -62,18 +64,17 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(editTextSearch.getText().length() > 0) {
-                    Log.d("send request","searching...");
+                if (editTextSearch.getText().length() > 0) {
+                    Log.d("send request", "searching...");
                     sendDataToDBController();
-                }
-                else{
-                    Log.d("do nothing","doing nothing");
-                   if(Useradapter != null) {
-                       Log.d("do nothing","clear adapter");
+                } else {
+                    Log.d("do nothing", "doing nothing");
+                    if (Useradapter != null) {
+                        Log.d("do nothing", "clear adapter");
                        /*Useradapter.clear();
                        Useradapter.notifyDataSetChanged();*/
-                       listViewUsers.setAdapter(null);
-                   }
+                        listViewUsers.setAdapter(null);
+                    }
                 }
 
 
@@ -88,6 +89,7 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
         listViewUsers = (ListView) findViewById(R.id.listViewusers);
         listViewUsers.setItemsCanFocus(true);
         btnSave.setOnClickListener(this);
+        sm = new SessionManager(this);
     }
 
     @Override
@@ -106,31 +108,39 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                         JSONArray jsonarr = json.getJSONArray("users");
                         Log.d("array",jsonarr.toString());
                         rowUsers = new ArrayList<InviteUsersListRow>();
+                        HashMap<String,String> hm = sm.getUserDetails();
                         for(int i = 0; i < jsonarr.length();i++){
                             {
-                                Log.d("user is", jsonarr.getJSONObject(i).toString());
-                                String name = jsonarr.getJSONObject(i).getString("name");
-                                String mobile = jsonarr.getJSONObject(i).getString("mobile");
-                                Bitmap profileImage = ImageConvertor.decodeBase64(jsonarr.getJSONObject(i).getString("image"));
-                                int  imgStatus = R.drawable.add_user_50;
-                                if(Useradapter != null){
-                                    Log.d("Useradapter invited size:",String.valueOf(Useradapter.getUsers().size()));
-                                    for(int j = 0 ;j<Useradapter.getUsers().size();j++)
-                                    {
-                                        if(Useradapter.getUsers().get(j).getDesc().equals(mobile))
+                                Boolean flag = jsonarr.getJSONObject(i).getString("mobile").equals(sm.getUserDetails().get(sm.KEY_MOBILE));
+                                String s1 = jsonarr.getJSONObject(i).getString("mobile");
+                                String s2 = sm.getUserDetails().get(sm.KEY_MOBILE);
+                                if(!jsonarr.getJSONObject(i).getString("mobile").equals(sm.getUserDetails().get(sm.KEY_MOBILE)))
+                                {
+                                    Log.d("user is", jsonarr.getJSONObject(i).toString());
+                                    String name = jsonarr.getJSONObject(i).getString("name");
+                                    String mobile = jsonarr.getJSONObject(i).getString("mobile");
+                                    Bitmap profileImage = ImageConvertor.decodeBase64(jsonarr.getJSONObject(i).getString("image"));
+                                    int  imgStatus = R.drawable.add_user_50;
+                                    if(Useradapter != null){
+                                        Log.d("Useradapter invited size:",String.valueOf(Useradapter.getUsers().size()));
+                                        for(int j = 0 ;j<Useradapter.getUsers().size();j++)
                                         {
-                                             imgStatus = R.drawable.remove_user_50;
-                                            Log.d("set status2.1",String.valueOf(imgStatus));
-                                            break;
+                                            if(Useradapter.getUsers().get(j).getDesc().equals(mobile))
+                                            {
+                                                imgStatus = R.drawable.remove_user_50;
+                                                Log.d("set status2.1",String.valueOf(imgStatus));
+                                                break;
+                                            }
                                         }
-                                    }
-                                }else{
+                                    }else{
 
-                                    imgStatus = R.drawable.add_user_50;
-                                    Log.d("set status1",String.valueOf(imgStatus));
+                                        imgStatus = R.drawable.add_user_50;
+                                        Log.d("set status1",String.valueOf(imgStatus));
+                                    }
+                                    InviteUsersListRow rowUser = new InviteUsersListRow(imgStatus, name, mobile,profileImage);
+                                    rowUsers.add(rowUser);
                                 }
-                                InviteUsersListRow rowUser = new InviteUsersListRow(imgStatus, name, mobile,profileImage);
-                                rowUsers.add(rowUser);
+
                             }
                             if(Useradapter == null)
                                 Useradapter = new InviteUsersArrayAdapter(this,R.layout.invite_users_listview_row,rowUsers);
