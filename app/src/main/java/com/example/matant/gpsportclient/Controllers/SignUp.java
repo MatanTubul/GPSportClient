@@ -242,7 +242,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                 try {
                     String regid = gcm.register(SENDER_ID);
                     Log.d("registerGCM id",regid);
-                    sm.StoreUserSession(regid,sm.KEY_USERID);
+                    sm.StoreUserSession(regid,sm.KEY_REGID);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
