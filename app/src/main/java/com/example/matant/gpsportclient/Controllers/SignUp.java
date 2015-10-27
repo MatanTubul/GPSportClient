@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,8 @@ import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.ProfileManager;
+import com.example.matant.gpsportclient.Utilities.SessionManager;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -39,6 +42,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -64,12 +68,12 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     private static final String TAG_MOBCHK = "mobilecheck";
     private static final String TAG_AGE= "age";
     private static final String TAG_GEN= "gender";
-    private static final String TAG_USECASE= "usecase";
     private static final int CELL_CODE_LENGTH= 3;
     private static final int CELL_PHONE_LENGTH= 7;
     private Spinner spinnerCellCode, spinnerAge, spinnerGender;
     public ErrorHandler err;
     private String areaCode = "", userGender = "", yearOfBirth = "",prevMobile ="", prevEmail="";
+    public  final String KEY_EMAIL = "email";
     private int MIN_AGE = 14;
     private int MOBILE_LENGTH = 10;
     private ProgressDialog progress;
@@ -79,7 +83,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     private Intent editProfileIntent;
     private DBcontroller dbController;
     private HashMap<String, String> userDetails;
-    private String useCaseFlag;
+    private GoogleCloudMessaging gcm;
+    private final String SENDER_ID = "846271397731";
+    private SessionManager sm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +93,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         setContentView(R.layout.activity_sign_up);
 
         err = new ErrorHandler();
-        useCaseFlag = "SignUp";
+
         //updating the minimal age
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -96,13 +102,18 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             MINIMAL_YEAR_OF_BIRTH++;
         }
         ///
-
+        gcm = GoogleCloudMessaging.getInstance(this.getApplicationContext());
+        sm = new SessionManager(this);
         buttonSignup = (Button) findViewById(R.id.ButtonSubmit);
         buttonSelectIMg = (Button) findViewById(R.id.buttonSelectImg);
         rotateLeft = (ImageButton)findViewById(R.id.imageButtonRleftt);
         rotateRight = (ImageButton)findViewById(R.id.imageButtonRright);
+
+
+
         editTextname = (EditText) findViewById(R.id.editTextName);
         editTextemail = (EditText) findViewById(R.id.editTextEmail);
+
         editTextmobile = (EditText) findViewById(R.id.editTextMobile);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         editTextConfirmPass = (EditText) findViewById(R.id.editTextConfirmPass);
@@ -118,11 +129,15 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             years.add(Integer.toString(i));
 
         }
-        ageAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, years);
+
+        ArrayAdapter<String> ageAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, years);
         //ArrayAdapter<CharSequence> ageAdapter = ArrayAdapter.createFromResource(this, R.array.age, android.R.layout.simple_spinner_item);
+
         ageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spinnerAge.setAdapter(ageAdapter);
         //spinnerAge.getBackground().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+
         spinnerAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -141,9 +156,13 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         });
 
         spinnerGender = (Spinner) findViewById(R.id.spinnerGender);
-        genderAdapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
+
+        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
+
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spinnerGender.setAdapter(genderAdapter);
+
         spinnerGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -162,9 +181,12 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
 
         spinnerCellCode = (Spinner) findViewById(R.id.spinnerMobile);
-        mobileAdapter = ArrayAdapter.createFromResource(this, R.array.area_code, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> mobileAdapter = ArrayAdapter.createFromResource(this, R.array.area_code, android.R.layout.simple_spinner_item);
+
         mobileAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spinnerCellCode.setAdapter(mobileAdapter);
+
         spinnerCellCode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -181,7 +203,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             }
         });
 
+
         editTextname.setOnClickListener(this);
+
         editTextname.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -206,23 +230,25 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
         buttonSignup.setOnClickListener(this);
         buttonSelectIMg.setOnClickListener(this);
+
         rotateRight.setOnClickListener(this);
         rotateLeft.setOnClickListener(this);
 
         editProfileIntent = getIntent();
         userDetails = (HashMap<String, String>) editProfileIntent.getSerializableExtra("USER_DETAILS");
         if (userDetails != null) {
-            useCaseFlag = "Profile";
-            buttonSignup.setText("SUBMIT CHANGES");
-            Log.d("HashMap", userDetails.get(TAG_EMAIL));
+            Log.d("HashMap", userDetails.get(KEY_EMAIL));
             getDataFromDBController();
         }
+
     }
+
 
     private void getDataFromDBController()
     {
-        String userStr = userDetails.get(TAG_EMAIL);
+        String userStr = userDetails.get(KEY_EMAIL);
         Log.d("getDataFromDBController", "getting data to UI");
+
         BasicNameValuePair tagReq = new BasicNameValuePair("tag","profile");
         BasicNameValuePair method = new BasicNameValuePair("method","getprofile");
         BasicNameValuePair userNameParam = new BasicNameValuePair("username",userStr);
@@ -234,6 +260,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         dbController =  new DBcontroller(this,this);
         dbController.execute(nameValuePairList);
     }
+
+
 
 
     /**
@@ -275,6 +303,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                 } else if (editTextmobile.length() + areaCode.length() != MOBILE_LENGTH) {
                     editTextmobile.setError("Mobile is not in the correct format");
                 } else {
+                   // registerGCM();
                     sendDataToDBController();
                 }
 
@@ -315,6 +344,25 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             }
 
         }
+    }
+
+    private void registerGCM() {
+        new AsyncTask<Void,Void,String>(){
+
+            @Override
+            protected String doInBackground(Void... params) {
+
+                String regId = null;
+                try {
+                    regId = gcm.register(SENDER_ID);
+                    Log.d("GCM regid",regId);
+                    sm.StoreUserSession(regId,sm.KEY_REGID);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
     }
 
 
@@ -386,24 +434,16 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                         Log.d("class", this.getClass().getSimpleName());
                         fillDataFromDBToUI(jsonObj);
                         break;
-                    case "wrong input":
-                        if (jsonObj.getString(TAG_USRCHK) == "user already exists")
-                            editTextemail.setError("This email is taken");
-                        if (jsonObj.getString(TAG_MOBCHK) == "mobile already exists")
-                            editTextmobile.setError("This mobile is taken");
+                    case "user already exists":
+                        editTextemail.setError("This email already exists");
+                        break;
+                    case "mobile already exists":
+                        editTextmobile.setError("Mobile already exists");
                         break;
                     case "succeed":
-                        if (jsonObj.getString(TAG_USECASE) == "register")
-                        {
-                            startActivity(new Intent(SignUp.this, Login.class));
-                            resetFields();
-                            finish();
-                        }
-                        else
-                        {
-                            //dialog and go to main freg
-                            this.getFragmentManager().popBackStack();
-                        }
+                        startActivity(new Intent(SignUp.this, Login.class));
+                        resetFields();
+                        finish();
                         break;
                 }
 
@@ -413,6 +453,28 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         } else {
             Log.d("ServiceHandler", "Couldn't get any data from the url");
         }
+
+/*
+
+                    case "wrong input":
+                        if (jsonObj.getString(TAG_USRCHK) == "user already exists")
+                            editTextemail.setError("This email is taken");
+                        if (jsonObj.getString(TAG_MOBCHK) == "mobile already exists")
+                            editTextmobile.setError("This mobile is taken");
+                        break;
+                    case "succeed":
+                        //dialog and go to main freg
+                        getActivity().getFragmentManager().popBackStack();
+                        break;
+                }
+*/
+
+
+
+
+
+
+
 
     }
 
@@ -507,54 +569,24 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         }
     }
 
-
-
-
-
-
     /**
      * executing the register request to the server.
      */
     @Override
     public void sendDataToDBController() {
 
+        //String regID = sm.getUserDetails().get(sm.KEY_USERID);
+        //Log.d("regID is",regID);
         String userMobile = areaCode;
         userMobile += editTextmobile.getText().toString();
-
-        BasicNameValuePair tagreq = null, nEmail = null, pEmail = null, email = null, nMobile = null, pMobile = null,
-                    mobile = null, name = null, password = null, age = null, gender = null, changed = null;
-
-        if (useCaseFlag.equals("Profile"))
-        {
-            tagreq = new BasicNameValuePair("tag", "updateprofile");
-            nEmail = new BasicNameValuePair("newemail", editTextemail.getText().toString());
-            pEmail = new BasicNameValuePair("prevemail", prevEmail);
-            nMobile = new BasicNameValuePair("newmobile", userMobile);
-            pMobile = new BasicNameValuePair("prevmobile", prevMobile);
-
-            String whoAsChanged  = "0";
-            if (!prevEmail.equals(editTextemail.getText().toString()))
-                whoAsChanged = "1";
-            if (!prevMobile.equals(userMobile)) {
-                if (whoAsChanged.equals("1"))
-                    whoAsChanged = "3";
-                else
-                    whoAsChanged = "2";
-            }
-            changed = new BasicNameValuePair("changed", whoAsChanged);
-        }
-        else //useCaseFlag.equals("SignUp")
-        {
-            tagreq = new BasicNameValuePair("tag", "signup");
-            email = new BasicNameValuePair("email", editTextemail.getText().toString());
-            mobile = new BasicNameValuePair("mobile", userMobile);
-        }
-
-        name = new BasicNameValuePair("firstname", editTextname.getText().toString());
-        password = new BasicNameValuePair("password", editTextPassword.getText().toString());
-        age = new BasicNameValuePair("birthyear", yearOfBirth);
-        gender = new BasicNameValuePair("gender", userGender);
-
+        BasicNameValuePair tagreq = new BasicNameValuePair("tag", "signup");
+       // BasicNameValuePair regid = new BasicNameValuePair("regid", regID);
+        BasicNameValuePair name = new BasicNameValuePair("firstname", editTextname.getText().toString());
+        BasicNameValuePair email = new BasicNameValuePair("email", editTextemail.getText().toString());
+        BasicNameValuePair mobile = new BasicNameValuePair("mobile", userMobile);
+        BasicNameValuePair password = new BasicNameValuePair("password", editTextPassword.getText().toString());
+        BasicNameValuePair age = new BasicNameValuePair("birthyear", yearOfBirth);
+        BasicNameValuePair gender = new BasicNameValuePair("gender", userGender);
         imgv.buildDrawingCache();
         Bitmap bmap = imgv.getDrawingCache();
         String picture = setPhoto(bmap);
@@ -565,24 +597,13 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
             nameValuePairList.add(tagreq);
             nameValuePairList.add(name);
+            nameValuePairList.add(email);
+            nameValuePairList.add(mobile);
+            //nameValuePairList.add(regid);
             nameValuePairList.add(password);
             nameValuePairList.add(age);
             nameValuePairList.add(gender);
             nameValuePairList.add(image);
-
-            if (useCaseFlag.equals("Profile"))
-            {
-                nameValuePairList.add(nEmail);
-                nameValuePairList.add(nMobile);
-                nameValuePairList.add(pEmail);
-                nameValuePairList.add(pMobile);
-                nameValuePairList.add(changed);
-            }
-            else //useCaseFlag.equals("SignUp")
-            {
-                nameValuePairList.add(email);
-                nameValuePairList.add(mobile);
-            }
 
             dbController = new DBcontroller(this,this);
             dbController.execute(nameValuePairList);
@@ -602,13 +623,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
     }
 
-
     @Override
     public void preProcess() {
-        if (useCaseFlag.equals("Profile"))
-            progress = ProgressDialog.show(this, "Sign up", "Creating your account", true);
-        else
-            progress = ProgressDialog.show(this, "Profile update", "Updating your account", true);
+        progress = ProgressDialog.show(this, "Sign up",
+                "Creating your account", true);
+        
     }
 
     /**

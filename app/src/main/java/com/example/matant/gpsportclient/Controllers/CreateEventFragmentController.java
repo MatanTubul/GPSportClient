@@ -84,6 +84,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
         //initialize the widgets
         btnStartdate = (Button) v.findViewById(R.id.buttonFromDate);
+
         btnstartTime = (Button) v.findViewById(R.id.buttonFromTime);
         btnEndDate = (Button) v.findViewById(R.id.buttonEndDate);
         btnendTime = (Button) v.findViewById(R.id.buttonEndTime);

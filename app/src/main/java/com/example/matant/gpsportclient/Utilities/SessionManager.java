@@ -31,6 +31,7 @@ public class SessionManager {
     public  String KEY_NAME = "name";
     public final String KEY_MOBILE = "mobile";
     public final String KEY_USERID = "user_id";
+    public final String KEY_REGID = "user_id";
 
     public  SessionManager(Context context)
     {
@@ -51,7 +52,7 @@ public class SessionManager {
         user.put(KEY_NAME, pref.getString(KEY_NAME, null));
         user.put(KEY_MOBILE,pref.getString(KEY_MOBILE,null));
         user.put(KEY_USERID,pref.getString(KEY_USERID,null));
-
+        user.put(KEY_REGID,pref.getString(KEY_REGID,null));
         return user;
     }
 
