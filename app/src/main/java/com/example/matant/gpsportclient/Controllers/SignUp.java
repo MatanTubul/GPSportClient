@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,8 @@ import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.ProfileManager;
+import com.example.matant.gpsportclient.Utilities.SessionManager;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -39,6 +42,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -46,6 +50,7 @@ import java.util.List;
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener,AsyncResponse {
 
+    private static final String SENDER_ID ="846271397731" ;
     private Button buttonSignup, buttonSelectIMg;
     private EditText editTextname, editTextemail, editTextmobile, editTextPassword, editTextConfirmPass;
     private ImageView imgv;
@@ -80,6 +85,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     private DBcontroller dbController;
     private HashMap<String, String> userDetails;
     private String useCaseFlag;
+    private GoogleCloudMessaging gcm;
+    private SessionManager sm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +103,14 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             MINIMAL_YEAR_OF_BIRTH++;
         }
         ///
-
+        gcm = GoogleCloudMessaging.getInstance(this.getApplicationContext());
+        sm = new SessionManager(this);
+        String regID = sm.getUserDetails().get(sm.KEY_REGID);
+        if(regID == null)
+        {
+            Log.d("register","begin register");
+            registerGCM();
+        }
         buttonSignup = (Button) findViewById(R.id.ButtonSubmit);
         buttonSelectIMg = (Button) findViewById(R.id.buttonSelectImg);
         rotateLeft = (ImageButton)findViewById(R.id.imageButtonRleftt);
@@ -217,6 +231,24 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             Log.d("HashMap", userDetails.get(TAG_EMAIL));
             getDataFromDBController();
         }
+    }
+
+    private void registerGCM() {
+        new AsyncTask<Void,Void,String>(){
+
+            @Override
+            protected String doInBackground(Void... params) {
+
+                try {
+                    String regid = gcm.register(SENDER_ID);
+                    Log.d("registerGCM id",regid);
+                    sm.StoreUserSession(regid,sm.KEY_USERID);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
     }
 
     private void getDataFromDBController()
@@ -522,7 +554,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         userMobile += editTextmobile.getText().toString();
 
         BasicNameValuePair tagreq = null, nEmail = null, pEmail = null, email = null, nMobile = null, pMobile = null,
-                mobile = null, name = null, password = null, age = null, gender = null, changed = null;
+                mobile = null, name = null, password = null, age = null, gender = null, changed = null,regId = null;
 
         if (useCaseFlag.equals("Profile"))
         {
@@ -549,7 +581,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             email = new BasicNameValuePair("email", editTextemail.getText().toString());
             mobile = new BasicNameValuePair("mobile", userMobile);
         }
-
+        Log.d("prefferences id",sm.getUserDetails().get(sm.KEY_REGID));
+        regId = new BasicNameValuePair("regid", sm.getUserDetails().get(sm.KEY_REGID));
         name = new BasicNameValuePair("firstname", editTextname.getText().toString());
         password = new BasicNameValuePair("password", editTextPassword.getText().toString());
         age = new BasicNameValuePair("birthyear", yearOfBirth);
@@ -566,6 +599,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             nameValuePairList.add(tagreq);
             nameValuePairList.add(name);
             nameValuePairList.add(password);
+            nameValuePairList.add(regId);
             nameValuePairList.add(age);
             nameValuePairList.add(gender);
             nameValuePairList.add(image);
