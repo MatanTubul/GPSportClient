@@ -31,7 +31,7 @@ public class SessionManager {
     public  String KEY_NAME = "name";
     public final String KEY_MOBILE = "mobile";
     public final String KEY_USERID = "user_id";
-    public final String KEY_REGID = "user_id";
+    public final String KEY_REGID = "reg_id";
 
     public  SessionManager(Context context)
     {
@@ -40,8 +40,8 @@ public class SessionManager {
         editor = pref.edit();
     }
 
-    public void StoreUserSession(String Email,String Key){
-        editor.putString(Key,Email);
+    public void StoreUserSession(String val,String Key){
+        editor.putString(Key,val);
         editor.commit();
     }
 
