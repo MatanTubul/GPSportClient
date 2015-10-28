@@ -67,8 +67,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     private List<CreateInviteUsersRow> invitedUsers = null;
     private CreateInvitedUsersAdapter invidedAdapter;
     private SessionManager sm;
-
-
+    private AlertDialog.Builder alert;
+    private AlertDialog alertdialog = null;
 
 
     public CreateEventFragmentController() {
@@ -373,25 +373,30 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                 {
                     case "success": {
                         Log.d("event created", "success to create event");
-                        new AlertDialog.Builder(getActivity())
-                                .setTitle("Event")
-                                .setMessage("Event was created successfully")
-                                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent i = new Intent(getActivity(), MainScreen.class);
+                        alert = new AlertDialog.Builder(getActivity());
+                        alert.setTitle("Event");
+                        alert.setMessage("Event was created successfully");
+                        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                     /*   Intent i = new Intent(getActivity(), MainScreen.class);
                                         startActivity(i);
-                                        getActivity().finish();
-                                    }
-                                })
-                                .setIconAttribute(android.R.attr.alertDialogIcon)
-                                .show();
+                                        getActivity().finish();*/
+
+                                reloadApp();
+
+
+                            }
+
+                        });
+                        alert.setIconAttribute(android.R.attr.alertDialogIcon);
+                         alertdialog = alert.show();
                         break;
 
                     }
                     case "failed":
-                        Log.d("Created failed","failed to create event");
                     {
+                        Log.d("Created failed","failed to create event");
                         new AlertDialog.Builder(getActivity())
                                 .setTitle("Create event failed!")
                                 .setMessage(jsonObj.getString("msg"))
@@ -400,9 +405,6 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                                     public void onClick(DialogInterface dialog, int which) {
                                         btnstartTime.setText(getCorrentTime());
                                         btnendTime.setText(getCorrentTime());
-
-
-
                                     }
                                 })
                                 .setIconAttribute(android.R.attr.alertDialogIcon)
@@ -425,7 +427,9 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     /**
      * send request to server
      */
-
+    public void reloadApp(){
+        startActivity(new Intent(getActivity(), MainScreen.class));
+    }
     @Override
     public void sendDataToDBController() {
 
@@ -434,7 +438,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         {
             Log.d("location is:","location not found");
             addressEditText.setError("Location was not found!");
-            return;
+            //return;
         }
         Log.d("found location",lonlat.latitude+""+lonlat.longitude);
         BasicNameValuePair tagreq = new BasicNameValuePair("tag","create_event");
@@ -499,6 +503,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                 "Building Event...", true);
     }
 
+
+
     /**
      * check the input of the user.
      * @return
@@ -528,6 +534,12 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
             valid = false;
         }
         return valid;
+    }
+    public void onStop(){
+        super.onStop();
+        if(alert != null){
+            alertdialog.dismiss();
+        }
     }
 
     /**

@@ -13,10 +13,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.matant.gpsportclient.AsyncResponse;
+import com.example.matant.gpsportclient.GoogleCloudNotifications.GCMIntentService;
 import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
+import com.google.android.gcm.GCMRegistrar;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -59,6 +61,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
         signUpB.setOnClickListener(this);
         forgotPasswordTV.setPaintFlags(forgotPasswordTV.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         forgotPasswordTV.setOnClickListener(this);
+        GCMRegistrar.register(Login.this, GCMIntentService.SENDER_ID);
     }
 
     public void onClick (View v) {
@@ -109,8 +112,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
         nameValuePairList.add(tagReq);
         nameValuePairList.add(userNameParam);
         nameValuePairList.add(passwordParam);
+        Log.d("sending login req", "login");
         dbController =  new DBcontroller(this,this);
-
         dbController.execute(nameValuePairList);
 
     }

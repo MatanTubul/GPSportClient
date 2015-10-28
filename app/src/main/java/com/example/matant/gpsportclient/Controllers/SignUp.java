@@ -30,10 +30,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.matant.gpsportclient.AsyncResponse;
+import com.example.matant.gpsportclient.GoogleCloudNotifications.GCMIntentService;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.ProfileManager;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
+import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import org.apache.http.NameValuePair;
@@ -102,7 +104,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         if ((year - MINIMAL_YEAR_OF_BIRTH) >= MIN_AGE) {
             MINIMAL_YEAR_OF_BIRTH++;
         }
-        ///
+       /* // check GCM services
         gcm = GoogleCloudMessaging.getInstance(this.getApplicationContext());
         sm = new SessionManager(this);
         String regID = sm.getUserDetails().get(sm.KEY_REGID);
@@ -111,6 +113,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             Log.d("register","begin register");
             registerGCM();
         }
+
+        ///*/
+
         buttonSignup = (Button) findViewById(R.id.ButtonSubmit);
         buttonSelectIMg = (Button) findViewById(R.id.buttonSelectImg);
         rotateLeft = (ImageButton)findViewById(R.id.imageButtonRleftt);
@@ -262,7 +267,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         nameValuePairList.add(tagReq);
         nameValuePairList.add(method);
         nameValuePairList.add(userNameParam);
-        Log.d("user",userStr);
+        Log.d("user", userStr);
         dbController =  new DBcontroller(this,this);
         dbController.execute(nameValuePairList);
     }
@@ -581,8 +586,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             email = new BasicNameValuePair("email", editTextemail.getText().toString());
             mobile = new BasicNameValuePair("mobile", userMobile);
         }
-        Log.d("prefferences id",sm.getUserDetails().get(sm.KEY_REGID));
-        regId = new BasicNameValuePair("regid", sm.getUserDetails().get(sm.KEY_REGID));
+        Log.d("prefferences id",GCMRegistrar.getRegistrationId(this));
+        regId = new BasicNameValuePair("regid", GCMRegistrar.getRegistrationId(this));
         name = new BasicNameValuePair("firstname", editTextname.getText().toString());
         password = new BasicNameValuePair("password", editTextPassword.getText().toString());
         age = new BasicNameValuePair("birthyear", yearOfBirth);
