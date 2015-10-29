@@ -455,6 +455,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         BasicNameValuePair participants = new BasicNameValuePair("max_participants",maxParticipantsEdittext.getText().toString());
         BasicNameValuePair scheduled = new BasicNameValuePair("scheduled",String.valueOf(reccuringEventCbox.isChecked()));
         BasicNameValuePair mob_manager = new BasicNameValuePair("manager",sm.getUserDetails().get(sm.KEY_USERID));
+        BasicNameValuePair manager_name = new BasicNameValuePair("manager_name",sm.getUserDetails().get(sm.KEY_NAME));
 
         List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
 
@@ -479,7 +480,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
             }
         }
 
-
+        nameValuePairList.add(manager_name);
         nameValuePairList.add(mob_manager);
         nameValuePairList.add(tagreq);
         nameValuePairList.add(sport);

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/relativlayoutGcmMessage"
+    android:background="#ffffff">
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="this is the message"
+        android:textSize="20sp"
+        android:layout_below="@+id/separatorUp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/textViewWhen"
+        android:layout_toEndOf="@+id/textViewWhen"
+        android:layout_above="@+id/textViewDate"
+        android:layout_alignTop="@+id/textViewUser" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutBtn"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/separatorDown"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <Button android:text="Join"
+            android:id="@+id/ButtonJoin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:textColor="#ffffff"
+            android:background="#606060"
+            android:layout_below="@+id/linearLayoutBtn"
+            android:layout_toRightOf="@+id/textViewUser"
+            android:layout_toEndOf="@+id/textViewUser">
+        </Button>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:id="@+id/separatorUp"
+        android:visibility="visible"
+        android:background="#FF0000"
+        android:layout_marginTop="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:id="@+id/separatorDown"
+        android:visibility="visible"
+        android:background="#FF0000"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User ,"
+        android:id="@+id/textViewUser"
+        android:layout_below="@+id/separatorUp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"
+        android:textSize="20sp"
+        android:textColor="#000000" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="When:"
+        android:id="@+id/textViewWhen"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="#000000"
+        android:layout_above="@+id/separatorDown"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="85dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date"
+        android:id="@+id/textViewDate"
+        android:textSize="20sp"
+        android:layout_marginLeft="10dp"
+        android:layout_alignTop="@+id/textViewWhen"
+        android:layout_toRightOf="@+id/textViewUser"
+        android:layout_toEndOf="@+id/textViewUser" />
+
+    <Button android:text="Deny"
+        android:id="@+id/ButtonDeny"
+        android:layout_width="361dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+
+        android:textColor="#ffffff"
+        android:background="#606060"
+        android:layout_below="@+id/linearLayoutBtn"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+    </Button>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Between:"
+        android:id="@+id/textViewbtwn"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_below="@+id/textViewDate"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time"
+        android:id="@+id/textViewtime"
+        android:layout_marginLeft="10dp"
+        android:textSize="20sp"
+        android:layout_below="@+id/textViewDate"
+        android:layout_toRightOf="@+id/textViewbtwn"
+        android:layout_toEndOf="@+id/textViewbtwn" />
+
+</RelativeLayout>

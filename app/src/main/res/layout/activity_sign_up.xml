@@ -200,11 +200,11 @@
         android:text="Create Account"
         android:layout_width="match_parent"
         android:background="#606060"
-        android:layout_height="wrap_content"
         android:textColor="#ffffffff"
+        android:layout_height="wrap_content"
+
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/spinnerGender"
-        android:layout_alignEnd="@+id/spinnerGender">
+       >
 
     </Button>
 

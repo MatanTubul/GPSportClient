@@ -12,6 +12,12 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager;
+
+import android.support.v4.app.NotificationCompat;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.Log;
 
 import com.example.matant.gpsportclient.R;
@@ -46,10 +52,17 @@ public class GCMIntentService extends GCMBaseIntentService {
         String message;
         // Message from PHP server
         message = data.getStringExtra("message");
+        Log.d("message from GCM",message);
         // Open a new activity called GCMMessageView
         Intent intent = new Intent(this, GCMMessageView.class);
         // Pass data to the new activity
         intent.putExtra("message", message);
+        intent.putExtra("date", data.getStringExtra("date"));
+        intent.putExtra("s_time", data.getStringExtra("start_time"));
+        intent.putExtra("e_time", data.getStringExtra("end_time"));
+        intent.putExtra("inviter", data.getStringExtra("inviter"));
+
+
         // Starts the activity on notification click
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
