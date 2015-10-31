@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.example.matant.gpsportclient.AsyncResponse;
 import com.example.matant.gpsportclient.GoogleCloudNotifications.GCMIntentService;
+import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.ProfileManager;
@@ -94,7 +95,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
+        sm = new SessionManager(this);
         err = new ErrorHandler();
         useCaseFlag = "SignUp";
         //updating the minimal age
@@ -233,6 +234,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         if (userDetails != null) {
             useCaseFlag = "Profile";
             buttonSignup.setText("SUBMIT CHANGES");
+            this.setTitle("Profile");
             Log.d("HashMap", userDetails.get(TAG_EMAIL));
             getDataFromDBController();
         }
@@ -432,15 +434,23 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                     case "succeed":
                         if (jsonObj.getString(TAG_USECASE).equals("register"))
                         {
+                            Log.d("succeed", "register");
                             startActivity(new Intent(SignUp.this, Login.class));
-                            resetFields();
-                            finish();
                         }
                         else
                         {
+                            Log.d("succeed", "profile");
+                            TODO:
+                            sm.StoreUserSession(editTextemail.getText().toString(),sm.KEY_EMAIL);
+                            sm.StoreUserSession(jsonObj.getString("name"),sm.KEY_NAME);
+                            sm.StoreUserSession(jsonObj.getString("mobile"),sm.KEY_MOBILE);
+                            sm.StoreUserSession(jsonObj.getString("user_id"), sm.KEY_USERID);
+
                             //dialog and go to main freg
-                            this.getFragmentManager().popBackStack();
+                            setResult(RESULT_OK);
                         }
+                        resetFields();
+                        finish();
                         break;
                 }
 
@@ -559,11 +569,12 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         userMobile += editTextmobile.getText().toString();
 
         BasicNameValuePair tagreq = null, nEmail = null, pEmail = null, email = null, nMobile = null, pMobile = null,
-                mobile = null, name = null, password = null, age = null, gender = null, changed = null,regId = null;
+                mobile = null, name = null, password = null, age = null, gender = null, changed = null, regId = null, method = null;
 
         if (useCaseFlag.equals("Profile"))
         {
-            tagreq = new BasicNameValuePair("tag", "updateprofile");
+            method = new BasicNameValuePair("method","updateprofile");
+            tagreq = new BasicNameValuePair("tag", "profile");
             nEmail = new BasicNameValuePair("newemail", editTextemail.getText().toString());
             pEmail = new BasicNameValuePair("prevemail", prevEmail);
             nMobile = new BasicNameValuePair("newmobile", userMobile);
@@ -579,15 +590,18 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                     whoAsChanged = "2";
             }
             changed = new BasicNameValuePair("changed", whoAsChanged);
+            Log.d("flag","UPDATING");
         }
         else //useCaseFlag.equals("SignUp")
         {
             tagreq = new BasicNameValuePair("tag", "signup");
             email = new BasicNameValuePair("email", editTextemail.getText().toString());
             mobile = new BasicNameValuePair("mobile", userMobile);
+            Log.d("flag","REGISTERING");
         }
-        Log.d("prefferences id",GCMRegistrar.getRegistrationId(this));
+
         regId = new BasicNameValuePair("regid", GCMRegistrar.getRegistrationId(this));
+        Log.d("prefferences id",GCMRegistrar.getRegistrationId(this));
         name = new BasicNameValuePair("firstname", editTextname.getText().toString());
         password = new BasicNameValuePair("password", editTextPassword.getText().toString());
         age = new BasicNameValuePair("birthyear", yearOfBirth);
@@ -616,6 +630,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                 nameValuePairList.add(pEmail);
                 nameValuePairList.add(pMobile);
                 nameValuePairList.add(changed);
+                nameValuePairList.add(method);
             }
             else //useCaseFlag.equals("SignUp")
             {
