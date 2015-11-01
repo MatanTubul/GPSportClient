@@ -29,12 +29,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.matant.gpsportclient.AsyncResponse;
-import com.example.matant.gpsportclient.GoogleCloudNotifications.GCMIntentService;
-import com.example.matant.gpsportclient.MainScreen;
+import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.R;
-import com.example.matant.gpsportclient.Utilities.ProfileManager;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -440,11 +437,12 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                         else
                         {
                             Log.d("succeed", "profile");
+                            sm.StoreUserSession(editTextemail.getText().toString(), sm.KEY_EMAIL);
+                            sm.StoreUserSession(editTextname.getText().toString(),sm.KEY_NAME);
+                            sm.StoreUserSession(editTextmobile.getText().toString(),sm.KEY_MOBILE);
+                            sm.StoreUserSession(editTextmobile.getText().toString(), sm.KEY_MOBILE);
                             TODO:
-                            sm.StoreUserSession(editTextemail.getText().toString(),sm.KEY_EMAIL);
-                            sm.StoreUserSession(jsonObj.getString("name"),sm.KEY_NAME);
-                            sm.StoreUserSession(jsonObj.getString("mobile"),sm.KEY_MOBILE);
-                            sm.StoreUserSession(jsonObj.getString("user_id"), sm.KEY_USERID);
+                            //sm.StoreUserSession(jsonObj.getString("user_id"), sm.KEY_USERID);
 
                             //dialog and go to main freg
                             setResult(RESULT_OK);

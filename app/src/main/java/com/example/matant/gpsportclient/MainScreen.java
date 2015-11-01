@@ -19,7 +19,7 @@ import com.example.matant.gpsportclient.Controllers.CreateEventFragmentControlle
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.Controllers.GoogleMapFragmentController;
 import com.example.matant.gpsportclient.Controllers.ProfileFragmentController;
-import com.example.matant.gpsportclient.Controllers.SearchEventFragmentController;
+import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.Utilities.DrawerItem;
 import com.example.matant.gpsportclient.Utilities.DrawerItemCustomAdapter;
 import com.example.matant.gpsportclient.Utilities.SessionManager;

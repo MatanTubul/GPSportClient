@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.matant.gpsportclient.AsyncResponse;
+import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.GoogleCloudNotifications.GCMIntentService;
 import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.R;

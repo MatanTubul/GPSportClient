@@ -1,4 +1,4 @@
-package com.example.matant.gpsportclient;
+package com.example.matant.gpsportclient.InterfacesAndConstants;
 
 
 

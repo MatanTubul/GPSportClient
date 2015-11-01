@@ -10,7 +10,7 @@ import android.os.ResultReceiver;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.matant.gpsportclient.Constants;
+import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 
 import java.io.IOException;
 import java.util.ArrayList;

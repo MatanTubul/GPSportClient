@@ -23,9 +23,9 @@ import android.widget.EditText;
 
 import android.widget.ListView;
 import android.widget.Spinner;
-import com.example.matant.gpsportclient.AsyncResponse;
+import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.MainScreen;
-import com.example.matant.gpsportclient.OnCompleteListener;
+import com.example.matant.gpsportclient.InterfacesAndConstants.OnCompleteListener;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.CreateInviteUsersRow;
 import com.example.matant.gpsportclient.Utilities.CreateInvitedUsersAdapter;
@@ -33,7 +33,6 @@ import com.example.matant.gpsportclient.Utilities.DatePicker;
 import com.example.matant.gpsportclient.Utilities.MyAdapter;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.example.matant.gpsportclient.Utilities.TimePicker;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.apache.http.NameValuePair;

@@ -14,8 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.matant.gpsportclient.AsyncResponse;
-import com.example.matant.gpsportclient.Constants;
+import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
+import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.AddressFetcher;
 import com.example.matant.gpsportclient.Utilities.SessionManager;

@@ -6,7 +6,7 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.matant.gpsportclient.OnCompleteListener;
+import com.example.matant.gpsportclient.InterfacesAndConstants.OnCompleteListener;
 
 import java.util.Calendar;
 

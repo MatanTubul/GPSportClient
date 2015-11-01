@@ -7,7 +7,7 @@ import android.os.AsyncTask;
 
 import android.util.Log;
 
-import com.example.matant.gpsportclient.AsyncResponse;
+import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.Utilities.PropertyReader;
 
 import org.apache.http.HttpEntity;

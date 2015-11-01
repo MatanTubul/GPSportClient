@@ -1,4 +1,4 @@
-package com.example.matant.gpsportclient;
+package com.example.matant.gpsportclient.InterfacesAndConstants;
 
 /**
  * interface that holding the method which should be implemented in order to get result from DatePiucker and TimePicker
