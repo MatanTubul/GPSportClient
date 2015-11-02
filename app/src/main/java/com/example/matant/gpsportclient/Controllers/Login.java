@@ -55,7 +55,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
         loginB=(Button)findViewById(R.id.loginB);
         signUpB=(Button)findViewById(R.id.signUpB);
 
-        sm = new SessionManager(this);
+        sm = SessionManager.getInstance(this);
 
         loginB.setOnClickListener(this);
         signUpB.setOnClickListener(this);
@@ -150,7 +150,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
                         passwordEditText.setError("user already connected");//pdialog
                         break;
                     case "verified":
-                        //initialize name of user in the session manager
                         sm.StoreUserSession(jsonObj.getString("name"),sm.KEY_NAME);
                         sm.StoreUserSession(jsonObj.getString("mobile"),sm.KEY_MOBILE);
                         sm.StoreUserSession(jsonObj.getString("user_id"), sm.KEY_USERID);

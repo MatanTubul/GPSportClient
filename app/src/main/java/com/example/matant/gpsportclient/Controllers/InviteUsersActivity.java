@@ -86,7 +86,7 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
         listViewUsers = (ListView) findViewById(R.id.listViewusers);
         listViewUsers.setItemsCanFocus(true);
         btnSave.setOnClickListener(this);
-        sm = new SessionManager(this);
+        sm = SessionManager.getInstance(this);
     }
 
     @Override

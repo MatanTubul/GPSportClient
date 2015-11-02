@@ -9,23 +9,21 @@ import com.example.matant.gpsportclient.Controllers.Login;
 import java.util.HashMap;
 
 /**
- * This class will manage the user session including get/store info by Shared Preferences
+ * This singleton class will manage the user session including get/store info by Shared Preferences
  * Created by matant on 8/27/2015.
  */
 public class SessionManager {
 
+    private static SessionManager sessionManagerInstance = null;
     // Shared Preferences reference
     SharedPreferences pref;
-
     // Editor reference for Shared preferences
     SharedPreferences.Editor editor;
     private static final String PREFER_NAME = "Session";
     // Context
     Context _context;
-
     // Shared pref mode
     int PRIVATE_MODE = 0;
-
     // Email address (make variable public to access from outside)
     public  final String KEY_EMAIL = "email";
     public  String KEY_NAME = "name";
@@ -33,7 +31,15 @@ public class SessionManager {
     public final String KEY_USERID = "user_id";
     public final String KEY_REGID = "reg_id";
 
-    public  SessionManager(Context context)
+    public static SessionManager getInstance(Context context){
+        if(sessionManagerInstance == null)
+        {
+            sessionManagerInstance = new SessionManager(context);
+        }
+        return sessionManagerInstance;
+    }
+
+    private SessionManager(Context context)
     {
         this._context=context;
         pref = _context.getSharedPreferences(PREFER_NAME,PRIVATE_MODE);

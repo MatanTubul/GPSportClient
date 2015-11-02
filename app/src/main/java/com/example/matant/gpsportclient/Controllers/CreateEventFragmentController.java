@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
+import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.InterfacesAndConstants.OnCompleteListener;
 import com.example.matant.gpsportclient.R;
@@ -99,7 +100,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         btnStartdate.setText(getCurrentDate());
         btnEndDate.setText(getCurrentDate());
 
-        sm = new SessionManager(getActivity());
+        sm = SessionManager.getInstance(getActivity());
 
 
         maxParticipantsEdittext = (EditText) v.findViewById(R.id.editTextMaxPaticipants);
@@ -382,7 +383,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                                         startActivity(i);
                                         getActivity().finish();*/
 
-                                reloadApp();
+                                Constants.reloadApp(getActivity(), MainScreen.class);
 
 
                             }
@@ -423,12 +424,6 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
     }
 
-    /**
-     * send request to server
-     */
-    public void reloadApp(){
-        startActivity(new Intent(getActivity(), MainScreen.class));
-    }
     @Override
     public void sendDataToDBController() {
 

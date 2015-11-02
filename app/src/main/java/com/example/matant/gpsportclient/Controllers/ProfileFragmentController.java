@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 
@@ -24,27 +25,21 @@ public class ProfileFragmentController extends Fragment {
         if (requestCode == REQUEST_CODE) {
             Log.d("REQUEST_CODE","This fragment expected the result" );
             // Make sure the request was successful
-            if (resultCode == Activity.RESULT_OK) {
+            //if (resultCode == Activity.RESULT_OK) {
                 Log.d("RESULT_OK","This fragment got what he has expected" );
-                reloadApp();
-                // The user picked a contact.
-                // The Intent's data Uri identifies which contact was selected.
+                Constants.reloadApp(getActivity(), MainScreen.class);
 
-                // Do something with the contact here (bigger example below)
-            }
+            //}
         }
 
 
     }
 
-    public void reloadApp(){
-        startActivity(new Intent(getActivity(), MainScreen.class));
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sm = new SessionManager(getActivity());
+        sm = SessionManager.getInstance(getActivity());
         Intent updateProfile = new Intent(getActivity(), SignUp.class);
         updateProfile.putExtra("USER_DETAILS", sm.getUserDetails());
         startActivityForResult(updateProfile, REQUEST_CODE);

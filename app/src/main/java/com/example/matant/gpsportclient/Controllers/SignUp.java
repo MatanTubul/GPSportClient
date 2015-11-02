@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
+import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
@@ -54,37 +55,18 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     private Button buttonSignup, buttonSelectIMg;
     private EditText editTextname, editTextemail, editTextmobile, editTextPassword, editTextConfirmPass;
     private ImageView imgv;
-    private final static int SELECT_PHOTO = 12345;
-    private  int MINIMAL_YEAR_OF_BIRTH = 2001;
     private ImageButton rotateLeft,rotateRight;
-    ArrayAdapter<CharSequence> genderAdapter, mobileAdapter;
-    ArrayAdapter<String> ageAdapter;
-    private static final String TAG_FLG = "flag";
-    private static final String TAG_NAME = "name";
-    private static final String TAG_IMG = "image";
-    private static final String TAG_MOB = "mobile";
-    private static final String TAG_PASS = "password";
-    private static final String TAG_EMAIL= "email";
-    private static final String TAG_USRCHK = "usercheck";
-    private static final String TAG_MOBCHK = "mobilecheck";
-    private static final String TAG_AGE= "age";
-    private static final String TAG_GEN= "gender";
-    private static final String TAG_USECASE= "usecase";
-    private static final int CELL_CODE_LENGTH= 3;
-    private static final int CELL_PHONE_LENGTH= 7;
+    private ArrayAdapter<CharSequence> genderAdapter, mobileAdapter;
+    private ArrayAdapter<String> ageAdapter;
     private Spinner spinnerCellCode, spinnerAge, spinnerGender;
     public ErrorHandler err;
-    private String areaCode = "", userGender = "", yearOfBirth = "",prevMobile ="", prevEmail="";
-    private int MIN_AGE = 14;
-    private int MOBILE_LENGTH = 10;
+    private String useCaseFlag, areaCode = "", userGender = "", yearOfBirth = "",prevMobile ="", prevEmail="";
     private ProgressDialog progress;
-    private Bitmap originbitmap=null;
-    private Bitmap scaled=null;
+    private Bitmap originbitmap = null, scaled = null;
     private int rotate;
     private Intent editProfileIntent;
     private DBcontroller dbController;
     private HashMap<String, String> userDetails;
-    private String useCaseFlag;
     private GoogleCloudMessaging gcm;
     private SessionManager sm;
 
@@ -92,19 +74,19 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        sm = new SessionManager(this);
+        sm = SessionManager.getInstance(this);
         err = new ErrorHandler();
         useCaseFlag = "SignUp";
         //updating the minimal age
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
 
-        if ((year - MINIMAL_YEAR_OF_BIRTH) >= MIN_AGE) {
-            MINIMAL_YEAR_OF_BIRTH++;
+        if ((year - Constants.MINIMAL_YEAR_OF_BIRTH) >= Constants.MIN_AGE) {
+            Constants.MINIMAL_YEAR_OF_BIRTH++;
         }
        /* // check GCM services
         gcm = GoogleCloudMessaging.getInstance(this.getApplicationContext());
-        sm = new SessionManager(this);
+        //this is already configured: sm = SessionManager.getInstance(this);
         String regID = sm.getUserDetails().get(sm.KEY_REGID);
         if(regID == null)
         {
@@ -131,7 +113,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         spinnerAge = (Spinner) findViewById(R.id.spinnerAge);
         ArrayList<String> years = new ArrayList<String>();
         int thisYear = Calendar.getInstance().get(Calendar.YEAR);
-        for (int i = 1970; i <= MINIMAL_YEAR_OF_BIRTH; i++) {
+        for (int i = 1970; i <= Constants.MINIMAL_YEAR_OF_BIRTH; i++) {
             years.add(Integer.toString(i));
 
         }
@@ -232,7 +214,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             useCaseFlag = "Profile";
             buttonSignup.setText("SUBMIT CHANGES");
             this.setTitle("Profile");
-            Log.d("HashMap", userDetails.get(TAG_EMAIL));
+            Log.d("HashMap", userDetails.get(Constants.TAG_EMAIL));
             getDataFromDBController();
         }
     }
@@ -257,7 +239,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
     private void getDataFromDBController()
     {
-        String userStr = userDetails.get(TAG_EMAIL);
+        String userStr = userDetails.get(Constants.TAG_EMAIL);
         Log.d("getDataFromDBController", "getting data to UI");
         BasicNameValuePair tagReq = new BasicNameValuePair("tag","profile");
         BasicNameValuePair method = new BasicNameValuePair("method","getprofile");
@@ -308,7 +290,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
                     editTextConfirmPass.setError("Passwords do not match!");
                     break;
-                } else if (editTextmobile.length() + areaCode.length() != MOBILE_LENGTH) {
+                } else if (editTextmobile.length() + areaCode.length() != Constants.MOBILE_LENGTH) {
                     editTextmobile.setError("Mobile is not in the correct format");
                 } else {
                     sendDataToDBController();
@@ -322,7 +304,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             case R.id.buttonSelectImg: {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
-                startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+                startActivityForResult(photoPickerIntent, Constants.SELECT_PHOTO);
                 break;
             }//case R.id.buttonSelectImg
 
@@ -377,7 +359,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         // Here we need to check if the activity that was triggers was the Image Gallery.
         // If it is the requestCode will match the LOAD_IMAGE_RESULTS value.
         // If the resultCode is RESULT_OK and there is some data we know that an image was picked.
-        if (requestCode == SELECT_PHOTO && resultCode == RESULT_OK && data != null) {
+        if (requestCode == Constants.SELECT_PHOTO && resultCode == RESULT_OK && data != null) {
             // Let's read picked image data - its URI
             Uri pickedImage = data.getData();
             // Let's read picked image path using content resolver
@@ -413,7 +395,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         if (resStr != null) {
             try {
                 JSONObject jsonObj = new JSONObject(resStr);
-                String flg = jsonObj.getString(TAG_FLG);
+                String flg = jsonObj.getString(Constants.TAG_FLG);
 
                 switch(flg)
                 {
@@ -423,13 +405,13 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                         fillDataFromDBToUI(jsonObj);
                         break;
                     case "wrong input":
-                        if (jsonObj.getString(TAG_USRCHK).equals("user already exists"))
+                        if (jsonObj.getString(Constants.TAG_USRCHK).equals("user already exists"))
                             editTextemail.setError("This email is taken");
-                        if (jsonObj.getString(TAG_MOBCHK).equals("mobile already exists"))
+                        if (jsonObj.getString(Constants.TAG_MOBCHK).equals("mobile already exists"))
                             editTextmobile.setError("This mobile is taken");
                         break;
                     case "succeed":
-                        if (jsonObj.getString(TAG_USECASE).equals("register"))
+                        if (jsonObj.getString(Constants.TAG_USECASE).equals("register"))
                         {
                             Log.d("succeed", "register");
                             startActivity(new Intent(SignUp.this, Login.class));
@@ -437,12 +419,12 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                         else
                         {
                             Log.d("succeed", "profile");
+
                             sm.StoreUserSession(editTextemail.getText().toString(), sm.KEY_EMAIL);
                             sm.StoreUserSession(editTextname.getText().toString(),sm.KEY_NAME);
-                            sm.StoreUserSession(editTextmobile.getText().toString(),sm.KEY_MOBILE);
-                            sm.StoreUserSession(editTextmobile.getText().toString(), sm.KEY_MOBILE);
-                            TODO:
-                            //sm.StoreUserSession(jsonObj.getString("user_id"), sm.KEY_USERID);
+                            String userMobile = areaCode;
+                            userMobile += editTextmobile.getText().toString();
+                            sm.StoreUserSession(userMobile,sm.KEY_MOBILE);
 
                             //dialog and go to main freg
                             setResult(RESULT_OK);
@@ -474,7 +456,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     {
         try {
             Log.d("setOnUI", "Image");
-            String imageString = jsonObj.getString(TAG_IMG);
+            String imageString = jsonObj.getString(Constants.TAG_IMG);
             if (imageString.equals("nofile"))
                 Log.d("setOnUI", "nofile");
             else {
@@ -502,15 +484,15 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         try{
 
             Log.d("setOnUI", "Texts");
-            editTextPassword.setText(jsonObj.getString(TAG_PASS));
-            editTextConfirmPass.setText(jsonObj.getString(TAG_PASS));
-            editTextname.setText(jsonObj.getString(TAG_NAME));
+            editTextPassword.setText(jsonObj.getString(Constants.TAG_PASS));
+            editTextConfirmPass.setText(jsonObj.getString(Constants.TAG_PASS));
+            editTextname.setText(jsonObj.getString(Constants.TAG_NAME));
 
-            prevEmail = jsonObj.getString(TAG_EMAIL);
+            prevEmail = jsonObj.getString(Constants.TAG_EMAIL);
             editTextemail.setText(prevEmail);
 
             prevMobile = areaCode;
-            String cellPhone = jsonObj.getString(TAG_MOB).substring(CELL_CODE_LENGTH);
+            String cellPhone = jsonObj.getString(Constants.TAG_MOB).substring(Constants.CELL_CODE_LENGTH);
             prevMobile += cellPhone;
             editTextmobile.setText(cellPhone);
         }
@@ -525,22 +507,22 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         String stringForSpinner;
         try {
             Log.d("setOnUI", "Spinners");
-            stringForSpinner = jsonObj.getString(TAG_GEN);
+            stringForSpinner = jsonObj.getString(Constants.TAG_GEN);
             if (stringForSpinner != null) {
                 Log.d("gender", stringForSpinner);
                 spinnerPosition = genderAdapter.getPosition(stringForSpinner);
                 spinnerGender.setSelection(spinnerPosition);
             }
 
-            stringForSpinner = jsonObj.getString(TAG_AGE);
+            stringForSpinner = jsonObj.getString(Constants.TAG_AGE);
             if (stringForSpinner != null) {
                 Log.d("age", stringForSpinner);
                 spinnerPosition = ageAdapter.getPosition(stringForSpinner);
                 spinnerAge.setSelection(spinnerPosition);
             }
 
-            stringForSpinner = jsonObj.getString(TAG_MOB);
-            stringForSpinner = stringForSpinner.substring(0, stringForSpinner.length() - CELL_PHONE_LENGTH);
+            stringForSpinner = jsonObj.getString(Constants.TAG_MOB);
+            stringForSpinner = stringForSpinner.substring(0, stringForSpinner.length() - Constants.CELL_PHONE_LENGTH);
             if (stringForSpinner != null) {
                 Log.d("mobile", stringForSpinner);
                 spinnerPosition = mobileAdapter.getPosition(stringForSpinner);

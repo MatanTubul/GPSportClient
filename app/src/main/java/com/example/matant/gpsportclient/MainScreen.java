@@ -63,7 +63,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-        sm = new SessionManager(this);
+        sm = SessionManager.getInstance(this);
 
         mTitle = mDrawerTitle = "Home";
         DrawerItem [] drawerItems = new DrawerItem[MENU_SIZE];

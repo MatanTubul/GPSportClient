@@ -64,7 +64,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
         mMapView.onResume();//    display map immediately
-        sm = new SessionManager(getActivity());
+        sm = SessionManager.getInstance(getActivity());
 
         if (mMapView!=null)
             Log.d("mMapView!=null", "mMapView!=null");
