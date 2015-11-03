@@ -22,6 +22,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
@@ -69,6 +70,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     private SessionManager sm;
     private AlertDialog.Builder alert;
     private AlertDialog alertdialog = null;
+    private ScrollView sv;
 
 
     public CreateEventFragmentController() {
@@ -90,6 +92,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         btnendTime = (Button) v.findViewById(R.id.buttonEndTime);
         btninviteUsers = (Button) v.findViewById(R.id.buttonInviteUsers);
         btnSave = (Button) v.findViewById(R.id.ButtonSave);
+        sv = (ScrollView) v.findViewById(R.id.scrollView);
 
 
         cal = Calendar.getInstance();
@@ -431,8 +434,9 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         if(lonlat == null)
         {
             Log.d("location is:","location not found");
+            sv.scrollTo(0,0);
             addressEditText.setError("Location was not found!");
-            //return;
+            return;
         }
         Log.d("found location",lonlat.latitude+""+lonlat.longitude);
         BasicNameValuePair tagreq = new BasicNameValuePair("tag","create_event");
@@ -450,6 +454,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         BasicNameValuePair scheduled = new BasicNameValuePair("scheduled",String.valueOf(reccuringEventCbox.isChecked()));
         BasicNameValuePair mob_manager = new BasicNameValuePair("manager",sm.getUserDetails().get(sm.KEY_USERID));
         BasicNameValuePair manager_name = new BasicNameValuePair("manager_name",sm.getUserDetails().get(sm.KEY_NAME));
+
 
         List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
 
