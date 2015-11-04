@@ -1,11 +1,11 @@
-package com.example.matant.gpsportclient.Controllers;
+package com.example.matant.gpsportclient.Controllers.Fragments;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.matant.gpsportclient.Controllers.Activities.SignUp;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
@@ -14,9 +14,18 @@ public class ProfileFragmentController extends Fragment {
 
     private static final int REQUEST_CODE = 1;
     private SessionManager sm;
-    
+    private static ProfileFragmentController profileFragmentControllerInstance = null;
+
     public ProfileFragmentController() {
         // Required empty public constructor
+    }
+
+    public static ProfileFragmentController getInstance(){
+        if(profileFragmentControllerInstance == null)
+        {
+            profileFragmentControllerInstance = new ProfileFragmentController();
+        }
+        return profileFragmentControllerInstance;
     }
 
     @Override
@@ -38,12 +47,14 @@ public class ProfileFragmentController extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState); TODO:
         sm = SessionManager.getInstance(getActivity());
         Intent updateProfile = new Intent(getActivity(), SignUp.class);
         updateProfile.putExtra("USER_DETAILS", sm.getUserDetails());
         startActivityForResult(updateProfile, REQUEST_CODE);
     }
+
+
 
 
 }

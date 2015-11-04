@@ -1,4 +1,4 @@
-package com.example.matant.gpsportclient.Controllers;
+package com.example.matant.gpsportclient.Controllers.Activities;
 
 
 import android.app.ProgressDialog;
@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.GoogleCloudNotifications.GCMIntentService;
 import com.example.matant.gpsportclient.MainScreen;

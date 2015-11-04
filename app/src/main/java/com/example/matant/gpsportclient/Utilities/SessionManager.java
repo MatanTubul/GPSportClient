@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.example.matant.gpsportclient.Controllers.Login;
+import com.example.matant.gpsportclient.Controllers.Activities.Login;
 
 import java.util.HashMap;
 
@@ -25,8 +25,8 @@ public class SessionManager {
     // Shared pref mode
     int PRIVATE_MODE = 0;
     // Email address (make variable public to access from outside)
-    public  final String KEY_EMAIL = "email";
-    public  String KEY_NAME = "name";
+    public final String KEY_EMAIL = "email";
+    public final String KEY_NAME = "name";
     public final String KEY_MOBILE = "mobile";
     public final String KEY_USERID = "user_id";
     public final String KEY_REGID = "reg_id";

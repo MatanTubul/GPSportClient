@@ -12,9 +12,7 @@ import android.support.v7.app.AlertDialog;
 
 
 
-import com.example.matant.gpsportclient.Controllers.Login;
-import com.example.matant.gpsportclient.GoogleCloudNotifications.GCMIntentService;
-import com.google.android.gcm.GCMRegistrar;
+import com.example.matant.gpsportclient.Controllers.Activities.Login;
 
 public class SplashScreen extends Activity {
 

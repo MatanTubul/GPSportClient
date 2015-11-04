@@ -1,4 +1,4 @@
-package com.example.matant.gpsportclient.Controllers;
+package com.example.matant.gpsportclient.Controllers.Activities;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -29,6 +29,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
@@ -201,7 +202,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
             }
         });
-
+        areaCode = spinnerCellCode.getSelectedItem().toString();
 
         buttonSignup.setOnClickListener(this);
         buttonSelectIMg.setOnClickListener(this);
@@ -487,14 +488,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             editTextPassword.setText(jsonObj.getString(Constants.TAG_PASS));
             editTextConfirmPass.setText(jsonObj.getString(Constants.TAG_PASS));
             editTextname.setText(jsonObj.getString(Constants.TAG_NAME));
-
             prevEmail = jsonObj.getString(Constants.TAG_EMAIL);
             editTextemail.setText(prevEmail);
-
-            prevMobile = areaCode;
-            String cellPhone = jsonObj.getString(Constants.TAG_MOB).substring(Constants.CELL_CODE_LENGTH);
-            prevMobile += cellPhone;
-            editTextmobile.setText(cellPhone);
+            String cellPhoneNum = jsonObj.getString(Constants.TAG_MOB).substring(Constants.CELL_CODE_LENGTH);
+            Log.d("cellPhone", cellPhoneNum);
+            editTextmobile.setText(cellPhoneNum);
         }
         catch (JSONException e) {
             e.printStackTrace();
@@ -523,10 +521,15 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
             stringForSpinner = jsonObj.getString(Constants.TAG_MOB);
             stringForSpinner = stringForSpinner.substring(0, stringForSpinner.length() - Constants.CELL_PHONE_LENGTH);
+            String cellPhoneNum = jsonObj.getString(Constants.TAG_MOB).substring(Constants.CELL_CODE_LENGTH);
             if (stringForSpinner != null) {
                 Log.d("mobile", stringForSpinner);
                 spinnerPosition = mobileAdapter.getPosition(stringForSpinner);
                 spinnerCellCode.setSelection(spinnerPosition);
+                prevMobile = stringForSpinner;
+                Log.d("prevMobile",prevMobile );
+                prevMobile += cellPhoneNum;
+                Log.d("prevMobile", prevMobile);
             }
         }
         catch (JSONException e) {

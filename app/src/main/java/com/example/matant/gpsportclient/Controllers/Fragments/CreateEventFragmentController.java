@@ -1,4 +1,4 @@
-package com.example.matant.gpsportclient.Controllers;
+package com.example.matant.gpsportclient.Controllers.Fragments;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -24,6 +24,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+
+import com.example.matant.gpsportclient.Controllers.DBcontroller;
+import com.example.matant.gpsportclient.Controllers.Activities.InviteUsersActivity;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.MainScreen;
@@ -434,7 +437,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         if(lonlat == null)
         {
             Log.d("location is:","location not found");
-            sv.scrollTo(0,0);
+            sv.scrollTo(0, 0);
             addressEditText.setError("Location was not found!");
             return;
         }
