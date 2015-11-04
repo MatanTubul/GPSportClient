@@ -443,6 +443,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         }
         Log.d("found location",lonlat.latitude+""+lonlat.longitude);
         BasicNameValuePair tagreq = new BasicNameValuePair("tag","create_event");
+        BasicNameValuePair address = new BasicNameValuePair("address",addressEditText.getText().toString());
         BasicNameValuePair sport = new BasicNameValuePair("sport_type",sportSpinner.getSelectedItem().toString());
         Log.d("sport_type",sportSpinner.getSelectedItem().toString());
         BasicNameValuePair date = new BasicNameValuePair("date",btnStartdate.getText().toString());
@@ -487,6 +488,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         nameValuePairList.add(tagreq);
         nameValuePairList.add(sport);
         nameValuePairList.add(date);
+        nameValuePairList.add(address);
         nameValuePairList.add(startTime);
         nameValuePairList.add(endTime);
         nameValuePairList.add(min_age);

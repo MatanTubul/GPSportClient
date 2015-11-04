@@ -12,13 +12,13 @@
         android:layout_height="wrap_content"
         android:text="this is the message"
         android:textSize="20sp"
-        android:layout_below="@+id/separatorUp"
+
+        android:layout_below="@+id/textViewUser"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/textViewWhen"
-        android:layout_toEndOf="@+id/textViewWhen"
-        android:layout_above="@+id/textViewDate"
-        android:layout_alignTop="@+id/textViewUser" />
+        android:layout_above="@+id/textViewloc" />
 
     <LinearLayout
         android:id="@+id/linearLayoutBtn"
@@ -89,7 +89,7 @@
         android:layout_above="@+id/separatorDown"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="85dp" />
+        android:layout_marginBottom="45dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -97,7 +97,7 @@
         android:text="Date"
         android:id="@+id/textViewDate"
         android:textSize="20sp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="40dp"
         android:layout_alignTop="@+id/textViewWhen"
         android:layout_toRightOf="@+id/textViewUser"
         android:layout_toEndOf="@+id/textViewUser" />
@@ -138,5 +138,28 @@
         android:layout_below="@+id/textViewDate"
         android:layout_toRightOf="@+id/textViewbtwn"
         android:layout_toEndOf="@+id/textViewbtwn" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location:"
+        android:id="@+id/textViewloc"
+
+        android:layout_above="@+id/textViewWhen"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="place"
+        android:id="@+id/textViewPlace"
+        android:layout_above="@+id/textViewDate"
+        android:layout_alignLeft="@+id/textViewtime"
+        android:layout_alignStart="@+id/textViewtime"
+        android:textSize="20sp" />
 
 </RelativeLayout>

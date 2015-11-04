@@ -94,15 +94,15 @@
         <service android:name=".GoogleCloudNotifications.GCMIntentService"
             android:enabled="true"/>
         <activity
-            android:name=".Controllers.ForgotPassword"
+            android:name=".Controllers.Activities.ForgotPassword"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".Controllers.Login"
+            android:name=".Controllers.Activities.Login"
             android:label="@string/title_activity_login" >
         </activity>
         <activity
-            android:name=".Controllers.SignUp"
+            android:name=".Controllers.Activities.SignUp"
             android:label="@string/title_activity_sign_up" >
         </activity>
         <activity
@@ -118,7 +118,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".Controllers.InviteUsersActivity"
+            android:name=".Controllers.Activities.InviteUsersActivity"
             android:label="@string/title_activity_invite_users" >
         </activity>
 

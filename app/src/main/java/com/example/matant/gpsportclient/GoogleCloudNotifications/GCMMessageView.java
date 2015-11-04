@@ -29,8 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GCMMessageView extends AppCompatActivity implements AsyncResponse, View.OnClickListener {
-    private TextView message,date,time,user;
-    private String intentUser,intentDate,intentTime,intentMessage,EventId = "";
+    private TextView message,date,time,user,location;
+    private String intentUser,intentDate,intentTime,intentMessage,EventId = "",place;
     private DBcontroller dbController;
     private SessionManager sm;
     private String UserId = "";
@@ -46,6 +46,7 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
         date = (TextView) findViewById(R.id.textViewDate);
         time = (TextView) findViewById(R.id.textViewtime);
         user = (TextView) findViewById(R.id.textViewUser);
+        location = (TextView) findViewById(R.id.textViewPlace);
         btnJoin = (Button)findViewById(R.id.ButtonJoin);
         btnDeny = (Button)findViewById(R.id.ButtonDeny);
 
@@ -56,10 +57,13 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
         intentDate = i.getExtras().getString("date");
         intentTime = i.getExtras().getString("s_time") + " "+ "to"+" " + i.getExtras().getString("e_time");
         EventId = i.getExtras().getString("event_id");
+        place = i.getExtras().getString("location");
+
         user.setText(intentUser);
         message.setText(intentMessage);
         date.setText(intentDate);
         time.setText(intentTime);
+        location.setText(place);
 
 
         sm = SessionManager.getInstance(this);
