@@ -61,6 +61,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         intent.putExtra("s_time", data.getStringExtra("start_time"));
         intent.putExtra("e_time", data.getStringExtra("end_time"));
         intent.putExtra("inviter", data.getStringExtra("inviter"));
+        intent.putExtra("event_id",data.getStringExtra("event_id"));
 
 
         // Starts the activity on notification click
