@@ -1,4 +1,4 @@
-package com.example.matant.gpsportclient.Controllers;
+package com.example.matant.gpsportclient.Controllers.Fragments;
 
 import android.app.Fragment;
 import android.content.Intent;

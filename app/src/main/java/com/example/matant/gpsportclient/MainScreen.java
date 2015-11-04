@@ -15,10 +15,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.matant.gpsportclient.Controllers.CreateEventFragmentController;
+import com.example.matant.gpsportclient.Controllers.Fragments.CreateEventFragmentController;
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
-import com.example.matant.gpsportclient.Controllers.GoogleMapFragmentController;
-import com.example.matant.gpsportclient.Controllers.ProfileFragmentController;
+import com.example.matant.gpsportclient.Controllers.Fragments.GoogleMapFragmentController;
+import com.example.matant.gpsportclient.Controllers.Fragments.ProfileFragmentController;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.Utilities.DrawerItem;
 import com.example.matant.gpsportclient.Utilities.DrawerItemCustomAdapter;
@@ -191,7 +191,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
                 fragment = new GoogleMapFragmentController();
                 break;
             case 1: //Profile
-                fragment = new ProfileFragmentController();
+                fragment = ProfileFragmentController.getInstance();
                 break;
             case 2: //Search Events
                 //fragment = new SearchEventFragmentController();
