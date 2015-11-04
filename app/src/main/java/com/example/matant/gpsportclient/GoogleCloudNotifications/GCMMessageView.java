@@ -35,7 +35,7 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
     private SessionManager sm;
     private String UserId = "";
     private ProgressDialog progress;
-    private Constants cons;
+
     private Button btnJoin,btnDeny;
 
     @Override
@@ -75,7 +75,7 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
 
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_gcmmessage_view, menu);
@@ -95,7 +95,7 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     @Override
     public void handleResponse(String resStr) {
@@ -109,9 +109,12 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
                 String flg = jsonObj.getString(Constants.TAG_FLG);
 
                 switch (flg){
-                    case "inserted":
+                    case "updated":
+                        Log.d("msg:",jsonObj.getString(Constants.TAG_MSG));
                         break;
-                    case "failed":
+                    case "update_failed":
+                        Log.d("msg:",jsonObj.getString(Constants.TAG_MSG));
+                        break;
 
                 }
 
@@ -126,7 +129,7 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
 
         BasicNameValuePair tagreq = new BasicNameValuePair("tag", "response_invited_user");
         BasicNameValuePair event_Id = new BasicNameValuePair("event_id", EventId);
-        BasicNameValuePair user_Id = new BasicNameValuePair("event_id", UserId);
+        BasicNameValuePair user_Id = new BasicNameValuePair("userId", UserId);
 
         List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
         nameValuePairList.add(tagreq);
@@ -149,6 +152,7 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
         switch (v.getId())
         {
             case R.id.ButtonJoin:
+                sendDataToDBController();
                 break;
 
 

@@ -42,4 +42,5 @@ public final class Constants {
     public static int MINIMAL_YEAR_OF_BIRTH = 2001;
     public static int MIN_AGE = 14;
     public static int MOBILE_LENGTH = 10;
+    public static final String TAG_MSG = "msg";
 }
