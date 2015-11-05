@@ -455,8 +455,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         BasicNameValuePair min_age = new BasicNameValuePair("minAge",String.valueOf(minAgeEditText.getText()));
         BasicNameValuePair participants = new BasicNameValuePair("max_participants",maxParticipantsEdittext.getText().toString());
         BasicNameValuePair scheduled = new BasicNameValuePair("scheduled",String.valueOf(reccuringEventCbox.isChecked()));
-        BasicNameValuePair mob_manager = new BasicNameValuePair("manager",sm.getUserDetails().get(sm.KEY_USERID));
-        BasicNameValuePair manager_name = new BasicNameValuePair("manager_name",sm.getUserDetails().get(sm.KEY_NAME));
+        BasicNameValuePair mob_manager = new BasicNameValuePair("manager",sm.getUserDetails().get(Constants.TAG_USERID));
+        BasicNameValuePair manager_name = new BasicNameValuePair("manager_name",sm.getUserDetails().get(Constants.TAG_NAME));
 
 
         List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();

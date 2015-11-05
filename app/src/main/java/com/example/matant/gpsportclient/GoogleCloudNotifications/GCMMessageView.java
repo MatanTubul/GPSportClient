@@ -67,7 +67,7 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
 
 
         sm = SessionManager.getInstance(this);
-         UserId = sm.getUserDetails().get(sm.KEY_USERID);
+         UserId = sm.getUserDetails().get(Constants.TAG_USERID);
 
         btnJoin.setOnClickListener(this);
         btnDeny.setOnClickListener(this);

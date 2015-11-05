@@ -20,6 +20,7 @@ import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.Controllers.Fragments.GoogleMapFragmentController;
 import com.example.matant.gpsportclient.Controllers.Fragments.ProfileFragmentController;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
+import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.Utilities.DrawerItem;
 import com.example.matant.gpsportclient.Utilities.DrawerItemCustomAdapter;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
@@ -39,8 +40,6 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     ActionBarDrawerToggle mDrawerToggle;
-    private static final String TAG_FLG = "flag";
-
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     public final int MENU_SIZE = 8;
@@ -66,7 +65,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
         sm = SessionManager.getInstance(this);
 
         mTitle = mDrawerTitle = "Home";
-        DrawerItem [] drawerItems = new DrawerItem[MENU_SIZE];
+        DrawerItem [] drawerItems = new DrawerItem[Constants.MENU_SIZE];
         drawerItems[0] = new DrawerItem(R.drawable.home,"Home");
         drawerItems[1] = new DrawerItem(R.drawable.profile,"Profile");
         drawerItems[2] = new DrawerItem(R.drawable.search,"Search Events");
@@ -112,6 +111,11 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void handleResponse(String resStr) {
         try
         {
@@ -133,7 +137,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
         {
             try {
                 JSONObject jsonObj = new JSONObject(resStr);
-                String flg = jsonObj.getString(TAG_FLG);
+                String flg = jsonObj.getString(Constants.TAG_FLG);
                 switch (flg) {
                     case "user logged out":
                     {
@@ -156,7 +160,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
     @Override
     public void sendDataToDBController() {
 
-        String user = sm.getUserDetails().get(sm.KEY_EMAIL);
+        String user = sm.getUserDetails().get(Constants.TAG_EMAIL);
         BasicNameValuePair tagReq = new BasicNameValuePair("tag","logout");
         BasicNameValuePair userNameParam = new BasicNameValuePair("username",user);
         List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
@@ -191,7 +195,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
                 fragment = new GoogleMapFragmentController();
                 break;
             case 1: //Profile
-                fragment = ProfileFragmentController.getInstance();
+                fragment = new ProfileFragmentController();
                 break;
             case 2: //Search Events
                 //fragment = new SearchEventFragmentController();
