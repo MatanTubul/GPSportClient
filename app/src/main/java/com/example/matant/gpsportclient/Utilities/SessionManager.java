@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.example.matant.gpsportclient.Controllers.Activities.Login;
+import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 
 import java.util.HashMap;
 
@@ -19,17 +20,8 @@ public class SessionManager {
     SharedPreferences pref;
     // Editor reference for Shared preferences
     SharedPreferences.Editor editor;
-    private static final String PREFER_NAME = "Session";
     // Context
     Context _context;
-    // Shared pref mode
-    int PRIVATE_MODE = 0;
-    // Email address (make variable public to access from outside)
-    public final String KEY_EMAIL = "email";
-    public final String KEY_NAME = "name";
-    public final String KEY_MOBILE = "mobile";
-    public final String KEY_USERID = "user_id";
-    public final String KEY_REGID = "reg_id";
 
     public static SessionManager getInstance(Context context){
         if(sessionManagerInstance == null)
@@ -42,7 +34,7 @@ public class SessionManager {
     private SessionManager(Context context)
     {
         this._context=context;
-        pref = _context.getSharedPreferences(PREFER_NAME,PRIVATE_MODE);
+        pref = _context.getSharedPreferences(Constants.PREFER_NAME,Constants.PRIVATE_MODE);
         editor = pref.edit();
     }
 
@@ -54,11 +46,15 @@ public class SessionManager {
     public HashMap<String,String> getUserDetails(){
         HashMap<String,String> user = new HashMap<String,String>();
 
-        user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
-        user.put(KEY_NAME, pref.getString(KEY_NAME, null));
-        user.put(KEY_MOBILE,pref.getString(KEY_MOBILE,null));
-        user.put(KEY_USERID,pref.getString(KEY_USERID,null));
-        user.put(KEY_REGID,pref.getString(KEY_REGID,null));
+        user.put(Constants.TAG_EMAIL, pref.getString(Constants.TAG_EMAIL, null));
+        user.put(Constants.TAG_NAME, pref.getString(Constants.TAG_NAME, null));
+        user.put(Constants.TAG_MOB,pref.getString(Constants.TAG_MOB,null));
+        user.put(Constants.TAG_PASS, pref.getString(Constants.TAG_PASS, null));
+        user.put(Constants.TAG_GEN, pref.getString(Constants.TAG_GEN, null));
+        user.put(Constants.TAG_USERID,pref.getString(Constants.TAG_USERID,null));
+        user.put(Constants.TAG_AGE,pref.getString(Constants.TAG_AGE,null));
+        user.put(Constants.TAG_IMG,pref.getString(Constants.TAG_IMG,null));
+        user.put(Constants.TAG_REGID,pref.getString(Constants.TAG_REGID,null));
         return user;
     }
 
