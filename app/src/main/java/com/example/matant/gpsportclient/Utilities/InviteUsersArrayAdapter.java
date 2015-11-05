@@ -50,8 +50,7 @@ public class InviteUsersArrayAdapter extends ArrayAdapter<InviteUsersListRow> {
 
         final InviteUsersListRow rowItem = getItem(position);
 
-        LayoutInflater mInflater = (LayoutInflater) context
-                .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.invite_users_listview_row, null);
             holder = new ViewHolder();

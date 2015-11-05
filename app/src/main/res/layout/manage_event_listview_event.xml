@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/divider1"
+        android:layout_below="@+id/rowLayout"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="1dp"
+        android:layout_height="6dp"
+
+        android:background="@android:color/darker_gray"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/rowLayout"
+        android:layout_height="80dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageViewSporttype"
+            android:background="@drawable/soccer_32"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/imageViewSporttype"
+            android:id="@+id/relativeLayout">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sport Type"
+                android:id="@+id/textViewTitle"
+
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:layout_alignParentTop="true"
+                android:layout_alignLeft="@+id/textViewDate"
+                android:layout_alignStart="@+id/textViewDate" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location"
+                android:id="@+id/textViewloc"
+                android:textColor="#000000"
+                android:layout_below="@+id/textViewDate"
+                android:layout_alignLeft="@+id/textViewParticipants"
+                android:layout_alignStart="@+id/textViewParticipants" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                android:id="@+id/textViewDate"
+                android:textColor="#000000"
+                android:layout_below="@+id/textViewTitle"
+                android:layout_alignLeft="@+id/textViewloc"
+                android:layout_alignStart="@+id/textViewloc" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="datevalue"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/textViewDateValue"
+                android:layout_below="@+id/textViewTitle"
+                android:layout_toRightOf="@+id/textViewDate"
+                android:layout_toEndOf="@+id/textViewDate" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="locValue"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/textViewLocationval"
+                android:layout_alignBottom="@+id/textViewloc"
+                android:layout_toRightOf="@+id/textViewloc"
+                android:layout_toEndOf="@+id/textViewloc" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Participants"
+                android:layout_marginLeft="5dp"
+
+                android:id="@+id/textViewParticipants"
+                android:textColor="#000000"
+                android:layout_below="@+id/textViewloc"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="participantsVal"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/textViewparticipantsVal"
+                android:layout_alignTop="@+id/textViewParticipants"
+                android:layout_toRightOf="@+id/textViewParticipants"
+                android:layout_toEndOf="@+id/textViewParticipants" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageViewDeleteEvent"
+                android:background="@drawable/delete_50"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="1dp"
+                android:layout_height="80dp"
+                android:background="@android:color/darker_gray"
+                android:layout_alignParentBottom="true"
+                android:layout_alignLeft="@+id/imageViewDeleteEvent"
+                android:layout_alignStart="@+id/imageViewDeleteEvent" />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="1dp"
+            android:layout_height="80dp"
+            android:background="@android:color/darker_gray"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/relativeLayout"
+            android:layout_toStartOf="@+id/relativeLayout" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
