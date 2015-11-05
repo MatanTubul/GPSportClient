@@ -64,7 +64,7 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
                 JSONObject jsonObj = new JSONObject(resStr);
                 String flg = jsonObj.getString(Constants.TAG_FLG);
                 switch (flg){
-                    case "success":
+                    case Constants.TAG_REQUEST_SUCCEED:
                     {
 
                         JSONArray jsonarr = jsonObj.getJSONArray("events");

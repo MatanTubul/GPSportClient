@@ -30,7 +30,7 @@ public final class Constants {
     public static final String TAG_REQUEST_FAILED = "failed";
     public static final String TAG_REQUEST_SUCCEED = "success";
     public static final String TAG_SOCCER = "soccer";
-    public static final String TAG_BASKETBALL = "basketball";
+    public static final String TAG_BASKETBALL = "BasketBall";
     public static final String TAG_BICYCLE = "bicycle";
     public static final String TAG_RUNNING = "running";
 
