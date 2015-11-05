@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
+import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.ImageConvertor;
 import com.example.matant.gpsportclient.Utilities.InviteUsersArrayAdapter;
@@ -112,7 +113,7 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                                /* Boolean flag = jsonarr.getJSONObject(i).getString("mobile").equals(sm.getUserDetails().get(sm.KEY_MOBILE));
                                 String s1 = jsonarr.getJSONObject(i).getString("mobile");
                                 String s2 = sm.getUserDetails().get(sm.KEY_MOBILE);*/
-                                if(!jsonarr.getJSONObject(i).getString("mobile").equals(sm.getUserDetails().get(sm.KEY_MOBILE)))
+                                if(!jsonarr.getJSONObject(i).getString("mobile").equals(sm.getUserDetails().get(Constants.TAG_MOB)))
                                 {
                                     Log.d("user is", jsonarr.getJSONObject(i).toString());
                                     String name = jsonarr.getJSONObject(i).getString("name");
