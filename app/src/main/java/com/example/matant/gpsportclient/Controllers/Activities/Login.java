@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.GoogleCloudNotifications.GCMIntentService;
+import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
@@ -36,7 +37,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
     DBcontroller dbController;
     TextView forgotPasswordTV;
     boolean userCanLogIn;
-    private static final String TAG_FLG = "flag";
     private ErrorHandler err;
     private ProgressDialog progress;
     private SessionManager sm;
@@ -103,7 +103,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
 
     public void sendDataToDBController()
     {
-        sm.StoreUserSession(userNameEditText.getText().toString(),sm.KEY_EMAIL);
+        sm.StoreUserSession(userNameEditText.getText().toString(),Constants.TAG_EMAIL);
         String userNameP = userNameEditText.getText().toString();
         String passwordP = passwordEditText.getText().toString();
         BasicNameValuePair tagReq = new BasicNameValuePair("tag","login");
@@ -136,7 +136,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
         if (jsonStr != null) {
             try {
                 JSONObject jsonObj = new JSONObject(jsonStr);
-                String flg = jsonObj.getString(TAG_FLG);
+                String flg = jsonObj.getString(Constants.TAG_FLG);
 
                 switch(flg)
                 {
@@ -151,9 +151,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
                         passwordEditText.setError("user already connected");//pdialog
                         break;
                     case "verified":
-                        sm.StoreUserSession(jsonObj.getString("name"),sm.KEY_NAME);
-                        sm.StoreUserSession(jsonObj.getString("mobile"),sm.KEY_MOBILE);
-                        sm.StoreUserSession(jsonObj.getString("user_id"), sm.KEY_USERID);
+                        sm.StoreUserSession(jsonObj.getString("name"),Constants.TAG_NAME);
+                        sm.StoreUserSession(jsonObj.getString("mobile"),Constants.TAG_MOB);
+                        sm.StoreUserSession(jsonObj.getString("password"),Constants.TAG_PASS);
+                        sm.StoreUserSession(jsonObj.getString("gender"),Constants.TAG_GEN);
+                        sm.StoreUserSession(jsonObj.getString("user_id"), Constants.TAG_USERID);
+                        sm.StoreUserSession(jsonObj.getString("age"),Constants.TAG_AGE);
+                        sm.StoreUserSession(jsonObj.getString("image"),Constants.TAG_IMG);
+                        sm.StoreUserSession(jsonObj.getString("gcm_id"),Constants.TAG_REGID);
 
                         startActivity(new Intent(Login.this, MainScreen.class));
                         finish();

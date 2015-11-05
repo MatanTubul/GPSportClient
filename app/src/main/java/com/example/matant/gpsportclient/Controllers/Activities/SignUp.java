@@ -52,7 +52,6 @@ import java.util.List;
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener,AsyncResponse {
 
-    private static final String SENDER_ID ="846271397731" ;
     private Button buttonSignup, buttonSelectIMg;
     private EditText editTextname, editTextemail, editTextmobile, editTextPassword, editTextConfirmPass;
     private ImageView imgv;
@@ -61,7 +60,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     private ArrayAdapter<String> ageAdapter;
     private Spinner spinnerCellCode, spinnerAge, spinnerGender;
     public ErrorHandler err;
-    private String useCaseFlag, areaCode = "", userGender = "", yearOfBirth = "",prevMobile ="", prevEmail="";
+    private String useCaseFlag, areaCode = "", userGender = "", yearOfBirth = "",prevMobile ="", prevEmail="", picture;
     private ProgressDialog progress;
     private Bitmap originbitmap = null, scaled = null;
     private int rotate;
@@ -202,7 +201,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
             }
         });
-        areaCode = spinnerCellCode.getSelectedItem().toString();
 
         buttonSignup.setOnClickListener(this);
         buttonSelectIMg.setOnClickListener(this);
@@ -216,7 +214,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             buttonSignup.setText("SUBMIT CHANGES");
             this.setTitle("Profile");
             Log.d("HashMap", userDetails.get(Constants.TAG_EMAIL));
-            getDataFromDBController();
+            //getDataFromDBController();
+            fillDataFromSMToUI(userDetails);
         }
     }
 
@@ -227,9 +226,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             protected String doInBackground(Void... params) {
 
                 try {
-                    String regid = gcm.register(SENDER_ID);
+                    String regid = gcm.register(Constants.SENDER_ID);
                     Log.d("registerGCM id",regid);
-                    sm.StoreUserSession(regid,sm.KEY_REGID);
+                    sm.StoreUserSession(regid,Constants.TAG_REGID);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -237,23 +236,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             }
         }.execute();
     }
-
-    private void getDataFromDBController()
-    {
-        String userStr = userDetails.get(Constants.TAG_EMAIL);
-        Log.d("getDataFromDBController", "getting data to UI");
-        BasicNameValuePair tagReq = new BasicNameValuePair("tag","profile");
-        BasicNameValuePair method = new BasicNameValuePair("method","getprofile");
-        BasicNameValuePair userNameParam = new BasicNameValuePair("username",userStr);
-        List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
-        nameValuePairList.add(tagReq);
-        nameValuePairList.add(method);
-        nameValuePairList.add(userNameParam);
-        Log.d("user", userStr);
-        dbController =  new DBcontroller(this,this);
-        dbController.execute(nameValuePairList);
-    }
-
 
     /**
      * function which respond to button clicks
@@ -263,8 +245,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     public void onClick(View v) {
         Intent i = null;
         switch (v.getId()) {
-
-
             case R.id.ButtonSubmit: {
 
                 //begin check of empty fields
@@ -400,11 +380,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
                 switch(flg)
                 {
-                    case "profile details retrieval":
-                        Log.d("profile", resStr);
-                        Log.d("class", this.getClass().getSimpleName());
-                        fillDataFromDBToUI(jsonObj);
-                        break;
+                    //case "profile details retrieval":
+                      //  Log.d("profile", resStr);
+                        //Log.d("class", this.getClass().getSimpleName());
+                        //fillDataFromDBToUI(jsonObj);
+                        //break;
                     case "wrong input":
                         if (jsonObj.getString(Constants.TAG_USRCHK).equals("user already exists"))
                             editTextemail.setError("This email is taken");
@@ -421,11 +401,18 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                         {
                             Log.d("succeed", "profile");
 
-                            sm.StoreUserSession(editTextemail.getText().toString(), sm.KEY_EMAIL);
-                            sm.StoreUserSession(editTextname.getText().toString(),sm.KEY_NAME);
+                            sm.StoreUserSession(editTextemail.getText().toString(), Constants.TAG_EMAIL);
+                            sm.StoreUserSession(editTextname.getText().toString(),Constants.TAG_NAME);
+                            sm.StoreUserSession(editTextemail.getText().toString(),Constants.TAG_PASS);
+
                             String userMobile = areaCode;
                             userMobile += editTextmobile.getText().toString();
-                            sm.StoreUserSession(userMobile,sm.KEY_MOBILE);
+                            sm.StoreUserSession(userMobile,Constants.TAG_MOB);
+
+                            sm.StoreUserSession(userGender, Constants.TAG_GEN);
+                            sm.StoreUserSession(yearOfBirth,Constants.TAG_AGE);
+                            if(picture!=null)
+                                sm.StoreUserSession(picture,Constants.TAG_IMG);
 
                             //dialog and go to main freg
                             setResult(RESULT_OK);
@@ -444,20 +431,20 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
     }
 
-    private void fillDataFromDBToUI(JSONObject jsonObj)
+    private void fillDataFromSMToUI(HashMap<String,String> userDetails)
     {
         Log.d("setOnUI", "UI DATA");
-        setTexts(jsonObj);
-        setSpinners(jsonObj);
-        setImage(jsonObj);
+        setTexts(userDetails);
+        setSpinners(userDetails);
+        setImage(userDetails);
 
     }
 
-    private void setImage (JSONObject jsonObj)
+    private void setImage (HashMap<String,String> userDetails)
     {
-        try {
+
             Log.d("setOnUI", "Image");
-            String imageString = jsonObj.getString(Constants.TAG_IMG);
+            String imageString = userDetails.get(Constants.TAG_IMG);
             if (imageString.equals("nofile"))
                 Log.d("setOnUI", "nofile");
             else {
@@ -465,12 +452,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                 imgv.setImageBitmap(scaled);
             }
 
-
-        }
-
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
 
@@ -480,48 +461,44 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
     }
 
-    private void setTexts (JSONObject jsonObj)
+    private void setTexts (HashMap<String,String> userDetails)
     {
-        try{
 
             Log.d("setOnUI", "Texts");
-            editTextPassword.setText(jsonObj.getString(Constants.TAG_PASS));
-            editTextConfirmPass.setText(jsonObj.getString(Constants.TAG_PASS));
-            editTextname.setText(jsonObj.getString(Constants.TAG_NAME));
-            prevEmail = jsonObj.getString(Constants.TAG_EMAIL);
+            editTextPassword.setText(userDetails.get(Constants.TAG_PASS));
+            editTextConfirmPass.setText(userDetails.get(Constants.TAG_PASS));
+            editTextname.setText(userDetails.get(Constants.TAG_NAME));
+            prevEmail = userDetails.get(Constants.TAG_EMAIL);
             editTextemail.setText(prevEmail);
-            String cellPhoneNum = jsonObj.getString(Constants.TAG_MOB).substring(Constants.CELL_CODE_LENGTH);
+            String cellPhoneNum = userDetails.get(Constants.TAG_MOB).substring(Constants.CELL_CODE_LENGTH);
             Log.d("cellPhone", cellPhoneNum);
             editTextmobile.setText(cellPhoneNum);
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
+
     }
 
-    private void setSpinners(JSONObject jsonObj)
+    private void setSpinners(HashMap<String,String> userDetails)
     {
         int spinnerPosition;
         String stringForSpinner;
-        try {
+
             Log.d("setOnUI", "Spinners");
-            stringForSpinner = jsonObj.getString(Constants.TAG_GEN);
+            stringForSpinner = userDetails.get(Constants.TAG_GEN);
             if (stringForSpinner != null) {
                 Log.d("gender", stringForSpinner);
                 spinnerPosition = genderAdapter.getPosition(stringForSpinner);
                 spinnerGender.setSelection(spinnerPosition);
             }
 
-            stringForSpinner = jsonObj.getString(Constants.TAG_AGE);
+            stringForSpinner = userDetails.get(Constants.TAG_AGE);
             if (stringForSpinner != null) {
                 Log.d("age", stringForSpinner);
                 spinnerPosition = ageAdapter.getPosition(stringForSpinner);
                 spinnerAge.setSelection(spinnerPosition);
             }
 
-            stringForSpinner = jsonObj.getString(Constants.TAG_MOB);
+            stringForSpinner = userDetails.get(Constants.TAG_MOB);
             stringForSpinner = stringForSpinner.substring(0, stringForSpinner.length() - Constants.CELL_PHONE_LENGTH);
-            String cellPhoneNum = jsonObj.getString(Constants.TAG_MOB).substring(Constants.CELL_CODE_LENGTH);
+            String cellPhoneNum = userDetails.get(Constants.TAG_MOB).substring(Constants.CELL_CODE_LENGTH);
             if (stringForSpinner != null) {
                 Log.d("mobile", stringForSpinner);
                 spinnerPosition = mobileAdapter.getPosition(stringForSpinner);
@@ -531,10 +508,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                 prevMobile += cellPhoneNum;
                 Log.d("prevMobile", prevMobile);
             }
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
+
     }
 
 
@@ -552,11 +526,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         userMobile += editTextmobile.getText().toString();
 
         BasicNameValuePair tagreq = null, nEmail = null, pEmail = null, email = null, nMobile = null, pMobile = null,
-                mobile = null, name = null, password = null, age = null, gender = null, changed = null, regId = null, method = null;
+                mobile = null, name = null, password = null, age = null, gender = null, changed = null, regId = null;
 
         if (useCaseFlag.equals("Profile"))
         {
-            method = new BasicNameValuePair("method","updateprofile");
             tagreq = new BasicNameValuePair("tag", "profile");
             nEmail = new BasicNameValuePair("newemail", editTextemail.getText().toString());
             pEmail = new BasicNameValuePair("prevemail", prevEmail);
@@ -592,7 +565,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
         imgv.buildDrawingCache();
         Bitmap bmap = imgv.getDrawingCache();
-        String picture = setPhoto(bmap);
+        picture = setPhoto(bmap);
         if(picture!=null)
         {
             BasicNameValuePair image = new BasicNameValuePair("picture", picture);
@@ -613,7 +586,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                 nameValuePairList.add(pEmail);
                 nameValuePairList.add(pMobile);
                 nameValuePairList.add(changed);
-                nameValuePairList.add(method);
             }
             else //useCaseFlag.equals("SignUp")
             {
@@ -650,13 +622,13 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
     /**
      * converting Bitmap image to String
-     * @param bitmapm- image in Bitmap format
+     * @param bitmap- image in Bitmap format
      * @return Bitmap image as a String
      */
-    private String setPhoto(Bitmap bitmapm) {
+    private String setPhoto(Bitmap bitmap) {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmapm.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
             byte[] byteArrayImage = baos.toByteArray();
             String imagebase64string = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
             return imagebase64string;
