@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
+import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.MailSender;
@@ -73,7 +74,7 @@ public class ForgotPassword extends Activity implements AsyncResponse {
         if (jsonStr != null) {
             try {
                 JSONObject jsonObj = new JSONObject(jsonStr);
-                String flg = jsonObj.getString(TAG_FLG);
+                String flg = jsonObj.getString(Constants.TAG_FLG);
 
                 switch(flg)
                 {

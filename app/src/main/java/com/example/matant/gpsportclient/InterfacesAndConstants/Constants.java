@@ -25,6 +25,15 @@ public final class Constants {
     public static final String TAG_PASS = "password";
     public static final String TAG_AGE= "age";
     public static final String TAG_GEN= "gender";
+    public static final String TAG_REQUEST = "tag";
+    public static final String TAG_MANAGER_ID = "manager_id";
+    public static final String TAG_REQUEST_FAILED = "failed";
+    public static final String TAG_REQUEST_SUCCEED = "success";
+    public static final String TAG_SOCCER = "soccer";
+    public static final String TAG_BASKETBALL = "basketball";
+    public static final String TAG_BICYCLE = "bicycle";
+    public static final String TAG_RUNNING = "running";
+
 
 
     ////////////////////////Fragments Constants/////////////////////////
@@ -56,7 +65,7 @@ public final class Constants {
     public static final String SENDER_ID ="846271397731" ;
 
     //MainScreen Constants
-    public static final int MENU_SIZE = 7;
+    public static final int MENU_SIZE = 8;
 
 
     ////////////////////////Utilities Constants/////////////////////////

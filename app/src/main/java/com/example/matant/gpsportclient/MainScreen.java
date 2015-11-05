@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.matant.gpsportclient.Controllers.Fragments.CreateEventFragmentController;
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.Controllers.Fragments.GoogleMapFragmentController;
+import com.example.matant.gpsportclient.Controllers.Fragments.ManageEventFragmentController;
 import com.example.matant.gpsportclient.Controllers.Fragments.ProfileFragmentController;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
@@ -204,7 +205,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
                 fragment = new CreateEventFragmentController();
                 break;
             case 4: //Manage Events
-                //fragment = new ManageEventFragmentController();
+                fragment = new ManageEventFragmentController();
                 break;
             case 5: //Attending List
                 //fragment = new AttendingListFragmentController();

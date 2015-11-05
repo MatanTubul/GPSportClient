@@ -107,7 +107,7 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                         JSONArray jsonarr = json.getJSONArray("users");
                         Log.d("array",jsonarr.toString());
                         rowUsers = new ArrayList<InviteUsersListRow>();
-                        HashMap<String,String> hm = sm.getUserDetails();
+                      //  HashMap<String,String> hm = sm.getUserDetails();
                         for(int i = 0; i < jsonarr.length();i++){
                             {
                                /* Boolean flag = jsonarr.getJSONObject(i).getString("mobile").equals(sm.getUserDetails().get(sm.KEY_MOBILE));
@@ -176,11 +176,6 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
         dbController.execute(nameValuePairList);
 
     }
-
-
-
-
-
     @Override
     public void preProcess() {
 

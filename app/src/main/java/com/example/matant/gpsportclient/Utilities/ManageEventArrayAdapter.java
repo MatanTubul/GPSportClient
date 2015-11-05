@@ -69,5 +69,7 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> {
 
         return convertView;
     }
-
+    public void setData(List<ManageEventListRow> list){
+        this.mngEvents = list;
+    }
 }
