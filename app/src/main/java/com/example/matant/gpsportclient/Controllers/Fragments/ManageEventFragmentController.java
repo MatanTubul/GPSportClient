@@ -70,13 +70,16 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
                         JSONArray jsonarr = jsonObj.getJSONArray("events");
                         Log.d("creating list",jsonarr.toString());
                         Log.d("array",jsonarr.toString());
-                        String title,date,Loc,participants;
+                        String title,date,Loc,participants,event_time,id;
                         rowEvents = new ArrayList<ManageEventListRow>();
                         int sportType = -1;
                         for(int i = 0; i< jsonarr.length();i++){
                             title = jsonarr.getJSONObject(i).getString("kind_of_sport");
                             date = jsonarr.getJSONObject(i).getString("event_date");
                             Loc = jsonarr.getJSONObject(i).getString("address");
+                            event_time = jsonarr.getJSONObject(i).getString("start_time")+" "+"-"+" "+jsonarr.getJSONObject(i).getString("end_time");;
+                            id = jsonarr.getJSONObject(i).getString("event_id");
+
                             participants = jsonarr.getJSONObject(i).getString("current_participants");
                             switch (title){
                                 case Constants.TAG_SOCCER:
@@ -92,7 +95,7 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
                                     sportType = R.drawable.biking_32;
                                     break;
                             }
-                            ManageEventListRow rowEvent = new ManageEventListRow(sportType,title,Loc,date,participants);
+                            ManageEventListRow rowEvent = new ManageEventListRow(sportType,title,Loc,date,participants,id,event_time);
                             rowEvents.add(rowEvent);
 
                         }

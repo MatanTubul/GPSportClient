@@ -296,9 +296,6 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                              public void onClick(DialogInterface dialog, int which) {
                                  btnstartTime.setText(getCorrentTime());
                                  btnendTime.setText(getCorrentTime());
-
-
-
                              }
                          })
                          .setIconAttribute(android.R.attr.alertDialogIcon)

@@ -2,19 +2,25 @@ package com.example.matant.gpsportclient.Utilities;
 
 import android.widget.ImageButton;
 
+import org.json.JSONObject;
+
 /**
  * Created by matant on 11/4/2015.
  */
 public class ManageEventListRow {
     private int sportImage;
-    private  String sportType,Date,Location,Participants;
+    private  String sportType,Date,Location,Participants,eventId,etime;
 
-    public ManageEventListRow(int image,String type, String loc, String date,String partic){
+
+    public ManageEventListRow(int image,String type, String loc, String date,String partic,String eventid,String event_time){
         this.sportImage = image;
         this.sportType = type;
         this.Date = date;
         this.Location  = loc;
         this.Participants = partic;
+        this.eventId = eventid;
+        this.etime = event_time;
+
     }
 
     public int getSportImage() {
@@ -55,5 +61,21 @@ public class ManageEventListRow {
 
     public void setParticipants(String participants) {
         Participants = participants;
+    }
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
+
+    public String getEtime() {
+        return etime;
+    }
+
+    public void setEtime(String etime) {
+        this.etime = etime;
     }
 }

@@ -5,17 +5,18 @@
 
     <View
         android:id="@+id/divider1"
-        android:layout_below="@+id/rowLayout"
         android:layout_width="fill_parent"
-        android:layout_marginTop="1dp"
         android:layout_height="6dp"
 
-        android:background="@android:color/darker_gray"/>
+        android:background="@android:color/darker_gray"
+        android:layout_below="@+id/rowLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:id="@+id/rowLayout"
-        android:layout_height="80dp">
+        android:layout_height="100dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -51,9 +52,9 @@
                 android:text="Location"
                 android:id="@+id/textViewloc"
                 android:textColor="#000000"
-                android:layout_below="@+id/textViewDate"
-                android:layout_alignLeft="@+id/textViewParticipants"
-                android:layout_alignStart="@+id/textViewParticipants" />
+                android:layout_below="@+id/textViewtime"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -89,7 +90,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Participants"
-                android:layout_marginLeft="5dp"
 
                 android:id="@+id/textViewParticipants"
                 android:textColor="#000000"
@@ -118,17 +118,36 @@
             <View
                 android:id="@+id/divider2"
                 android:layout_width="1dp"
-                android:layout_height="80dp"
+                android:layout_height="100dp"
                 android:background="@android:color/darker_gray"
                 android:layout_alignParentBottom="true"
                 android:layout_alignLeft="@+id/imageViewDeleteEvent"
                 android:layout_alignStart="@+id/imageViewDeleteEvent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Time"
+                android:id="@+id/textViewtime"
+                android:textColor="#000000"
+                android:layout_below="@+id/textViewDate"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="timeval"
+                android:id="@+id/textViewtimeval"
+                android:layout_alignTop="@+id/textViewtime"
+                android:layout_alignLeft="@+id/textViewDateValue"
+                android:layout_alignStart="@+id/textViewDateValue" />
         </RelativeLayout>
 
         <View
             android:id="@+id/divider3"
             android:layout_width="1dp"
-            android:layout_height="80dp"
+            android:layout_height="100dp"
             android:background="@android:color/darker_gray"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/relativeLayout"
