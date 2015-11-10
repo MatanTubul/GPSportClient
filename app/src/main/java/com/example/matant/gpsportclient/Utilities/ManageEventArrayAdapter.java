@@ -1,11 +1,13 @@
 package com.example.matant.gpsportclient.Utilities;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
+import com.example.matant.gpsportclient.Controllers.Fragments.CreateEventFragmentController;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.R;
@@ -85,6 +88,22 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
         holder.txtParticipants.setText(rowItem.getParticipants());
         holder.imageViewType.setImageResource(rowItem.getSportImage());
 
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              /*  Fragment fragment = new CreateEventFragmentController();
+                FragmentManager fragmentManager = getFragmentManager();
+
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();*/
+
+
+                Bundle args = new Bundle();
+                args.putString("Tag", "edit_event");
+                args.putString("json", rowItem.getEventRecord().toString());
+
+            }
+        });
+
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,6 +168,7 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
     @Override
     public void sendDataToDBController() {
         String id = rowEvent.getEventId();
+        Log.d("event id to delete:",id);
         BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, "delete_event");
         BasicNameValuePair eventparam = new BasicNameValuePair("event_id", id);
         List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();

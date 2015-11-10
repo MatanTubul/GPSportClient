@@ -227,7 +227,6 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
         if (fragment != null) {
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
             mDrawerList.setItemChecked(position, true);
             mDrawerList.setSelection(position);
             getSupportActionBar().setTitle(mNavigationDrawerItemTitles[position]);

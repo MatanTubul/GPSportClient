@@ -10,9 +10,10 @@ import org.json.JSONObject;
 public class ManageEventListRow {
     private int sportImage;
     private  String sportType,Date,Location,Participants,eventId,etime;
+    private JSONObject eventRecord;
 
 
-    public ManageEventListRow(int image,String type, String loc, String date,String partic,String eventid,String event_time){
+    public ManageEventListRow(int image,String type, String loc, String date,String partic,String eventid,String event_time, JSONObject eventObj ){
         this.sportImage = image;
         this.sportType = type;
         this.Date = date;
@@ -20,7 +21,7 @@ public class ManageEventListRow {
         this.Participants = partic;
         this.eventId = eventid;
         this.etime = event_time;
-
+        this.eventRecord = eventObj;
     }
 
     public int getSportImage() {
@@ -77,5 +78,13 @@ public class ManageEventListRow {
 
     public void setEtime(String etime) {
         this.etime = etime;
+    }
+
+    public JSONObject getEventRecord() {
+        return eventRecord;
+    }
+
+    public void setEventRecord(JSONObject eventRecord) {
+        this.eventRecord = eventRecord;
     }
 }

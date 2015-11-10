@@ -74,6 +74,7 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
                         rowEvents = new ArrayList<ManageEventListRow>();
                         int sportType = -1;
                         for(int i = 0; i< jsonarr.length();i++){
+                            JSONObject eventObj = jsonarr.getJSONObject(i);
                             title = jsonarr.getJSONObject(i).getString("kind_of_sport");
                             date = jsonarr.getJSONObject(i).getString("event_date");
                             Loc = jsonarr.getJSONObject(i).getString("address");
@@ -95,7 +96,7 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
                                     sportType = R.drawable.biking_32;
                                     break;
                             }
-                            ManageEventListRow rowEvent = new ManageEventListRow(sportType,title,Loc,date,participants,id,event_time);
+                            ManageEventListRow rowEvent = new ManageEventListRow(sportType,title,Loc,date,participants,id,event_time,eventObj);
                             rowEvents.add(rowEvent);
 
                         }
