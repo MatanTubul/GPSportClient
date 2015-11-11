@@ -9,6 +9,7 @@ import android.util.Log;
 import com.example.matant.gpsportclient.InterfacesAndConstants.OnCompleteListener;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by matant on 9/10/2015.
@@ -17,6 +18,7 @@ public class DatePicker extends DialogFragment implements DatePickerDialog.OnDat
 
     private OnCompleteListener mListener;
     private int year,month,day;
+    private  Calendar cal;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -32,28 +34,31 @@ public class DatePicker extends DialogFragment implements DatePickerDialog.OnDat
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Calendar cal = Calendar.getInstance();
-         year = cal.get(Calendar.YEAR);
+        Date today = new Date();
+          cal = Calendar.getInstance();
+        cal.setTime(today);
+        cal.add(Calendar.MONTH,0);
+        long minDate = cal.getTime().getTime();
+        year = cal.get(Calendar.YEAR);
          month = cal.get(Calendar.MONTH);
          day = cal.get(Calendar.DAY_OF_MONTH);
 
-        return new DatePickerDialog(getActivity(), this, year, month, day);
+        DatePickerDialog pickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
+        pickerDialog.getDatePicker().setMinDate(minDate);
+        return pickerDialog;
+
     }
 
     @Override
     public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-        Log.d("Calendar",String.valueOf(dayOfMonth)+"/"+String.valueOf(monthOfYear)+"/"+String.valueOf(year));
         {
-            Log.d("this date",String.valueOf(this.year)+" "+String.valueOf(this.month)+" "+String.valueOf(this.day));
-            Log.d("this date",String.valueOf(year)+" "+String.valueOf(monthOfYear)+" "+String.valueOf(dayOfMonth));
-
-            if(this.year < year || this.month < monthOfYear || this.day < dayOfMonth)
+            if( this.day > dayOfMonth)
             {
-                Log.d("date no valid","wrong date");
+
                 mListener.onComplete("Date_not_valid","Please insert a valid date!");
             }else{
-                Log.d("date  valid","date");
+
                 mListener.onComplete("date",String.valueOf(dayOfMonth)+"/"+String.valueOf(monthOfYear+1)+"/"+String.valueOf(year));
             }
 
