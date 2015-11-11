@@ -74,11 +74,14 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     private AlertDialog.Builder alert;
     private AlertDialog alertdialog = null;
     private ScrollView sv;
+    private String mode;
+    private String event_id ="";
 
 
     public CreateEventFragmentController() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -178,11 +181,56 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
 
         listViewInvitedUsers.setItemsCanFocus(true);
+        mode = Constants.MODE_CREATE;
+        Bundle b = getArguments();
+        if(b != null)
+        {
+             mode = b.getString(Constants.TAG_REQUEST);
+             if(mode.equals(Constants.MODE_UPDATE)){
+                try {
+                    JSONObject json = new JSONObject(b.getString("json"));
+                    Log.d("event details", json.toString());
+                    addressEditText.setText(json.getString("address"));
+                    btnStartdate.setText(json.getString("event_date"));
+                    btnEndDate.setText(json.getString("event_date"));
+                    btnstartTime.setText(json.getString("start_time"));
+                    btnendTime.setText(json.getString("end_time"));
+                    String sched = json.getString("scheduled");
+                    if (sched.equals("1")){
+                        reccuringEventCbox.setChecked(true);
+                    }
+                    sportSpinner.setSelection(getIndexSpinnerByValue(sportSpinner,json.getString("kind_of_sport")));
+                    genderSpinner.setSelection(getIndexSpinnerByValue(genderSpinner, json.getString("gender")));
+                    maxParticipantsEdittext.setText(json.getString("max_participants"));
+                    minAgeEditText.setText(json.getString("min_age"));
+                    String event_mode = json.getString("private");
+                    if(event_mode.equals("true")){
+                        privateEventCbox.setChecked(true);
+                    }
+                    event_id = json.getString("event_id").toString();
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
 
         return v;
     }
 
-
+    private int getIndexSpinnerByValue(Spinner sp, String val) {
+        int index = 0;
+        for(int i=0; i < sp.getCount();i++) {
+            if (sp.getItemAtPosition(i).toString().equals(val)) {
+                index = i;
+                return  index;
+            }
+        }
+        return  index;
+    }
 
 
     @Override
@@ -300,6 +348,23 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                          })
                          .setIconAttribute(android.R.attr.alertDialogIcon)
                          .show();
+              break;
+             }
+             case "Date_not_valid":
+             {
+                 new AlertDialog.Builder(getActivity())
+                         .setTitle("Date Error!")
+                         .setMessage(res)
+                         .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                             @Override
+                             public void onClick(DialogInterface dialog, int which) {
+                                 btnStartdate.setText(getCurrentDate());
+                                 btnEndDate.setText(getCurrentDate());
+                             }
+                         })
+                         .setIconAttribute(android.R.attr.alertDialogIcon)
+                         .show();
+                 break;
              }
          }
 
@@ -366,7 +431,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     @Override
     public void handleResponse(String resStr) {
         progress.dismiss();
-        Log.d("handleResponse", resStr);
+        Log.d("create handleResponse", resStr);
         if (resStr != null) {
             try {
                 JSONObject jsonObj = new JSONObject(resStr);
@@ -414,8 +479,19 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                         break;
                     }
 
-                    case "select failed":
-                        Log.d("select query","failed to find events");
+                    case "select failed": {
+                        Log.d("select query", "failed to find events");
+                        break;
+                    }
+                    case "update_failed":
+                    {
+                        Log.d("update res failed",resStr);
+                        break;
+                    }
+                    case "update_success":{
+                        Log.d("update res success",resStr);
+                        break;
+                    }
                 }
             }catch (JSONException e){
                 Log.d("json exception",e.getMessage());
@@ -438,7 +514,11 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
             return;
         }
         Log.d("found location",lonlat.latitude+""+lonlat.longitude);
-        BasicNameValuePair tagreq = new BasicNameValuePair("tag","create_event");
+        BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST,"create_event");
+
+        BasicNameValuePair mode = new BasicNameValuePair(Constants.TAG_MODE,Constants.MODE_CREATE);
+
+
         BasicNameValuePair address = new BasicNameValuePair("address",addressEditText.getText().toString());
         BasicNameValuePair sport = new BasicNameValuePair("sport_type",sportSpinner.getSelectedItem().toString());
         Log.d("sport_type",sportSpinner.getSelectedItem().toString());
@@ -457,6 +537,11 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
 
         List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+
+        if(mode.equals(Constants.MODE_UPDATE)){
+            BasicNameValuePair eventId = new BasicNameValuePair("event_id",event_id);
+            nameValuePairList.add(eventId);
+        }
 
         if(invitedUsers != null)
         {
@@ -482,6 +567,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         nameValuePairList.add(manager_name);
         nameValuePairList.add(mob_manager);
         nameValuePairList.add(tagreq);
+        nameValuePairList.add(mode);
         nameValuePairList.add(sport);
         nameValuePairList.add(date);
         nameValuePairList.add(address);

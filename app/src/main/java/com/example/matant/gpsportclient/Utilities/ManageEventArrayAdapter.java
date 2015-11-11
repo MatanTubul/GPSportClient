@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,15 +92,14 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              /*  Fragment fragment = new CreateEventFragmentController();
-                FragmentManager fragmentManager = getFragmentManager();
-
-                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();*/
-
-
-                Bundle args = new Bundle();
-                args.putString("Tag", "edit_event");
-                args.putString("json", rowItem.getEventRecord().toString());
+                Bundle bun = new Bundle();
+                bun.putString(Constants.TAG_REQUEST,Constants.MODE_UPDATE);
+                bun.putString("json",rowItem.getEventRecord().toString());
+                final  Activity activity = (Activity) context;
+                Fragment fragment = new CreateEventFragmentController();
+                fragment.setArguments(bun);
+                FragmentManager fragmentManager =  activity.getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
             }
         });
@@ -149,6 +149,7 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
                 switch (flg){
                     case Constants.TAG_REQUEST_FAILED:
                     {
+
                         break;
                     }
                     case Constants.TAG_REQUEST_SUCCEED:

@@ -33,6 +33,14 @@ public final class Constants {
     public static final String TAG_BASKETBALL = "BasketBall";
     public static final String TAG_BICYCLE = "Bicycle";
     public static final String TAG_RUNNING = "Running";
+    //event
+    public static final String MODE_UPDATE = "edit";
+    public static final String MODE_CREATE = "create_event";
+    public static final String MODE_DELETE = "delete";
+    public static final String TAG_MODE = "mode";
+    //event
+
+
 
 
 

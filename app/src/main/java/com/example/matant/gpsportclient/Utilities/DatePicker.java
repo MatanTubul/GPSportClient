@@ -16,6 +16,7 @@ import java.util.Calendar;
 public class DatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     private OnCompleteListener mListener;
+    private int year,month,day;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -32,9 +33,9 @@ public class DatePicker extends DialogFragment implements DatePickerDialog.OnDat
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
+         year = cal.get(Calendar.YEAR);
+         month = cal.get(Calendar.MONTH);
+         day = cal.get(Calendar.DAY_OF_MONTH);
 
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
@@ -44,7 +45,18 @@ public class DatePicker extends DialogFragment implements DatePickerDialog.OnDat
 
         Log.d("Calendar",String.valueOf(dayOfMonth)+"/"+String.valueOf(monthOfYear)+"/"+String.valueOf(year));
         {
-            mListener.onComplete("date",String.valueOf(dayOfMonth)+"/"+String.valueOf(monthOfYear+1)+"/"+String.valueOf(year));
+            Log.d("this date",String.valueOf(this.year)+" "+String.valueOf(this.month)+" "+String.valueOf(this.day));
+            Log.d("this date",String.valueOf(year)+" "+String.valueOf(monthOfYear)+" "+String.valueOf(dayOfMonth));
+
+            if(this.year < year || this.month < monthOfYear || this.day < dayOfMonth)
+            {
+                Log.d("date no valid","wrong date");
+                mListener.onComplete("Date_not_valid","Please insert a valid date!");
+            }else{
+                Log.d("date  valid","date");
+                mListener.onComplete("date",String.valueOf(dayOfMonth)+"/"+String.valueOf(monthOfYear+1)+"/"+String.valueOf(year));
+            }
+
         }
 
     }
