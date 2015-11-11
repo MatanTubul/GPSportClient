@@ -208,6 +208,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                         privateEventCbox.setChecked(true);
                     }
                     event_id = json.getString("event_id").toString();
+                    btnSave.setText("Update Event");
 
 
 
@@ -504,7 +505,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
     @Override
     public void sendDataToDBController() {
-
+        BasicNameValuePair mode_req;
         LatLng lonlat = getLocationFromAddress(addressEditText.getText().toString());
         if(lonlat == null)
         {
@@ -515,8 +516,17 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         }
         Log.d("found location",lonlat.latitude+""+lonlat.longitude);
         BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST,"create_event");
+        Log.d("event mode",mode);
 
-        BasicNameValuePair mode = new BasicNameValuePair(Constants.TAG_MODE,Constants.MODE_CREATE);
+        if(mode.equals(Constants.MODE_CREATE))
+        {
+            Log.d("event mode","create");
+             mode_req = new BasicNameValuePair(Constants.TAG_MODE,Constants.MODE_CREATE);
+        }
+        else {
+            Log.d("event mode","update");
+             mode_req = new BasicNameValuePair(Constants.TAG_MODE, Constants.MODE_UPDATE);
+        }
 
 
         BasicNameValuePair address = new BasicNameValuePair("address",addressEditText.getText().toString());
@@ -567,7 +577,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         nameValuePairList.add(manager_name);
         nameValuePairList.add(mob_manager);
         nameValuePairList.add(tagreq);
-        nameValuePairList.add(mode);
+        nameValuePairList.add(mode_req);
         nameValuePairList.add(sport);
         nameValuePairList.add(date);
         nameValuePairList.add(address);
