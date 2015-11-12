@@ -150,6 +150,11 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
     public void onClick(View v) {
 
     }
+
+    /**
+     * method which handling the requests for  back button in the  device
+     * @param savedInstanceState
+     */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
