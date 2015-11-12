@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.Controllers.Activities.InviteUsersActivity;
@@ -347,7 +349,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                                  btnendTime.setText(getCorrentTime());
                              }
                          })
-                         .setIconAttribute(android.R.attr.alertDialogIcon)
+                         .setIcon(R.drawable.error_32)
                          .show();
               break;
              }
@@ -363,7 +365,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                                  btnEndDate.setText(getCurrentDate());
                              }
                          })
-                         .setIconAttribute(android.R.attr.alertDialogIcon)
+                         .setIcon(R.drawable.error_32)
                          .show();
                  break;
              }
@@ -447,9 +449,6 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                     /*   Intent i = new Intent(getActivity(), MainScreen.class);
-                                        startActivity(i);
-                                        getActivity().finish();*/
 
                                 Constants.reloadApp(getActivity(), MainScreen.class);
 
@@ -457,7 +456,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                             }
 
                         });
-                        alert.setIconAttribute(android.R.attr.alertDialogIcon);
+                        alert.setIcon(R.drawable.ok_32);
                          alertdialog = alert.show();
                         break;
 
@@ -475,7 +474,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                                         btnendTime.setText(getCorrentTime());
                                     }
                                 })
-                                .setIconAttribute(android.R.attr.alertDialogIcon)
+                                .setIcon(R.drawable.error_32)
                                 .show();
                         break;
                     }
@@ -487,10 +486,24 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                     case "update_failed":
                     {
                         Log.d("update res failed",resStr);
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("Update Failed!")
+                                .setMessage(jsonObj.getString("msg"))
+                                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .setIcon(R.drawable.error_32)
+                                .show();
+
+
                         break;
                     }
                     case "update_success":{
                         Log.d("update res success",resStr);
+                        Constants.reloadApp(getActivity(), MainScreen.class);
                         break;
                     }
                 }
@@ -596,8 +609,15 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
     @Override
     public void preProcess() {
-        this.progress = ProgressDialog.show(getActivity(), "Create Event",
-                "Building Event...", true);
+        if(mode.equals(Constants.MODE_CREATE))
+        {
+            this.progress = ProgressDialog.show(getActivity(), "Create Event",
+                    "Building Event...", true);
+        }else{
+            this.progress = ProgressDialog.show(getActivity(), "Update Event",
+                    "Updating Event...", true);
+        }
+
     }
 
 
@@ -648,7 +668,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("inside OnActivityResult","result");
+        Log.d("inside OnActivityResult", "result");
 
         if(REQUEST_CODE_GET_USER_LIST == requestCode){
 
@@ -686,5 +706,24 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
             }
         }
 
+    }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        Toast.makeText(getActivity(), "Please navigate via the menu", Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 }

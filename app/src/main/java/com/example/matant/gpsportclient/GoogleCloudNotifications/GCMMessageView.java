@@ -12,9 +12,11 @@ import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.example.matant.gpsportclient.Controllers.Activities.Login;
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
+import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
@@ -87,9 +89,19 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
                 String flg = jsonObj.getString(Constants.TAG_FLG);
 
                 switch (flg){
-                    case "updated":
+                    case "updated":{
+
                         Log.d("msg:",jsonObj.getString(Constants.TAG_MSG));
+                        if(sm.isConnected()){
+                            Constants.reloadApp(this,MainScreen.class);
+                            finish();
+                        }else{
+                            Constants.reloadApp(this, Login.class);
+                            finish();
+                        }
                         break;
+                    }
+
                     case "update_failed":
                         Log.d("msg:",jsonObj.getString(Constants.TAG_MSG));
                         break;
@@ -123,6 +135,10 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
                 "Updating...", true);
 
     }
+    @Override
+    public void onBackPressed(){
+
+    }
 
     @Override
     public void onClick(View v) {
@@ -135,6 +151,7 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
 
 
             case R.id.ButtonDeny:
+                Constants.reloadApp(this, Login.class);
                 break;
         }
     }

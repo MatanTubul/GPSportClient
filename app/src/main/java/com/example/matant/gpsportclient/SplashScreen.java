@@ -37,7 +37,7 @@ public class SplashScreen extends Activity {
                               System.exit(0);
                         }
                     })
-                    .setIconAttribute(android.R.attr.alertDialogIcon)
+                    .setIcon(R.drawable.error_32)
                     .show();
 
         }else {

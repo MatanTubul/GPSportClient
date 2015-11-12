@@ -22,6 +22,7 @@ public class SessionManager {
     SharedPreferences.Editor editor;
     // Context
     Context _context;
+    private boolean isConnected = false;
 
     public static SessionManager getInstance(Context context){
         if(sessionManagerInstance == null)
@@ -62,10 +63,19 @@ public class SessionManager {
         //clean pref
         editor.clear();
         editor.commit();
+        this.isConnected = false;
 
         Intent i = new Intent(_context, Login.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         _context.startActivity(i);
+    }
+
+    public boolean isConnected() {
+        return isConnected;
+    }
+
+    public void setIsConnected(boolean isConnected) {
+        this.isConnected = isConnected;
     }
 }

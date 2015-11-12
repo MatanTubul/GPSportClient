@@ -606,6 +606,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                             dialog.dismiss();
                         }
                     });
+            alertDialog.setIcon(R.drawable.error_32);
             alertDialog.show();
         }
 

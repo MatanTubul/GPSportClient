@@ -159,7 +159,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
                         sm.StoreUserSession(jsonObj.getString("age"),Constants.TAG_AGE);
                         sm.StoreUserSession(jsonObj.getString("image"),Constants.TAG_IMG);
                         sm.StoreUserSession(jsonObj.getString("gcm_id"),Constants.TAG_REGID);
-
+                        sm.setIsConnected(true);
                         startActivity(new Intent(Login.this, MainScreen.class));
                         finish();
                         break;
