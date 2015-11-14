@@ -211,8 +211,9 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                     }
                     event_id = json.getString("event_id").toString();
                     btnSave.setText("Update Event");
-
-
+                    Log.d("users in update", b.getString("users"));
+                    JSONArray jsonarr = new JSONArray(b.getString("users"));
+                    initAdapter(jsonarr.toString());
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -449,10 +450,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
                                 Constants.reloadApp(getActivity(), MainScreen.class);
-
-
+                                getActivity().finish();
                             }
 
                         });
@@ -722,12 +721,37 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     if (keyCode == KeyEvent.KEYCODE_BACK) {
-                        Toast.makeText(getActivity(), "Please navigate via the menu", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(), "Please navigate via the menu", Toast.LENGTH_SHORT).show();
+                        Constants.reloadApp(getActivity(), MainScreen.class);
                         return true;
                     }
                 }
                 return false;
             }
         });
+
+    }
+    public void  initAdapter(String params){
+        JSONArray res = null;
+        try {
+            res = new JSONArray(params);
+            Log.d("res jsonarray",res.toString());
+            invitedUsers = new ArrayList<CreateInviteUsersRow>();
+            for(int i=0 ;i< res.length(); i++){
+                Log.d("iteration",String.valueOf(i));
+                String name = res.getJSONObject(i).getString("fname");
+                String mobile = res.getJSONObject(i).getString("mobile");
+                CreateInviteUsersRow invitedUserRow = new CreateInviteUsersRow(name,mobile,R.drawable.remove_user_50);
+                invitedUsers.add(invitedUserRow);
+            }
+            invidedAdapter = new CreateInvitedUsersAdapter(getActivity(),R.layout.create_users_invited_item,invitedUsers);
+            listViewInvitedUsers.setAdapter(invidedAdapter);
+            invidedAdapter.setAdapterListview(listViewInvitedUsers);
+            invidedAdapter.setListViewHeightBasedOnChildren();
+            listViewInvitedUsers = invidedAdapter.getAdapterListview();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 }

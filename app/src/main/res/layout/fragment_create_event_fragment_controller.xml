@@ -264,12 +264,18 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
+                 <View
+                     android:id="@+id/divider4"
+                     android:layout_below="@+id/buttonInviteUsers"
+                     android:layout_width="fill_parent"
+                     android:layout_height="6dp"
+                     android:background="@android:color/darker_gray"/>
 
                  <ListView
                      android:layout_width="fill_parent"
                      android:layout_height="wrap_content"
                      android:id="@+id/listViewInvitedusers"
-                     android:layout_below="@+id/buttonInviteUsers"
+                     android:layout_below="@+id/divider4"
                      android:layout_centerVertical="true"
                      android:layout_centerHorizontal="true">
                  </ListView>
