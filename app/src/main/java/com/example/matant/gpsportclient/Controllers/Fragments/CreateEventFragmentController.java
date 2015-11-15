@@ -208,6 +208,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                     String event_mode = json.getString("private");
                     if(event_mode.equals("true")){
                         privateEventCbox.setChecked(true);
+                        btninviteUsers.setVisibility(v.VISIBLE);
                     }
                     event_id = json.getString("event_id").toString();
                     btnSave.setText("Update Event");
@@ -503,6 +504,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                     case "update_success":{
                         Log.d("update res success",resStr);
                         Constants.reloadApp(getActivity(), MainScreen.class);
+                        getActivity().finish();
                         break;
                     }
                 }
