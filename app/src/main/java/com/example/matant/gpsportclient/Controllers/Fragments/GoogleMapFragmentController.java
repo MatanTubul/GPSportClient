@@ -154,10 +154,10 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
     }
 
-    /**
-     * method which handling the requests for  back button in the  device
-     * @param savedInstanceState
-     */
+     /**
+      * method which handling the requests for  back button in the  device
+      * @param savedInstanceState
+      */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -306,4 +306,5 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         intent.putExtra(Constants.LOCATION_DATA_EXTRA, mLastLocation);
         getActivity().startService(intent);
     }
+
 }

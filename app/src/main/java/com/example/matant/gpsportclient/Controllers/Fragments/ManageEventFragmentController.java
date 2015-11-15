@@ -130,7 +130,6 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
     public void sendDataToDBController() {
         BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, "get_event");
         BasicNameValuePair manager_id = new BasicNameValuePair(Constants.TAG_MANAGER_ID,sm.getUserDetails().get(Constants.TAG_USERID) );
-
         List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
         nameValuePairList.add(tagreq);
         nameValuePairList.add(manager_id);

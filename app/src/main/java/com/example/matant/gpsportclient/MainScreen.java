@@ -262,7 +262,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
+        // Pass any configuration change to the drawer toggles
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
     public void logout()
@@ -270,7 +270,4 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
 
         sendDataToDBController();
     }
-    
-
-
 }

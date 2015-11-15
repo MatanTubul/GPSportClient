@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 
 import com.example.matant.gpsportclient.Controllers.Activities.Login;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
+import com.example.matant.gpsportclient.MainScreen;
 
 import java.util.HashMap;
 
@@ -13,7 +14,7 @@ import java.util.HashMap;
  * This singleton class will manage the user session including get/store info by Shared Preferences
  * Created by matant on 8/27/2015.
  */
-public class SessionManager {
+public class SessionManager  {
 
     private static SessionManager sessionManagerInstance = null;
     // Shared Preferences reference

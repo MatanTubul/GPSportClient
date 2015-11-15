@@ -95,6 +95,12 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
                 Bundle bun = new Bundle();
                 bun.putString(Constants.TAG_REQUEST,Constants.MODE_UPDATE);
                 bun.putString("json",rowItem.getEventRecord().toString());
+                try {
+                    bun.putString("users",rowItem.getEventRecord().getString("event_users"));
+                    Log.d("users is:",rowItem.getEventRecord().getString("event_users"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 final  Activity activity = (Activity) context;
                 Fragment fragment = new CreateEventFragmentController();
                 fragment.setArguments(bun);
