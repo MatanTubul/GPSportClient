@@ -214,8 +214,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             buttonSignup.setText("SUBMIT CHANGES");
             this.setTitle("Profile");
             Log.d("HashMap", userDetails.get(Constants.TAG_EMAIL));
-            //getDataFromDBController();
-            fillDataFromSMToUI(userDetails);
         }
     }
 
@@ -247,6 +245,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         switch (v.getId()) {
             case R.id.ButtonSubmit: {
 
+                Log.d("SUBMITCLICKED", "SUBMITCLICKED");
                 //begin check of empty fields
                 ArrayList<EditText> arr = new ArrayList<EditText>();
                 arr.add(editTextemail);
@@ -356,9 +355,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             scaled = Bitmap.createScaledBitmap(originbitmap,512,nh,true);
             imgv.setImageBitmap(scaled);
 
-            // Do something with the bitmap
-
-
             // At the end remember to close the cursor or you will end with the RuntimeException!
             cursor.close();
         }
@@ -431,90 +427,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
     }
 
-    private void fillDataFromSMToUI(HashMap<String,String> userDetails)
-    {
-        Log.d("setOnUI", "UI DATA");
-        setTexts(userDetails);
-        setSpinners(userDetails);
-        setImage(userDetails);
-
-    }
-
-    private void setImage (HashMap<String,String> userDetails)
-    {
-
-            Log.d("setOnUI", "Image");
-            String imageString = userDetails.get(Constants.TAG_IMG);
-            if (imageString.equals("nofile"))
-                Log.d("setOnUI", "nofile");
-            else {
-                scaled = decodeBase64(imageString);
-                imgv.setImageBitmap(scaled);
-            }
-
-    }
-
-
-    public static Bitmap decodeBase64(String input)
-    {
-        byte[] decodedByte = Base64.decode(input, 0);
-        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-    }
-
-    private void setTexts (HashMap<String,String> userDetails)
-    {
-
-            Log.d("setOnUI", "Texts");
-            editTextPassword.setText(userDetails.get(Constants.TAG_PASS));
-            editTextConfirmPass.setText(userDetails.get(Constants.TAG_PASS));
-            editTextname.setText(userDetails.get(Constants.TAG_NAME));
-            prevEmail = userDetails.get(Constants.TAG_EMAIL);
-            editTextemail.setText(prevEmail);
-            String cellPhoneNum = userDetails.get(Constants.TAG_MOB).substring(Constants.CELL_CODE_LENGTH);
-            Log.d("cellPhone", cellPhoneNum);
-            editTextmobile.setText(cellPhoneNum);
-
-    }
-
-    private void setSpinners(HashMap<String,String> userDetails)
-    {
-        int spinnerPosition;
-        String stringForSpinner;
-
-            Log.d("setOnUI", "Spinners");
-            stringForSpinner = userDetails.get(Constants.TAG_GEN);
-            if (stringForSpinner != null) {
-                Log.d("gender", stringForSpinner);
-                spinnerPosition = genderAdapter.getPosition(stringForSpinner);
-                spinnerGender.setSelection(spinnerPosition);
-            }
-
-            stringForSpinner = userDetails.get(Constants.TAG_AGE);
-            if (stringForSpinner != null) {
-                Log.d("age", stringForSpinner);
-                spinnerPosition = ageAdapter.getPosition(stringForSpinner);
-                spinnerAge.setSelection(spinnerPosition);
-            }
-
-            stringForSpinner = userDetails.get(Constants.TAG_MOB);
-            stringForSpinner = stringForSpinner.substring(0, stringForSpinner.length() - Constants.CELL_PHONE_LENGTH);
-            String cellPhoneNum = userDetails.get(Constants.TAG_MOB).substring(Constants.CELL_CODE_LENGTH);
-            if (stringForSpinner != null) {
-                Log.d("mobile", stringForSpinner);
-                spinnerPosition = mobileAdapter.getPosition(stringForSpinner);
-                spinnerCellCode.setSelection(spinnerPosition);
-                prevMobile = stringForSpinner;
-                Log.d("prevMobile",prevMobile );
-                prevMobile += cellPhoneNum;
-                Log.d("prevMobile", prevMobile);
-            }
-
-    }
-
-
-
-
-
 
     /**
      * executing the register request to the server.
@@ -524,6 +436,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
         String userMobile = areaCode;
         userMobile += editTextmobile.getText().toString();
+
+        Log.d("sendDataToDBController", "sendDataToDBController");
 
         BasicNameValuePair tagreq = null, nEmail = null, pEmail = null, email = null, nMobile = null, pMobile = null,
                 mobile = null, name = null, password = null, age = null, gender = null, changed = null, regId = null;
@@ -565,7 +479,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
         imgv.buildDrawingCache();
         Bitmap bmap = imgv.getDrawingCache();
-        picture = setPhoto(bmap);
+        picture = Constants.setPhoto(bmap, Constants.COMP, null);
         if(picture!=null)
         {
             BasicNameValuePair image = new BasicNameValuePair("picture", picture);
@@ -615,29 +529,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
     @Override
     public void preProcess() {
-        if (useCaseFlag.equals("SignUp"))
             progress = ProgressDialog.show(this, "Sign up", "Creating your account", true);
-        else
-            progress = ProgressDialog.show(this, "Profile update", "Updating your account", true);
+
     }
 
-    /**
-     * converting Bitmap image to String
-     * @param bitmap- image in Bitmap format
-     * @return Bitmap image as a String
-     */
-    private String setPhoto(Bitmap bitmap) {
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
-            byte[] byteArrayImage = baos.toByteArray();
-            String imagebase64string = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
-            return imagebase64string;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
