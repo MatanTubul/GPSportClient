@@ -572,9 +572,13 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
                 String[] users = new String[invitedUsers.size()];
                 JSONArray invited = new JSONArray();
+
                 for(int i=0 ; i < invitedUsers.size(); i++)
                 {
-                    users[i]= invitedUsers.get(i).getMobile();
+                    if(mode.equals(Constants.MODE_CREATE))
+                        users[i]= invitedUsers.get(i).getMobile();
+                    else
+                        users[i]= invitedUsers.get(i).getId();
                     invited.put(users[i]);
                 }
                 String json = invited.toString();
@@ -672,16 +676,17 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         if(REQUEST_CODE_GET_USER_LIST == requestCode){
 
             if(Activity.RESULT_OK == resultCode){
+                if(mode.equals(Constants.MODE_CREATE)){
+                    invitedUsers = new ArrayList<CreateInviteUsersRow>();
+                }
                 JSONArray res = null;
                 try {
                     res = new JSONArray(data.getStringExtra("userList"));
-                    invitedUsers = new ArrayList<CreateInviteUsersRow>();
                     for(int i=0 ;i< res.length(); i++){
                         String name = res.getJSONObject(i).getString("name");
                         String mobile = res.getJSONObject(i).getString("mobile");
-
-
-                        CreateInviteUsersRow invitedUserRow = new CreateInviteUsersRow(name,mobile,R.drawable.remove_user_50);
+                        String id = res.getJSONObject(i).getString("id");
+                        CreateInviteUsersRow invitedUserRow = new CreateInviteUsersRow(name,mobile,R.drawable.remove_user_50,id);
                         invitedUsers.add(invitedUserRow);
                     }
                     invidedAdapter = new CreateInvitedUsersAdapter(getActivity(),R.layout.create_users_invited_item,invitedUsers);
@@ -741,7 +746,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                 Log.d("iteration",String.valueOf(i));
                 String name = res.getJSONObject(i).getString("fname");
                 String mobile = res.getJSONObject(i).getString("mobile");
-                CreateInviteUsersRow invitedUserRow = new CreateInviteUsersRow(name,mobile,R.drawable.remove_user_50);
+                String id = res.getJSONObject(i).getString("id");
+                CreateInviteUsersRow invitedUserRow = new CreateInviteUsersRow(name,mobile,R.drawable.remove_user_50,id);
                 invitedUsers.add(invitedUserRow);
             }
             invidedAdapter = new CreateInvitedUsersAdapter(getActivity(),R.layout.create_users_invited_item,invitedUsers);

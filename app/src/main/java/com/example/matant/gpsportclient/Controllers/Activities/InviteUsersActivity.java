@@ -116,6 +116,7 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                                 if(!jsonarr.getJSONObject(i).getString("mobile").equals(sm.getUserDetails().get(Constants.TAG_MOB)))
                                 {
                                     Log.d("user is", jsonarr.getJSONObject(i).toString());
+                                    String id = jsonarr.getJSONObject(i).getString("id");
                                     String name = jsonarr.getJSONObject(i).getString("name");
                                     String mobile = jsonarr.getJSONObject(i).getString("mobile");
                                     Bitmap profileImage = ImageConvertor.decodeBase64(jsonarr.getJSONObject(i).getString("image"));
@@ -136,7 +137,7 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                                         imgStatus = R.drawable.add_user_50;
                                         Log.d("set status1",String.valueOf(imgStatus));
                                     }
-                                    InviteUsersListRow rowUser = new InviteUsersListRow(imgStatus, name, mobile,profileImage);
+                                    InviteUsersListRow rowUser = new InviteUsersListRow(imgStatus, name, mobile,profileImage,id);
                                     rowUsers.add(rowUser);
                                 }
 
@@ -213,6 +214,8 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                                 JSONObject jsonObj = new JSONObject();
                                 jsonObj.put("name",Useradapter.getUsers().get(j).getTitle());
                                 jsonObj.put("mobile",Useradapter.getUsers().get(j).getDesc());
+                                jsonObj.put("id",Useradapter.getUsers().get(j).getId());
+
                                 jsonArr.put(jsonObj);
                             } catch (JSONException e) {
                                 e.printStackTrace();

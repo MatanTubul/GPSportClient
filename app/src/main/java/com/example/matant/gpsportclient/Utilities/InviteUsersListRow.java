@@ -10,14 +10,15 @@ public class InviteUsersListRow {
     private int imageId,imagestatus;
     private Bitmap imgProfile;
     private  String title;
-    private  String desc;
+    private  String desc,id;
 
-    public InviteUsersListRow(int status, String title,String desc,Bitmap i){
+    public InviteUsersListRow(int status, String title,String desc,Bitmap i,String userid){
         //this.imageId = imageId;
         this.title = title;
         this.desc = desc;
         this.imagestatus = status;
         this.imgProfile = i;
+        this.id = userid;
     }
 
     public  int getImageId() {
@@ -52,5 +53,13 @@ public class InviteUsersListRow {
 
     public void setImgProfile(Bitmap imgProfile) {
         this.imgProfile = imgProfile;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
