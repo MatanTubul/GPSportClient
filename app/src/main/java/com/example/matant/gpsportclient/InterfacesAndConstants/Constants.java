@@ -2,8 +2,17 @@ package com.example.matant.gpsportclient.InterfacesAndConstants;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.util.Base64;
+import android.util.Log;
 
 import com.example.matant.gpsportclient.MainScreen;
+import com.example.matant.gpsportclient.Utilities.SessionManager;
+import com.google.android.gcm.GCMRegistrar;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * Created by Nir B on 26/09/2015.
@@ -15,6 +24,43 @@ public final class Constants {
     public static final void reloadApp(Context fromContext, Class toClass){
         fromContext.startActivity(new Intent(fromContext, toClass));
     }
+
+    /**
+     * converting Bitmap image to String
+     * @param bitmap- image in Bitmap format
+     * @return Bitmap image as a String
+     */
+    public static final String setPhoto(Bitmap bitmap,String str, SessionManager sm) {
+        String imagebase64string;
+        try {
+            if (str.equals("compress")) {
+                Log.d("picture", "compressing");
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+                byte[] byteArrayImage = baos.toByteArray();
+                try {
+                    baos.flush();
+                    baos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                imagebase64string = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
+                if (sm != null)
+                    sm.getUserDetails().put(Constants.TAG_IMG,imagebase64string);
+                }
+            else {
+                imagebase64string = sm.getUserDetails().get(Constants.TAG_IMG);
+                Log.d("picture", "no compressing");
+                }
+            return imagebase64string;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static final String COMP = "compress";
+    public static final String NO_COMP = "no compress";
     public static final String TAG_NAME = "name";
     public static final String TAG_MOB = "mobile";
     public static final String TAG_EMAIL= "email";
@@ -39,9 +85,6 @@ public final class Constants {
     public static final String MODE_DELETE = "delete";
     public static final String TAG_MODE = "mode";
     //event
-
-
-
 
 
     ////////////////////////Fragments Constants/////////////////////////

@@ -60,13 +60,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     private ArrayAdapter<String> ageAdapter;
     private Spinner spinnerCellCode, spinnerAge, spinnerGender;
     public ErrorHandler err;
-    private String useCaseFlag, areaCode = "", userGender = "", yearOfBirth = "",prevMobile ="", prevEmail="", picture;
+    private String areaCode = "", userGender = "", yearOfBirth = "", picture;
     private ProgressDialog progress;
     private Bitmap originbitmap = null, scaled = null;
     private int rotate;
-    private Intent editProfileIntent;
     private DBcontroller dbController;
-    private HashMap<String, String> userDetails;
     private GoogleCloudMessaging gcm;
     private SessionManager sm;
 
@@ -76,7 +74,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         setContentView(R.layout.activity_sign_up);
         sm = SessionManager.getInstance(this);
         err = new ErrorHandler();
-        useCaseFlag = "SignUp";
         //updating the minimal age
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -107,8 +104,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         editTextConfirmPass = (EditText) findViewById(R.id.editTextConfirmPass);
         imgv = (ImageView) findViewById(R.id.imageViewGallery);
 
-        resetFields();
-
+        //resetFields();
 
         spinnerAge = (Spinner) findViewById(R.id.spinnerAge);
         ArrayList<String> years = new ArrayList<String>();
@@ -207,16 +203,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         rotateRight.setOnClickListener(this);
         rotateLeft.setOnClickListener(this);
 
-        editProfileIntent = getIntent();
-        userDetails = (HashMap<String, String>) editProfileIntent.getSerializableExtra("USER_DETAILS");
-        if (userDetails != null) {
-            useCaseFlag = "Profile";
-            buttonSignup.setText("SUBMIT CHANGES");
-            this.setTitle("Profile");
-            Log.d("HashMap", userDetails.get(Constants.TAG_EMAIL));
-            //getDataFromDBController();
-            fillDataFromSMToUI(userDetails);
-        }
     }
 
     private void registerGCM() {
@@ -247,6 +233,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         switch (v.getId()) {
             case R.id.ButtonSubmit: {
 
+                Log.d("SUBMITCLICKED", "SUBMITCLICKED");
                 //begin check of empty fields
                 ArrayList<EditText> arr = new ArrayList<EditText>();
                 arr.add(editTextemail);
@@ -356,9 +343,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             scaled = Bitmap.createScaledBitmap(originbitmap,512,nh,true);
             imgv.setImageBitmap(scaled);
 
-            // Do something with the bitmap
-
-
             // At the end remember to close the cursor or you will end with the RuntimeException!
             cursor.close();
         }
@@ -380,11 +364,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
                 switch(flg)
                 {
-                    //case "profile details retrieval":
-                      //  Log.d("profile", resStr);
-                        //Log.d("class", this.getClass().getSimpleName());
-                        //fillDataFromDBToUI(jsonObj);
-                        //break;
                     case "wrong input":
                         if (jsonObj.getString(Constants.TAG_USRCHK).equals("user already exists"))
                             editTextemail.setError("This email is taken");
@@ -392,32 +371,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                             editTextmobile.setError("This mobile is taken");
                         break;
                     case "succeed":
-                        if (jsonObj.getString(Constants.TAG_USECASE).equals("register"))
-                        {
-                            Log.d("succeed", "register");
-                            startActivity(new Intent(SignUp.this, Login.class));
-                        }
-                        else
-                        {
-                            Log.d("succeed", "profile");
-
-                            sm.StoreUserSession(editTextemail.getText().toString(), Constants.TAG_EMAIL);
-                            sm.StoreUserSession(editTextname.getText().toString(),Constants.TAG_NAME);
-                            sm.StoreUserSession(editTextemail.getText().toString(),Constants.TAG_PASS);
-
-                            String userMobile = areaCode;
-                            userMobile += editTextmobile.getText().toString();
-                            sm.StoreUserSession(userMobile,Constants.TAG_MOB);
-
-                            sm.StoreUserSession(userGender, Constants.TAG_GEN);
-                            sm.StoreUserSession(yearOfBirth,Constants.TAG_AGE);
-                            if(picture!=null)
-                                sm.StoreUserSession(picture,Constants.TAG_IMG);
-
-                            //dialog and go to main freg
-                            setResult(RESULT_OK);
-                        }
-                        resetFields();
+                        Log.d("succeed", "register");
+                        startActivity(new Intent(SignUp.this, Login.class));
                         finish();
                         break;
                 }
@@ -431,90 +386,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
     }
 
-    private void fillDataFromSMToUI(HashMap<String,String> userDetails)
-    {
-        Log.d("setOnUI", "UI DATA");
-        setTexts(userDetails);
-        setSpinners(userDetails);
-        setImage(userDetails);
-
-    }
-
-    private void setImage (HashMap<String,String> userDetails)
-    {
-
-            Log.d("setOnUI", "Image");
-            String imageString = userDetails.get(Constants.TAG_IMG);
-            if (imageString.equals("nofile"))
-                Log.d("setOnUI", "nofile");
-            else {
-                scaled = decodeBase64(imageString);
-                imgv.setImageBitmap(scaled);
-            }
-
-    }
-
-
-    public static Bitmap decodeBase64(String input)
-    {
-        byte[] decodedByte = Base64.decode(input, 0);
-        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-    }
-
-    private void setTexts (HashMap<String,String> userDetails)
-    {
-
-            Log.d("setOnUI", "Texts");
-            editTextPassword.setText(userDetails.get(Constants.TAG_PASS));
-            editTextConfirmPass.setText(userDetails.get(Constants.TAG_PASS));
-            editTextname.setText(userDetails.get(Constants.TAG_NAME));
-            prevEmail = userDetails.get(Constants.TAG_EMAIL);
-            editTextemail.setText(prevEmail);
-            String cellPhoneNum = userDetails.get(Constants.TAG_MOB).substring(Constants.CELL_CODE_LENGTH);
-            Log.d("cellPhone", cellPhoneNum);
-            editTextmobile.setText(cellPhoneNum);
-
-    }
-
-    private void setSpinners(HashMap<String,String> userDetails)
-    {
-        int spinnerPosition;
-        String stringForSpinner;
-
-            Log.d("setOnUI", "Spinners");
-            stringForSpinner = userDetails.get(Constants.TAG_GEN);
-            if (stringForSpinner != null) {
-                Log.d("gender", stringForSpinner);
-                spinnerPosition = genderAdapter.getPosition(stringForSpinner);
-                spinnerGender.setSelection(spinnerPosition);
-            }
-
-            stringForSpinner = userDetails.get(Constants.TAG_AGE);
-            if (stringForSpinner != null) {
-                Log.d("age", stringForSpinner);
-                spinnerPosition = ageAdapter.getPosition(stringForSpinner);
-                spinnerAge.setSelection(spinnerPosition);
-            }
-
-            stringForSpinner = userDetails.get(Constants.TAG_MOB);
-            stringForSpinner = stringForSpinner.substring(0, stringForSpinner.length() - Constants.CELL_PHONE_LENGTH);
-            String cellPhoneNum = userDetails.get(Constants.TAG_MOB).substring(Constants.CELL_CODE_LENGTH);
-            if (stringForSpinner != null) {
-                Log.d("mobile", stringForSpinner);
-                spinnerPosition = mobileAdapter.getPosition(stringForSpinner);
-                spinnerCellCode.setSelection(spinnerPosition);
-                prevMobile = stringForSpinner;
-                Log.d("prevMobile",prevMobile );
-                prevMobile += cellPhoneNum;
-                Log.d("prevMobile", prevMobile);
-            }
-
-    }
-
-
-
-
-
 
     /**
      * executing the register request to the server.
@@ -525,51 +396,25 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         String userMobile = areaCode;
         userMobile += editTextmobile.getText().toString();
 
-        BasicNameValuePair tagreq = null, nEmail = null, pEmail = null, email = null, nMobile = null, pMobile = null,
-                mobile = null, name = null, password = null, age = null, gender = null, changed = null, regId = null;
+        Log.d("sendDataToDBController", "sendDataToDBController");
 
-        if (useCaseFlag.equals("Profile"))
-        {
-            tagreq = new BasicNameValuePair("tag", "profile");
-            nEmail = new BasicNameValuePair("newemail", editTextemail.getText().toString());
-            pEmail = new BasicNameValuePair("prevemail", prevEmail);
-            nMobile = new BasicNameValuePair("newmobile", userMobile);
-            pMobile = new BasicNameValuePair("prevmobile", prevMobile);
-
-            String whoAsChanged  = "0";
-            if (!prevEmail.equals(editTextemail.getText().toString()))
-                whoAsChanged = "1";
-            if (!prevMobile.equals(userMobile)) {
-                if (whoAsChanged.equals("1"))
-                    whoAsChanged = "3";
-                else
-                    whoAsChanged = "2";
-            }
-            changed = new BasicNameValuePair("changed", whoAsChanged);
-            Log.d("flag","UPDATING");
-        }
-        else //useCaseFlag.equals("SignUp")
-        {
-            tagreq = new BasicNameValuePair("tag", "signup");
-            email = new BasicNameValuePair("email", editTextemail.getText().toString());
-            mobile = new BasicNameValuePair("mobile", userMobile);
-            Log.d("flag","REGISTERING");
-        }
-
-        regId = new BasicNameValuePair("regid", GCMRegistrar.getRegistrationId(this));
+        BasicNameValuePair tagreq = new BasicNameValuePair("tag", "signup");
+        BasicNameValuePair email = new BasicNameValuePair("email", editTextemail.getText().toString());
+        BasicNameValuePair mobile = new BasicNameValuePair("mobile", userMobile);
+        BasicNameValuePair regId = new BasicNameValuePair("regid", GCMRegistrar.getRegistrationId(this));
         Log.d("prefferences id",GCMRegistrar.getRegistrationId(this));
-        name = new BasicNameValuePair("firstname", editTextname.getText().toString());
-        password = new BasicNameValuePair("password", editTextPassword.getText().toString());
-        age = new BasicNameValuePair("birthyear", yearOfBirth);
-        gender = new BasicNameValuePair("gender", userGender);
+        BasicNameValuePair name = new BasicNameValuePair("firstname", editTextname.getText().toString());
+        BasicNameValuePair password = new BasicNameValuePair("password", editTextPassword.getText().toString());
+        BasicNameValuePair age = new BasicNameValuePair("birthyear", yearOfBirth);
+        BasicNameValuePair gender = new BasicNameValuePair("gender", userGender);
 
         imgv.buildDrawingCache();
         Bitmap bmap = imgv.getDrawingCache();
-        picture = setPhoto(bmap);
+        picture = Constants.setPhoto(bmap, Constants.COMP, null);
         if(picture!=null)
         {
             BasicNameValuePair image = new BasicNameValuePair("picture", picture);
-
+            Log.d("picture", "not null");
             List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
             nameValuePairList.add(tagreq);
             nameValuePairList.add(name);
@@ -578,20 +423,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             nameValuePairList.add(age);
             nameValuePairList.add(gender);
             nameValuePairList.add(image);
+            nameValuePairList.add(email);
+            nameValuePairList.add(mobile);
 
-            if (useCaseFlag.equals("Profile"))
-            {
-                nameValuePairList.add(nEmail);
-                nameValuePairList.add(nMobile);
-                nameValuePairList.add(pEmail);
-                nameValuePairList.add(pMobile);
-                nameValuePairList.add(changed);
-            }
-            else //useCaseFlag.equals("SignUp")
-            {
-                nameValuePairList.add(email);
-                nameValuePairList.add(mobile);
-            }
 
             dbController = new DBcontroller(this,this);
             dbController.execute(nameValuePairList);
@@ -615,29 +449,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
     @Override
     public void preProcess() {
-        if (useCaseFlag.equals("SignUp"))
             progress = ProgressDialog.show(this, "Sign up", "Creating your account", true);
-        else
-            progress = ProgressDialog.show(this, "Profile update", "Updating your account", true);
+
     }
 
-    /**
-     * converting Bitmap image to String
-     * @param bitmap- image in Bitmap format
-     * @return Bitmap image as a String
-     */
-    private String setPhoto(Bitmap bitmap) {
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
-            byte[] byteArrayImage = baos.toByteArray();
-            String imagebase64string = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
-            return imagebase64string;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
