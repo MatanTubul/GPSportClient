@@ -497,8 +497,6 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                                 })
                                 .setIcon(R.drawable.error_32)
                                 .show();
-
-
                         break;
                     }
                     case "update_success":{
@@ -511,10 +509,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
             }catch (JSONException e){
                 Log.d("json exception",e.getMessage());
             }
-
-
         }
-
     }
 
     @Override
