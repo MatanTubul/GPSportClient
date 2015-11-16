@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Base64;
+import android.util.Log;
 
 import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
+import com.google.android.gcm.GCMRegistrar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -32,6 +34,7 @@ public final class Constants {
         String imagebase64string;
         try {
             if (str.equals("compress")) {
+                Log.d("picture", "compressing");
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
                 byte[] byteArrayImage = baos.toByteArray();
@@ -42,12 +45,13 @@ public final class Constants {
                     e.printStackTrace();
                 }
                 imagebase64string = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
-                sm.getUserDetails().put(Constants.TAG_IMG,imagebase64string);
-
-            }
-            else
+                if (sm != null)
+                    sm.getUserDetails().put(Constants.TAG_IMG,imagebase64string);
+                }
+            else {
                 imagebase64string = sm.getUserDetails().get(Constants.TAG_IMG);
-
+                Log.d("picture", "no compressing");
+                }
             return imagebase64string;
         } catch (Exception e) {
             e.printStackTrace();

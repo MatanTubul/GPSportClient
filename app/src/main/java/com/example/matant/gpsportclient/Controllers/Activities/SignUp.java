@@ -60,13 +60,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
     private ArrayAdapter<String> ageAdapter;
     private Spinner spinnerCellCode, spinnerAge, spinnerGender;
     public ErrorHandler err;
-    private String useCaseFlag, areaCode = "", userGender = "", yearOfBirth = "",prevMobile ="", prevEmail="", picture;
+    private String areaCode = "", userGender = "", yearOfBirth = "", picture;
     private ProgressDialog progress;
     private Bitmap originbitmap = null, scaled = null;
     private int rotate;
-    private Intent editProfileIntent;
     private DBcontroller dbController;
-    private HashMap<String, String> userDetails;
     private GoogleCloudMessaging gcm;
     private SessionManager sm;
 
@@ -76,7 +74,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         setContentView(R.layout.activity_sign_up);
         sm = SessionManager.getInstance(this);
         err = new ErrorHandler();
-        useCaseFlag = "SignUp";
         //updating the minimal age
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -107,8 +104,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         editTextConfirmPass = (EditText) findViewById(R.id.editTextConfirmPass);
         imgv = (ImageView) findViewById(R.id.imageViewGallery);
 
-        resetFields();
-
+        //resetFields();
 
         spinnerAge = (Spinner) findViewById(R.id.spinnerAge);
         ArrayList<String> years = new ArrayList<String>();
@@ -207,14 +203,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         rotateRight.setOnClickListener(this);
         rotateLeft.setOnClickListener(this);
 
-        editProfileIntent = getIntent();
-        userDetails = (HashMap<String, String>) editProfileIntent.getSerializableExtra("USER_DETAILS");
-        if (userDetails != null) {
-            useCaseFlag = "Profile";
-            buttonSignup.setText("SUBMIT CHANGES");
-            this.setTitle("Profile");
-            Log.d("HashMap", userDetails.get(Constants.TAG_EMAIL));
-        }
     }
 
     private void registerGCM() {
@@ -376,11 +364,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
                 switch(flg)
                 {
-                    //case "profile details retrieval":
-                      //  Log.d("profile", resStr);
-                        //Log.d("class", this.getClass().getSimpleName());
-                        //fillDataFromDBToUI(jsonObj);
-                        //break;
                     case "wrong input":
                         if (jsonObj.getString(Constants.TAG_USRCHK).equals("user already exists"))
                             editTextemail.setError("This email is taken");
@@ -388,32 +371,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                             editTextmobile.setError("This mobile is taken");
                         break;
                     case "succeed":
-                        if (jsonObj.getString(Constants.TAG_USECASE).equals("register"))
-                        {
-                            Log.d("succeed", "register");
-                            startActivity(new Intent(SignUp.this, Login.class));
-                        }
-                        else
-                        {
-                            Log.d("succeed", "profile");
-
-                            sm.StoreUserSession(editTextemail.getText().toString(), Constants.TAG_EMAIL);
-                            sm.StoreUserSession(editTextname.getText().toString(),Constants.TAG_NAME);
-                            sm.StoreUserSession(editTextemail.getText().toString(),Constants.TAG_PASS);
-
-                            String userMobile = areaCode;
-                            userMobile += editTextmobile.getText().toString();
-                            sm.StoreUserSession(userMobile,Constants.TAG_MOB);
-
-                            sm.StoreUserSession(userGender, Constants.TAG_GEN);
-                            sm.StoreUserSession(yearOfBirth,Constants.TAG_AGE);
-                            if(picture!=null)
-                                sm.StoreUserSession(picture,Constants.TAG_IMG);
-
-                            //dialog and go to main freg
-                            setResult(RESULT_OK);
-                        }
-                        resetFields();
+                        Log.d("succeed", "register");
+                        startActivity(new Intent(SignUp.this, Login.class));
                         finish();
                         break;
                 }
@@ -439,43 +398,15 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
         Log.d("sendDataToDBController", "sendDataToDBController");
 
-        BasicNameValuePair tagreq = null, nEmail = null, pEmail = null, email = null, nMobile = null, pMobile = null,
-                mobile = null, name = null, password = null, age = null, gender = null, changed = null, regId = null;
-
-        if (useCaseFlag.equals("Profile"))
-        {
-            tagreq = new BasicNameValuePair("tag", "profile");
-            nEmail = new BasicNameValuePair("newemail", editTextemail.getText().toString());
-            pEmail = new BasicNameValuePair("prevemail", prevEmail);
-            nMobile = new BasicNameValuePair("newmobile", userMobile);
-            pMobile = new BasicNameValuePair("prevmobile", prevMobile);
-
-            String whoAsChanged  = "0";
-            if (!prevEmail.equals(editTextemail.getText().toString()))
-                whoAsChanged = "1";
-            if (!prevMobile.equals(userMobile)) {
-                if (whoAsChanged.equals("1"))
-                    whoAsChanged = "3";
-                else
-                    whoAsChanged = "2";
-            }
-            changed = new BasicNameValuePair("changed", whoAsChanged);
-            Log.d("flag","UPDATING");
-        }
-        else //useCaseFlag.equals("SignUp")
-        {
-            tagreq = new BasicNameValuePair("tag", "signup");
-            email = new BasicNameValuePair("email", editTextemail.getText().toString());
-            mobile = new BasicNameValuePair("mobile", userMobile);
-            Log.d("flag","REGISTERING");
-        }
-
-        regId = new BasicNameValuePair("regid", GCMRegistrar.getRegistrationId(this));
+        BasicNameValuePair tagreq = new BasicNameValuePair("tag", "signup");
+        BasicNameValuePair email = new BasicNameValuePair("email", editTextemail.getText().toString());
+        BasicNameValuePair mobile = new BasicNameValuePair("mobile", userMobile);
+        BasicNameValuePair regId = new BasicNameValuePair("regid", GCMRegistrar.getRegistrationId(this));
         Log.d("prefferences id",GCMRegistrar.getRegistrationId(this));
-        name = new BasicNameValuePair("firstname", editTextname.getText().toString());
-        password = new BasicNameValuePair("password", editTextPassword.getText().toString());
-        age = new BasicNameValuePair("birthyear", yearOfBirth);
-        gender = new BasicNameValuePair("gender", userGender);
+        BasicNameValuePair name = new BasicNameValuePair("firstname", editTextname.getText().toString());
+        BasicNameValuePair password = new BasicNameValuePair("password", editTextPassword.getText().toString());
+        BasicNameValuePair age = new BasicNameValuePair("birthyear", yearOfBirth);
+        BasicNameValuePair gender = new BasicNameValuePair("gender", userGender);
 
         imgv.buildDrawingCache();
         Bitmap bmap = imgv.getDrawingCache();
@@ -483,7 +414,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         if(picture!=null)
         {
             BasicNameValuePair image = new BasicNameValuePair("picture", picture);
-
+            Log.d("picture", "not null");
             List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
             nameValuePairList.add(tagreq);
             nameValuePairList.add(name);
@@ -492,20 +423,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             nameValuePairList.add(age);
             nameValuePairList.add(gender);
             nameValuePairList.add(image);
+            nameValuePairList.add(email);
+            nameValuePairList.add(mobile);
 
-            if (useCaseFlag.equals("Profile"))
-            {
-                nameValuePairList.add(nEmail);
-                nameValuePairList.add(nMobile);
-                nameValuePairList.add(pEmail);
-                nameValuePairList.add(pMobile);
-                nameValuePairList.add(changed);
-            }
-            else //useCaseFlag.equals("SignUp")
-            {
-                nameValuePairList.add(email);
-                nameValuePairList.add(mobile);
-            }
 
             dbController = new DBcontroller(this,this);
             dbController.execute(nameValuePairList);
