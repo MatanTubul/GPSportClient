@@ -541,6 +541,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         BasicNameValuePair address = new BasicNameValuePair("address",addressEditText.getText().toString());
         BasicNameValuePair sport = new BasicNameValuePair("sport_type",sportSpinner.getSelectedItem().toString());
         Log.d("sport_type",sportSpinner.getSelectedItem().toString());
+
         BasicNameValuePair date = new BasicNameValuePair("date",btnStartdate.getText().toString());
         BasicNameValuePair startTime = new BasicNameValuePair("s_time",btnstartTime.getText().toString());
         BasicNameValuePair endTime = new BasicNameValuePair("e_time",btnendTime.getText().toString());

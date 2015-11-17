@@ -339,12 +339,31 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
             originbitmap = BitmapFactory.decodeFile(imagePath, options);
-            int nh = (int) ( originbitmap.getHeight() * (512.0 / originbitmap.getWidth()) );
-            scaled = Bitmap.createScaledBitmap(originbitmap,512,nh,true);
-            imgv.setImageBitmap(scaled);
+            if(originbitmap == null)
+            {
+                new android.support.v7.app.AlertDialog.Builder(this)
+                        .setTitle("Select image failed!")
+                        .setMessage("Image is not available, please make sure the image located on the device!")
+                        .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                return;
+                            }
+                        })
+                        .setIcon(R.drawable.error_32)
+                        .show();
 
-            // At the end remember to close the cursor or you will end with the RuntimeException!
-            cursor.close();
+            }else{
+                int nh = (int) ( originbitmap.getHeight() * (512.0 / originbitmap.getWidth()) );
+                scaled = Bitmap.createScaledBitmap(originbitmap,512,nh,true);
+                imgv.setImageBitmap(scaled);
+
+                // At the end remember to close the cursor or you will end with the RuntimeException!
+                cursor.close();
+            }
+
+
         }
     }
 
