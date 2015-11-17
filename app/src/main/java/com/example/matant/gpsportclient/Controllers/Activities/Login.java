@@ -75,9 +75,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
                 break;
             case R.id.signUpB:
                 i = new Intent(Login.this, SignUp.class);
+                finish();
                 break;
             case R.id.forgotPasswordTV:
                 i = new Intent(Login.this, ForgotPassword.class);
+                finish();
                 break;
         }
       if (i!=null)

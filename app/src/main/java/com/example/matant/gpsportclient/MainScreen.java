@@ -214,7 +214,6 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
                 //fragment = new RecentSearchesFragmentController();
                 break;
             case 7: { //Log Out
-
                 logout();
                 finish(); //destroy the main activity
             }
@@ -269,5 +268,10 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
     {
 
         sendDataToDBController();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        logout();
     }
 }

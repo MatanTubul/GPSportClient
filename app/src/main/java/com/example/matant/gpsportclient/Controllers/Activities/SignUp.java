@@ -81,17 +81,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         if ((year - Constants.MINIMAL_YEAR_OF_BIRTH) >= Constants.MIN_AGE) {
             Constants.MINIMAL_YEAR_OF_BIRTH++;
         }
-       /* // check GCM services
-        gcm = GoogleCloudMessaging.getInstance(this.getApplicationContext());
-        //this is already configured: sm = SessionManager.getInstance(this);
-        String regID = sm.getUserDetails().get(sm.KEY_REGID);
-        if(regID == null)
-        {
-            Log.d("register","begin register");
-            registerGCM();
-        }
-
-        ///*/
 
         buttonSignup = (Button) findViewById(R.id.ButtonSubmit);
         buttonSelectIMg = (Button) findViewById(R.id.buttonSelectImg);
@@ -108,16 +97,15 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
         spinnerAge = (Spinner) findViewById(R.id.spinnerAge);
         ArrayList<String> years = new ArrayList<String>();
-        int thisYear = Calendar.getInstance().get(Calendar.YEAR);
         for (int i = 1970; i <= Constants.MINIMAL_YEAR_OF_BIRTH; i++) {
             years.add(Integer.toString(i));
 
         }
         ageAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, years);
-        //ArrayAdapter<CharSequence> ageAdapter = ArrayAdapter.createFromResource(this, R.array.age, android.R.layout.simple_spinner_item);
+
         ageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerAge.setAdapter(ageAdapter);
-        //spinnerAge.getBackground().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+
         spinnerAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -205,23 +193,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
     }
 
-    private void registerGCM() {
-        new AsyncTask<Void,Void,String>(){
 
-            @Override
-            protected String doInBackground(Void... params) {
-
-                try {
-                    String regid = gcm.register(Constants.SENDER_ID);
-                    Log.d("registerGCM id",regid);
-                    sm.StoreUserSession(regid,Constants.TAG_REGID);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-        }.execute();
-    }
 
     /**
      * function which respond to button clicks

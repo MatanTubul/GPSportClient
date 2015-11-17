@@ -75,8 +75,8 @@ public class SessionManager  {
     public boolean isConnected() {
         return isConnected;
     }
-
     public void setIsConnected(boolean isConnected) {
+
         this.isConnected = isConnected;
     }
 }
