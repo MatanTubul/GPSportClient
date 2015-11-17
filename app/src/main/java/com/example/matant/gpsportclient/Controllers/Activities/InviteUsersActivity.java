@@ -110,9 +110,6 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                       //  HashMap<String,String> hm = sm.getUserDetails();
                         for(int i = 0; i < jsonarr.length();i++){
                             {
-                               /* Boolean flag = jsonarr.getJSONObject(i).getString("mobile").equals(sm.getUserDetails().get(sm.KEY_MOBILE));
-                                String s1 = jsonarr.getJSONObject(i).getString("mobile");
-                                String s2 = sm.getUserDetails().get(sm.KEY_MOBILE);*/
                                 if(!jsonarr.getJSONObject(i).getString("mobile").equals(sm.getUserDetails().get(Constants.TAG_MOB)))
                                 {
                                     Log.d("user is", jsonarr.getJSONObject(i).toString());
@@ -183,6 +180,11 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     public void onClick(View v) {
 
         switch (v.getId())
@@ -236,6 +238,5 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
             break;
 
         }
-
     }
 }
