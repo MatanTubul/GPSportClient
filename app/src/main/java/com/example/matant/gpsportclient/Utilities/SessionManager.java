@@ -3,6 +3,7 @@ package com.example.matant.gpsportclient.Utilities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.example.matant.gpsportclient.Controllers.Activities.Login;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
@@ -23,7 +24,6 @@ public class SessionManager  {
     SharedPreferences.Editor editor;
     // Context
     Context _context;
-    private boolean isConnected = false;
 
     public static SessionManager getInstance(Context context){
         if(sessionManagerInstance == null)
@@ -35,14 +35,18 @@ public class SessionManager  {
 
     private SessionManager(Context context)
     {
+        Log.d("new pref","this is new pref");
         this._context=context;
-        pref = _context.getSharedPreferences(Constants.PREFER_NAME,Constants.PRIVATE_MODE);
+        pref = _context.getSharedPreferences(Constants.PREFER_NAME, Constants.PRIVATE_MODE);
         editor = pref.edit();
+        if(getUserDetails().get(Constants.TAG_CONNECTED) == null)
+            StoreUserSession("false", Constants.TAG_CONNECTED);
     }
 
-    public void StoreUserSession(String val,String Key){
-        editor.putString(Key,val);
+    public void StoreUserSession(String val,String Key ){
+        editor.putString(Key, val);
         editor.commit();
+
     }
 
     public HashMap<String,String> getUserDetails(){
@@ -57,26 +61,26 @@ public class SessionManager  {
         user.put(Constants.TAG_AGE,pref.getString(Constants.TAG_AGE,null));
         user.put(Constants.TAG_IMG,pref.getString(Constants.TAG_IMG,null));
         user.put(Constants.TAG_REGID,pref.getString(Constants.TAG_REGID,null));
+        user.put(Constants.TAG_CONNECTED,pref.getString(Constants.TAG_CONNECTED,null));
+
         return user;
     }
 
     public void logoutUser(){
         //clean pref
-        editor.clear();
+        //editor.clear();
+        //editor.commit();
+        //this.isConnected = false;
+        StoreUserSession("false", Constants.TAG_CONNECTED);
         editor.commit();
-        this.isConnected = false;
-
+        editor.apply();
+        Log.d("user connection",getUserDetails().get(Constants.TAG_CONNECTED).toString());
         Intent i = new Intent(_context, Login.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         _context.startActivity(i);
     }
 
-    public boolean isConnected() {
-        return isConnected;
-    }
-    public void setIsConnected(boolean isConnected) {
 
-        this.isConnected = isConnected;
-    }
+
 }

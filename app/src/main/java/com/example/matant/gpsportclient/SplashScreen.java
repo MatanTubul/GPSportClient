@@ -9,20 +9,27 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
-
+import android.util.Log;
 
 
 import com.example.matant.gpsportclient.Controllers.Activities.Login;
+import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
+import com.example.matant.gpsportclient.Utilities.SessionManager;
 
 public class SplashScreen extends Activity {
 
     // Splash screen timer
     private static int SPLASH_TIME_OUT = 3000;
+    private SessionManager sm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+        sm = SessionManager.getInstance(this);
+        final boolean is_coonected = sm.getUserDetails().get(Constants.TAG_CONNECTED).equals("false");
+        Log.d("is connected",String.valueOf(is_coonected));
+        Log.d("pref value",sm.getUserDetails().get(Constants.TAG_CONNECTED).toString());
 
 
         if (!isNetworkAvailable()) {
@@ -53,8 +60,13 @@ public class SplashScreen extends Activity {
                 public void run() {
                     // This method will be executed once the timer is over
                     // Start your app main activity
-                    Intent i = new Intent(SplashScreen.this, Login.class);
-                    startActivity(i);
+                    if(is_coonected) {
+                        Intent i = new Intent(SplashScreen.this, Login.class);
+                        startActivity(i);
+                    }else{
+                        Intent i = new Intent(SplashScreen.this, MainScreen.class);
+                        startActivity(i);
+                    }
 
                     // close this activity
                     finish();
