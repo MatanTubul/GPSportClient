@@ -43,7 +43,6 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
     ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
-    public final int MENU_SIZE = 8;
     private DBcontroller dbController;
     private ProgressDialog progress = null;
     private SessionManager sm;
@@ -269,9 +268,9 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
 
         sendDataToDBController();
     }
-    @Override
+    /*@Override
     protected void onDestroy() {
         super.onDestroy();
         logout();
-    }
+    }*/
 }
