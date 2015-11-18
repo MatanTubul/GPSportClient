@@ -79,6 +79,10 @@ public final class Constants {
     public static final String TAG_BASKETBALL = "BasketBall";
     public static final String TAG_BICYCLE = "Bicycle";
     public static final String TAG_RUNNING = "Running";
+    public static final String TAG_LONG = "lon";
+    public static final String TAG_LAT = "lat";
+    public static final String TAG_RADIUS = "radius";
+
     //event
     public static final String MODE_UPDATE = "edit";
     public static final String MODE_CREATE = "create_event";
@@ -96,10 +100,12 @@ public final class Constants {
     public static final String RECEIVER = PACKAGE_NAME + ".RECEIVER";
     public static final String RESULT_DATA_KEY = PACKAGE_NAME + ".RESULT_DATA_KEY";
     public static final String LOCATION_DATA_EXTRA = PACKAGE_NAME + ".LOCATION_DATA_EXTRA";
-
-    //ProfileFragmentController Constants
-    public static final int REQUEST_CODE = 1;
-
+    public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
+    // Location updates intervals in sec
+    public static final int UPDATE_INTERVAL = 10000; // 10 sec
+    public static final int FASTEST_INTERVAL = 5000; // 5 sec
+    public static final int DISPLACEMENT = 10; // 10 meters
+    public static final int DEFAULT_RADIUS = 5; // 5 km
 
     ////////////////////////Activities Constants/////////////////////////
 

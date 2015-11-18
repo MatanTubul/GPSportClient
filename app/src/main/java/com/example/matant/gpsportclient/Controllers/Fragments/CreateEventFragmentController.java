@@ -546,10 +546,10 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         BasicNameValuePair date = new BasicNameValuePair("date",btnStartdate.getText().toString());
         BasicNameValuePair startTime = new BasicNameValuePair("s_time",btnstartTime.getText().toString());
         BasicNameValuePair endTime = new BasicNameValuePair("e_time",btnendTime.getText().toString());
-        BasicNameValuePair longtitude = new BasicNameValuePair("lon",String.valueOf(lonlat.longitude));
-        BasicNameValuePair latitude = new BasicNameValuePair("lat",String.valueOf(lonlat.latitude));
+        BasicNameValuePair longtitude = new BasicNameValuePair(Constants.TAG_LONG,String.valueOf(lonlat.longitude));
+        BasicNameValuePair latitude = new BasicNameValuePair(Constants.TAG_LAT,String.valueOf(lonlat.latitude));
         BasicNameValuePair event_type = new BasicNameValuePair("event_type",String.valueOf(privateEventCbox.isChecked()));
-        BasicNameValuePair gender = new BasicNameValuePair("gender",String.valueOf(genderSpinner.getSelectedItem().toString()));
+        BasicNameValuePair gender = new BasicNameValuePair(Constants.TAG_GEN,String.valueOf(genderSpinner.getSelectedItem().toString()));
         BasicNameValuePair min_age = new BasicNameValuePair("minAge",String.valueOf(minAgeEditText.getText()));
         BasicNameValuePair participants = new BasicNameValuePair("max_participants",maxParticipantsEdittext.getText().toString());
         BasicNameValuePair scheduled = new BasicNameValuePair("scheduled",String.valueOf(reccuringEventCbox.isChecked()));
