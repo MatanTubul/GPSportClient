@@ -129,6 +129,7 @@ public final class Constants {
 
     //SessionManager Constants
     public static final String PREFER_NAME = "Session";
+    public static final String TAG_CONNECTED = "is_connected";
     // Shared pref mode
     public static final int PRIVATE_MODE = 0;
     public static final String TAG_MSG = "msg";

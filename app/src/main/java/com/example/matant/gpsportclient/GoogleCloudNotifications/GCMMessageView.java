@@ -86,6 +86,7 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
         Log.d("GCMMessageView handleResponse", resStr);
         if (resStr != null) {
             try {
+                final boolean is_coonected = sm.getUserDetails().get(Constants.TAG_CONNECTED).equals("false");
                 JSONObject jsonObj = new JSONObject(resStr);
                 String flg = jsonObj.getString(Constants.TAG_FLG);
 
@@ -93,7 +94,7 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
                     case "updated":{
 
                         Log.d("msg:",jsonObj.getString(Constants.TAG_MSG));
-                        if(sm.isConnected()){
+                        if(!is_coonected){
                             Constants.reloadApp(this,MainScreen.class);
                             finish();
                         }else{
