@@ -51,7 +51,7 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_users);
-
+        setTitle("Search Users");
         editTextSearch = (EditText) findViewById(R.id.editTextSearch);
         btnSave = (Button) findViewById(R.id.ButtonSave);
         btnDiscard = (Button)findViewById(R.id.ButtonDiscard);

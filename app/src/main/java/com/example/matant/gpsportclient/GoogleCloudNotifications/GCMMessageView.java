@@ -51,6 +51,7 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
         location = (TextView) findViewById(R.id.textViewPlace);
         btnJoin = (Button)findViewById(R.id.ButtonJoin);
         btnDeny = (Button)findViewById(R.id.ButtonDeny);
+        setTitle("GPSport Notification");
 
 
         Intent i = getIntent();

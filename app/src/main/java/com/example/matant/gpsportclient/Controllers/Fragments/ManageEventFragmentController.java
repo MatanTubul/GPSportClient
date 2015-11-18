@@ -52,7 +52,7 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
         listViewMngEvents.setItemsCanFocus(true);
         sm = SessionManager.getInstance(getActivity());
         sendDataToDBController();
-
+        getActivity().setTitle("Manage Events");
         return v;
     }
 
