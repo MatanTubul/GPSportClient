@@ -75,7 +75,7 @@ public class ProfileFragmentController extends Fragment implements View.OnClickL
         err = new ErrorHandler();
         newPhotoWasSelected = false;
         Log.d("newPhotoWasSelected", "false");
-
+        getActivity().setTitle("Update Profile");
         //updating the minimal age
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
