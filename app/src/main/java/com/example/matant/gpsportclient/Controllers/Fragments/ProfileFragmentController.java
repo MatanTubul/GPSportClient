@@ -94,8 +94,6 @@ public class ProfileFragmentController extends Fragment implements View.OnClickL
         editTextConfirmPass = (EditText) v.findViewById(R.id.editTextConfirmPass);
         imgv = (ImageView) v.findViewById(R.id.imageViewGallery);
 
-        //resetFields();
-
         spinnerAge = (Spinner) v.findViewById(R.id.spinnerAge);
         ArrayList<String> years = new ArrayList<String>();
         int thisYear = Calendar.getInstance().get(Calendar.YEAR);

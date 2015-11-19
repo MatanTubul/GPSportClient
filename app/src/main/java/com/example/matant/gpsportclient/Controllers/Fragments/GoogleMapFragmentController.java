@@ -119,7 +119,6 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         super.onStart();
         if (mGoogleApiClient != null)
             mGoogleApiClient.connect();
-        sendDataToDBController();
     }
 
     @Override
@@ -136,7 +135,8 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     public void onPause() {
         super.onPause();
         mMapView.onPause();
-        stopLocationUpdates();
+        if (mGoogleApiClient.isConnected())
+            stopLocationUpdates();
     }
 
     @Override
@@ -148,11 +148,11 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     }
 
     @Override
-    public void onDestroy() {
+   public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
-        stopLocationUpdates();
         if (mGoogleApiClient.isConnected()) {
+            stopLocationUpdates();
             mGoogleApiClient.disconnect();
         }
     }
@@ -161,7 +161,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);}
 
     protected void stopLocationUpdates() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);}
+         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);}
 
     private boolean checkPlayServices() {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
@@ -198,7 +198,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
                         JSONArray jsonarr = jsonObj.getJSONArray("events");
                         Log.d("creating list",jsonarr.toString());
-                        Log.d("array",jsonarr.toString());
+                        Log.d("array", jsonarr.toString());
                         String title,date,Loc,participants,event_time,id;
                         break;
                     }
@@ -324,18 +324,20 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
                     firstLocation = false;
                 iniLoc = new LatLng(latitude, longitude);
                 CameraPosition cp = new CameraPosition.Builder().target(iniLoc).zoom(12).build();
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cp));
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cp));
                 googleMap.getUiSettings().setZoomGesturesEnabled(true);
                 googleMap.getUiSettings().setZoomControlsEnabled(true);
                 currentMarkerOption = new MarkerOptions();
                 currentMarkerOption.position(iniLoc);
                 currentMarker = googleMap.addMarker(currentMarkerOption);
-                currentMarker.setIcon((BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-                currentMarker.setTitle(sm.getUserDetails().get("name") + " " + latitude + " " + longitude);
-                currentMarker.showInfoWindow();
-                currentMarker.setVisible(true);
+            currentMarker.setIcon((BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+            currentMarker.setTitle(sm.getUserDetails().get("name") + " " + latitude + " " + longitude);
+            currentMarker.showInfoWindow();
+            currentMarker.setVisible(true);
+                sendDataToDBController();
 
-            }
+
+        }
     }
 
 
