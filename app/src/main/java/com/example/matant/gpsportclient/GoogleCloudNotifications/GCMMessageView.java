@@ -62,7 +62,7 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
         EventId = i.getExtras().getString("event_id");
         place = i.getExtras().getString("location");
 
-        user.setText(intentUser);
+        user.setText(intentUser+",");
         message.setText(intentMessage);
         date.setText(intentDate);
         time.setText(intentTime);
