@@ -80,8 +80,11 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
                             title = jsonarr.getJSONObject(i).getString("kind_of_sport");
                             date = jsonarr.getJSONObject(i).getString("event_date");
                             Loc = jsonarr.getJSONObject(i).getString("address");
-                            event_time = jsonarr.getJSONObject(i).getString("start_time")+" "+"-"+" "+jsonarr.getJSONObject(i).getString("end_time");;
+                            event_time = jsonarr.getJSONObject(i).getString("formatted_start_time")+" "+"-"+" "+jsonarr.getJSONObject(i).getString("formatted_end_time");;
                             id = jsonarr.getJSONObject(i).getString("event_id");
+                            eventObj.put("start_time",jsonarr.getJSONObject(i).getString("formatted_start_time"));
+                            eventObj.put("end_time",jsonarr.getJSONObject(i).getString("formatted_end_time"));
+
 
                             participants = jsonarr.getJSONObject(i).getString("current_participants");
                             switch (title){
