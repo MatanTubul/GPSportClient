@@ -6,21 +6,43 @@
     android:id="@+id/relativlayoutGcmMessage"
     android:background="#ffffff">
 
-    <TextView
-        android:id="@+id/message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="this is the message"
-        android:textSize="20sp"
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/textlayout"
+        android:layout_below="@+id/separatorUp"
+        android:background="@drawable/edit_text_style_unfocused"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/textViewloc">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User ,"
+            android:gravity="center"
+            android:id="@+id/textViewUser"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textStyle="bold"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:textSize="20sp"
+            android:textColor="#000000" />
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="this is the message"
+            android:textSize="20sp"
+            android:layout_marginLeft="5dp"
+            android:layout_below="@+id/textViewUser"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
 
 
 
-        android:layout_below="@+id/textViewUser"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/textViewloc" />
 
     <LinearLayout
         android:id="@+id/linearLayoutBtn"
@@ -67,18 +89,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="User ,"
-        android:id="@+id/textViewUser"
-        android:layout_below="@+id/separatorUp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textStyle="bold"
-        android:layout_marginTop="5dp"
-        android:textSize="20sp"
-        android:textColor="#000000" />
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -99,10 +110,10 @@
         android:text="Date"
         android:id="@+id/textViewDate"
         android:textSize="20sp"
-        android:layout_marginLeft="40dp"
-        android:layout_alignTop="@+id/textViewWhen"
-        android:layout_toRightOf="@+id/textViewUser"
-        android:layout_toEndOf="@+id/textViewUser" />
+
+        android:layout_below="@+id/textViewloc"
+        android:layout_alignLeft="@+id/textViewtime"
+        android:layout_alignStart="@+id/textViewtime" />
 
     <Button android:text="Deny"
         android:id="@+id/ButtonDeny"
