@@ -25,8 +25,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
+import com.example.matant.gpsportclient.Controllers.Activities.SchedulePopUp;
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.Controllers.Activities.InviteUsersActivity;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
@@ -69,6 +69,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     private ProgressDialog progress= null;
     private int settime = 0;
     private static final int REQUEST_CODE_GET_USER_LIST = 1;
+
     private ListView listViewInvitedUsers;
     private List<CreateInviteUsersRow> invitedUsers = null;
     private CreateInvitedUsersAdapter invidedAdapter;
@@ -98,7 +99,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         btnEndDate = (Button) v.findViewById(R.id.buttonEndDate);
         btnendTime = (Button) v.findViewById(R.id.buttonEndTime);
         btninviteUsers = (Button) v.findViewById(R.id.buttonInviteUsers);
-        btnSave = (Button) v.findViewById(R.id.ButtonSave);
+        btnSave = (Button) v.findViewById(R.id.ButtonSchedSave);
         sv = (ScrollView) v.findViewById(R.id.scrollView);
 
 
@@ -170,6 +171,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
             }
         });//private event check box listener
+
+        reccuringEventCbox.setOnClickListener(this);
 
 
         btnstartTime.setOnClickListener(this);
@@ -288,7 +291,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                 }
                 break;
             }
-            case R.id.ButtonSave:
+            case R.id.ButtonSchedSave:
                 if(validateFields())
                     sendDataToDBController();
 
@@ -296,6 +299,15 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
             case R.id.buttonInviteUsers: {
                 Intent i = new Intent(getActivity(),InviteUsersActivity.class);
                 startActivityForResult(i,REQUEST_CODE_GET_USER_LIST);
+                break;
+            }
+            case R.id.checkBoxRecurring:
+            {
+                if (reccuringEventCbox.isChecked())
+                {
+                    Intent i = new Intent(getActivity(),SchedulePopUp.class);
+                    startActivityForResult(i,Constants.REQUEST_CODE_SET_SCHEDULE);
+                }
                 break;
             }
 
@@ -707,6 +719,13 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                 Log.d("Acttivity canceled","canceled");
 
             }
+        }
+        if(Constants.REQUEST_CODE_SET_SCHEDULE == requestCode){
+            if(Activity.RESULT_OK == resultCode){
+
+            }else{
+
+            }//request canceled
         }
 
     }

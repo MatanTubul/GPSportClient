@@ -38,7 +38,6 @@ public class MyAdapter extends ArrayAdapter<String> {
                 false);
         TextView subSpinner = (TextView) mySpinner.findViewById(R.id.sub_text_seen);
         subSpinner.setText(values[position]);
-        ImageView right_icon = (ImageView) mySpinner.findViewById(R.id.left_pic);
 
 
         return mySpinner;

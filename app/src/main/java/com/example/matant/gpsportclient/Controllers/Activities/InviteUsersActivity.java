@@ -31,7 +31,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class InviteUsersActivity extends AppCompatActivity implements AsyncResponse, View.OnClickListener{
@@ -53,7 +52,7 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
         setContentView(R.layout.activity_invite_users);
         setTitle("Search Users");
         editTextSearch = (EditText) findViewById(R.id.editTextSearch);
-        btnSave = (Button) findViewById(R.id.ButtonSave);
+        btnSave = (Button) findViewById(R.id.ButtonSchedSave);
         btnDiscard = (Button)findViewById(R.id.ButtonDiscard);
         editTextSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -197,7 +196,7 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                 break;
             }
 
-            case R.id.ButtonSave:
+            case R.id.ButtonSchedSave:
             {
 
                 if(Useradapter != null )

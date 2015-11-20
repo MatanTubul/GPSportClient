@@ -82,6 +82,8 @@ public final class Constants {
     public static final String TAG_LONG = "lon";
     public static final String TAG_LAT = "lat";
     public static final String TAG_RADIUS = "radius";
+    public static final int REQUEST_CODE_SET_SCHEDULE = 2;
+    public static final int MAXIMUM_WEEKS = 30;
 
     //event
     public static final String MODE_UPDATE = "edit";
