@@ -3,9 +3,12 @@ package com.example.matant.gpsportclient.Controllers.Activities;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +23,10 @@ import android.widget.TextView;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.MyAdapter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,9 +43,14 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
     private int year;
     private int month;
     private int day;
+    private String formated_date;
 
     static final int DATE_PICKER_ID = 1111;
     private  Calendar c;
+    private JSONObject jsonObj;
+    final Context context = this;
+    private JSONObject jobj;
+    private JSONArray jsonarr;
 
 
     @Override
@@ -51,6 +63,10 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
         rdDate = (RadioButton)findViewById(R.id.radioButtonInDate);
         rdDate = (RadioButton)findViewById(R.id.radioButtonEvents);
         save = (Button)findViewById(R.id.ButtonSchedSave);
+        cancel = (Button) findViewById(R.id.ButtonSchedCancel);
+        save.setOnClickListener(this);
+        cancel.setOnClickListener(this);
+         jsonObj = new JSONObject();
         spinnerduration = (Spinner) findViewById(R.id.spinnerDuration);
         ArrayList<String> weeks = new ArrayList<String>();
         for (int i = 0; i <= Constants.MAXIMUM_WEEKS; i++) {
@@ -76,14 +92,8 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
                 }*/
             }
         });
-
-
-
-
-
-
         spinnerRepeat = (Spinner) findViewById(R.id.spinnerRepeat);
-        spinnerRepeat.setAdapter(new MyAdapter(this,R.layout.custom_spinner,getResources().getStringArray(R.array.event_repeats)));
+        spinnerRepeat.setAdapter(new MyAdapter(this, R.layout.custom_spinner, getResources().getStringArray(R.array.event_repeats)));
         spinnerRepeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -120,13 +130,24 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
         year  = c.get(Calendar.YEAR);
         month = c.get(Calendar.MONTH);
         day   = c.get(Calendar.DAY_OF_MONTH);
+        jobj = new JSONObject();
+        jsonarr = new JSONArray();
+        try {
+            jobj.put(Constants.TAG_REQUEST,"Year");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        jsonarr.put(jobj);
+        try {
+            jsonObj.put("radio_group",jsonarr);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         rdg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 pos = rdg.indexOfChild(findViewById(checkedId));
-                Log.d("position is", String.valueOf(pos));
-
                 switch (pos)
                 {
                     case 0:
@@ -146,7 +167,6 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
                         break;
                     }
                 }
-
             }
         });
 
@@ -162,7 +182,6 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
                 year = c.get(Calendar.YEAR);
                 month = c.get(Calendar.MONTH);
                 day = c.get(Calendar.DAY_OF_MONTH);
-
                 DatePickerDialog pickerDialog = new DatePickerDialog(this, pickListener, year, month, day);
                 pickerDialog.getDatePicker().setMinDate(minDate);
                 return pickerDialog;
@@ -175,9 +194,24 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
 
         @Override
         public void onDateSet(android.widget.DatePicker view, int selectedYear, int monthOfYear, int dayOfMonth) {
-            year  = selectedYear;
-            month = monthOfYear;
-            day   = dayOfMonth;
+            if(dayOfMonth < day || monthOfYear < month || selectedYear < year){
+                new AlertDialog.Builder(context)
+                        .setTitle("Date Error!")
+                        .setMessage("Date is not valid! Please select another date.")
+                        .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .setIcon(R.drawable.error_32)
+                        .show();
+            }else{
+                year  = selectedYear;
+                month = monthOfYear;
+                day   = dayOfMonth;
+                formated_date = year+"-"+month+"-"+day;
+            }
+
         }
     };
 
@@ -187,12 +221,60 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
         switch (v.getId())
         {
             case R.id.ButtonSchedSave:
-                /* i = getIntent();
+                
+                 i = getIntent();
                 //insert data
 
-                setResult(RESULT_OK,i);
+                try {
+                    jsonObj.put("repeat",spinnerRepeat.getSelectedItem());
+                    jsonObj.put("duration",spinnerduration.getSelectedItem());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                switch (pos)
+                {
+                    case 0:
+                    {
+                        editTextEventNumber.setVisibility(View.GONE);
+                        try {
+                            jobj.put(Constants.TAG_REQUEST,"Year");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    }
+                    case 1:
+                    {
+                        editTextEventNumber.setVisibility(View.VISIBLE);
+                        try {
+                            jobj.put(Constants.TAG_REQUEST,"events_number");
+                            jobj.put("numbers",editTextEventNumber.getText());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    }
+                    case 3:
+                    {
+                        editTextEventNumber.setVisibility(View.GONE);
+                        showDialog(DATE_PICKER_ID);
+                        try {
+                            jobj.put(Constants.TAG_REQUEST,"by_date");
+                            jobj.put("expiration_date",formated_date);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    }
+
+                }
+
+                Log.d("all_data",jsonObj.toString());
+                setResult(RESULT_OK, i);
                 finish();
-                break;*/
+                break;
             case R.id.ButtonSchedCancel:
                  i = getIntent();
                 setResult(RESULT_CANCELED,i);
@@ -201,6 +283,4 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
                 break;
         }
     }
-
-
 }
