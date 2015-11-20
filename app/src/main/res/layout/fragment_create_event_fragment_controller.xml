@@ -336,7 +336,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
             <Button android:text="Create Event"
-                android:id="@+id/ButtonSave"
+                android:id="@+id/ButtonSchedSave"
                 android:background="#606060"
                 android:textColor="#ffffff"
                 android:layout_width="fill_parent"

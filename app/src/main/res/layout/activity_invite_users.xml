@@ -56,14 +56,14 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
         <Button android:text="Save"
-            android:id="@+id/ButtonSave"
+            android:id="@+id/ButtonSchedSave"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1">
         </Button>
         <Button android:text="Discard"
             android:id="@+id/ButtonDiscard"
-            android:layout_toRightOf="@+id/ButtonSave"
+            android:layout_toRightOf="@+id/ButtonSchedSave"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1">
