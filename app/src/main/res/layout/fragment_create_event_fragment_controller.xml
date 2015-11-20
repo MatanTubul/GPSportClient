@@ -133,7 +133,7 @@
             </TextView>
 
             <Spinner
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:id="@+id/spinnerSports"
                 android:layout_below="@+id/textViewSport"
@@ -142,7 +142,7 @@
                 android:background="#C0C0C0" />
 
                 <Spinner
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:id="@+id/spinnerGender"
 
