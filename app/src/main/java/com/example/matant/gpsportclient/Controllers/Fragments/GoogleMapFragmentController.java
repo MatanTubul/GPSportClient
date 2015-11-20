@@ -22,6 +22,8 @@ import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.AddressFetcher;
 import com.example.matant.gpsportclient.Utilities.ManageEventArrayAdapter;
 import com.example.matant.gpsportclient.Utilities.ManageEventListRow;
+import com.example.matant.gpsportclient.Utilities.MapMarker;
+import com.example.matant.gpsportclient.Utilities.MarkerInfoWindowAdapter;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -57,23 +59,24 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     private GoogleMap googleMap;
     private MarkerOptions currentMarkerOption;
     private Marker currentMarker;
+    private List<MapMarker> eventsMarkers;
     private SessionManager sm;
     private LocationRequest mLocationRequest;
     protected Location mLastLocation;
     private boolean mRequestingLocationUpdates = true;
     private LatLng iniLoc;
-    private boolean firstLocation = true;
     private AddressResultReceiver mResultReceiver;
     private boolean mAddressRequested = false;
     private static final String TAG = GoogleMapFragmentController.class.getSimpleName();
     private GoogleApiClient mGoogleApiClient;
     private DBcontroller dbController;
     private ProgressDialog progress;
-
+    private LayoutInflater inflater;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // inflat and return the layout
+        this.inflater = inflater;
         View v = inflater.inflate(R.layout.fragment_google_map_fragment_controller, container, false);
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
@@ -89,6 +92,21 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
             e.printStackTrace();
         }
         googleMap = mMapView.getMap();
+        if (googleMap != null)
+        {
+            googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
+            {
+                @Override
+                public boolean onMarkerClick(com.google.android.gms.maps.model.Marker marker)
+                {
+                    marker.showInfoWindow();
+                    return true;
+                }
+            });
+        }
+        else
+            Toast.makeText(this.getActivity(), "Unable to create Maps", Toast.LENGTH_SHORT).show();
+
         if (checkPlayServices()) {
             buildGoogleApiClient();
             createLocationRequest();
@@ -195,11 +213,10 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
                 switch (flg){
                     case Constants.TAG_REQUEST_SUCCEED:
                     {
-
                         JSONArray jsonarr = jsonObj.getJSONArray("events");
                         Log.d("creating list",jsonarr.toString());
                         Log.d("array", jsonarr.toString());
-                        String title,date,Loc,participants,event_time,id;
+                        drawEventsMarkersOnMap(jsonarr);
                         break;
                     }
 
@@ -214,6 +231,68 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
             }
         }
     }
+
+    private void drawEventsMarkersOnMap(JSONArray jsonarr) {
+        if (googleMap != null && jsonarr.length() != 0)
+        {
+            if (eventsMarkers != null)
+                deletePreviousMarkers();
+            eventsMarkers = new ArrayList<MapMarker>();
+            Log.d("drawEventsMarkersOnMap", "before for loop");
+            for (int i = 0; i < jsonarr.length(); i++) {
+                try {
+                //adding marker to the arraylist eventsmarkers which every object is a class MapMarker variable
+                //marker info is saved upon MapMarker constructor
+                    eventsMarkers.add(new MapMarker(jsonarr.getJSONObject(i)));
+/*
+                    if (eventsMarkers.get(i) != null) {
+                        eventsMarkers.get(i).setIcon((BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                        eventsMarkers.get(i).setTitle(sportKind + " " + latitude + " " + longitude);
+                        eventsMarkers.get(i).showInfoWindow();
+                        eventsMarkers.get(i).setVisible(true);
+                    }*/
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }//for
+            plotMarkers();
+        }//if
+    }
+
+
+    private void deletePreviousMarkers()
+    {
+        int eventsMarkersSize = eventsMarkers.size();
+        Log.d("deletePreviousMarkers", "before for loop");
+        for (int i = 0; i < eventsMarkersSize; i++) {
+            Log.d("deletePreviousMarkers", "remove marker: "+String.valueOf(i));
+            eventsMarkers.get(i).getmMarker().remove();
+        }
+        eventsMarkers.clear();
+        Log.d("deletePreviousMarkers", "markers removed");
+
+    }
+
+    private void plotMarkers()
+    {
+        if(eventsMarkers.size() > 0)
+        {   Log.d("plotMarkers","eventsMarkers.size() > 0");
+            for (MapMarker marker : eventsMarkers)
+            {
+                // Create event marker with custom icon and other options
+                MarkerOptions markerOption = new MarkerOptions().position(new LatLng(marker.getmLatitude(), marker.getmLongitude()));
+                markerOption.icon(marker.getmIcon());
+                markerOption.title(marker.getmLabel() + String.valueOf(marker.getmLatitude()) + String.valueOf(marker.getmLongitude()));
+                // Save Marker pointer for updating later
+                marker.setmMarker(googleMap.addMarker(markerOption));
+                // Set Info for this marker
+                googleMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter(marker, inflater));
+            }
+            Log.d("plotMarkers","after for loop");
+        }
+
+    }
+
 
     @Override
     public void sendDataToDBController() {
@@ -305,7 +384,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     @Override
     public void onLocationChanged(Location location) {
             mLastLocation = location;
-        updateUI();
+            updateUI();
     }
 
     private void updateUI() {
@@ -317,26 +396,22 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
 
         if (googleMap != null) {
-                Log.d("googleMap", "googleMap");
-                if (!firstLocation)
-                    currentMarker.setVisible(false);
-                else
-                    firstLocation = false;
-                iniLoc = new LatLng(latitude, longitude);
-                CameraPosition cp = new CameraPosition.Builder().target(iniLoc).zoom(12).build();
+            Log.d("googleMap", "googleMap");
+            if (currentMarker != null)
+                currentMarker.remove();
+            iniLoc = new LatLng(latitude, longitude);
+            CameraPosition cp = new CameraPosition.Builder().target(iniLoc).zoom(12).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cp));
-                googleMap.getUiSettings().setZoomGesturesEnabled(true);
-                googleMap.getUiSettings().setZoomControlsEnabled(true);
-                currentMarkerOption = new MarkerOptions();
-                currentMarkerOption.position(iniLoc);
-                currentMarker = googleMap.addMarker(currentMarkerOption);
-            currentMarker.setIcon((BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+            googleMap.getUiSettings().setZoomGesturesEnabled(true);
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
+            currentMarkerOption = new MarkerOptions();
+            currentMarkerOption.position(iniLoc);
+            currentMarker = googleMap.addMarker(currentMarkerOption);
+            currentMarker.setIcon((BitmapDescriptorFactory.fromResource(R.drawable.current_location_marker_icon)));
             currentMarker.setTitle(sm.getUserDetails().get("name") + " " + latitude + " " + longitude);
             currentMarker.showInfoWindow();
             currentMarker.setVisible(true);
-                sendDataToDBController();
-
-
+            sendDataToDBController();
         }
     }
 
