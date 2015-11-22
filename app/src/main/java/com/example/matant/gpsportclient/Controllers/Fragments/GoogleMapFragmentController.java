@@ -13,6 +13,9 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
@@ -20,10 +23,7 @@ import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.AddressFetcher;
-import com.example.matant.gpsportclient.Utilities.ManageEventArrayAdapter;
-import com.example.matant.gpsportclient.Utilities.ManageEventListRow;
 import com.example.matant.gpsportclient.Utilities.MapMarker;
-import com.example.matant.gpsportclient.Utilities.MarkerInfoWindowAdapter;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -47,6 +47,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -60,6 +61,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     private MarkerOptions currentMarkerOption;
     private Marker currentMarker;
     private List<MapMarker> eventsMarkers;
+    private HashMap<Marker, MapMarker> mMarkersHashMap;
     private SessionManager sm;
     private LocationRequest mLocationRequest;
     protected Location mLastLocation;
@@ -77,6 +79,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
                              Bundle savedInstanceState) {
         // inflat and return the layout
         this.inflater = inflater;
+        mMarkersHashMap = new HashMap<Marker, MapMarker>();
         View v = inflater.inflate(R.layout.fragment_google_map_fragment_controller, container, false);
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
@@ -166,7 +169,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     }
 
     @Override
-   public void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
         if (mGoogleApiClient.isConnected()) {
@@ -205,7 +208,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     public void handleResponse(String resStr) {
         progress.dismiss();
 
-        Log.d("handleResponse of search events", resStr);
+        Log.d("handleResponse events", resStr);
         if (resStr != null){
             try {
                 JSONObject jsonObj = new JSONObject(resStr);
@@ -277,16 +280,18 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     {
         if(eventsMarkers.size() > 0)
         {   Log.d("plotMarkers","eventsMarkers.size() > 0");
-            for (MapMarker marker : eventsMarkers)
+            for (MapMarker mapMarker : eventsMarkers)
             {
                 // Create event marker with custom icon and other options
-                MarkerOptions markerOption = new MarkerOptions().position(new LatLng(marker.getmLatitude(), marker.getmLongitude()));
-                markerOption.icon(marker.getmIcon());
-                markerOption.title(marker.getmLabel() + String.valueOf(marker.getmLatitude()) + String.valueOf(marker.getmLongitude()));
+                MarkerOptions markerOption = new MarkerOptions().position(new LatLng(mapMarker.getmLatitude(), mapMarker.getmLongitude()));
+                markerOption.icon(mapMarker.getmIcon());
+                markerOption.title(mapMarker.getmLabel() + String.valueOf(mapMarker.getmLatitude()) + String.valueOf(mapMarker.getmLongitude()));
                 // Save Marker pointer for updating later
-                marker.setmMarker(googleMap.addMarker(markerOption));
-                // Set Info for this marker
-                googleMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter(marker, inflater));
+                currentMarker = googleMap.addMarker(markerOption);
+                mapMarker.setmMarker(currentMarker);
+                // Set Info for this marker and marker to hashmap for later use
+                mMarkersHashMap.put(currentMarker, mapMarker);
+                googleMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter());
             }
             Log.d("plotMarkers","after for loop");
         }
@@ -415,10 +420,43 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         }
     }
 
+    public class MarkerInfoWindowAdapter  implements GoogleMap.InfoWindowAdapter, View.OnClickListener
+    {
+        public MarkerInfoWindowAdapter()
+        {}
 
+        @Override
+        public View getInfoWindow(Marker marker)
+        {
+            return null;
+        }
+
+        @Override
+        public View getInfoContents(Marker markerMapMarkerKey)
+        {
+            View v  = inflater.inflate(R.layout.infowindow_layout, null);
+            MapMarker marker = mMarkersHashMap.get(markerMapMarkerKey);
+            ImageView markerIcon = (ImageView) v.findViewById(R.id.marker_icon);
+            TextView markerLabel = (TextView)v.findViewById(R.id.marker_label);
+            Button markerClick = (Button) v.findViewById(R.id.marker_click);
+            markerClick.setOnClickListener(this);
+            markerIcon.setImageResource(marker.getmBitmap());
+            markerLabel.setText(marker.getmLabel());
+
+            return v;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == R.id.marker_click)
+            {
+                Log.d("getInfoContents","onClick");
+
+            }
+
+        }
+    }
     //---------------------------------
-
-
 
     class AddressResultReceiver extends ResultReceiver {
         public AddressResultReceiver(Handler handler) {
@@ -441,7 +479,6 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
         }
     }
-
 
     public void fetchAddressButtonHandler(View view) {
         // Only start the service to fetch the address if GoogleApiClient is

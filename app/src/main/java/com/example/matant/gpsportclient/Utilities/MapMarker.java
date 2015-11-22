@@ -19,6 +19,16 @@ public class MapMarker {
     private JSONObject mJsonObject;
     private BitmapDescriptor mIcon;
 
+    public int getmBitmap() {
+        return mBitmap;
+    }
+
+    public void setmBitmap(int mBitmap) {
+        this.mBitmap = mBitmap;
+    }
+
+    private int mBitmap;
+
     public Marker getmMarker() {
         return mMarker;
     }
@@ -52,12 +62,16 @@ public class MapMarker {
     {
     switch (mLabel) {
         case "Soccer":
+            mBitmap = R.drawable.soccer_marker_icon;
             return BitmapDescriptorFactory.fromResource(R.drawable.soccer_marker_icon);
         case "Basketball":
+            mBitmap = R.drawable.basketball_marker_icon;
             return BitmapDescriptorFactory.fromResource(R.drawable.basketball_marker_icon);
         case "Football":
+            mBitmap = R.drawable.football_marker_icon;
             return BitmapDescriptorFactory.fromResource(R.drawable.football_marker_icon);
         case "Tennis":
+            mBitmap = R.drawable.tennis_marker_icon;
             return BitmapDescriptorFactory.fromResource(R.drawable.tennis_marker_icon);
         default:
             return BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA);
