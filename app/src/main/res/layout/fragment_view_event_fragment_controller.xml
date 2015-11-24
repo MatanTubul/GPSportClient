@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:nestedScrollingEnabled="false">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.39"
+        android:background="#3f374f"
+        android:id="@+id/background">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/kind_of_sport_img"
+            android:layout_weight="0.34"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/round_soccer_event_view_img" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Kind Of Sport Here"
+            android:id="@+id/kind_of_sport_text"
+            android:layout_weight="0.06"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_below="@+id/kind_of_sport_img"
+            android:textColor="#ffffffff"
+            android:layout_marginTop="15dp"
+            android:textSize="30dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Time And Date Here"
+            android:id="@+id/time_text"
+            android:layout_weight="0.06"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_below="@+id/kind_of_sport_text"
+            android:textColor="#ffffffff"
+            android:layout_marginTop="60dp"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Address Here"
+            android:id="@+id/address_text"
+            android:layout_weight="0.06"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_below="@+id/time_text"
+            android:textColor="#ffffffff"
+            android:layout_marginTop="90dp"
+            android:textSize="20dp" />
+
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        >
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="WOMEN ONLY"
+            android:layout_weight="1"
+            android:id="@+id/gender_button"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            android:background="#ffffff"
+            android:enabled="false"
+            android:textColor="#060606" />
+
+        <View
+            android:id="@+id/divider1"
+            android:layout_toRightOf="@+id/gender_button"
+            android:layout_width="0.5dp"
+            android:layout_marginTop="1dp"
+            android:layout_height="fill_parent"
+            android:background="@android:color/darker_gray"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="19+"
+            android:layout_weight="1"
+            android:id="@+id/min_age_button"
+            android:textSize="25dp"
+            android:background="#ffffff"
+            android:enabled="false"
+            android:textColor="#040404"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_toRightOf="@+id/min_age_button"
+            android:layout_width="0.5dp"
+            android:layout_marginTop="1dp"
+            android:layout_height="fill_parent"
+            android:background="@android:color/darker_gray"/>
+
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="PUBLIC EVENT"
+            android:layout_weight="1"
+            android:id="@+id/privilege_button"
+            android:textSize="12dp"
+            android:background="#ffffff"
+            android:enabled="false"
+            android:textColor="#020202"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_toRightOf="@+id/privilege_button"
+            android:layout_width="0.5dp"
+            android:layout_marginTop="1dp"
+            android:layout_height="fill_parent"
+            android:background="@android:color/darker_gray"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="27 / 30"
+            android:layout_weight="1"
+            android:id="@+id/participants_button"
+            android:textSize="15dp"
+            android:background="#ffffff"
+            android:enabled="false"
+            android:textColor="#010101"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="participate"
+            android:id="@+id/participate_button" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_below="@+id/participate_button"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="1dp"
+        android:layout_height="0.5dp"
+        android:background="@android:color/darker_gray"/>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.39">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Playing List"
+            android:id="@+id/button"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
+            android:background="#fffefe" />
+    </LinearLayout>
+
+</LinearLayout>

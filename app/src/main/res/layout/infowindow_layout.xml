@@ -17,14 +17,4 @@
         android:layout_height="wrap_content"
         android:textStyle="bold" />
 
-    <Button
-        android:layout_marginRight="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Details"
-        android:id="@+id/marker_click"
-        android:onClick="onClick"
-        android:background="#606060"
-        android:textColor="#ffffffff" />
-
 </LinearLayout>

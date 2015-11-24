@@ -8,16 +8,28 @@ import com.google.android.gms.maps.model.Marker;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * Created by nirb on 11/20/2015.
  */
-public class MapMarker {
+public class MapMarker implements Serializable{
 
     private String mLabel;
     private Double mLatitude;
     private Double mLongitude;
     private JSONObject mJsonObject;
     private BitmapDescriptor mIcon;
+    private int mBitmap;
+    private Marker mMarker;
+
+    public JSONObject getmJsonObject() {
+        return mJsonObject;
+    }
+
+    public void setmJsonObject(JSONObject mJsonObject) {
+        this.mJsonObject = mJsonObject;
+    }
 
     public int getmBitmap() {
         return mBitmap;
@@ -27,8 +39,6 @@ public class MapMarker {
         this.mBitmap = mBitmap;
     }
 
-    private int mBitmap;
-
     public Marker getmMarker() {
         return mMarker;
     }
@@ -36,8 +46,6 @@ public class MapMarker {
     public void setmMarker(Marker mMarker) {
         this.mMarker = mMarker;
     }
-
-    private Marker mMarker;
 
     public MapMarker(JSONObject jsonObject)
     {
@@ -77,9 +85,6 @@ public class MapMarker {
             return BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA);
     }
     }
-
-
-
 
     public String getmLabel()
     {

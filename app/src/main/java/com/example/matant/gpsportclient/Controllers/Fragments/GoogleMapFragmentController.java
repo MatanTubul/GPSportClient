@@ -1,6 +1,7 @@
 package com.example.matant.gpsportclient.Controllers.Fragments;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Geocoder;
@@ -74,6 +75,8 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     private DBcontroller dbController;
     private ProgressDialog progress;
     private LayoutInflater inflater;
+    private Fragment fragment = null;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -106,6 +109,27 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
                     return true;
                 }
             });
+
+            googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    MapMarker mapMarker = mMarkersHashMap.get(marker);
+                    if (mapMarker != null) { //if marker == null this marker isn't in the hash => current location marker
+                        fragment = new ViewEventFragmentController();
+                        Bundle args = new Bundle();
+                        args.putSerializable("mapmarker", mapMarker);
+                        fragment.setArguments(args);
+                        if (fragment != null) {
+                            FragmentManager fragmentManager = getFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                        } else {
+                            Log.e("GoogleMap Fragment", "Error in creating fragment");
+                        }
+                    }
+                }
+            });
+
         }
         else
             Toast.makeText(this.getActivity(), "Unable to create Maps", Toast.LENGTH_SHORT).show();
@@ -247,13 +271,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
                 //adding marker to the arraylist eventsmarkers which every object is a class MapMarker variable
                 //marker info is saved upon MapMarker constructor
                     eventsMarkers.add(new MapMarker(jsonarr.getJSONObject(i)));
-/*
-                    if (eventsMarkers.get(i) != null) {
-                        eventsMarkers.get(i).setIcon((BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-                        eventsMarkers.get(i).setTitle(sportKind + " " + latitude + " " + longitude);
-                        eventsMarkers.get(i).showInfoWindow();
-                        eventsMarkers.get(i).setVisible(true);
-                    }*/
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -268,10 +286,11 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         int eventsMarkersSize = eventsMarkers.size();
         Log.d("deletePreviousMarkers", "before for loop");
         for (int i = 0; i < eventsMarkersSize; i++) {
-            Log.d("deletePreviousMarkers", "remove marker: "+String.valueOf(i));
-            eventsMarkers.get(i).getmMarker().remove();
+            Log.d("deletePreviousMarkers", "remove marker: " + String.valueOf(i));
+            mMarkersHashMap.remove(eventsMarkers.get(i).getmMarker()); //remove MapMarker from hash
+            eventsMarkers.get(i).getmMarker().remove();                //remove Marker from MapMarker
         }
-        eventsMarkers.clear();
+        eventsMarkers.clear();                                          //remove all MapMarkers from list
         Log.d("deletePreviousMarkers", "markers removed");
 
     }
@@ -420,7 +439,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         }
     }
 
-    public class MarkerInfoWindowAdapter  implements GoogleMap.InfoWindowAdapter, View.OnClickListener
+    public class MarkerInfoWindowAdapter implements GoogleMap.InfoWindowAdapter
     {
         public MarkerInfoWindowAdapter()
         {}
@@ -436,26 +455,25 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         {
             View v  = inflater.inflate(R.layout.infowindow_layout, null);
             MapMarker marker = mMarkersHashMap.get(markerMapMarkerKey);
-            ImageView markerIcon = (ImageView) v.findViewById(R.id.marker_icon);
-            TextView markerLabel = (TextView)v.findViewById(R.id.marker_label);
-            Button markerClick = (Button) v.findViewById(R.id.marker_click);
-            markerClick.setOnClickListener(this);
-            markerIcon.setImageResource(marker.getmBitmap());
-            markerLabel.setText(marker.getmLabel());
-
+            if (marker != null) { //if marker == null this marker isn't in the hash => current location marker
+                ImageView markerIcon = (ImageView) v.findViewById(R.id.marker_icon);
+                TextView markerLabel = (TextView) v.findViewById(R.id.marker_label);
+                markerIcon.setImageResource(marker.getmBitmap());
+                markerLabel.setText(marker.getmLabel());
+            }
             return v;
         }
 
-        @Override
-        public void onClick(View v) {
-            if (v.getId() == R.id.marker_click)
-            {
-                Log.d("getInfoContents","onClick");
 
-            }
+
+
+
+
+
+
 
         }
-    }
+
     //---------------------------------
 
     class AddressResultReceiver extends ResultReceiver {
