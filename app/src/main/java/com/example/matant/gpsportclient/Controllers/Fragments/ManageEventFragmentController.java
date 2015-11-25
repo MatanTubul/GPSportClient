@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * This class holding all the events that managed by a specific user and preview it on the UI.
  * Created by matant on 11/4/2015.
  */
 public class ManageEventFragmentController extends Fragment implements View.OnClickListener,AsyncResponse {
@@ -162,7 +163,6 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
         super.onActivityCreated(savedInstanceState);
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
-
         getView().setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
