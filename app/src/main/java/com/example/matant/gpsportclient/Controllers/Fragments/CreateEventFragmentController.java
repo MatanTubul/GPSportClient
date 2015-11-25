@@ -79,6 +79,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     private ScrollView sv;
     private String mode;
     private String event_id ="";
+    private JSONObject sched_res = null;
 
 
     public CreateEventFragmentController() {
@@ -600,6 +601,32 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                 nameValuePairList.add(jsonInvited);
             }
         }
+        if(sched_res != null && reccuringEventCbox.isChecked() == true){
+
+            String repeatval ="";
+            String duration ="";
+            String tag = "";
+            String val = "";
+            BasicNameValuePair sched_val = null;
+            try {
+                 repeatval = sched_res.getString("repeat");
+                 duration = sched_res.getString("duration");
+                JSONArray jsonarr = new JSONArray(sched_res.getString("radio_group"));
+                tag = jsonarr.getJSONObject(0).getString(Constants.TAG_REQUEST);
+                sched_val = new BasicNameValuePair("value",jsonarr.getJSONObject(0).getString("val"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            BasicNameValuePair sched_repeat = new BasicNameValuePair("repeat",repeatval);
+            BasicNameValuePair sched_duration = new BasicNameValuePair("duration",duration);
+            BasicNameValuePair sched_tag = new BasicNameValuePair("sched_tag",tag);
+            nameValuePairList.add(sched_repeat);
+            nameValuePairList.add(sched_duration);
+            nameValuePairList.add(sched_tag);
+            if(sched_val != null)
+                nameValuePairList.add(sched_val);
+
+        }
 
         nameValuePairList.add(manager_name);
         nameValuePairList.add(mob_manager);
@@ -722,9 +749,16 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         }
         if(Constants.REQUEST_CODE_SET_SCHEDULE == requestCode){
             if(Activity.RESULT_OK == resultCode){
+                try {
+                     sched_res = new JSONObject(data.getStringExtra("sched_prop"));
+                    Log.d("sched data",sched_res.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                ;
 
             }else{
-
+                    reccuringEventCbox.setChecked(false);
             }//request canceled
         }
 

@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -28,22 +30,27 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class SchedulePopUp extends Activity implements View.OnClickListener {
     private RadioGroup rdg;
-    private RadioButton rbYear,rdDate,rdEventCounter;
     private EditText editTextEventNumber;
     private Spinner spinnerRepeat,spinnerduration;
+    private TextView txtSumDate;
     private Button save,cancel;
     private int pos;
 
     private int year;
     private int month;
     private int day;
-    private String formated_date;
+    private String formated_date,summary ="";
 
     static final int DATE_PICKER_ID = 1111;
     private  Calendar c;
@@ -51,25 +58,26 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
     final Context context = this;
     private JSONObject jobj;
     private JSONArray jsonarr;
+    ArrayList<String> arr;
+    private String sum;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_pop_up);
+        arr = new ArrayList<String>();
 
         rdg = (RadioGroup)findViewById(R.id.radioGroup);
-        rbYear = (RadioButton)findViewById(R.id.radioButtonYear);
-        rdDate = (RadioButton)findViewById(R.id.radioButtonInDate);
-        rdDate = (RadioButton)findViewById(R.id.radioButtonEvents);
         save = (Button)findViewById(R.id.ButtonSchedSave);
         cancel = (Button) findViewById(R.id.ButtonSchedCancel);
+        txtSumDate = (TextView) findViewById(R.id.textViewSumVal);
         save.setOnClickListener(this);
         cancel.setOnClickListener(this);
          jsonObj = new JSONObject();
         spinnerduration = (Spinner) findViewById(R.id.spinnerDuration);
         ArrayList<String> weeks = new ArrayList<String>();
-        for (int i = 0; i <= Constants.MAXIMUM_WEEKS; i++) {
+        for (int i = 1; i <= Constants.MAXIMUM_WEEKS; i++) {
             weeks.add(Integer.toString(i));
 
         }
@@ -78,18 +86,12 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
         spinnerduration.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                /*TextView selectedText = (TextView) parent.getChildAt(0);
-                if (selectedText != null) {
-                    selectedText.setTextColor(Color.WHITE);
-                }*/
+                setSumText();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                /*TextView selectedText = (TextView) parent.getChildAt(0);
-                if (selectedText != null) {
-                    selectedText.setTextColor(Color.WHITE);
-                }*/
+
             }
         });
         spinnerRepeat = (Spinner) findViewById(R.id.spinnerRepeat);
@@ -97,23 +99,36 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
         spinnerRepeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                /*TextView selectedText = (TextView) parent.getChildAt(0);
-                if (selectedText != null) {
-                    selectedText.setTextColor(Color.WHITE);
-                }*/
+                setSumText();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-               /*TextView selectedText = (TextView) parent.getChildAt(0);
-                if (selectedText != null) {
-                    selectedText.setTextColor(Color.WHITE);
-                }*/
+
             }
         });
         cancel = (Button) findViewById(R.id.ButtonSchedCancel);
         editTextEventNumber = (EditText)findViewById(R.id.editTextEventsNumber);
         editTextEventNumber.setVisibility(View.GONE);
+        editTextEventNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                setSumText();
+            }
+        });
+        txtSumDate.setText("Daily repeat");
+
+
 
 
         DisplayMetrics dm = new DisplayMetrics();
@@ -122,7 +137,7 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout((int) (width * .8), (int) (height * .6));
+        getWindow().setLayout((int) (width * .8), (int) (height * .7));
         Date today = new Date();
         c = Calendar.getInstance();
         c.setTime(today);
@@ -130,6 +145,7 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
         year  = c.get(Calendar.YEAR);
         month = c.get(Calendar.MONTH);
         day   = c.get(Calendar.DAY_OF_MONTH);
+        formated_date = year+"-"+month+1+"-"+day;
         jobj = new JSONObject();
         jsonarr = new JSONArray();
         try {
@@ -153,17 +169,27 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
                     case 0:
                     {
                         editTextEventNumber.setVisibility(View.GONE);
+                        setSumText();
                         break;
                     }
                     case 1:
                     {
-                        editTextEventNumber.setVisibility(View.VISIBLE);
+                        editTextEventNumber.setVisibility(View.GONE);
+                        setSumText();
                         break;
                     }
-                    case 3:
+                    case 2:
+                    {
+                        editTextEventNumber.setVisibility(View.VISIBLE);
+                        editTextEventNumber.setText("10");
+                        setSumText();
+                        break;
+                    }
+                    case 4:
                     {
                         editTextEventNumber.setVisibility(View.GONE);
                         showDialog(DATE_PICKER_ID);
+                        setSumText();
                         break;
                     }
                 }
@@ -192,8 +218,12 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
     }
     private DatePickerDialog.OnDateSetListener pickListener = new DatePickerDialog.OnDateSetListener(){
 
+
         @Override
         public void onDateSet(android.widget.DatePicker view, int selectedYear, int monthOfYear, int dayOfMonth) {
+            year  = c.get(Calendar.YEAR);
+            month = c.get(Calendar.MONTH);
+            day   = c.get(Calendar.DAY_OF_MONTH);
             if(dayOfMonth < day || monthOfYear < month || selectedYear < year){
                 new AlertDialog.Builder(context)
                         .setTitle("Date Error!")
@@ -207,9 +237,10 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
                         .show();
             }else{
                 year  = selectedYear;
-                month = monthOfYear;
+                month = monthOfYear+1;
                 day   = dayOfMonth;
                 formated_date = year+"-"+month+"-"+day;
+                setSumText();
             }
 
         }
@@ -235,11 +266,9 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
 
                 switch (pos)
                 {
-                    case 0:
-                    {
-                        editTextEventNumber.setVisibility(View.GONE);
+                    case 0:{
                         try {
-                            jobj.put(Constants.TAG_REQUEST,"Year");
+                            jobj.put(Constants.TAG_REQUEST,"unlimited");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -247,22 +276,33 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
                     }
                     case 1:
                     {
-                        editTextEventNumber.setVisibility(View.VISIBLE);
+                        editTextEventNumber.setVisibility(View.GONE);
                         try {
-                            jobj.put(Constants.TAG_REQUEST,"events_number");
-                            jobj.put("numbers",editTextEventNumber.getText());
+                            jobj.put(Constants.TAG_REQUEST,"Year");
+                            jobj.put("val",getNextYearDate());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         break;
                     }
-                    case 3:
+                    case 2:
+                    {
+                        editTextEventNumber.setVisibility(View.VISIBLE);
+                        try {
+                            jobj.put(Constants.TAG_REQUEST,"events_number");
+                            jobj.put("val",editTextEventNumber.getText());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    }
+                    case 4:
                     {
                         editTextEventNumber.setVisibility(View.GONE);
                         showDialog(DATE_PICKER_ID);
                         try {
                             jobj.put(Constants.TAG_REQUEST,"by_date");
-                            jobj.put("expiration_date",formated_date);
+                            jobj.put("val",formated_date);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -270,8 +310,8 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
                     }
 
                 }
-
                 Log.d("all_data",jsonObj.toString());
+                i.putExtra("sched_prop",jsonObj.toString());
                 setResult(RESULT_OK, i);
                 finish();
                 break;
@@ -283,4 +323,70 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
                 break;
         }
     }
+    public String getNextYearDate(){
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, 1); // to get previous year add -1
+        Date nextYear = cal.getTime();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String output = df.format(nextYear);
+        return output;
+
+    }
+    public String getRepeat(String s){
+        if(s.equals("Daily")){
+            return "days";
+        }
+        else if(s.equals("Weekly")){
+            return "weeks";
+        }else if(s.equals("Monthly")){
+            return "months";
+        }
+        else
+            return null;
+    }
+    public void setSumText(){
+
+        switch (pos){
+            case 4:{
+                if(spinnerduration.getSelectedItem().equals("1"))
+                {
+                    sum = spinnerRepeat.getSelectedItem()+" "+"repeat,"+" "+"Until"+" "+formated_date;
+                }else{
+                    sum = spinnerRepeat.getSelectedItem()+" "+"repeat every"+" "+spinnerduration.getSelectedItem()+" "+getRepeat(spinnerRepeat.getSelectedItem().toString())+","+" "+"Until"+" "+formated_date;
+                }
+                break;
+
+            }
+            case 2:{
+                if(spinnerduration.getSelectedItem().equals("1"))
+                {
+                    sum = spinnerRepeat.getSelectedItem()+" "+"repeat,"+" "+editTextEventNumber.getText()+" "+"times";
+                }else{
+                    sum = spinnerRepeat.getSelectedItem()+" "+"repeat every"+" "+spinnerduration.getSelectedItem()+" "+getRepeat(spinnerRepeat.getSelectedItem().toString())+","+" "+editTextEventNumber.getText()+" "+"times";
+                }
+                break;
+            }
+            case 1:{
+                if(spinnerduration.getSelectedItem().equals("1"))
+                {
+                    sum = spinnerRepeat.getSelectedItem()+" "+"repeat,"+" "+"Until"+" "+getNextYearDate();
+                }else{
+                    sum = spinnerRepeat.getSelectedItem()+" "+"repeat every"+" "+spinnerduration.getSelectedItem()+" "+getRepeat(spinnerRepeat.getSelectedItem().toString())+","+" "+"Until"+" "+getNextYearDate();
+                }
+                break;
+            }
+            case 0:{
+                if(spinnerduration.getSelectedItem().equals("1"))
+                {
+                    sum = spinnerRepeat.getSelectedItem()+" "+"repeat";
+                }else{
+                    sum = spinnerRepeat.getSelectedItem()+" "+"repeat, Repeat Every"+" "+spinnerduration.getSelectedItem()+" "+getRepeat(spinnerRepeat.getSelectedItem().toString());
+                }
+                break;
+            }
+        }
+        txtSumDate.setText(sum);
+    }
+
+
 }
