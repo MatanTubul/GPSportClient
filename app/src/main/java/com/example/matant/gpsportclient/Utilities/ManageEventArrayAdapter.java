@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.Controllers.Fragments.CreateEventFragmentController;
@@ -155,7 +156,7 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
                 switch (flg){
                     case Constants.TAG_REQUEST_FAILED:
                     {
-
+                        Toast.makeText(this.context, "Delete failed", Toast.LENGTH_SHORT).show();
                         break;
                     }
                     case Constants.TAG_REQUEST_SUCCEED:

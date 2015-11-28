@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -258,7 +259,6 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
             }
         }
     }
-
     private void drawEventsMarkersOnMap(JSONArray jsonarr) {
         if (googleMap != null && jsonarr.length() != 0)
         {
@@ -279,8 +279,6 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
             plotMarkers();
         }//if
     }
-
-
     private void deletePreviousMarkers()
     {
         int eventsMarkersSize = eventsMarkers.size();
@@ -294,7 +292,6 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         Log.d("deletePreviousMarkers", "markers removed");
 
     }
-
     private void plotMarkers()
     {
         if(eventsMarkers.size() > 0)
@@ -316,8 +313,6 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         }
 
     }
-
-
     @Override
     public void sendDataToDBController() {
         Log.d("sendDataToDBController", "sendDataToDBController");
@@ -463,15 +458,6 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
             }
             return v;
         }
-
-
-
-
-
-
-
-
-
         }
 
     //---------------------------------

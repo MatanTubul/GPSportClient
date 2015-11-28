@@ -18,6 +18,7 @@ import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.R;
+import com.example.matant.gpsportclient.SplashScreen;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 
@@ -39,6 +40,7 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
     private ProgressDialog progress;
 
     private Button btnJoin,btnDeny;
+    private boolean is_coonected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,8 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
         btnJoin = (Button)findViewById(R.id.ButtonJoin);
         btnDeny = (Button)findViewById(R.id.ButtonDeny);
         setTitle("GPSport Notification");
+        sm = SessionManager.getInstance(this);
+          is_coonected = sm.getUserDetails().get(Constants.TAG_CONNECTED).equals("false");
 
 
         Intent i = getIntent();
@@ -153,7 +157,13 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
 
 
             case R.id.ButtonDeny:
-                Constants.reloadApp(this, Login.class);
+                if(is_coonected) {
+                    Intent i = new Intent(this, Login.class);
+                    startActivity(i);
+                }else{
+                    Intent i = new Intent(this, MainScreen.class);
+                    startActivity(i);
+                }
                 break;
         }
     }
