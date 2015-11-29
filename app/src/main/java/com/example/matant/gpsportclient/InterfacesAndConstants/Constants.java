@@ -85,6 +85,7 @@ public final class Constants {
     public static final int REQUEST_CODE_SET_SCHEDULE = 2;
     public static final int MAXIMUM_WEEKS = 30;
 
+
     //event
     public static final String MODE_UPDATE = "edit";
     public static final String MODE_CREATE = "create_event";

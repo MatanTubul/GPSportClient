@@ -45,11 +45,13 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
     private DBcontroller dbController;
     private ManageEventListRow rowEvent;
     private ProgressDialog progress;
+    private String mode;
 
-    public ManageEventArrayAdapter(Context ctx,int resourceId, List<ManageEventListRow> items){
+    public ManageEventArrayAdapter(Context ctx,int resourceId, List<ManageEventListRow> items,String mymode){
         super(ctx, resourceId, items);
         this.context = ctx;
         this.mngEvents = items;
+        this.mode = mymode;
     }
     /*private view holder class*/
     private class ViewHolder {
@@ -60,6 +62,7 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
         TextView txtTime;
         TextView txtParticipants;
         ImageButton imgDelete;
+        ImageView mngImageview;
     }
     public View getView(final int position, View convertView, ViewGroup parent){
         ViewHolder holder = null;
@@ -79,6 +82,8 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
             holder.txtParticipants = (TextView) convertView.findViewById(R.id.textViewparticipantsVal);
             holder.imgDelete = (ImageButton) convertView.findViewById(R.id.imageViewDeleteEvent);
             holder.imageViewType = (ImageView) convertView.findViewById(R.id.imageViewSporttype);
+            holder.mngImageview = (ImageView) convertView.findViewById(R.id.imageViewManager);
+
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
@@ -89,24 +94,32 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
         holder.txtTime.setText(rowItem.getEtime());
         holder.txtParticipants.setText(rowItem.getParticipants());
         holder.imageViewType.setImageResource(rowItem.getSportImage());
+        if(rowItem.isManager())
+            holder.mngImageview.setImageResource(R.drawable.manager_32);
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bun = new Bundle();
-                bun.putString(Constants.TAG_REQUEST,Constants.MODE_UPDATE);
-                bun.putString("json",rowItem.getEventRecord().toString());
-                try {
-                    bun.putString("users",rowItem.getEventRecord().getString("event_users"));
-                    Log.d("users is:",rowItem.getEventRecord().getString("event_users"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if(mode.equals("manage")){
+                    Bundle bun = new Bundle();
+                    bun.putString(Constants.TAG_REQUEST,Constants.MODE_UPDATE);
+                    bun.putString("json",rowItem.getEventRecord().toString());
+                    try {
+                        bun.putString("users",rowItem.getEventRecord().getString("event_users"));
+                        Log.d("users is:",rowItem.getEventRecord().getString("event_users"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    final  Activity activity = (Activity) context;
+                    Fragment fragment = new CreateEventFragmentController();
+                    fragment.setArguments(bun);
+                    FragmentManager fragmentManager =  activity.getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 }
-                final  Activity activity = (Activity) context;
-                Fragment fragment = new CreateEventFragmentController();
-                fragment.setArguments(bun);
-                FragmentManager fragmentManager =  activity.getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                else{
+                    Log.d("mode is:",mode );
+                }
+
 
             }
         });
@@ -114,25 +127,28 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Event Id is:", rowItem.getEventId());
-                new AlertDialog.Builder(getContext())
-                        .setTitle("Delete Event")
-                        .setMessage("Are you sure you want to delete this event?")
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                sendDataToDBController();
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .setIconAttribute(android.R.attr.alertDialogIcon)
-                        .show();
-
+                if(mode.equals("manage")){
+                    Log.d("Event Id is:", rowItem.getEventId());
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Delete Event")
+                            .setMessage("Are you sure you want to delete this event?")
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    sendDataToDBController();
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIconAttribute(android.R.attr.alertDialogIcon)
+                            .show();
+                }else{
+                    Log.d("mode is:",mode );
+                }
             }
         });
 

@@ -2,6 +2,9 @@ package com.example.matant.gpsportclient.Utilities;
 
 import android.widget.ImageButton;
 
+import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -11,9 +14,10 @@ public class ManageEventListRow {
     private int sportImage;
     private  String sportType,Date,Location,Participants,eventId,etime;
     private JSONObject eventRecord;
+    private boolean isManager;
 
 
-    public ManageEventListRow(int image,String type, String loc, String date,String partic,String eventid,String event_time, JSONObject eventObj ){
+    public ManageEventListRow(int image,String type, String loc, String date,String partic,String eventid,String event_time, JSONObject eventObj,boolean isMng ){
         this.sportImage = image;
         this.sportType = type;
         this.Date = date;
@@ -22,6 +26,7 @@ public class ManageEventListRow {
         this.eventId = eventid;
         this.etime = event_time;
         this.eventRecord = eventObj;
+        this.isManager = isMng;
     }
 
     public int getSportImage() {
@@ -86,5 +91,9 @@ public class ManageEventListRow {
 
     public void setEventRecord(JSONObject eventRecord) {
         this.eventRecord = eventRecord;
+    }
+
+    public boolean isManager() {
+        return isManager;
     }
 }

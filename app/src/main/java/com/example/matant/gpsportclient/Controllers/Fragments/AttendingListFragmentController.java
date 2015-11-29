@@ -4,12 +4,10 @@ import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
@@ -29,18 +27,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class holding all the events that managed by a specific user and preview it on the UI.
- * Created by matant on 11/4/2015.
+ * Created by matant on 11/29/2015.
  */
-public class ManageEventFragmentController extends Fragment implements View.OnClickListener,AsyncResponse {
-    private ListView listViewMngEvents;
+public class AttendingListFragmentController extends Fragment implements View.OnClickListener,AsyncResponse {
+
+    private ListView ListViewAttendingList;
     private SessionManager sm;
     private DBcontroller dbController;
     private ProgressDialog progress;
     List<ManageEventListRow> rowEvents;
     private ManageEventArrayAdapter ManageEventAdapter = null;
 
-    public ManageEventFragmentController ()
+    public AttendingListFragmentController()
     {
 
     }
@@ -49,11 +47,11 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
 
         final View v = inflater.inflate(R.layout.fragment_manage_event_fragment_controller, container, false);
 
-        listViewMngEvents = (ListView) v.findViewById(R.id.listViewManageEvent);
-        listViewMngEvents.setItemsCanFocus(true);
+        ListViewAttendingList = (ListView) v.findViewById(R.id.listViewManageEvent);
+        ListViewAttendingList.setItemsCanFocus(true);
         sm = SessionManager.getInstance(getActivity());
         sendDataToDBController();
-        getActivity().setTitle("Manage Events");
+        getActivity().setTitle("Participation Events");
         return v;
     }
 
@@ -74,7 +72,7 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
                         Log.d("creating list",jsonarr.toString());
                         Log.d("array",jsonarr.toString());
                         String title,date,Loc,participants,event_time,event_id,mng_id;
-
+                        boolean isManager =false;
                         rowEvents = new ArrayList<ManageEventListRow>();
                         int sportType = -1;
                         for(int i = 0; i< jsonarr.length();i++){
@@ -82,7 +80,9 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
                             title = jsonarr.getJSONObject(i).getString("kind_of_sport");
                             date = jsonarr.getJSONObject(i).getString("event_date");
                             Loc = jsonarr.getJSONObject(i).getString("address");
-
+                            mng_id = jsonarr.getJSONObject(i).getString("manager_id");
+                            if(mng_id.equals(sm.getUserDetails().get(Constants.TAG_USERID)))
+                                isManager = true;
                             event_time = jsonarr.getJSONObject(i).getString("formatted_start_time")+" "+"-"+" "+jsonarr.getJSONObject(i).getString("formatted_end_time");;
                             event_id = jsonarr.getJSONObject(i).getString("event_id");
                             eventObj.put("start_time",jsonarr.getJSONObject(i).getString("formatted_start_time"));
@@ -104,19 +104,19 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
                                     sportType = R.drawable.biking_32;
                                     break;
                             }
-                            ManageEventListRow rowEvent = new ManageEventListRow(sportType,title,Loc,date,participants,event_id,event_time,eventObj , true);
+                            ManageEventListRow rowEvent = new ManageEventListRow(sportType,title,Loc,date,participants,event_id,event_time,eventObj,isManager);
                             rowEvents.add(rowEvent);
 
                         }
                         if(ManageEventAdapter == null)
                         {
-                            ManageEventAdapter = new ManageEventArrayAdapter(getActivity(),R.layout.manage_event_listview_event,rowEvents,"manage");
+                            ManageEventAdapter = new ManageEventArrayAdapter(getActivity(),R.layout.manage_event_listview_event,rowEvents,"view");
                         }
                         else {
                             ManageEventAdapter.setData(rowEvents);
                             ManageEventAdapter.notifyDataSetChanged();
                         }
-                        listViewMngEvents.setAdapter(ManageEventAdapter);
+                        ListViewAttendingList.setAdapter(ManageEventAdapter);
                         break;
                     }
 
@@ -130,52 +130,28 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
                 e.printStackTrace();
             }
         }
+
     }
 
     @Override
     public void sendDataToDBController() {
-        BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, "get_event");
-        BasicNameValuePair manager_id = new BasicNameValuePair(Constants.TAG_MANAGER_ID,sm.getUserDetails().get(Constants.TAG_USERID) );
+        BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, "get_participating_event_list");
+        BasicNameValuePair user_id = new BasicNameValuePair(Constants.TAG_USERID,sm.getUserDetails().get(Constants.TAG_USERID) );
         List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
         nameValuePairList.add(tagreq);
-        nameValuePairList.add(manager_id);
+        nameValuePairList.add(user_id);
         dbController = new DBcontroller(getActivity(),this);
         dbController.execute(nameValuePairList);
-
     }
 
     @Override
     public void preProcess() {
         this.progress = ProgressDialog.show(getActivity(), "Retrieve Events",
                 "Loading...", true);
-
     }
 
     @Override
     public void onClick(View v) {
 
-    }
-
-    /**
-     * method which handling the requests for  back button in the  device
-     * @param savedInstanceState
-     */
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    if (keyCode == KeyEvent.KEYCODE_BACK) {
-                        Toast.makeText(getActivity(), "Please navigate via the menu", Toast.LENGTH_SHORT).show();
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
     }
 }
