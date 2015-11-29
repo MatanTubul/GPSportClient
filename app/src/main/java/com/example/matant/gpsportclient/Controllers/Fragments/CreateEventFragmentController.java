@@ -788,6 +788,12 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         });
 
     }
+
+    /**
+     * create and initialise the ListView of all the users that join to the event and
+     * show that in a ListView under Edit mode
+     * @param params
+     */
     public void  initAdapter(String params){
         JSONArray res = null;
         try {
