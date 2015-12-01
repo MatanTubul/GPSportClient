@@ -68,6 +68,8 @@ public class AttendingListFragmentController extends Fragment implements View.On
                     case Constants.TAG_REQUEST_SUCCEED:
                     {
 
+
+
                         JSONArray jsonarr = jsonObj.getJSONArray("events");
                         Log.d("creating list",jsonarr.toString());
                         Log.d("array",jsonarr.toString());
