@@ -46,6 +46,7 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
     private ManageEventListRow rowEvent;
     private ProgressDialog progress;
     private String mode;
+    public String mananger_name = null;
 
     public ManageEventArrayAdapter(Context ctx,int resourceId, List<ManageEventListRow> items,String mymode){
         super(ctx, resourceId, items);
@@ -100,6 +101,7 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                rowEvent = rowItem;
                 if(mode.equals("manage")){
                     Bundle bun = new Bundle();
                     bun.putString(Constants.TAG_REQUEST,Constants.MODE_UPDATE);
@@ -127,6 +129,7 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                rowEvent = rowItem;
                 if(mode.equals("manage")){
                     Log.d("Event Id is:", rowItem.getEventId());
                     new AlertDialog.Builder(getContext())
@@ -147,16 +150,13 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
                             .setIconAttribute(android.R.attr.alertDialogIcon)
                             .show();
                 }else{
-                    Log.d("mode is:",mode );
+
                 }
             }
         });
 
         return convertView;
     }
-
-
-
     public void setData(List<ManageEventListRow> list){
         this.mngEvents = list;
     }
@@ -190,14 +190,48 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
     }
 
     @Override
-    public void sendDataToDBController() {
-        String id = rowEvent.getEventId();
-        Log.d("event id to delete:",id);
-        BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, "delete_event");
-        BasicNameValuePair eventparam = new BasicNameValuePair("event_id", id);
+    public void sendDataToDBController()   {
         List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
-        nameValuePairList.add(tagreq);
-        nameValuePairList.add(eventparam);
+
+        if(mode.equals("manage")){
+            BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, "delete_event");
+            BasicNameValuePair event_details = new BasicNameValuePair("event_details",rowEvent.getEventRecord().toString());
+            BasicNameValuePair event_date = new BasicNameValuePair("event_date", rowEvent.getDate());
+            BasicNameValuePair mng_name = new BasicNameValuePair("manager_name", this.mananger_name);
+            String event_id  = null;
+            String sport_t = null ,place = null ,s_time = null ,e_time = null,current_participant = null;
+
+            try {
+                event_id = rowEvent.getEventRecord().getString("event_id").toString();
+                sport_t = rowEvent.getEventRecord().getString("kind_of_sport").toString();
+                place =  rowEvent.getEventRecord().getString("address").toString();
+                s_time = rowEvent.getEventRecord().getString("start_time").toString();
+                e_time = rowEvent.getEventRecord().getString("end_time").toString();
+                current_participant = rowEvent.getEventRecord().getString("current_participants").toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            BasicNameValuePair eventId = new BasicNameValuePair("event_id",event_id );
+            BasicNameValuePair sport_type = new BasicNameValuePair("kind_of_sport",sport_t );
+            BasicNameValuePair event_place = new BasicNameValuePair("address",place );
+            BasicNameValuePair event_s_time = new BasicNameValuePair("start_time",s_time );
+            BasicNameValuePair event_e_time = new BasicNameValuePair("end_time",e_time );
+            BasicNameValuePair curr_partici = new BasicNameValuePair("current_participants",current_participant);
+           nameValuePairList.add(tagreq);
+            nameValuePairList.add(event_date);
+            nameValuePairList.add(event_details);
+            nameValuePairList.add(mng_name);
+            nameValuePairList.add(eventId);
+            nameValuePairList.add(sport_type);
+            nameValuePairList.add(event_place);
+            nameValuePairList.add(event_s_time);
+            nameValuePairList.add(event_e_time);
+            nameValuePairList.add(curr_partici);
+        }else{
+
+        }
+
+
         dbController = new DBcontroller(getContext(),this);
         dbController.execute(nameValuePairList);
 

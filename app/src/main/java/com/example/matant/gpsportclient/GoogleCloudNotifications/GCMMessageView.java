@@ -33,7 +33,7 @@ import java.util.List;
 
 public class GCMMessageView extends AppCompatActivity implements AsyncResponse, View.OnClickListener {
     private TextView message,date,time,user,location;
-    private String intentUser,intentDate,intentTime,intentMessage,EventId = "",place;
+    private String intentUser,intentDate,intentTime,intentMessage,EventId = "",place,msg_type = null;
     private DBcontroller dbController;
     private SessionManager sm;
     private String UserId = "";
@@ -65,6 +65,7 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
         intentTime = i.getExtras().getString("s_time") + " "+ "to"+" " + i.getExtras().getString("e_time");
         EventId = i.getExtras().getString("event_id");
         place = i.getExtras().getString("location");
+        msg_type = i.getExtras().getString("msg_type");
 
         user.setText(intentUser+",");
         message.setText(intentMessage);
@@ -75,6 +76,14 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
 
         sm = SessionManager.getInstance(this);
          UserId = sm.getUserDetails().get(Constants.TAG_USERID);
+        if(msg_type != null)
+        {
+            if(msg_type.equals("canceled")){
+                btnJoin.setVisibility(View.GONE);
+                btnDeny.setText("Close");
+            }
+        }
+
 
         btnJoin.setOnClickListener(this);
         btnDeny.setOnClickListener(this);

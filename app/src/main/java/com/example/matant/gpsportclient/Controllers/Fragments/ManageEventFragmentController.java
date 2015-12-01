@@ -111,9 +111,11 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
                         if(ManageEventAdapter == null)
                         {
                             ManageEventAdapter = new ManageEventArrayAdapter(getActivity(),R.layout.manage_event_listview_event,rowEvents,"manage");
+                            ManageEventAdapter.mananger_name = sm.getUserDetails().get(Constants.TAG_NAME);
                         }
                         else {
                             ManageEventAdapter.setData(rowEvents);
+                            ManageEventAdapter.mananger_name = sm.getUserDetails().get(Constants.TAG_NAME);
                             ManageEventAdapter.notifyDataSetChanged();
                         }
                         listViewMngEvents.setAdapter(ManageEventAdapter);

@@ -63,6 +63,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         intent.putExtra("inviter", data.getStringExtra("inviter"));
         intent.putExtra("event_id",data.getStringExtra("event_id"));
         intent.putExtra("location",data.getStringExtra("location"));
+        intent.putExtra("msg_type",data.getStringExtra("msg_type"));
 
 
 
