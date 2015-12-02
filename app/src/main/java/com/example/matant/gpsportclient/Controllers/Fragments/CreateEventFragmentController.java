@@ -48,11 +48,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class CreateEventFragmentController extends Fragment implements View.OnClickListener,OnCompleteListener,AsyncResponse {
@@ -259,6 +264,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     public void onClick(View v) {
         DialogFragment df = null;
         Bundle bundle = null;
+        String string_date = btnStartdate.getText().toString();
         String dialog_type ="";
         switch(v.getId()) {
             case R.id.buttonFromTime:
@@ -267,6 +273,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                     bundle = new Bundle();
                     dialog_type = "Time";
                     bundle.putInt(dialog_type, 1);
+                    bundle.putString("date",string_date);
                     SET_TIME =true;
                 }
 
@@ -278,6 +285,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                         bundle = new Bundle();
                         dialog_type = "Time";
                         bundle.putInt(dialog_type, 2);
+                        bundle.putString("date",string_date);
                         SET_TIME =true;
                     }
                     break;
@@ -451,8 +459,6 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     public void handleResponse(String resStr) {
         progress.dismiss();
         Log.d("create handleResponse", resStr);
-
-
         if (resStr != null) {
             try {
                 JSONObject jsonObj = new JSONObject(resStr);
