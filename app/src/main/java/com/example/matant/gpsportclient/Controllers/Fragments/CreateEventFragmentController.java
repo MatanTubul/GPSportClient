@@ -474,6 +474,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                          alertdialog = alert.show();
                         break;
 
+
+
                     }
                     case "failed":
                     {
