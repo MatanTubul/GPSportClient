@@ -41,6 +41,7 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
 
     private Button btnJoin,btnDeny;
     private boolean is_coonected;
+    private String event_mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,7 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
         EventId = i.getExtras().getString("event_id");
         place = i.getExtras().getString("location");
         msg_type = i.getExtras().getString("msg_type");
+        event_mode = i.getExtras().getString("private");
 
         user.setText(intentUser+",");
         message.setText(intentMessage);
@@ -135,11 +137,13 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
         BasicNameValuePair tagreq = new BasicNameValuePair("tag", "response_invited_user");
         BasicNameValuePair event_Id = new BasicNameValuePair("event_id", EventId);
         BasicNameValuePair user_Id = new BasicNameValuePair("userId", UserId);
+        BasicNameValuePair user_status = new BasicNameValuePair("userStatus", "attend");
 
         List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
         nameValuePairList.add(tagreq);
         nameValuePairList.add(event_Id);
         nameValuePairList.add(user_Id);
+        nameValuePairList.add(user_status);
         dbController = new DBcontroller(this, this);
         dbController.execute(nameValuePairList);
     }
