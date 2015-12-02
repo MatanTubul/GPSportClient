@@ -451,6 +451,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     public void handleResponse(String resStr) {
         progress.dismiss();
         Log.d("create handleResponse", resStr);
+
+
         if (resStr != null) {
             try {
                 JSONObject jsonObj = new JSONObject(resStr);
