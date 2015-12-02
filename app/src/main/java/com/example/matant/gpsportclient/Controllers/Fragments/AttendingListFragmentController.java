@@ -110,10 +110,12 @@ public class AttendingListFragmentController extends Fragment implements View.On
                         if(ManageEventAdapter == null)
                         {
                             ManageEventAdapter = new ManageEventArrayAdapter(getActivity(),R.layout.manage_event_listview_event,rowEvents,"view");
+                            ManageEventAdapter.setUser_id(sm.getUserDetails().get(Constants.TAG_USERID));
                         }
                         else {
                             ManageEventAdapter.setData(rowEvents);
                             ManageEventAdapter.notifyDataSetChanged();
+                            ManageEventAdapter.setUser_id(sm.getUserDetails().get(Constants.TAG_USERID));
                         }
                         ListViewAttendingList.setAdapter(ManageEventAdapter);
                         break;

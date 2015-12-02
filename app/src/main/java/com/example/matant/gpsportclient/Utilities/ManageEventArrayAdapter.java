@@ -47,6 +47,8 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
     private ProgressDialog progress;
     private String mode;
     public String mananger_name = null;
+    private  String user_id = null;
+
 
     public ManageEventArrayAdapter(Context ctx,int resourceId, List<ManageEventListRow> items,String mymode){
         super(ctx, resourceId, items);
@@ -54,6 +56,11 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
         this.mngEvents = items;
         this.mode = mymode;
     }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
     /*private view holder class*/
     private class ViewHolder {
         ImageView imageViewType;
@@ -150,7 +157,24 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
                             .setIconAttribute(android.R.attr.alertDialogIcon)
                             .show();
                 }else{
-
+                    Log.d("mode is:", mode);
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Leave Event")
+                            .setMessage("Are you sure you want to Leave the event?")
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    sendDataToDBController();
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIconAttribute(android.R.attr.alertDialogIcon)
+                            .show();
                 }
             }
         });
@@ -233,10 +257,30 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
             nameValuePairList.add(event_e_time);
             nameValuePairList.add(curr_partici);
         }else{
-            BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, "remove_event_manager");
+            String event_type = null;
+            BasicNameValuePair tagreq;
+            try {
+                 event_type  = rowEvent.getEventRecord().getString("private");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if(rowEvent.isManager()){
+                Log.d("delete manager",String.valueOf(rowEvent.isManager()));
+                 tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, "remove_event_manager");
+            }else{
+                Log.d("delete participant",String.valueOf(rowEvent.isManager()));
+                 tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, "remove_participant");
+            }
+            BasicNameValuePair type = new BasicNameValuePair("event_is_private", event_type);
             BasicNameValuePair curr_partici = new BasicNameValuePair("current_participants",current_participant);
+            if (user_id != null)
+            {
+                BasicNameValuePair userid = new BasicNameValuePair(Constants.TAG_USERID,user_id);
+                nameValuePairList.add(userid);
+            }
             nameValuePairList.add(curr_partici);
             nameValuePairList.add(tagreq);
+            nameValuePairList.add(type);
         }
         dbController = new DBcontroller(getContext(),this);
         dbController.execute(nameValuePairList);
