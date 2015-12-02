@@ -473,9 +473,6 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                         alert.setIcon(R.drawable.ok_32);
                          alertdialog = alert.show();
                         break;
-
-
-
                     }
                     case "failed":
                     {
@@ -516,9 +513,21 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                         break;
                     }
                     case "update_success":{
-                        Log.d("update res success",resStr);
-                        Constants.reloadApp(getActivity(), MainScreen.class);
-                        getActivity().finish();
+                        Log.d("event created", "success to create event");
+                        alert = new AlertDialog.Builder(getActivity());
+                        alert.setTitle("Event");
+                        alert.setMessage("Event was updated successfully");
+                        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Constants.reloadApp(getActivity(), MainScreen.class);
+                                getActivity().finish();
+                            }
+
+                        });
+                        alert.setIcon(R.drawable.ok_32);
+                        alertdialog = alert.show();
+                        Log.d("update res success", resStr);
                         break;
                     }
                 }

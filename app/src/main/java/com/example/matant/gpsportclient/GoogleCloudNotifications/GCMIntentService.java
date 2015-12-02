@@ -64,7 +64,6 @@ public class GCMIntentService extends GCMBaseIntentService {
         intent.putExtra("event_id",data.getStringExtra("event_id"));
         intent.putExtra("location",data.getStringExtra("location"));
         intent.putExtra("msg_type",data.getStringExtra("msg_type"));
-        intent.putExtra("private",data.getStringExtra("private"));
 
 
 

@@ -36,12 +36,12 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
     private String intentUser,intentDate,intentTime,intentMessage,EventId = "",place,msg_type = null;
     private DBcontroller dbController;
     private SessionManager sm;
-    private String UserId = "";
+    private String UserId = "",user_status = null;
     private ProgressDialog progress;
 
     private Button btnJoin,btnDeny;
     private boolean is_coonected;
-    private String event_mode;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +67,7 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
         EventId = i.getExtras().getString("event_id");
         place = i.getExtras().getString("location");
         msg_type = i.getExtras().getString("msg_type");
-        event_mode = i.getExtras().getString("private");
+
 
         user.setText(intentUser+",");
         message.setText(intentMessage);
@@ -137,13 +137,12 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
         BasicNameValuePair tagreq = new BasicNameValuePair("tag", "response_invited_user");
         BasicNameValuePair event_Id = new BasicNameValuePair("event_id", EventId);
         BasicNameValuePair user_Id = new BasicNameValuePair("userId", UserId);
-        BasicNameValuePair user_status = new BasicNameValuePair("userStatus", "attend");
-
+        BasicNameValuePair userstatus = new BasicNameValuePair("userStatus", user_status);
         List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
         nameValuePairList.add(tagreq);
         nameValuePairList.add(event_Id);
         nameValuePairList.add(user_Id);
-        nameValuePairList.add(user_status);
+        nameValuePairList.add(userstatus);
         dbController = new DBcontroller(this, this);
         dbController.execute(nameValuePairList);
     }
@@ -165,11 +164,13 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
         switch (v.getId())
         {
             case R.id.ButtonJoin:
+                user_status = Constants.TAG_ATTEND;
                 sendDataToDBController();
                 break;
 
 
             case R.id.ButtonDeny:
+                user_status = Constants.TAG_NOT_ATTEND;
                 if(is_coonected) {
                     Intent i = new Intent(this, Login.class);
                     startActivity(i);

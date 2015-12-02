@@ -84,6 +84,9 @@ public final class Constants {
     public static final String TAG_RADIUS = "radius";
     public static final int REQUEST_CODE_SET_SCHEDULE = 2;
     public static final int MAXIMUM_WEEKS = 30;
+    public static final String TAG_ATTEND = "attend";
+    public static final String TAG_NOT_ATTEND = "not attend";
+
 
 
     //event
