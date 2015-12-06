@@ -62,7 +62,7 @@ public class TimePicker extends DialogFragment implements TimePickerDialog.OnTim
         }
         try {
 
-            if (new SimpleDateFormat("MM/dd/yyyy").parse(chosen_date).getTime() / (1000 * 60 * 60 * 24) > System.currentTimeMillis() / (1000 * 60 * 60 * 24)) {
+            if (new SimpleDateFormat("dd/MM/yyyy").parse(chosen_date).getTime() / (1000 * 60 * 60 * 24) > System.currentTimeMillis() / (1000 * 60 * 60 * 24)) {
                 datecompre = true;
                 Log.d("date equ","date is bigger");
             } else {
