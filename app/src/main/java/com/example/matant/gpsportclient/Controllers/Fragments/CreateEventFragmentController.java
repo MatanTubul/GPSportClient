@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.matant.gpsportclient.Controllers.Activities.SchedulePopUp;
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
@@ -85,6 +86,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     private String mode;
     private String event_id ="";
     private JSONObject sched_res = null;
+    private String currMaxParticipants;
 
 
     public CreateEventFragmentController() {
@@ -211,11 +213,15 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                     if (sched.equals("1")){
                         reccuringEventCbox.setChecked(true);
                     }
-                    sportSpinner.setSelection(getIndexSpinnerByValue(sportSpinner,json.getString("kind_of_sport")));
+                    sportSpinner.setSelection(getIndexSpinnerByValue(sportSpinner, json.getString("kind_of_sport")));
                     genderSpinner.setSelection(getIndexSpinnerByValue(genderSpinner, json.getString("gender")));
+                    currMaxParticipants = json.getString("max_participants");
                     maxParticipantsEdittext.setText(json.getString("max_participants"));
                     minAgeEditText.setText(json.getString("min_age"));
                     String event_mode = json.getString("private");
+                    minAgeEditText.setEnabled(false);
+                    genderSpinner.setEnabled(false);
+                    privateEventCbox.setEnabled(false);
                     if(event_mode.equals("true")){
                         privateEventCbox.setChecked(true);
                         btninviteUsers.setVisibility(v.VISIBLE);
@@ -301,8 +307,22 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                 break;
             }
             case R.id.ButtonSchedSave:
+                Log.d("send1","send1");
                 if(validateFields())
-                    sendDataToDBController();
+                {
+                    Log.d("send","send");
+                    if(invitedUsers != null)
+                    {
+                        Log.d("checkInvitedUsers",String.valueOf(checkInvitedUsers(invitedUsers)));
+                        if(checkInvitedUsers(invitedUsers)){
+                            sendDataToDBController();
+                        }
+                    }else{
+                        sendDataToDBController();
+                    }
+
+                }
+
 
                 break;
             case R.id.buttonInviteUsers: {
@@ -679,6 +699,26 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         }
 
     }
+    public boolean checkInvitedUsers(List<CreateInviteUsersRow> list){
+        String age,gender;
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        int diff = 0;
+        for(int i=0;i<list.size();i++){
+            age = list.get(i).getAge();
+            gender = list.get(i).getGender();
+            if(!gender.equals(genderSpinner.getSelectedItem().toString())){
+                Toast.makeText(getActivity(),"One or more users does not fit gender type!",Toast.LENGTH_LONG).show();
+                return false;
+            }
+            diff = year - (Integer.valueOf(age));
+            if( diff < (Integer.valueOf(minAgeEditText.getText().toString()))){
+                Toast.makeText(getActivity(),"One or more users does not fit Minimum age!",Toast.LENGTH_LONG).show();
+                return false;
+            }
+        }
+
+        return true;
+    }
 
 
 
@@ -710,6 +750,16 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
             Log.d("equal time", "time is equal");
             valid = false;
         }
+        if(currMaxParticipants!=null){
+            Log.d("currMaxParticipants",(Integer.valueOf(currMaxParticipants).toString()));
+            Log.d("maxParticipantsEdittext",(Integer.valueOf(maxParticipantsEdittext.getText().toString())).toString());
+            if((Integer.valueOf(currMaxParticipants)) > (Integer.valueOf(maxParticipantsEdittext.getText().toString()))){
+                Log.d("curr vs new","new < curr");
+                maxParticipantsEdittext.setError("Maximum number of participants minor then the original.");
+                valid = false;
+            }
+        }
+
         return valid;
     }
     public void onStop(){
@@ -743,7 +793,9 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                         String name = res.getJSONObject(i).getString("name");
                         String mobile = res.getJSONObject(i).getString("mobile");
                         String id = res.getJSONObject(i).getString("id");
-                        CreateInviteUsersRow invitedUserRow = new CreateInviteUsersRow(name,mobile,R.drawable.remove_user_50,id);
+                        String gen = res.getJSONObject(i).getString("gender");
+                        String age = res.getJSONObject(i).getString("age");
+                        CreateInviteUsersRow invitedUserRow = new CreateInviteUsersRow(name,mobile,R.drawable.remove_user_50,id,gen,age);
                         invitedUsers.add(invitedUserRow);
                     }
                     invidedAdapter = new CreateInvitedUsersAdapter(getActivity(),R.layout.create_users_invited_item,invitedUsers);
@@ -774,7 +826,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                ;
+
 
             }else{
                     reccuringEventCbox.setChecked(false);
@@ -824,7 +876,9 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                 String name = res.getJSONObject(i).getString("fname");
                 String mobile = res.getJSONObject(i).getString("mobile");
                 String id = res.getJSONObject(i).getString("id");
-                CreateInviteUsersRow invitedUserRow = new CreateInviteUsersRow(name,mobile,R.drawable.remove_user_50,id);
+                String gen = res.getJSONObject(i).getString("gender");
+                String age = res.getJSONObject(i).getString("age");
+                CreateInviteUsersRow invitedUserRow = new CreateInviteUsersRow(name,mobile,R.drawable.remove_user_50,id,gen,age);
                 invitedUsers.add(invitedUserRow);
             }
             invidedAdapter = new CreateInvitedUsersAdapter(getActivity(),R.layout.create_users_invited_item,invitedUsers);

@@ -8,14 +8,17 @@ import android.widget.TextView;
  */
 public class CreateInviteUsersRow {
 
-    private String name,mobile,id;
+    private String name,mobile,id,gender,age;
     private int status;
 
-    public CreateInviteUsersRow(String n,String m ,int s,String userid){
+    public CreateInviteUsersRow(String n,String m ,int s,String userid,String gen,String age){
         this.name = n;
         this.mobile = m;
         this.status = s;
         this.id = userid;
+        this.gender = gen;
+        this.age = age;
+
     }
 
     public int getStatus() {
@@ -48,5 +51,21 @@ public class CreateInviteUsersRow {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
     }
 }

@@ -115,6 +115,10 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                                     String id = jsonarr.getJSONObject(i).getString("id");
                                     String name = jsonarr.getJSONObject(i).getString("name");
                                     String mobile = jsonarr.getJSONObject(i).getString("mobile");
+                                    String gen = jsonarr.getJSONObject(i).getString("gender");
+                                    String age = jsonarr.getJSONObject(i).getString("age");
+
+
                                     Bitmap profileImage = ImageConvertor.decodeBase64(jsonarr.getJSONObject(i).getString("image"));
                                     int  imgStatus = R.drawable.add_user_50;
                                     if(Useradapter != null){
@@ -133,7 +137,7 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                                         imgStatus = R.drawable.add_user_50;
                                         Log.d("set status1",String.valueOf(imgStatus));
                                     }
-                                    InviteUsersListRow rowUser = new InviteUsersListRow(imgStatus, name, mobile,profileImage,id);
+                                    InviteUsersListRow rowUser = new InviteUsersListRow(imgStatus, name, mobile,profileImage,id,gen,age);
                                     rowUsers.add(rowUser);
                                 }
 
@@ -216,6 +220,8 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                                 jsonObj.put("name",Useradapter.getUsers().get(j).getTitle());
                                 jsonObj.put("mobile",Useradapter.getUsers().get(j).getDesc());
                                 jsonObj.put("id",Useradapter.getUsers().get(j).getId());
+                                jsonObj.put("gender",Useradapter.getUsers().get(j).getGender());
+                                jsonObj.put("age",Useradapter.getUsers().get(j).getAge());
 
                                 jsonArr.put(jsonObj);
                             } catch (JSONException e) {

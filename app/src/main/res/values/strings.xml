@@ -21,8 +21,8 @@
         <item>058</item>
     </string-array>
     <string-array name="gender">
-        <item>M</item>
-        <item>F</item>
+        <item>Male</item>
+        <item>Female</item>
     </string-array>
     <string name="title_activity_test">test</string>
     <string name="title_activity_main_maps">Map</string>
