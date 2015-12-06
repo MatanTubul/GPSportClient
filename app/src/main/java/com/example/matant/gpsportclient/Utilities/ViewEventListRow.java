@@ -10,6 +10,8 @@ public class ViewEventListRow {
     private String playerName;
     private String playerId;
     private Bitmap playerImg;
+    private String playerStatus;
+    private boolean isManager;
 
     public ViewEventListRow(String name,Bitmap img, String id){
         playerName = name;
@@ -20,6 +22,14 @@ public class ViewEventListRow {
     public ViewEventListRow(String name, String id){
         playerName = name;
         playerId = id;
+    }
+
+    public ViewEventListRow(String name, String id, String status, boolean isManager){
+        playerName = name;
+        playerId = id;
+        playerStatus = status;
+        this.isManager = isManager;
+
     }
 
     public String getPlayerName() {

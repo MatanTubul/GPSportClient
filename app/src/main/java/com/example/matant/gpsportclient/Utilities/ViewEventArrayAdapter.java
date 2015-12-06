@@ -41,8 +41,9 @@ public class ViewEventArrayAdapter extends ArrayAdapter<ViewEventListRow> {
 
     /*private view holder class*/
     private class ViewHolder {
-        TextView txtTitle;
+        TextView txtTitle1;
         ImageView imageView;
+        TextView txtTitle2;
 
     }
 
@@ -51,7 +52,7 @@ public class ViewEventArrayAdapter extends ArrayAdapter<ViewEventListRow> {
     }
 
     public ListView getAdapterListView() {
-        return adapterListView;
+        return this.adapterListView;
     }
 
 
@@ -67,8 +68,8 @@ public class ViewEventArrayAdapter extends ArrayAdapter<ViewEventListRow> {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.invite_users_listview_row, null);
             holder = new ViewHolder();
-            holder.txtTitle = (TextView) convertView.findViewById(R.id.title);
-            holder.txtTitle.setTextSize(20);
+            holder.txtTitle1 = (TextView) convertView.findViewById(R.id.title);
+            holder.txtTitle1.setTextSize(20);
 
             convertView.findViewById(R.id.desc).setVisibility(convertView.INVISIBLE);
             convertView.findViewById(R.id.imageButtonInviteUser).setVisibility(convertView.INVISIBLE);
@@ -77,7 +78,7 @@ public class ViewEventArrayAdapter extends ArrayAdapter<ViewEventListRow> {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.txtTitle.setText(rowItem.getPlayerName());
+        holder.txtTitle2.setText(rowItem.getPlayerName());
         holder.imageView.setImageBitmap(rowItem.getPlayerImg());
 
         //this func can be later implement for manager only

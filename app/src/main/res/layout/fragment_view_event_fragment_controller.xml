@@ -5,76 +5,84 @@
     android:weightSum="1"
     android:nestedScrollingEnabled="false">
 
-    <FrameLayout
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.36"
-        android:background="#3f374f"
-        android:id="@+id/background">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/kind_of_sport_img"
-            android:layout_weight="0.34"
-            android:layout_gravity="center_horizontal|top"
-            android:layout_marginTop="50dp"
-            android:src="@drawable/round_soccer_event_view_img" />
-
-        <TextView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Kind Of Sport Here"
-            android:id="@+id/kind_of_sport_text"
-            android:layout_weight="0.06"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:layout_below="@+id/kind_of_sport_img"
-            android:textColor="#ffffffff"
-            android:layout_marginTop="15dp"
-            android:textSize="30dp"
-            />
+            android:layout_height="241dp"
+            android:background="#3f374f"
+            android:id="@+id/background">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Time And Date Here"
-            android:id="@+id/time_text"
-            android:layout_weight="0.06"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:layout_below="@+id/kind_of_sport_text"
-            android:textColor="#ffffffff"
-            android:layout_marginTop="60dp"
-            android:textSize="20dp"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/kind_of_sport_img"
+                android:layout_weight="0.34"
+                android:layout_gravity="center_horizontal|top"
+                android:layout_marginTop="50dp"
+                android:src="@drawable/round_soccer_event_view_img" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Address Here"
-            android:id="@+id/address_text"
-            android:layout_weight="0.06"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:layout_below="@+id/time_text"
-            android:textColor="#ffffffff"
-            android:layout_marginTop="90dp"
-            android:textSize="20dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Kind Of Sport Here"
+                android:id="@+id/kind_of_sport_text"
+                android:layout_weight="0.06"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_below="@+id/kind_of_sport_img"
+                android:textColor="#ffffffff"
+                android:layout_marginTop="15dp"
+                android:textSize="30dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Time And Date Here"
+                android:id="@+id/time_text"
+                android:layout_weight="0.06"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_below="@+id/kind_of_sport_text"
+                android:textColor="#ffffffff"
+                android:layout_marginTop="60dp"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Address Here"
+                android:id="@+id/address_text"
+                android:layout_weight="0.06"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_below="@+id/time_text"
+                android:textColor="#ffffffff"
+                android:layout_marginTop="90dp"
+                android:textSize="20dp" />
 
 
-    </FrameLayout>
+        </FrameLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
+        android:id="@+id/eventdetailsLayout"
+        android:layout_below="@+id/background"
+
         >
 
         <Button
@@ -154,7 +162,9 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonLayout"
+        android:layout_below="@+id/eventdetailsLayout">
 
         <Button
             android:layout_width="match_parent"
@@ -174,9 +184,9 @@
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_marginBottom="60dp"
         android:fillViewport="true"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider4">
 
         <LinearLayout
             android:orientation="vertical"
@@ -185,11 +195,20 @@
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.39">
 
-            <Button
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.39"
+                android:id="@+id/playing_list_layout">
+
+
+                <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Playing List"
-                android:id="@+id/button"
+                android:id="@+id/play_button"
                 android:layout_gravity="center_horizontal"
                 android:textStyle="bold"
                 android:background="#fffefe" />
@@ -202,6 +221,63 @@
                 android:layout_centerHorizontal="true">
 
             </ListView>
+            </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="0.39"
+                    android:id="@+id/waiting_list_layout">
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Waiting List"
+                        android:id="@+id/wait_button"
+                        android:layout_gravity="center_horizontal"
+                        android:textStyle="bold"
+                        android:background="#fffefe" />
+
+                    <ListView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/waiting_list_view"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true">
+
+                    </ListView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.39"
+                android:id="@+id/invited_list_layout">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Invited List"
+                    android:id="@+id/invited_button"
+                    android:layout_gravity="center_horizontal"
+                    android:textStyle="bold"
+                    android:background="#fffefe" />
+
+                <ListView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/invited_list_view"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true">
+
+                </ListView>
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

@@ -119,7 +119,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
                     if (mapMarker != null) { //if marker == null this marker isn't in the hash => current location marker
                         fragment = new ViewEventFragmentController();
                         Bundle args = new Bundle();
-                        args.putSerializable("mapmarker", mapMarker);
+                        args.putString("event",mapMarker.getmJsonObject().toString());
                         fragment.setArguments(args);
                         if (fragment != null) {
                             FragmentManager fragmentManager = getFragmentManager();
