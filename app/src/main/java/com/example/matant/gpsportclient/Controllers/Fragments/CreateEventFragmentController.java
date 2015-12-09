@@ -314,8 +314,9 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                     Log.d("send","send");
                     if(invitedUsers != null)
                     {
-                        Log.d("checkInvitedUsers",String.valueOf(checkInvitedUsers(invitedUsers)));
+
                         if(checkInvitedUsers(invitedUsers)){
+
                             sendDataToDBController();
                         }
                     }else{
@@ -706,19 +707,25 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         int year = Calendar.getInstance().get(Calendar.YEAR);
         int diff = 0;
         for(int i=0;i<list.size();i++){
-            ImageView imgUserError = (ImageView) getView().findViewById(R.id.imageViewUserError);
+
             age = list.get(i).getAge();
             gender = list.get(i).getGender();
-            Log.d("spinner",genderSpinner.getSelectedItem().toString());
-            Log.d("gender",gender);
-            if(!gender.equals(genderSpinner.getSelectedItem().toString())){
-                imgUserError.setImageResource(R.drawable.user_warning);
+            Log.d("iteration num",String.valueOf(i));
+            Log.d("check users",genderSpinner.getSelectedItem().toString());
+            Log.d("check users",gender);
+            Log.d("gender equasion",String.valueOf(gender.equals(genderSpinner.getSelectedItem().toString())));
+            if(!(gender.equals(genderSpinner.getSelectedItem().toString()))){
+                list.get(i).setImgViewUserError(R.drawable.user_warning);
+                invidedAdapter.notifyDataSetChanged();
                 Toast.makeText(getActivity(),"One or more users does not fit gender type!",Toast.LENGTH_LONG).show();
                 valid =  false;
             }
             diff = year - (Integer.valueOf(age));
+            Log.d("year delta",String.valueOf(diff));
+            Log.d("year delta",String.valueOf(Integer.valueOf(minAgeEditText.getText().toString())));
             if( diff < (Integer.valueOf(minAgeEditText.getText().toString()))){
-                imgUserError.setImageResource(R.drawable.user_warning);
+                list.get(i).setImgViewUserError(R.drawable.user_warning);
+                invidedAdapter.notifyDataSetChanged();
                 Toast.makeText(getActivity(),"One or more users does not fit Minimum age!",Toast.LENGTH_LONG).show();
                 valid =  false;
             }
@@ -890,6 +897,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
             }
             invidedAdapter = new CreateInvitedUsersAdapter(getActivity(),R.layout.create_users_invited_item,invitedUsers);
             listViewInvitedUsers.setAdapter(invidedAdapter);
+
             invidedAdapter.setAdapterListview(listViewInvitedUsers);
             invidedAdapter.setListViewHeightBasedOnChildren();
             listViewInvitedUsers = invidedAdapter.getAdapterListview();

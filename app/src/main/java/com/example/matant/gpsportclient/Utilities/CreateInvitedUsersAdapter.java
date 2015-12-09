@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -45,6 +46,7 @@ public class CreateInvitedUsersAdapter extends ArrayAdapter<CreateInviteUsersRow
         TextView txtTitle;
         TextView txtDesc;
         ImageButton imgStatus;
+        ImageView userError;
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -61,6 +63,7 @@ public class CreateInvitedUsersAdapter extends ArrayAdapter<CreateInviteUsersRow
             holder.txtDesc = (TextView) convertView.findViewById(R.id.mobile);
             holder.txtTitle = (TextView) convertView.findViewById(R.id.name);
             holder.imgStatus = (ImageButton) convertView.findViewById(R.id.imageButtonRemoveUser);
+            holder.userError = (ImageView) convertView.findViewById(R.id.imageViewUserError);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -68,6 +71,7 @@ public class CreateInvitedUsersAdapter extends ArrayAdapter<CreateInviteUsersRow
         holder.txtDesc.setText(rowItem.getMobile());
         holder.txtTitle.setText(rowItem.getName());
         holder.imgStatus.setImageResource(rowItem.getStatus());
+        holder.userError.setImageResource(rowItem.getImgViewUserError());
 
 
         convertView.setOnClickListener(new View.OnClickListener() {

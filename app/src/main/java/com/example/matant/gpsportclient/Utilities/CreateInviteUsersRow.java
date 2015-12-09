@@ -1,6 +1,9 @@
 package com.example.matant.gpsportclient.Utilities;
 
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.matant.gpsportclient.R;
 
 /**
  * class that describe item in the Invited Users list.
@@ -10,6 +13,7 @@ public class CreateInviteUsersRow {
 
     private String name,mobile,id,gender,age;
     private int status;
+    private int imgViewUserError;
 
     public CreateInviteUsersRow(String n,String m ,int s,String userid,String gen,String age){
         this.name = n;
@@ -67,5 +71,13 @@ public class CreateInviteUsersRow {
 
     public void setAge(String age) {
         this.age = age;
+    }
+
+    public int getImgViewUserError() {
+        return imgViewUserError;
+    }
+
+    public void setImgViewUserError(int imgViewUserError) {
+        this.imgViewUserError = imgViewUserError;
     }
 }
