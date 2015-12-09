@@ -61,7 +61,7 @@ public class SplashScreen extends Activity {
                     // This method will be executed once the timer is over
                     // Start your app main activity
 
-                    if(!is_coonected) {
+                    if(is_coonected) {
                         Intent i = new Intent(SplashScreen.this, Login.class);
                         startActivity(i);
                     }else{
