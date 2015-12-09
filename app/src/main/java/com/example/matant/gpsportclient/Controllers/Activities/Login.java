@@ -127,6 +127,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
                     "Please wait while the login", true);
 
         }
+    public void onStop(){
+        super.onStop();
+        if(progress != null){
+            progress.dismiss();
+        }
+    }
 
 
 

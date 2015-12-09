@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -701,23 +702,29 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     }
     public boolean checkInvitedUsers(List<CreateInviteUsersRow> list){
         String age,gender;
+        boolean valid = true;
         int year = Calendar.getInstance().get(Calendar.YEAR);
         int diff = 0;
         for(int i=0;i<list.size();i++){
+            ImageView imgUserError = (ImageView) getView().findViewById(R.id.imageViewUserError);
             age = list.get(i).getAge();
             gender = list.get(i).getGender();
+            Log.d("spinner",genderSpinner.getSelectedItem().toString());
+            Log.d("gender",gender);
             if(!gender.equals(genderSpinner.getSelectedItem().toString())){
+                imgUserError.setImageResource(R.drawable.user_warning);
                 Toast.makeText(getActivity(),"One or more users does not fit gender type!",Toast.LENGTH_LONG).show();
-                return false;
+                valid =  false;
             }
             diff = year - (Integer.valueOf(age));
             if( diff < (Integer.valueOf(minAgeEditText.getText().toString()))){
+                imgUserError.setImageResource(R.drawable.user_warning);
                 Toast.makeText(getActivity(),"One or more users does not fit Minimum age!",Toast.LENGTH_LONG).show();
-                return false;
+                valid =  false;
             }
         }
 
-        return true;
+        return valid;
     }
 
 

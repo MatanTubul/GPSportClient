@@ -94,8 +94,8 @@ public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        Log.d("responseString2", responseString);
+        if(responseString!= null)
+             Log.d("responseString2", responseString);
         return responseString;
     }
 
