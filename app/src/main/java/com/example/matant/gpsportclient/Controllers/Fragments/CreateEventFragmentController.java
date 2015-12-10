@@ -707,13 +707,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         int year = Calendar.getInstance().get(Calendar.YEAR);
         int diff = 0;
         for(int i=0;i<list.size();i++){
-
             age = list.get(i).getAge();
             gender = list.get(i).getGender();
-            Log.d("iteration num",String.valueOf(i));
-            Log.d("check users",genderSpinner.getSelectedItem().toString());
-            Log.d("check users",gender);
-            Log.d("gender equasion",String.valueOf(gender.equals(genderSpinner.getSelectedItem().toString())));
             if(!(gender.equals(genderSpinner.getSelectedItem().toString()))){
                 list.get(i).setImgViewUserError(R.drawable.user_warning);
                 invidedAdapter.notifyDataSetChanged();
@@ -721,8 +716,6 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                 valid =  false;
             }
             diff = year - (Integer.valueOf(age));
-            Log.d("year delta",String.valueOf(diff));
-            Log.d("year delta",String.valueOf(Integer.valueOf(minAgeEditText.getText().toString())));
             if( diff < (Integer.valueOf(minAgeEditText.getText().toString()))){
                 list.get(i).setImgViewUserError(R.drawable.user_warning);
                 invidedAdapter.notifyDataSetChanged();

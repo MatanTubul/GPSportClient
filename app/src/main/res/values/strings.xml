@@ -33,6 +33,7 @@
         <item>Create Event</item>
         <item>Manage Event</item>
         <item>Attending List</item>
+        <item>Invitations List</item>
         <item>Recent Searches</item>
         <item>Log Out</item>
     </string-array>

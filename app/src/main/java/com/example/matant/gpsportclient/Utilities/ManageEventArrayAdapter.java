@@ -126,6 +126,7 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
                     fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 }
                 else{
+                    //need to start ViewEventFragmentController
                     Log.d("mode is:",mode );
                 }
 

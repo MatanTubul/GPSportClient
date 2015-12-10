@@ -25,6 +25,7 @@ import java.io.IOException;
 
 import java.io.UnsupportedEncodingException;
 
+import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Properties;
 

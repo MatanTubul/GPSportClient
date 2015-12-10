@@ -117,8 +117,6 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
                                     String mobile = jsonarr.getJSONObject(i).getString("mobile");
                                     String gen = jsonarr.getJSONObject(i).getString("gender");
                                     String age = jsonarr.getJSONObject(i).getString("age");
-
-
                                     Bitmap profileImage = ImageConvertor.decodeBase64(jsonarr.getJSONObject(i).getString("image"));
                                     int  imgStatus = R.drawable.add_user_50;
                                     if(Useradapter != null){

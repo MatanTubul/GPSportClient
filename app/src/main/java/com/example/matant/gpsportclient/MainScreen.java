@@ -19,6 +19,7 @@ import com.example.matant.gpsportclient.Controllers.Fragments.AttendingListFragm
 import com.example.matant.gpsportclient.Controllers.Fragments.CreateEventFragmentController;
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.Controllers.Fragments.GoogleMapFragmentController;
+import com.example.matant.gpsportclient.Controllers.Fragments.InvitationsFragmentController;
 import com.example.matant.gpsportclient.Controllers.Fragments.ManageEventFragmentController;
 import com.example.matant.gpsportclient.Controllers.Fragments.ProfileFragmentController;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
@@ -73,8 +74,9 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
         drawerItems[3] = new DrawerItem(R.drawable.create,"Create Event");
         drawerItems[4] = new DrawerItem(R.drawable.manage,"Manage Event");
         drawerItems[5] = new DrawerItem(R.drawable.attending,"Attending List");
-        drawerItems[6] = new DrawerItem(R.drawable.recent_search_24,"Recent Searches");
-        drawerItems[7] = new DrawerItem(R.drawable.logout,"Log Out");
+        drawerItems[6] = new DrawerItem(R.drawable.invite_24,"Invitations List");
+        drawerItems[7] = new DrawerItem(R.drawable.recent_search_24,"Recent Searches");
+        drawerItems[8] = new DrawerItem(R.drawable.logout,"Log Out");
 
         DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(this, R.layout.listview_item_row, drawerItems);
         mDrawerList.setAdapter(adapter);
@@ -210,10 +212,15 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
             case 5: //Attending List
                 fragment = new AttendingListFragmentController();
                 break;
-            case 6: //Recent Searches
+            case 6:
+                //invitations
+                fragment = new InvitationsFragmentController();
+                break;
+            case 7:
+                //Recent Searches
                 //fragment = new RecentSearchesFragmentController();
                 break;
-            case 7: { //Log Out
+            case 8: { //Log Out
                 logout();
                 finish(); //destroy the main activity
             }
