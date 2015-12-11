@@ -59,8 +59,9 @@ public class AttendingListFragmentController extends Fragment implements View.On
     public void handleResponse(String resStr) {
         progress.dismiss();
 
-        Log.d("attending event handleResponse", resStr);
+
         if (resStr != null){
+            Log.d("attending event handleResponse", resStr);
             try {
                 JSONObject jsonObj = new JSONObject(resStr);
                 String flg = jsonObj.getString(Constants.TAG_FLG);

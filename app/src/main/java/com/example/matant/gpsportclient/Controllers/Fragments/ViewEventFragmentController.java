@@ -351,8 +351,9 @@ private void initParticipationTextButtonForPrivateEvent (String id, String statu
     @Override
     public void handleResponse(String resStr) {
         //progress.dismiss();
-        Log.d("ViewEveFragController", resStr);
+
         if (resStr != null){
+            Log.d("ViewEveFragController", resStr);
             try {
                 JSONObject jsonObj = new JSONObject(resStr);
                 String flg = jsonObj.getString(Constants.TAG_FLG);

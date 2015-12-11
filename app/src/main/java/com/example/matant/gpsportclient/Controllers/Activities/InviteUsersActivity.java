@@ -92,8 +92,9 @@ public class InviteUsersActivity extends AppCompatActivity implements AsyncRespo
 
     @Override
     public void handleResponse(String resStr) {
-        Log.d("invite_Response", resStr);
+
         if (resStr != null) {
+            Log.d("invite_Response", resStr);
             try {
 
                 JSONObject json = new JSONObject(resStr);

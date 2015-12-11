@@ -153,4 +153,8 @@ public final class Constants {
     // Shared pref mode
     public static final int PRIVATE_MODE = 0;
     public static final String TAG_MSG = "msg";
+
+    //DBController
+    public static final int timeoutConnection = 30*1000;
+    public static final int timeoutSocket = 30*1000;
 }

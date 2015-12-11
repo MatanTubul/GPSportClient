@@ -459,8 +459,9 @@ public class ProfileFragmentController extends Fragment implements View.OnClickL
     public void handleResponse(String resStr) {
         progress.dismiss();
 
-        Log.d("handleResponse", resStr);
+
         if (resStr != null) {
+            Log.d("handleResponse", resStr);
             try {
                 JSONObject jsonObj = new JSONObject(resStr);
                 String flg = jsonObj.getString(Constants.TAG_FLG);

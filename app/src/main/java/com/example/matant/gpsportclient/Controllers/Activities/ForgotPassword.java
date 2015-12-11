@@ -67,11 +67,9 @@ public class ForgotPassword extends Activity implements AsyncResponse {
 
         @Override
     public void handleResponse(String jsonStr) {
-
             progress.dismiss();
-
-        Log.d("handleResponse", jsonStr);
         if (jsonStr != null) {
+            Log.d("handleResponse", jsonStr);
             try {
                 JSONObject jsonObj = new JSONObject(jsonStr);
                 String flg = jsonObj.getString(Constants.TAG_FLG);

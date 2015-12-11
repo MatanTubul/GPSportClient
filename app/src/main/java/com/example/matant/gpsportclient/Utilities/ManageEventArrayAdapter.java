@@ -189,8 +189,9 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
     @Override
     public void handleResponse(String resStr) {
         progress.dismiss();
-        Log.d("Delete Event handleResponse", resStr);
+
         if (resStr != null) {
+            Log.d("Delete Event handleResponse", resStr);
             try {
                 JSONObject jsonObj = new JSONObject(resStr);
                 String flg = jsonObj.getString(Constants.TAG_FLG);

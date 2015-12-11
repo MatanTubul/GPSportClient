@@ -61,8 +61,9 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
     public void handleResponse(String resStr) {
         progress.dismiss();
 
-        Log.d("get event handleResponse", resStr);
+
         if (resStr != null){
+            Log.d("get event handleResponse", resStr);
             try {
                 JSONObject jsonObj = new JSONObject(resStr);
                 String flg = jsonObj.getString(Constants.TAG_FLG);
