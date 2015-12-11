@@ -14,7 +14,6 @@
         android:id="@+id/divider1"
         android:layout_below="@+id/textLayout"
         android:layout_width="fill_parent"
-        android:layout_marginTop="10dp"
         android:layout_height="6dp"
         android:background="@android:color/darker_gray"/>
 <RelativeLayout
