@@ -739,33 +739,45 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         if(addressEditText.getText().toString().equals(""))
         {
             addressEditText.setError("Location field cannot be empty!");
-            Log.d("max edittext", "max edit text is empty");
             valid =  false;
         }
         if(maxParticipantsEdittext.getText().toString().equals(""))
         {
           maxParticipantsEdittext.setError("Please insert the max Participants in the event");
             valid = false;
-        } if(minAgeEditText.getText().toString().equals("") == true || Integer.valueOf(minAgeEditText.getText().toString()) < 14)
+        } if(minAgeEditText.getText().toString().equals("") == true || (Integer.valueOf(minAgeEditText.getText().toString()) < 14 || Integer.valueOf(minAgeEditText.getText().toString()) > 40 ))
         {
             minAgeEditText.setError("Minimal age should be at least 14!");
-            Log.d("min edittext", "min edit text is empty");
             valid = false;
         } if(btnendTime.getText().toString().equals(btnstartTime.getText().toString()))
         {
             onComplete("incorrect_time", "Please Provide end time of the event ");
-            Log.d("equal time", "time is equal");
             valid = false;
         }
         if(currMaxParticipants!=null){
-            Log.d("currMaxParticipants",(Integer.valueOf(currMaxParticipants).toString()));
-            Log.d("maxParticipantsEdittext",(Integer.valueOf(maxParticipantsEdittext.getText().toString())).toString());
             if((Integer.valueOf(currMaxParticipants)) > (Integer.valueOf(maxParticipantsEdittext.getText().toString()))){
-                Log.d("curr vs new","new < curr");
                 maxParticipantsEdittext.setError("Maximum number of participants minor then the original.");
                 valid = false;
             }
         }
+        if(!(minAgeEditText.getText().toString().equals("")));
+        {
+            int year = Calendar.getInstance().get(Calendar.YEAR);
+            int diff =  year - (Integer.valueOf(sm.getUserDetails().get(Constants.TAG_AGE)));
+            if((Integer.valueOf(minAgeEditText.getText().toString()))> diff ){
+                minAgeEditText.setError("Your age is smaller than the Minimal!");
+                valid = false;
+            }
+
+        }
+        if(!(maxParticipantsEdittext.getText().toString().equals("")))
+        {
+            if((Integer.valueOf(maxParticipantsEdittext.getText().toString())) < 1 || (Integer.valueOf(maxParticipantsEdittext.getText().toString())) > 30){
+                maxParticipantsEdittext.setError("Number of participants out of range!");
+            }
+        }
+
+
 
         return valid;
     }

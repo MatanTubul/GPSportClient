@@ -208,7 +208,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:hint="Please define the Max Participants" />
+                android:hint="Please Insert Number of Participants (2-30)" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -230,7 +230,7 @@
 
                 android:id="@+id/editTextMinAge"
                 android:layout_below="@+id/textViewMinAge"
-                android:hint="Please define minimal age (14)"
+                android:hint="Please define minimal age (14-40)"
                 android:layout_gravity="center_horizontal|top"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
