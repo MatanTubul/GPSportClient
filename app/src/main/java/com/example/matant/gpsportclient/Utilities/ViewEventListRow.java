@@ -10,24 +10,31 @@ public class ViewEventListRow {
     private String playerName;
     private String playerId;
     private Bitmap playerImg;
+
+    public String getPlayerStatus() {
+        return playerStatus;
+    }
+
+    public void setPlayerStatus(String playerStatus) {
+        this.playerStatus = playerStatus;
+    }
+
+    public boolean isManager() {
+        return isManager;
+    }
+
+    public void setIsManager(boolean isManager) {
+        this.isManager = isManager;
+    }
+
     private String playerStatus;
     private boolean isManager;
 
-    public ViewEventListRow(String name,Bitmap img, String id){
-        playerName = name;
-        playerId = id;
-        playerImg = img;
-    }
-
-    public ViewEventListRow(String name, String id){
-        playerName = name;
-        playerId = id;
-    }
-
-    public ViewEventListRow(String name, String id, String status, boolean isManager){
+    public ViewEventListRow(String name, String id, Bitmap img, String status, boolean isManager){
         playerName = name;
         playerId = id;
         playerStatus = status;
+        playerImg = img;
         this.isManager = isManager;
 
     }

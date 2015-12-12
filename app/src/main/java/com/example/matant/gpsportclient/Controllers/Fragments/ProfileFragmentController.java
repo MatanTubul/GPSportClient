@@ -34,6 +34,7 @@ import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
+import com.example.matant.gpsportclient.Utilities.ImageConvertor;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -206,16 +207,10 @@ public class ProfileFragmentController extends Fragment implements View.OnClickL
         if (imageString.equals("nofile"))
             Log.d("setOnUI", "nofile");
         else {
-            scaled = decodeBase64(imageString);
+            scaled = ImageConvertor.decodeBase64(imageString);
             imgv.setImageBitmap(scaled);
         }
 
-    }
-
-    public static Bitmap decodeBase64(String input)
-    {
-        byte[] decodedByte = Base64.decode(input, 0);
-        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
     }
 
     private void setTexts (HashMap<String,String> userDetails)

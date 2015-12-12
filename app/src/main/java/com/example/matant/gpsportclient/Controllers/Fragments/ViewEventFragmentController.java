@@ -1,10 +1,9 @@
 package com.example.matant.gpsportclient.Controllers.Fragments;
 
 import android.app.Fragment;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Base64;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,27 +12,22 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
-
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.R;
-import com.example.matant.gpsportclient.Utilities.CreateInviteUsersRow;
-import com.example.matant.gpsportclient.Utilities.CreateInvitedUsersAdapter;
-import com.example.matant.gpsportclient.Utilities.MapMarker;
+import com.example.matant.gpsportclient.Utilities.ImageConvertor;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.example.matant.gpsportclient.Utilities.ViewEventArrayAdapter;
 import com.example.matant.gpsportclient.Utilities.ViewEventListRow;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -41,25 +35,18 @@ import java.util.List;
  */
 public class ViewEventFragmentController extends Fragment implements View.OnClickListener, AsyncResponse {
 
-    private TextView kindOfSportText;
+    private TextView kindOfSportText,startTimeText,addressText;
     private ImageView kindOfSportImage;
-    private TextView startTimeText;
     private Button minAgeButton, privilegeButton, attendingButton, genderButton, participateButton, playingListViewHeadlineButton, waitingListViewHeadlineButton, invitedListViewHeadlineButton;
-    private TextView addressText;
     private ListView listViewPlayingList, listViewWaitingList, listViewInvitedList;
-    private JSONObject eventDetailsJsonObj;
-    private ViewEventArrayAdapter viewEventAdapterForPlayingList;
-    private ViewEventArrayAdapter viewEventAdapterForWaitingList;
-    private ViewEventArrayAdapter viewEventAdapterForInvitedList;
-    private List<ViewEventListRow> playingList = null;
-    private List<ViewEventListRow> invitedList = null;
-    private List<ViewEventListRow> waitingList = null;
-    private String eventPrivilege;
+    private JSONObject eventIdJsonObj, eventDetailsJsonObj;
+    private List<ViewEventListRow> playingList = null, invitedList = null, waitingList = null;
     private DBcontroller dbController;
-    private String eventId , currentUserId;
+    private String eventId, currentUserId, eventPrivilege, publicEventError, eventGender, eventMinAge;
     private LinearLayout playingLinearLayout, waitingLinearLayout, invitedLinearLayout;
     private SessionManager sm;
-    private View v;
+    private boolean isCurrentUserIsTheCurrentEventManager;
+    private List<NameValuePair> nameValuePairList;
 
     public ViewEventFragmentController(){
         // Required empty public constructor
@@ -68,12 +55,13 @@ public class ViewEventFragmentController extends Fragment implements View.OnClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_view_event_fragment_controller, container, false);
+        final View v = inflater.inflate(R.layout.fragment_view_event_fragment_controller, container, false);
         sm = SessionManager.getInstance(getActivity());
+        isCurrentUserIsTheCurrentEventManager = false;
 
         String eventDetailsJsonStr = (String) getArguments().getString("event");
         try {
-            eventDetailsJsonObj = new JSONObject(eventDetailsJsonStr);
+            eventIdJsonObj = new JSONObject(eventDetailsJsonStr);
         }catch (JSONException e) {
             e.printStackTrace();
         }
@@ -116,25 +104,25 @@ public class ViewEventFragmentController extends Fragment implements View.OnClic
         invitedLinearLayout.setVisibility(View.GONE);
 
         getActivity().setTitle("View Event Details");
-        //put cardentials according to the event marker
-        initView();
-        getUsersFromDB();
+        getEventDetailsFromDB();
 
     return v;
     }
 
-private void getUsersFromDB() {
+private void getEventDetailsFromDB() {
     Log.d("getUsersFromDB", "sendDataToDBController");
+    try {
+        eventId = eventIdJsonObj.getString(Constants.TAG_EVENT_ID);
+    }catch (JSONException e) {
+        e.printStackTrace();
+    }
 
     BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, Constants.TAG_GET_EVENT_USERS);
     BasicNameValuePair tageventid = new BasicNameValuePair(Constants.TAG_EVENT_ID, eventId);
-    BasicNameValuePair tageventprivilege = new BasicNameValuePair(Constants.TAG_IS_PRIVATE, eventPrivilege);
-
 
     List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
     nameValuePairList.add(tagreq);
     nameValuePairList.add(tageventid);
-    nameValuePairList.add(tageventprivilege);
 
     dbController = new DBcontroller(getActivity().getApplicationContext(), this);
     dbController.execute(nameValuePairList);
@@ -152,14 +140,13 @@ private void getUsersFromDB() {
             startTimeText.setText(eventDetailsJsonObj.getString(Constants.TAG_START_TIME));
             addressText.setText(eventDetailsJsonObj.getString(Constants.TAG_ADDRESS));
 
-            eventId = eventDetailsJsonObj.getString(Constants.TAG_EVENT_ID);
-            String eventGender = eventDetailsJsonObj.getString(Constants.TAG_GEN);
+            eventGender = eventDetailsJsonObj.getString(Constants.TAG_GEN);
             if (eventGender.equals("Unisex"))
                 genderButton.setText("UNISEX");
             else
                 genderButton.setText(eventGender + " ONLY");
 
-            String eventMinAge = eventDetailsJsonObj.getString(Constants.TAG_MIN_AGE);
+            eventMinAge = eventDetailsJsonObj.getString(Constants.TAG_MIN_AGE);
             minAgeButton.setText(eventMinAge + "+");
 
             eventPrivilege = eventDetailsJsonObj.getString(Constants.TAG_IS_PRIVATE);
@@ -185,15 +172,14 @@ private void getUsersFromDB() {
     }
     private void initAdapter(String users, String manager, String mngStatus){
         JSONArray resUsers = null;
-        JSONArray resManager = null;
+        JSONObject resManager = null;
 
         Log.d("ViewEveFragController", "initAdapter");
         try {
             resUsers = new JSONArray(users);
-            resManager = new JSONArray(manager);
-            String managerId = resManager.getJSONObject(0).getString("id");
+            resManager = new JSONObject(manager);
+            String managerId = resManager.getString("id");
             currentUserId = sm.getUserDetails().get(Constants.TAG_USERID);
-
 
             Log.d("res jsonarray", resUsers.toString());
 
@@ -211,44 +197,31 @@ private void getUsersFromDB() {
                     String img = resUsers.getJSONObject(i).getString("image");
                     String id = resUsers.getJSONObject(i).getString("id");
                     Log.d("iteration " + String.valueOf(i),id);
-                    boolean isManager = false;
-                    if (id.equals(managerId))
-                        isManager = true;
                     String status = resUsers.getJSONObject(i).getString("status");
                     Log.d("iteration " + String.valueOf(i),status);
+                    addPlayerToPublicList(name, id, img, status, false);
 
-                    //ViewEventListRow playingUser = new ViewEventListRow(name,decompressImage(img),id);
-                    if (status.equals("participate")) {
-                        ViewEventListRow playingUser = new ViewEventListRow(name, id,status, isManager);
-                        playingList.add(playingUser);
-                        Log.d(playingUser.toString(), status);
-                    }
-                    else {
-                        ViewEventListRow waitingUser = new ViewEventListRow(name, id, status, isManager);
-                        waitingList.add(waitingUser);
-                        Log.d(waitingUser.toString(), status);
-                    }
                     if (id.equals(currentUserId))
                         participateButton.setText("LEAVE EVENT");
                 }
+                //add manager details to list
+                String managerName = resManager.getString("fname");
+                String managerImg = resUsers.getJSONObject(0).getString("image");
+                addPlayerToPublicList(managerName, managerId, managerImg, mngStatus, true);
 
-                viewEventAdapterForPlayingList = new ViewEventArrayAdapter(getActivity(),R.layout.listview_item_row, playingList);
-                listViewPlayingList.setAdapter(viewEventAdapterForPlayingList);
-                viewEventAdapterForPlayingList.setAdapterListView(listViewPlayingList);
-                viewEventAdapterForPlayingList.setListViewHeightBasedOnChildren();
-                listViewPlayingList = viewEventAdapterForPlayingList.getAdapterListView();
-
-                viewEventAdapterForWaitingList = new ViewEventArrayAdapter(getActivity(),R.layout.listview_item_row, waitingList);
-                listViewWaitingList.setAdapter(viewEventAdapterForWaitingList);
-                viewEventAdapterForWaitingList.setAdapterListView(listViewWaitingList);
-                viewEventAdapterForWaitingList.setListViewHeightBasedOnChildren();
-                listViewWaitingList = viewEventAdapterForWaitingList.getAdapterListView();
+                if (managerId.equals(currentUserId)) {
+                    isCurrentUserIsTheCurrentEventManager = true;
+                    participateButton.setText("LEAVE EVENT");
+                }
+                initializeAdapterForPlayersList(listViewPlayingList, playingList, false);
+                initializeAdapterForPlayersList(listViewWaitingList,waitingList, false);
 
             }
             else // or else and it's a private event we need only one viewlist
             {
                 invitedList = new ArrayList<ViewEventListRow>();//invited users list
                 participateButton.setEnabled(false);
+
                 participateButton.setText("THIS IS A PRIVATE EVENT");
 
                 for(int i=0 ;i< resUsers.length(); i++){
@@ -257,25 +230,20 @@ private void getUsersFromDB() {
                     String img = resUsers.getJSONObject(i).getString("image");
                     String id = resUsers.getJSONObject(i).getString("id");
                     String status = resUsers.getJSONObject(i).getString("status");
-                    //ViewEventListRow invitedUser = new ViewEventListRow(name,decompressImage(img),id);
 
-                    ViewEventListRow invitedUser = new ViewEventListRow(name, id, status, false);
-                    invitedList.add(invitedUser);
+                    addPlayerToPrivateList(name, id, img, status, false);
                     initParticipationTextButtonForPrivateEvent(id, status);
 
                 }
-                String managerName = resManager.getJSONObject(0).getString("fname");
+                //add manager details to list
+                String managerName = resManager.getString("fname");
                 String managerImg = resUsers.getJSONObject(0).getString("image");
-                ViewEventListRow invitedUser = new ViewEventListRow(managerName, managerId, mngStatus, true);
-                invitedList.add(invitedUser);
+                addPlayerToPrivateList(managerName, managerId, managerImg, mngStatus, true);
 
-                initParticipationTextButtonForPrivateEvent(managerId, mngStatus);
+                if (initParticipationTextButtonForPrivateEvent(managerId, mngStatus))
+                    isCurrentUserIsTheCurrentEventManager = true;
 
-                viewEventAdapterForInvitedList = new ViewEventArrayAdapter(getActivity(),R.layout.listview_item_row, invitedList);
-                listViewInvitedList.setAdapter(viewEventAdapterForInvitedList);
-                viewEventAdapterForInvitedList.setAdapterListView(listViewInvitedList);
-                viewEventAdapterForInvitedList.setListViewHeightBasedOnChildren();
-                listViewInvitedList = viewEventAdapterForInvitedList.getAdapterListView();
+                initializeAdapterForPlayersList(listViewInvitedList, invitedList, true);
 
             }
 
@@ -284,40 +252,112 @@ private void getUsersFromDB() {
         }
     }
 
-private void initParticipationTextButtonForPrivateEvent (String id, String status) {
+    private void initializeAdapterForPlayersList(ListView listViewPlayersList,List<ViewEventListRow> playersList, boolean isPrivate)
+    {
+        ViewEventArrayAdapter eventAdapterForPlayersList = new ViewEventArrayAdapter(getActivity(),R.layout.listview_item_row, playersList);
+        listViewPlayersList.setAdapter(eventAdapterForPlayersList);
+        eventAdapterForPlayersList.setAdapterListView(listViewPlayersList, isPrivate);
+        eventAdapterForPlayersList.setListViewHeightBasedOnChildren();
+        listViewPlayersList = eventAdapterForPlayersList.getAdapterListView();
+    }
+
+    private void addPlayerToPrivateList(String name, String id, String img, String status, boolean isManager)
+    {
+        ViewEventListRow invitedUser = new ViewEventListRow(name, id, ImageConvertor.decodeBase64(img), status.toUpperCase(), isManager);
+        invitedList.add(invitedUser);
+
+    }
+
+    private void addPlayerToPublicList(String name, String id, String img, String status, boolean isManager)
+    {
+        if (status.equals("participate")) {
+            ViewEventListRow playingUser = new ViewEventListRow(name, id, ImageConvertor.decodeBase64(img), status.toUpperCase(), isManager);
+            playingList.add(playingUser);
+            Log.d(playingUser.toString(), status);
+        }
+        else {
+            ViewEventListRow waitingUser = new ViewEventListRow(name, id, ImageConvertor.decodeBase64(img), status.toUpperCase(), isManager);
+            waitingList.add(waitingUser);
+            Log.d(waitingUser.toString(), status);
+        }
+    }
+
+private boolean initParticipationTextButtonForPrivateEvent (String id, String status) {
     if (id.equals(currentUserId)) {
         participateButton.setEnabled(true);
         if (status.equals("awaiting Reply") || status.equals("not attend"))
             participateButton.setText("ATTENDING");
         else
             participateButton.setText("NOT ATTENDING");
-
+        return true;
     }
-
+    return false;
 }
 
-    private Bitmap decompressImage (String imageString)
-    {
-        if (imageString.equals("nofile")) {
-            Log.d("setOnUI", "nofile");
-            return null;
-        }
-        else
-            return decodeBase64(imageString);
-
-    }
-
-    public static Bitmap decodeBase64(String input)
-    {
-        byte[] decodedByte = Base64.decode(input, 0);
-        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-    }
-
-
     @Override
-    public void onClick(View view) {
+    public void onClick(View v) {
+        Log.d("onClick","onClick");
         switch(v.getId()) {
             case R.id.participate_button:
+                if (eventPrivilege.equals("false")) {
+                    Log.d("participate_button","public_event");
+                    if (participateButton.getText().equals("LEAVE EVENT")) {
+                        Log.d("participate_button","participate wants to leave");
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("Leave Event")
+                                .setMessage("Are you sure you want to leave the event?")
+                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        deleteOrLeaveUserFromEvent();
+                                    }
+                                })
+                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .setIconAttribute(android.R.attr.alertDialogIcon)
+                                .show();
+                    }
+                    else
+                    {
+                        participateOrAttendUserInEvent();
+                        //checkIfUserCanPerformThis -> sendDataToInsertUser -> serverHandleAndRespond -> responseMakeFragmentReload
+
+                    }
+                }
+                    else//private event
+                {
+                    if (participateButton.getText().equals("NOT ATTENDING")) {
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("Change Participation Status On Event")
+                                .setMessage("Are you sure you want to reject the invitation?")
+                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        deleteOrLeaveUserFromEvent();
+                                        //serverHandleAndRespond -> responseMakeFragmentReload
+
+                                    }
+                                })
+                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .setIconAttribute(android.R.attr.alertDialogIcon)
+                                .show();
+
+                    } else {
+                        participateOrAttendUserInEvent();
+                    }
+                }
+
                 //public
 
                 //if he wants to leave -> waiting list or playing list
@@ -342,8 +382,9 @@ private void initParticipationTextButtonForPrivateEvent (String id, String statu
                 //checks: gender, min_age, max num participants this check should be on invite users..
                 //-> change status in attending table
                 //if this is the first user after the manager ->insert manager function
-
-
+                break;
+            default:
+                Log.d("defualt",String.valueOf(v.getId()));
                 break;
         }
     }
@@ -362,10 +403,18 @@ private void initParticipationTextButtonForPrivateEvent (String id, String statu
                     {
                         String eventUsers = jsonObj.getString("event_users");
                         String eventManager = jsonObj.getString("mng_details");
-                        String eventStatus = jsonObj.getString("mng_status");
-                        Log.d("event_manager, event_status", eventManager + " " + eventStatus);
+                        String eventManagerStatus = jsonObj.getString("mng_status");
+                        String eventDetails = jsonObj.getString("event_details");
+                        try {
+                            eventDetailsJsonObj = new JSONObject(eventDetails);
+                        }catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("event_manager, event_status", eventManager + " " + eventManagerStatus);
                         Log.d("event_users", eventUsers);
-                        initAdapter(eventUsers , eventManager, eventStatus);
+                        Log.d("event_details", eventDetailsJsonObj.toString());
+                        initView();
+                        initAdapter(eventUsers , eventManager, eventManagerStatus);
                         Log.d("ViewEveFragController", "sending users to lists");
                         break;
                     }
@@ -381,9 +430,90 @@ private void initParticipationTextButtonForPrivateEvent (String id, String statu
         }
     }
 
+    private void participateOrAttendUserInEvent ()
+    {
+        nameValuePairList = new ArrayList<NameValuePair>();
+        BasicNameValuePair tagreq = null;
+        BasicNameValuePair userid = new BasicNameValuePair(Constants.TAG_USERID,currentUserId);
+
+        if(eventPrivilege.equals("true")){
+            Log.d("attend in private",eventPrivilege);
+            tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, Constants.TAG_RES_INV_USR);
+        }else {
+            if (userCanParticipateInPublicEvent()) {
+                Log.d("participant in public", eventPrivilege);
+                tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, Constants.TAG_PART_USR);
+            }
+            else
+            {
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Can't Perform ")
+                        .setMessage("You can't participate in this event:\n"+ publicEventError)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setIconAttribute(android.R.attr.alertDialogIcon)
+                        .show();
+                return;
+            }
+        }
+        nameValuePairList.add(userid);
+        nameValuePairList.add(tagreq);
+
+        sendDataToDBController();
+
+    }
+
+    private boolean userCanParticipateInPublicEvent ()
+    {
+        HashMap<String,String> userDetails = sm.getUserDetails();
+
+        if(!eventGender.equals("Unisex"))
+            if(!userDetails.get(Constants.TAG_GEN).equals(eventGender))
+            {
+            publicEventError = "This event is for " + eventGender +"only";
+            return false;
+            }
+
+        if (Integer.valueOf(userDetails.get(Constants.TAG_AGE)) < Integer.valueOf(eventMinAge))
+        {
+            publicEventError = "This event is for age " + eventMinAge +"and above";;
+            return false;
+        }
+
+        return true;
+    }
+
+
+    private void deleteOrLeaveUserFromEvent()
+    {
+        nameValuePairList = new ArrayList<NameValuePair>();
+        BasicNameValuePair tagreq = null;
+        BasicNameValuePair userid = new BasicNameValuePair(Constants.TAG_USERID,currentUserId);
+
+        if(isCurrentUserIsTheCurrentEventManager){
+            Log.d("delete manager",String.valueOf(isCurrentUserIsTheCurrentEventManager));
+            tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, "remove_event_manager");
+        }else{
+            Log.d("delete participant",String.valueOf(isCurrentUserIsTheCurrentEventManager));
+            tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, "remove_participant");
+        }
+
+        nameValuePairList.add(userid);
+        nameValuePairList.add(tagreq);
+
+    sendDataToDBController();
+    }
+
+
+
     @Override
     public void sendDataToDBController() {
-
+        dbController = new DBcontroller(getActivity(),this);
+        dbController.execute(nameValuePairList);
     }
 
     @Override

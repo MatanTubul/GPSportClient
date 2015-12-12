@@ -86,7 +86,7 @@ public final class Constants {
     public static final int MAXIMUM_WEEKS = 30;
     public static final String TAG_ATTEND = "attend";
     public static final String TAG_NOT_ATTEND = "not attend";
-
+    public static final String TAG_RES_INV_USR = "response_invited_user";
 
 
     //event
@@ -111,7 +111,7 @@ public final class Constants {
     public static final String TAG_IS_PRIVATE = "private";
     public static final String TAG_CURR_PRT = "current_participants";
     public static final String TAG_MAX_PRT = "max_participants";
-
+    public static final String TAG_PART_USR = "participate_user";
 
     //GoogleMapFragmentController Constants
     public static final int SUCCESS_RESULT = 0;
