@@ -104,11 +104,13 @@ public final class Constants {
 
     public static final String TAG_GET_EVENT_USERS = "get_event_users";
     public static final String TAG_EVENT_ID = "event_id";
+    public static final String TAG_USER_STAT= "user_status";
     public static final String TAG_KIND_OF_SPORT = "kind_of_sport";
     public static final String TAG_START_TIME = "start_time";
     public static final String TAG_ADDRESS = "address";
     public static final String TAG_MIN_AGE = "min_age";
-    public static final String TAG_IS_PRIVATE = "private";
+    public static final String TAG_IS_PRIVATE = "event_is_private";
+    public static final String TAG_PRIVATE = "private";
     public static final String TAG_CURR_PRT = "current_participants";
     public static final String TAG_MAX_PRT = "max_participants";
     public static final String TAG_PART_USR = "participate_user";

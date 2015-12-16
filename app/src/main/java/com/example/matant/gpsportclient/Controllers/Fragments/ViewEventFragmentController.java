@@ -1,6 +1,8 @@
 package com.example.matant.gpsportclient.Controllers.Fragments;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -27,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,7 +45,7 @@ public class ViewEventFragmentController extends Fragment implements View.OnClic
     private JSONObject eventIdJsonObj, eventDetailsJsonObj;
     private List<ViewEventListRow> playingList = null, invitedList = null, waitingList = null;
     private DBcontroller dbController;
-    private String eventId, currentUserId, eventPrivilege, publicEventError, eventGender, eventMinAge;
+    private String eventId, currentUserId, userStatusChoise, eventPrivilege, publicEventError, eventGender, eventMinAge, eventDetailsJsonStr;
     private LinearLayout playingLinearLayout, waitingLinearLayout, invitedLinearLayout;
     private SessionManager sm;
     private boolean isCurrentUserIsTheCurrentEventManager;
@@ -58,8 +61,8 @@ public class ViewEventFragmentController extends Fragment implements View.OnClic
         final View v = inflater.inflate(R.layout.fragment_view_event_fragment_controller, container, false);
         sm = SessionManager.getInstance(getActivity());
         isCurrentUserIsTheCurrentEventManager = false;
-
-        String eventDetailsJsonStr = (String) getArguments().getString("event");
+        userStatusChoise = null;
+        eventDetailsJsonStr = (String) getArguments().getString("event");
         try {
             eventIdJsonObj = new JSONObject(eventDetailsJsonStr);
         }catch (JSONException e) {
@@ -149,7 +152,7 @@ private void getEventDetailsFromDB() {
             eventMinAge = eventDetailsJsonObj.getString(Constants.TAG_MIN_AGE);
             minAgeButton.setText(eventMinAge + "+");
 
-            eventPrivilege = eventDetailsJsonObj.getString(Constants.TAG_IS_PRIVATE);
+            eventPrivilege = eventDetailsJsonObj.getString(Constants.TAG_PRIVATE);
             if (eventPrivilege.equals("true")){
                 privilegeButton.setText("PRIVATE");
                 //enable the UI for private event
@@ -182,6 +185,7 @@ private void getEventDetailsFromDB() {
             currentUserId = sm.getUserDetails().get(Constants.TAG_USERID);
 
             Log.d("res jsonarray", resUsers.toString());
+            Log.d("ViewEveFragController", currentUserId);
 
             if (eventPrivilege.equals("false")) //if this is a public event there's is two viewlists we want to create:
             {
@@ -285,10 +289,14 @@ private void getEventDetailsFromDB() {
 private boolean initParticipationTextButtonForPrivateEvent (String id, String status) {
     if (id.equals(currentUserId)) {
         participateButton.setEnabled(true);
-        if (status.equals("awaiting Reply") || status.equals("not attend"))
+        if (status.equals("awaiting reply") || status.equals("not attend")) {
             participateButton.setText("ATTENDING");
-        else
+            userStatusChoise = "attend";
+        }
+        else {
             participateButton.setText("NOT ATTENDING");
+            userStatusChoise = "not attend";
+        }
         return true;
     }
     return false;
@@ -418,6 +426,26 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
                         Log.d("ViewEveFragController", "sending users to lists");
                         break;
                     }
+                    case "sss":
+                    {
+
+                        Log.d("sss",jsonObj.getString("status"));
+                        /*Fragment fragment = new ViewEventFragmentController();
+                        Bundle args = new Bundle();
+                        args.putString("event",eventDetailsJsonStr);
+                        fragment.setArguments(args);
+                        if (fragment != null) {
+                            FragmentManager fragmentManager = getFragmentManager();
+                            FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
+                            fragTransaction.remove(this).commit();
+                            fragTransaction.replace(R.id.content_frame, fragment).commit();
+                        } else {
+                            Log.e("GoogleMap Fragment", "Error in creating fragment");
+                        }*/
+                        break;
+                    }
+
+
                     case Constants.TAG_REQUEST_FAILED:
                     {
                         Log.d("message from server",jsonObj.getString("msg"));
@@ -432,9 +460,7 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
 
     private void participateOrAttendUserInEvent ()
     {
-        nameValuePairList = new ArrayList<NameValuePair>();
         BasicNameValuePair tagreq = null;
-        BasicNameValuePair userid = new BasicNameValuePair(Constants.TAG_USERID,currentUserId);
 
         if(eventPrivilege.equals("true")){
             Log.d("attend in private",eventPrivilege);
@@ -447,7 +473,7 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
             else
             {
                 new AlertDialog.Builder(getActivity())
-                        .setTitle("Can't Perform ")
+                        .setTitle("Can't Perform Action")
                         .setMessage("You can't participate in this event:\n"+ publicEventError)
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
@@ -460,12 +486,28 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
                 return;
             }
         }
+        executeCommonFields(tagreq);
+    }
+
+    private void executeCommonFields(BasicNameValuePair tagreq){
+
+        nameValuePairList = new ArrayList<NameValuePair>();
+        BasicNameValuePair userid = new BasicNameValuePair(Constants.TAG_USERID,currentUserId);
+        BasicNameValuePair eventid = new BasicNameValuePair(Constants.TAG_EVENT_ID,eventId);
+        BasicNameValuePair status = new BasicNameValuePair(Constants.TAG_USER_STAT,userStatusChoise);
+        BasicNameValuePair eventisprivate = new BasicNameValuePair(Constants.TAG_IS_PRIVATE,eventPrivilege);
+
+        nameValuePairList.add(eventid);
         nameValuePairList.add(userid);
         nameValuePairList.add(tagreq);
+        nameValuePairList.add(status);
+        nameValuePairList.add(eventisprivate);
 
+        Log.d("executeCommonFields",tagreq.toString() + " " + eventid.toString()+ " " + userid.toString() + " " + status.toString());
         sendDataToDBController();
-
     }
+
+
 
     private boolean userCanParticipateInPublicEvent ()
     {
@@ -474,13 +516,20 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
         if(!eventGender.equals("Unisex"))
             if(!userDetails.get(Constants.TAG_GEN).equals(eventGender))
             {
-            publicEventError = "This event is for " + eventGender +"only";
+                Log.d("userCanParticipateInPublicEvent",userDetails.get(Constants.TAG_GEN) + " " + eventGender );
+            publicEventError = "This event is for " + eventGender +" only";
             return false;
             }
 
-        if (Integer.valueOf(userDetails.get(Constants.TAG_AGE)) < Integer.valueOf(eventMinAge))
+        Calendar calendar = Calendar.getInstance();
+        int thisYear = calendar.get(Calendar.YEAR);
+
+        Log.d("userCanParticipateInPublicEvent",userDetails.get(Constants.TAG_AGE) + " " + eventMinAge );
+
+        if (thisYear - Integer.valueOf(userDetails.get(Constants.TAG_AGE)) < Integer.valueOf(eventMinAge))
         {
-            publicEventError = "This event is for age " + eventMinAge +"and above";;
+            Log.d("userCanParticipateInPublicEvent",userDetails.get(Constants.TAG_AGE) + " " + eventMinAge );
+            publicEventError = "This event is for " + eventMinAge +" year old and above";;
             return false;
         }
 
@@ -490,9 +539,7 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
 
     private void deleteOrLeaveUserFromEvent()
     {
-        nameValuePairList = new ArrayList<NameValuePair>();
         BasicNameValuePair tagreq = null;
-        BasicNameValuePair userid = new BasicNameValuePair(Constants.TAG_USERID,currentUserId);
 
         if(isCurrentUserIsTheCurrentEventManager){
             Log.d("delete manager",String.valueOf(isCurrentUserIsTheCurrentEventManager));
@@ -502,10 +549,7 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
             tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, "remove_participant");
         }
 
-        nameValuePairList.add(userid);
-        nameValuePairList.add(tagreq);
-
-    sendDataToDBController();
+        executeCommonFields(tagreq);
     }
 
 
