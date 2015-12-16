@@ -52,16 +52,15 @@ public class InvitationsFragmentController extends Fragment implements AsyncResp
     public void handleResponse(String resStr) {
         progress.dismiss();
 
-
+        Log.d("get invitations handleResponse", resStr);
         if (resStr != null) {
-            Log.d("get invitations handleResponse", resStr);
             try {
                 JSONObject jsonObj = new JSONObject(resStr);
                 String flg = jsonObj.getString(Constants.TAG_FLG);
                 switch (flg) {
                     case Constants.TAG_REQUEST_SUCCEED: {
 
-                        JSONArray jsonarr = jsonObj.getJSONArray("invitations");
+                        JSONArray jsonarr = jsonObj.getJSONArray("events");
                         Log.d("creating list", jsonarr.toString());
                         Log.d("array", jsonarr.toString());
                         String title, date, Loc, participants, event_time, event_id;

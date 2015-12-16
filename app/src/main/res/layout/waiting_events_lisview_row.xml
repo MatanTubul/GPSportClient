@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/stadium_50"
+        android:id="@+id/imageViewWaitingEvents" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:id="@+id/textLayout"
+        android:layout_toRightOf="@+id/imageViewWaitingEvents">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location:"
+            android:id="@+id/textViewWaitingStaticLocatiom"
+            android:layout_alignParentTop="true"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time:"
+            android:id="@+id/textViewWaitingStaticTime"
+            android:layout_below="@+id/textViewWaitingStaticLocatiom"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date:"
+            android:id="@+id/textViewWaitingStaticDate"
+            android:layout_below="@+id/textViewWaitingStaticTime"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Current Participants:"
+            android:id="@+id/txtViewWaitingStaticParticipants"
+            android:layout_below="@+id/textViewWaitingStaticDate"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location Value"
+            android:id="@+id/textViewWaitingLocVal"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textViewWaitingStaticLocatiom"
+            android:layout_toEndOf="@+id/textViewWaitingStaticLocatiom" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TimeVal"
+            android:id="@+id/textViewWaitingTimeVal"
+            android:layout_above="@+id/textViewWaitingStaticDate"
+            android:layout_toRightOf="@+id/textViewWaitingStaticTime"
+            android:layout_toEndOf="@+id/textViewWaitingStaticTime" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date Value"
+            android:id="@+id/textViewWaitingDateVal"
+            android:layout_below="@+id/textViewWaitingTimeVal"
+            android:layout_alignLeft="@+id/textViewWaitingTimeVal"
+            android:layout_alignStart="@+id/textViewWaitingTimeVal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Partic Val"
+            android:id="@+id/textViewWaitingInvParticipantVal"
+            android:layout_below="@+id/textViewWaitingDateVal"
+            android:layout_toRightOf="@+id/txtViewWaitingStaticParticipants"
+            android:layout_toEndOf="@+id/txtViewWaitingStaticParticipants" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Place in Queue:"
+            android:id="@+id/textViewWaitingQueue"
+            android:layout_below="@+id/txtViewWaitingStaticParticipants"
+             />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/soccer_32"
+            android:id="@+id/ImageViewWaitingSportType"
+            android:layout_marginRight="5dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/divider1"
+        android:layout_width="fill_parent"
+        android:layout_height="6dp"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@+id/textLayout"
+        />
+
+
+</RelativeLayout>
