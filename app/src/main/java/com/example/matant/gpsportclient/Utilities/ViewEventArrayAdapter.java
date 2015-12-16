@@ -3,6 +3,7 @@ package com.example.matant.gpsportclient.Utilities;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class ViewEventArrayAdapter extends ArrayAdapter<ViewEventListRow> {
     private ListView adapterListView;
     private ViewEventListRow rowEvent;
     private int index;
+    private boolean isPrivate;
 
     public ViewEventArrayAdapter(Context context, int resourceId, List<ViewEventListRow> items) {
         super(context, resourceId, items);
@@ -47,8 +49,9 @@ public class ViewEventArrayAdapter extends ArrayAdapter<ViewEventListRow> {
 
     }
 
-    public void setAdapterListView(ListView adapterListView) {
+    public void setAdapterListView(ListView adapterListView ,boolean isPrivate) {
         this.adapterListView = adapterListView;
+        this.isPrivate = isPrivate;
     }
 
     public ListView getAdapterListView() {
@@ -70,16 +73,32 @@ public class ViewEventArrayAdapter extends ArrayAdapter<ViewEventListRow> {
             holder = new ViewHolder();
             holder.txtTitle1 = (TextView) convertView.findViewById(R.id.title);
             holder.txtTitle1.setTextSize(20);
+            holder.txtTitle1.setGravity(Gravity.CENTER);
+            holder.txtTitle1.setGravity(Gravity.CENTER_VERTICAL);
 
-            convertView.findViewById(R.id.desc).setVisibility(convertView.INVISIBLE);
+            if (isPrivate)
+                //Event is private - build custom list view
+            {
+                holder.txtTitle2 = (TextView) convertView.findViewById(R.id.desc);
+                holder.txtTitle2.setTextSize(20);
+                holder.txtTitle2.setGravity(Gravity.RIGHT);
+                holder.txtTitle1.setGravity(Gravity.CENTER_VERTICAL);
+
+            }
+            else
+                convertView.findViewById(R.id.desc).setVisibility(convertView.INVISIBLE);
+
             convertView.findViewById(R.id.imageButtonInviteUser).setVisibility(convertView.INVISIBLE);
             holder.imageView = (ImageView) convertView.findViewById(R.id.profileImage);
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.txtTitle2.setText(rowItem.getPlayerName());
+        holder.txtTitle1.setText(rowItem.getPlayerName());
         holder.imageView.setImageBitmap(rowItem.getPlayerImg());
+        if (isPrivate)
+            holder.txtTitle2.setText(rowItem.getPlayerStatus());
 
         //this func can be later implement for manager only
         /*convertView.setOnClickListener(new View.OnClickListener() {

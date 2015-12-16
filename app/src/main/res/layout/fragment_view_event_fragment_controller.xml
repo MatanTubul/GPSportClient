@@ -81,7 +81,6 @@
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
         android:id="@+id/eventdetailsLayout"
-        android:layout_below="@+id/background"
 
         >
 
@@ -163,8 +162,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/buttonLayout"
-        android:layout_below="@+id/eventdetailsLayout">
+        android:id="@+id/buttonLayout">
 
         <Button
             android:layout_width="match_parent"
@@ -175,7 +173,6 @@
 
     <View
         android:id="@+id/divider4"
-        android:layout_below="@+id/participate_button"
         android:layout_width="fill_parent"
         android:layout_marginTop="1dp"
         android:layout_height="0.5dp"
@@ -185,15 +182,13 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:fillViewport="true"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/divider4">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="0.39">
+            android:layout_gravity="center_horizontal">
 
             <LinearLayout
                 android:orientation="vertical"

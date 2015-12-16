@@ -134,8 +134,8 @@ public class GCMMessageView extends AppCompatActivity implements AsyncResponse, 
 
     public void sendDataToDBController() {
 
-        BasicNameValuePair tagreq = new BasicNameValuePair("tag", "response_invited_user");
-        BasicNameValuePair event_Id = new BasicNameValuePair("event_id", EventId);
+        BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, Constants.TAG_RES_INV_USR);
+        BasicNameValuePair event_Id = new BasicNameValuePair(Constants.TAG_EVENT_ID, EventId);
         BasicNameValuePair user_Id = new BasicNameValuePair("userId", UserId);
         BasicNameValuePair userstatus = new BasicNameValuePair("userStatus", user_status);
         List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
