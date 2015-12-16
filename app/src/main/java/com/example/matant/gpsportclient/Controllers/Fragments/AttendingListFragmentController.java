@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
@@ -68,58 +69,65 @@ public class AttendingListFragmentController extends Fragment implements View.On
                 switch (flg){
                     case Constants.TAG_REQUEST_SUCCEED:
                     {
-                        JSONArray jsonarr = jsonObj.getJSONArray("events");
-                        Log.d("creating list",jsonarr.toString());
-                        Log.d("array",jsonarr.toString());
-                        String title,date,Loc,participants,event_time,event_id,mng_id;
-                        boolean isManager =false;
-                        rowEvents = new ArrayList<ManageEventListRow>();
-                        int sportType = -1;
-                        for(int i = 0; i< jsonarr.length();i++){
-                            JSONObject eventObj = jsonarr.getJSONObject(i);
-                            title = jsonarr.getJSONObject(i).getString("kind_of_sport");
-                            date = jsonarr.getJSONObject(i).getString("event_date");
-                            Loc = jsonarr.getJSONObject(i).getString("address");
-                            mng_id = jsonarr.getJSONObject(i).getString("manager_id");
-                            if(mng_id.equals(sm.getUserDetails().get(Constants.TAG_USERID)))
-                                isManager = true;
-                            event_time = jsonarr.getJSONObject(i).getString("formatted_start_time")+" "+"-"+" "+jsonarr.getJSONObject(i).getString("formatted_end_time");;
-                            event_id = jsonarr.getJSONObject(i).getString("event_id");
-                            eventObj.put("start_time",jsonarr.getJSONObject(i).getString("formatted_start_time"));
-                            eventObj.put("end_time",jsonarr.getJSONObject(i).getString("formatted_end_time"));
+                        int no_of_rows = Integer.valueOf(jsonObj.getString("numofrows"));
+                        if(no_of_rows < 1){
+                            Toast.makeText(getActivity(), jsonObj.getString("msg").toString(), Toast.LENGTH_LONG).show();
+                        }else{
+
+                            JSONArray jsonarr = jsonObj.getJSONArray("events");
+                            Log.d("creating list",jsonarr.toString());
+                            Log.d("array",jsonarr.toString());
+                            String title,date,Loc,participants,event_time,event_id,mng_id;
+                            boolean isManager =false;
+                            rowEvents = new ArrayList<ManageEventListRow>();
+                            int sportType = -1;
+                            for(int i = 0; i< jsonarr.length();i++){
+                                JSONObject eventObj = jsonarr.getJSONObject(i);
+                                title = jsonarr.getJSONObject(i).getString("kind_of_sport");
+                                date = jsonarr.getJSONObject(i).getString("event_date");
+                                Loc = jsonarr.getJSONObject(i).getString("address");
+                                mng_id = jsonarr.getJSONObject(i).getString("manager_id");
+                                if(mng_id.equals(sm.getUserDetails().get(Constants.TAG_USERID)))
+                                    isManager = true;
+                                event_time = jsonarr.getJSONObject(i).getString("formatted_start_time")+" "+"-"+" "+jsonarr.getJSONObject(i).getString("formatted_end_time");;
+                                event_id = jsonarr.getJSONObject(i).getString("event_id");
+                                eventObj.put("start_time",jsonarr.getJSONObject(i).getString("formatted_start_time"));
+                                eventObj.put("end_time",jsonarr.getJSONObject(i).getString("formatted_end_time"));
 
 
-                            participants = jsonarr.getJSONObject(i).getString("current_participants");
-                            switch (title){
-                                case Constants.TAG_SOCCER:
-                                    sportType = R.drawable.soccer_32;
-                                    break;
-                                case Constants.TAG_BASKETBALL:
-                                    sportType = R.drawable.basketball_32;
-                                    break;
-                                case Constants.TAG_RUNNING:
-                                    sportType = R.drawable.running_32;
-                                    break;
-                                case Constants.TAG_BICYCLE:
-                                    sportType = R.drawable.biking_32;
-                                    break;
+                                participants = jsonarr.getJSONObject(i).getString("current_participants");
+                                switch (title){
+                                    case Constants.TAG_SOCCER:
+                                        sportType = R.drawable.soccer_32;
+                                        break;
+                                    case Constants.TAG_BASKETBALL:
+                                        sportType = R.drawable.basketball_32;
+                                        break;
+                                    case Constants.TAG_RUNNING:
+                                        sportType = R.drawable.running_32;
+                                        break;
+                                    case Constants.TAG_BICYCLE:
+                                        sportType = R.drawable.biking_32;
+                                        break;
+                                }
+                                ManageEventListRow rowEvent = new ManageEventListRow(sportType,title,Loc,date,participants,event_id,event_time,eventObj,isManager);
+                                rowEvents.add(rowEvent);
+
                             }
-                            ManageEventListRow rowEvent = new ManageEventListRow(sportType,title,Loc,date,participants,event_id,event_time,eventObj,isManager);
-                            rowEvents.add(rowEvent);
+                            if(ManageEventAdapter == null)
+                            {
+                                ManageEventAdapter = new ManageEventArrayAdapter(getActivity(),R.layout.manage_event_listview_event,rowEvents,"view");
+                                ManageEventAdapter.setUser_id(sm.getUserDetails().get(Constants.TAG_USERID));
+                            }
+                            else {
+                                ManageEventAdapter.setData(rowEvents);
+                                ManageEventAdapter.notifyDataSetChanged();
+                                ManageEventAdapter.setUser_id(sm.getUserDetails().get(Constants.TAG_USERID));
+                            }
+                            ListViewAttendingList.setAdapter(ManageEventAdapter);
+                            break;
+                        }
 
-                        }
-                        if(ManageEventAdapter == null)
-                        {
-                            ManageEventAdapter = new ManageEventArrayAdapter(getActivity(),R.layout.manage_event_listview_event,rowEvents,"view");
-                            ManageEventAdapter.setUser_id(sm.getUserDetails().get(Constants.TAG_USERID));
-                        }
-                        else {
-                            ManageEventAdapter.setData(rowEvents);
-                            ManageEventAdapter.notifyDataSetChanged();
-                            ManageEventAdapter.setUser_id(sm.getUserDetails().get(Constants.TAG_USERID));
-                        }
-                        ListViewAttendingList.setAdapter(ManageEventAdapter);
-                        break;
                     }
 
                     case Constants.TAG_REQUEST_FAILED:
