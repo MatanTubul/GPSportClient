@@ -38,6 +38,7 @@ import com.example.matant.gpsportclient.InterfacesAndConstants.OnCompleteListene
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.CreateInviteUsersRow;
 import com.example.matant.gpsportclient.Utilities.CreateInvitedUsersAdapter;
+import com.example.matant.gpsportclient.Utilities.DateAndTimeFunctions;
 import com.example.matant.gpsportclient.Utilities.DatePicker;
 import com.example.matant.gpsportclient.Utilities.MyAdapter;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
@@ -88,6 +89,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     private String event_id ="";
     private JSONObject sched_res = null;
     private String currMaxParticipants;
+    private DateAndTimeFunctions dtFunctions;
 
 
     public CreateEventFragmentController() {
@@ -110,15 +112,15 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         btninviteUsers = (Button) v.findViewById(R.id.buttonInviteUsers);
         btnSave = (Button) v.findViewById(R.id.ButtonSchedSave);
         sv = (ScrollView) v.findViewById(R.id.scrollView);
-
+        dtFunctions = new DateAndTimeFunctions();
 
         cal = Calendar.getInstance();
 
-        btnstartTime.setText(getCorrentTime());
-        btnendTime.setText(getCorrentTime());
+        btnstartTime.setText(dtFunctions.getCorrentTime());
+        btnendTime.setText(dtFunctions.getCorrentTime());
 
-        btnStartdate.setText(getCurrentDate());
-        btnEndDate.setText(getCurrentDate());
+        btnStartdate.setText(dtFunctions.getCurrentDate());
+        btnEndDate.setText(dtFunctions.getCurrentDate());
 
         sm = SessionManager.getInstance(getActivity());
 
@@ -391,8 +393,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                          .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                              @Override
                              public void onClick(DialogInterface dialog, int which) {
-                                 btnstartTime.setText(getCorrentTime());
-                                 btnendTime.setText(getCorrentTime());
+                                 btnstartTime.setText(dtFunctions.getCorrentTime());
+                                 btnendTime.setText(dtFunctions.getCorrentTime());
                              }
                          })
                          .setIcon(R.drawable.error_32)
@@ -407,8 +409,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                          .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                              @Override
                              public void onClick(DialogInterface dialog, int which) {
-                                 btnStartdate.setText(getCurrentDate());
-                                 btnEndDate.setText(getCurrentDate());
+                                 btnStartdate.setText(dtFunctions.getCurrentDate());
+                                 btnEndDate.setText(dtFunctions.getCurrentDate());
                              }
                          })
                          .setIcon(R.drawable.error_32)
@@ -419,33 +421,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
     }
 
-    /**
-     * return the current time as string
-     * @return -current time
-     */
-    public String getCorrentTime()
-    {
-        String min = "";
 
-        if(cal.get(Calendar.MINUTE)<10)
-            min = "0"+String.valueOf(cal.get(Calendar.MINUTE));
-        else
-            min = String.valueOf(cal.get(Calendar.MINUTE));
-
-        current_time = cal.get(Calendar.HOUR_OF_DAY)+":"+min;
-        return current_time;
-    }
-
-    /**
-     * return the current date
-     * @return current date
-     */
-    public  String getCurrentDate()
-    {
-
-        current_date = cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR);
-        return current_date;
-    }
 
     /**
      * this function convert real address to geographical coordinates.
@@ -514,8 +490,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                                 .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        btnstartTime.setText(getCorrentTime());
-                                        btnendTime.setText(getCorrentTime());
+                                        btnstartTime.setText(dtFunctions.getCorrentTime());
+                                        btnendTime.setText(dtFunctions.getCorrentTime());
                                     }
                                 })
                                 .setIcon(R.drawable.error_32)

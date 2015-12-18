@@ -53,7 +53,7 @@ public class DatePicker extends DialogFragment implements DatePickerDialog.OnDat
     public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
         {
-            if( this.day > dayOfMonth)
+            if( this.day > dayOfMonth && this.month == monthOfYear)
             {
 
                 mListener.onComplete("Date_not_valid","Please insert a valid date!");
