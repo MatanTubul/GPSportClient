@@ -174,4 +174,10 @@ public final class Constants {
     //DBController
     public static final int timeoutConnection = 30*1000;
     public static final int timeoutSocket = 30*1000;
+
+    //Search Events
+    public static final String TAG_START_DATE = "start_date";
+    public static final String TAG_END_DATE = "end_date";
+
+
 }

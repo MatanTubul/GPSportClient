@@ -34,6 +34,9 @@ import com.example.matant.gpsportclient.Utilities.GPSportLocationManager;
 import com.example.matant.gpsportclient.Utilities.MyAdapter;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.example.matant.gpsportclient.Utilities.TimePicker;
+import com.google.android.gms.maps.model.LatLng;
+
+import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
 
@@ -157,6 +160,20 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
 
     @Override
     public void sendDataToDBController() {
+        if(pos == 0){
+            LatLng loc = myLocManager.getLocationFromAddress(streetAddress.getText().toString());
+            if(loc == null){
+                streetAddress.setError("Location was not found");
+                return;
+            }
+        }
+        BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST,"search_event");
+        BasicNameValuePair lat_cord = new BasicNameValuePair(Constants.TAG_LAT,"latitude");
+        BasicNameValuePair lon_cord = new BasicNameValuePair(Constants.TAG_LONG,"longitude");
+        BasicNameValuePair start_date = new BasicNameValuePair(Constants.TAG_START_DATE,dateFrom.getText().toString());
+        BasicNameValuePair end_date = new BasicNameValuePair(Constants.TAG_END_DATE,dateTo.getText().toString());
+
+
 
     }
 
@@ -180,6 +197,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
                     streetAddress.setText(address);
                 }
             }
+
 
 
 
@@ -335,7 +353,6 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
     @Override
     public void onComplete(String flag, String res) {
         settime = 0;
-        Log.d("oncomplete res",res);
         switch(flag) {
             case "start_time": {
                 timeFrom.setText(res);
