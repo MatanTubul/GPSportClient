@@ -23,8 +23,10 @@ import android.widget.Toast;
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
+import com.example.matant.gpsportclient.InterfacesAndConstants.OnLocationChangedListener;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.AddressFetcher;
+import com.example.matant.gpsportclient.Utilities.LocationTool;
 import com.example.matant.gpsportclient.Utilities.MapMarker;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.google.android.gms.common.ConnectionResult;
@@ -56,7 +58,7 @@ import java.util.List;
  * Thia Fragment handle the Home screen and loading the events that close to the current user location
  * Created by matant on 8/24/2015.
  */
-public class GoogleMapFragmentController extends Fragment implements AsyncResponse,com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class GoogleMapFragmentController extends Fragment implements AsyncResponse, OnLocationChangedListener, com.google.android.gms.location.LocationListener{
 
     MapView mMapView;
     private GoogleMap googleMap;
@@ -65,18 +67,15 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     private List<MapMarker> eventsMarkers;
     private HashMap<Marker, MapMarker> mMarkersHashMap;
     private SessionManager sm;
-    private LocationRequest mLocationRequest;
-    protected Location mLastLocation;
-    private boolean mRequestingLocationUpdates = true;
     private LatLng iniLoc;
     private AddressResultReceiver mResultReceiver;
     private boolean mAddressRequested = false;
     private static final String TAG = GoogleMapFragmentController.class.getSimpleName();
-    private GoogleApiClient mGoogleApiClient;
     private DBcontroller dbController;
     private ProgressDialog progress;
     private LayoutInflater inflater;
     private Fragment fragment = null;
+    private LocationTool locationTool;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,6 +88,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         mMapView.onCreate(savedInstanceState);
         mMapView.onResume();//    display map immediately
         sm = SessionManager.getInstance(getActivity());
+        locationTool = new LocationTool(this, this);
 
         if (mMapView!=null)
             Log.d("mMapView!=null", "mMapView!=null");
@@ -135,44 +135,22 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         else
             Toast.makeText(this.getActivity(), "Unable to create Maps", Toast.LENGTH_SHORT).show();
 
-        if (checkPlayServices()) {
-            buildGoogleApiClient();
-            createLocationRequest();
-        }
         return v;
-    }
-
-    protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this.getActivity())
-                .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-        if (mGoogleApiClient!=null)
-            Log.d("mGoogleApiClient!=null", "mGoogleApiClient!=null");
-    }
-
-    protected void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(Constants.UPDATE_INTERVAL);
-        mLocationRequest.setFastestInterval(Constants.FASTEST_INTERVAL);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setSmallestDisplacement(Constants.DISPLACEMENT);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        if (mGoogleApiClient != null)
-            mGoogleApiClient.connect();
+        if (locationTool.getmGoogleApiClient() != null)
+            locationTool.getmGoogleApiClient().connect();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mMapView.onResume();
-        checkPlayServices();
-        if (mGoogleApiClient.isConnected() && !mRequestingLocationUpdates) {
+        locationTool.checkPlayServices();
+        if (locationTool.getmGoogleApiClient().isConnected() && !locationTool.ismRequestingLocationUpdates()) {
             startLocationUpdates();
         }
     }
@@ -181,15 +159,15 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     public void onPause() {
         super.onPause();
         mMapView.onPause();
-        if (mGoogleApiClient.isConnected())
+        if (locationTool.getmGoogleApiClient().isConnected())
             stopLocationUpdates();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
+        if (locationTool.getmGoogleApiClient().isConnected()) {
+            locationTool.getmGoogleApiClient().disconnect();
         }
     }
 
@@ -197,31 +175,12 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
-        if (mGoogleApiClient.isConnected()) {
+        if (locationTool.getmGoogleApiClient().isConnected()) {
             stopLocationUpdates();
-            mGoogleApiClient.disconnect();
+            locationTool.getmGoogleApiClient().disconnect();
         }
     }
 
-    protected void startLocationUpdates() {
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);}
-
-    protected void stopLocationUpdates() {
-         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);}
-
-    private boolean checkPlayServices() {
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode, getActivity(), Constants.PLAY_SERVICES_RESOLUTION_REQUEST).show();
-            } else {
-                Toast.makeText(getActivity().getApplicationContext(), "This device is not supported.", Toast.LENGTH_LONG).show();
-                getActivity().finish();
-            }
-            return false;
-        }
-        return true;
-    }
 
     @Override
     public void onLowMemory() {
@@ -229,6 +188,13 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         mMapView.onLowMemory();
     }
 
+    public void startLocationUpdates() {
+        LocationServices.FusedLocationApi.requestLocationUpdates(locationTool.getmGoogleApiClient(), locationTool.getmLocationRequest(), this);
+    }
+
+    public void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(locationTool.getmGoogleApiClient(), this);
+    }
     @Override
     public void handleResponse(String resStr) {
         progress.dismiss();
@@ -320,8 +286,8 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
         BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, "search_events");
         BasicNameValuePair radius = new BasicNameValuePair(Constants.TAG_RADIUS, String.valueOf(Constants.DEFAULT_RADIUS));
-        BasicNameValuePair lat = new BasicNameValuePair(Constants.TAG_LONG,String.valueOf(mLastLocation.getLongitude()));
-        BasicNameValuePair lon = new BasicNameValuePair(Constants.TAG_LAT,String.valueOf(mLastLocation.getLatitude()));
+        BasicNameValuePair lat = new BasicNameValuePair(Constants.TAG_LONG,String.valueOf(locationTool.getmLastLocation().getLongitude()));
+        BasicNameValuePair lon = new BasicNameValuePair(Constants.TAG_LAT,String.valueOf(locationTool.getmLastLocation().getLatitude()));
 
         List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
         nameValuePairList.add(tagreq);
@@ -364,53 +330,15 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     }
 
     @Override
-    public void onConnected(Bundle bundle) {
-        // Gets the best and most recent location currently available,
-        // which may be null in rare cases when a location is not available.
-        Log.d("onConnected", "onConnected");
-
-        if (mRequestingLocationUpdates) {
-            startLocationUpdates();
-            Log.d("startLocationUpdates", "startLocationUpdates");
-            }
-
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-        if (mLastLocation != null) {
-            Log.d("mLastLocation != null", "mLastLocation != null");
-
-            // Determine whether a Geocoder is available.
-            if (!Geocoder.isPresent()) {
-                Log.d("no geocoder", "no geocoder");
-                Toast.makeText(this.getActivity(), "no gecoder", Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            updateUI();
-        }
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-            mGoogleApiClient.connect();
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = "
-                + connectionResult.getErrorCode());
-    }
-
-    @Override
     public void onLocationChanged(Location location) {
-            mLastLocation = location;
+            locationTool.setmLastLocation(location);
             updateUI();
     }
 
-    private void updateUI() {
+    public void updateUI() {
 
-        double latitude = mLastLocation.getLatitude(),
-               longitude =  mLastLocation.getLongitude();
+        double latitude = locationTool.getmLastLocation().getLatitude(),
+               longitude =  locationTool.getmLastLocation().getLongitude();
 
         Log.d("lat and long", latitude+" "+longitude );
 
@@ -484,7 +412,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
         }
     }
-
+/*
     public void fetchAddressButtonHandler(View view) {
         // Only start the service to fetch the address if GoogleApiClient is
         // connected.
@@ -505,6 +433,6 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         intent.putExtra(Constants.RECEIVER, mResultReceiver);
         intent.putExtra(Constants.LOCATION_DATA_EXTRA, mLastLocation);
         getActivity().startService(intent);
-    }
+    }*/
 
 }
