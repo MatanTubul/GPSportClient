@@ -1,10 +1,326 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.matant.gpsportclient.Controllers.SearchEventFragmentController">
+    android:id="@+id/mainSearchRelativeLayout"
+    tools:context="com.example.matant.gpsportclient.Controllers.SearchEventFragmentController"
+    android:background="#ffffff">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/secondSearchLayout"
+        android:layout_height="wrap_content">
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/radioGroupSearchFragment">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:text="Search by specific address"
+                android:id="@+id/radioButtonSearchSpecificAdd"
+                android:checked="true"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:text="Search by current location"
+                android:id="@+id/radioButtonSearchCurrentLocation"
+                android:checked="false"
+                android:layout_weight="1" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:inputType="textPostalAddress"
+                android:ems="10"
+                android:id="@+id/editTextSearchAddress"
+                android:hint="Please insert real Street address"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:textColor="#000000" />
+
+
+        </RadioGroup>
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="fill_parent"
+            android:layout_height="6dp"
+            android:background="@android:color/darker_gray"
+            android:layout_below="@+id/radioGroupSearchFragment"
+            />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:id="@+id/searchScrollView"
+            android:fillViewport="true"
+            android:layout_below="@id/divider1"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:id="@+id/mandatorySearchLayout"
+                android:layout_below="@+id/divider1"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Event Date Ranges"
+                    android:id="@+id/textViewEventDateRange"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textViewSearchMandatory1" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="From"
+                    android:id="@+id/buttonSearchEventFrom"
+                    android:layout_below="@+id/textViewEventDateRange"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="To"
+                    android:id="@+id/buttonSearchEventTo"
+                    android:layout_below="@+id/buttonSearchEventFrom"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="*All the fields are mandatory"
+                    android:id="@+id/textViewSearchMandatory1"
+                    android:textColor="#FF0000"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:id="@+id/row1"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@+id/buttonSearchEventTo"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Start in"
+
+                        android:id="@+id/textView6"
+                        android:layout_weight="1"
+                        android:textStyle="bold"
+                        android:textColor="#000000" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="End in"
+
+                        android:id="@+id/textView7"
+                        android:layout_weight="1"
+                        android:textColor="#000000"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:id="@+id/row2"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@id/row1"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Start"
+
+                        android:id="@+id/buttonSearchStartTime"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="End"
+
+                        android:id="@+id/buttonSearchEndTime"
+                        android:layout_weight="1" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:id="@+id/row3"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/row2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Minimum Age"
+                        android:id="@+id/textView8"
+                        android:layout_weight="1"
+                        android:textStyle="bold"
+                        android:textColor="#000000" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Gender"
+                        android:id="@+id/textView9"
+                        android:layout_weight="1"
+                        android:textColor="#000000"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:id="@+id/row4"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@+id/row3"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:ems="10"
+                        android:id="@+id/editTextSearchMinAge"
+                        android:layout_weight="1"
+                        android:hint="Age between 14-40" />
+
+                    <Spinner
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/spinnerSearchGender"
+                        android:layout_weight="1"
+                        android:spinnerMode="dropdown" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:id="@+id/rowRadius"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@id/row4"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Radius"
+                        android:id="@+id/textView11"
+                        android:textColor="#000000"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:layout_width="136dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:ems="10"
+                        android:id="@+id/editTextSearchRadius"
+                        android:hint="1-30 KM" />
+                </TableRow>
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="6dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_below="@+id/rowRadius"
+                    />
+
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:id="@+id/row5"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:layout_below="@+id/divider2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Type of sport"
+                        android:id="@+id/textView10"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="#000000"
+                        android:textStyle="bold"
+                        android:layout_weight="1" />
+
+                    <Spinner
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/spinnerSerachSportType"
+                        android:layout_weight="1"
+                        android:spinnerMode="dropdown" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:id="@+id/row6"
+                    android:layout_below="@+id/row5"
+                    android:layout_height="wrap_content">
+
+                    <CheckBox
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Search for Public"
+                        android:id="@+id/checkBoxSearchPublicEvents"
+                        android:layout_weight="1"
+                        android:checked="true" />
+
+                    <CheckBox
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Search for Private"
+                        android:id="@+id/checkBoxSearchPrivateEvents"
+                        android:layout_weight="1"
+                        android:checked="false" />
+                </TableRow>
+
+
+            </RelativeLayout>
+
+
+        </ScrollView>
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/secondSearchLayout"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Search Event"
+            android:id="@+id/buttonSearchEventExecute"
+            android:textAllCaps="false"
+            android:layout_alignParentBottom="true"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>
