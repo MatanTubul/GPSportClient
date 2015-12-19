@@ -3,6 +3,8 @@ package com.example.matant.gpsportclient.InterfacesAndConstants;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
 import android.util.Base64;
 import android.util.Log;
 
@@ -13,6 +15,8 @@ import com.google.android.gcm.GCMRegistrar;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Nir B on 26/09/2015.
@@ -58,6 +62,10 @@ public final class Constants {
         }
         return null;
     }
+
+
+
+
 
     public static final String COMP = "compress";
     public static final String NO_COMP = "no compress";
@@ -128,6 +136,13 @@ public final class Constants {
     public static final int FASTEST_INTERVAL = 5000; // 5 sec
     public static final int DISPLACEMENT = 10; // 10 meters
     public static final int DEFAULT_RADIUS = 5; // 5 km
+
+    //GPSportLocationManager
+    public static final long GPS_MIN_DISTANCE_CHANGE = 2; // 2
+    public static final long GPS_MIN_TIME_BETWEEN_UPDATE = 1000 * 5 * 1; // 5
+    public static final long NETWORK_MIN_DISTANCE_CHANGE = 5; // 5
+    public static final long NETWORK_MIN_TIME_BETWEEN_UPDATE = 1000 * 10 * 1; // 10
+    //GPSportLocationManager
 
     ////////////////////////Activities Constants/////////////////////////
 

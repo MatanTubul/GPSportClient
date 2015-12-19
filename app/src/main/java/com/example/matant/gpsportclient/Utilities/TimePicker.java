@@ -36,6 +36,7 @@ public class TimePicker extends DialogFragment implements TimePickerDialog.OnTim
     private Date toDate;
     private boolean datecompre;
     private boolean dateFlag;
+    private int equation_type = 1;
 
 
     @Override
@@ -56,9 +57,15 @@ public class TimePicker extends DialogFragment implements TimePickerDialog.OnTim
         int minute = cal.get(Calendar.MINUTE);
         Bundle bundle = this.getArguments();
         Log.d("Calendar",String.valueOf(hour)+":"+String.valueOf(minute));
+        String type = "";
         if(bundle!=null){
-            Time_Picker = bundle.getInt("Time", 1);
+            type = bundle.getString("type");
+            if(type.equals("search")){
+                equation_type = Integer.valueOf(bundle.getString("equation"));
+            }
+            Time_Picker = Integer.valueOf(bundle.getString("val"));
             chosen_date = bundle.getString("date");
+
         }
         Log.d("chosen date",chosen_date);
 
@@ -81,19 +88,6 @@ public class TimePicker extends DialogFragment implements TimePickerDialog.OnTim
         }catch(ParseException ex){
             ex.printStackTrace();
         }
-       /* try {
-
-            if ((new SimpleDateFormat("dd/MM/yyyy").parse(chosen_date).getTime() / (1000 * 60 * 60 * 24)) > System.currentTimeMillis() / (1000 * 60 * 60 * 24)) {
-                datecompre = true;
-                Log.d("date equ","date is bigger");
-            } else {
-                datecompre = false;
-                Log.d("date equ","date is smaller");
-            }
-            Log.d("datecompare",String.valueOf(datecompre));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }*/
         switch (Time_Picker)
         {
             case START_TIME: {
@@ -127,6 +121,8 @@ public class TimePicker extends DialogFragment implements TimePickerDialog.OnTim
             end_hour = hourOfDay;
             end_min = minute;
         }
+        if(equation_type == 1)
+        {
             if(datecompre == false){
                 if(hour > hourOfDay){
                     mListener.onComplete("incorrect_time", "Please insert valid time");
@@ -140,19 +136,24 @@ public class TimePicker extends DialogFragment implements TimePickerDialog.OnTim
                     setMyTime(s,hourOfDay,min);
                 }
             }
-        else {
-                 if((end_hour < start_hour && start_hour != -1 && end_hour != -1)  || (end_hour == start_hour && (start_min > end_min))){
+            else {
+                if((end_hour < start_hour && start_hour != -1 && end_hour != -1)  || (end_hour == start_hour && (start_min > end_min))){
                     this.end_hour = -1;
                     this.start_hour = -1;
                     mListener.onComplete("incorrect_time", "Please insert valid time");
                 }else{
                     setMyTime(s,hourOfDay,min);
                 }
+            }
+        }else{
+            setMyTime(s,hourOfDay,min);
         }
+
 
     }
 
     public void setMyTime(String s,int hourOfDay,String min){
+        Log.d("time picker on set",String.valueOf(Time_Picker));
         if (Time_Picker == START_TIME) {
 
             s = String.valueOf(hourOfDay) + ":" + min;

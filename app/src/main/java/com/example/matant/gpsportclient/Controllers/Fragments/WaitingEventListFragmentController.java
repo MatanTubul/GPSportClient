@@ -14,8 +14,6 @@ import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.R;
-import com.example.matant.gpsportclient.Utilities.InvitationsArrayAdapter;
-import com.example.matant.gpsportclient.Utilities.InvitationsRowModel;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.example.matant.gpsportclient.Utilities.WaitingEventUserAdapter;
 import com.example.matant.gpsportclient.Utilities.WaitingEventUserRow;
@@ -137,7 +135,7 @@ public class WaitingEventListFragmentController extends Fragment implements Asyn
 
     @Override
     public void preProcess() {
-        this.progress = ProgressDialog.show(getActivity(), "Retrieve Invitations",
+        this.progress = ProgressDialog.show(getActivity(), "Retrieve Events",
                 "Loading...", true);
     }
 }

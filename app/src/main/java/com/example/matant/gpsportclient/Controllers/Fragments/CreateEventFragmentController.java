@@ -280,8 +280,9 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
             {
                 {
                     bundle = new Bundle();
-                    dialog_type = "Time";
-                    bundle.putInt(dialog_type, 1);
+                    dialog_type = "val";
+                    bundle.putString(dialog_type, "1");
+                    bundle.putString("type","create");
                     bundle.putString("date",string_date);
                     SET_TIME =true;
                 }
@@ -292,8 +293,9 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                 {
                     {
                         bundle = new Bundle();
-                        dialog_type = "Time";
-                        bundle.putInt(dialog_type, 2);
+                        dialog_type = "val";
+                        bundle.putString("type","create");
+                        bundle.putString(dialog_type,"2");
                         bundle.putString("date",string_date);
                         SET_TIME =true;
                     }
@@ -303,8 +305,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
             {
                 {
                     bundle = new Bundle();
-                    dialog_type = "Date";
-                    bundle.putInt(dialog_type, 1);
+                    dialog_type = "date";
+                    bundle.putString(dialog_type, "create");
                     df = new DatePicker();
                 }
                 break;
@@ -421,7 +423,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
     }
 
-
+///need to remove this function to global location class
 
     /**
      * this function convert real address to geographical coordinates.
@@ -737,7 +739,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                 valid = false;
             }
         }
-        if(!(minAgeEditText.getText().toString().equals("")));
+        if(!(minAgeEditText.getText().toString().equals("")))
         {
             int year = Calendar.getInstance().get(Calendar.YEAR);
             int diff =  year - (Integer.valueOf(sm.getUserDetails().get(Constants.TAG_AGE)));
