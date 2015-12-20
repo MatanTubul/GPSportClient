@@ -401,7 +401,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         if(myLocManager.getmLocationRequest() != null)
         {
             Log.d("my location","startLocationUpdates location");
-            LocationServices.FusedLocationApi.requestLocationUpdates(myLocManager.getmGoogleApiClient(), myLocManager.getmLocationRequest(),this);
+            LocationServices.FusedLocationApi.requestLocationUpdates(myLocManager.getmGoogleApiClient(), myLocManager.getmLocationRequest(), this);
         }
 
     }
@@ -415,9 +415,9 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
     public void updateUI() {
         Log.d("my location","updateUI");
         Log.d("get coordinates","my location");
-        String realAddress = myLocManager.getCompleteAddressString(myLocManager.getmLastLocation().getLatitude(),myLocManager.getmLastLocation().getLatitude(),getActivity());
-
+        String realAddress = myLocManager.getCompleteAddressString(myLocManager.getmLastLocation().getLatitude(),myLocManager.getmLastLocation().getLongitude(),this.getActivity().getApplicationContext());
         Log.d("my coordinates", String.valueOf(myLocManager.getmLastLocation().getLatitude()+","+myLocManager.getmLastLocation().getLongitude()));
+        Log.d("my real address",realAddress);
         if(realAddress != null)
             streetAddress.setText(realAddress);
     }
@@ -435,6 +435,23 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         myLocManager.checkPlayServices();
         if (myLocManager.getmGoogleApiClient().isConnected() && !myLocManager.ismRequestingLocationUpdates()) {
             startLocationUpdates();
+        }
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (myLocManager.getmGoogleApiClient().isConnected()) {
+            myLocManager.getmGoogleApiClient().disconnect();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (myLocManager.getmGoogleApiClient().isConnected()) {
+            stopLocationUpdates();
+            myLocManager.getmGoogleApiClient().disconnect();
         }
     }
 }

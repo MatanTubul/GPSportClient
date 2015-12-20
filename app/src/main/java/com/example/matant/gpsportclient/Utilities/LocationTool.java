@@ -192,6 +192,7 @@ public class LocationTool implements GoogleApiClient.ConnectionCallbacks, Google
         Geocoder geocoder = new Geocoder(ctx, Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+
             if (addresses != null) {
                 Address returnedAddress = addresses.get(0);
                 StringBuilder strReturnedAddress = new StringBuilder("");

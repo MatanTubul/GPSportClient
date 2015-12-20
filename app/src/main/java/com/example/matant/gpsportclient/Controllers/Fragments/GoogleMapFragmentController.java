@@ -145,6 +145,8 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+        if(progress !=null)
+            progress.dismiss();
         locationTool.checkPlayServices();
         if (locationTool.getmGoogleApiClient().isConnected() && !locationTool.ismRequestingLocationUpdates()) {
             startLocationUpdates();
@@ -155,6 +157,8 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     public void onPause() {
         super.onPause();
         mMapView.onPause();
+        if(progress !=null)
+            progress.dismiss();
         if (locationTool.getmGoogleApiClient().isConnected())
             stopLocationUpdates();
     }
@@ -162,6 +166,8 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     @Override
     public void onStop() {
         super.onStop();
+        if(progress !=null)
+            progress.dismiss();
         if (locationTool.getmGoogleApiClient().isConnected()) {
             locationTool.getmGoogleApiClient().disconnect();
         }
