@@ -42,8 +42,12 @@ import com.google.android.gms.maps.model.LatLng;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -102,6 +106,8 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         timeFrom.setText(dtFunctions.getCorrentTime());
         timeTo.setText(dtFunctions.getCorrentTime());
 
+        sm = SessionManager.getInstance(getActivity());
+
         //gender spinner
         spinnerGender.setAdapter(new MyAdapter(getActivity(), R.layout.custom_spinner, getResources().getStringArray(R.array.eventgender)));
         spinnerGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -142,10 +148,13 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
                     }
                     case 1: {
                         streetAddress.setEnabled(false);
-                        Log.d("my location", "check getmGoogleApiClient location");
                         if (myLocManager.getmGoogleApiClient() != null)
-                            Log.d("my location", "creating location");
+                        {
+                            Log.d("check if getmGoogleApiClient()", "check location");
+                            myLocManager.buildGoogleApiClientAndCreateLocationRequest();
                             myLocManager.getmGoogleApiClient().connect();
+
+                        }
 
                         break;
                     }
@@ -171,6 +180,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
 
     @Override
     public void sendDataToDBController() {
+        JSONObject jobjRecentSearch = new JSONObject();
 
         if(pos == 0){
             LatLng loc = myLocManager.getLocationFromAddress(streetAddress.getText().toString());
@@ -216,6 +226,47 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         nameValuePairList.add(event_radius);
         nameValuePairList.add(private_checkbox);
         nameValuePairList.add(public_checkbox);
+        Log.d("my nameValuePairList",nameValuePairList.toString());
+
+        try {
+            for(int i= 0;i < nameValuePairList.size();i++){
+                Log.d("loop index is",String.valueOf(i));
+                jobjRecentSearch.put(nameValuePairList.get(i).getName(),nameValuePairList.get(i).getValue());
+            }
+            Log.d("json 1", jobjRecentSearch.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if(sm.getSearchIndex() >= 0)
+        {
+            Log.d("search index is",String.valueOf(sm.getSearchIndex()));
+            int rsIndex = sm.getSearchIndex();
+            if(rsIndex == 0)
+                rsIndex = 5;
+            if(rsIndex <= 5)
+            {
+                switch (rsIndex){
+                    case 1:
+                        sm.StoreUserSession(jobjRecentSearch.toString(),Constants.TAG_SEARCH1);
+                        break;
+                    case 2:
+                        sm.StoreUserSession(jobjRecentSearch.toString(),Constants.TAG_SEARCH2);
+                        break;
+                    case 3:
+                        sm.StoreUserSession(jobjRecentSearch.toString(),Constants.TAG_SEARCH3);
+                        break;
+                    case 4:
+                        sm.StoreUserSession(jobjRecentSearch.toString(),Constants.TAG_SEARCH4);
+                        break;
+                    case 5:
+                        sm.StoreUserSession(jobjRecentSearch.toString(),Constants.TAG_SEARCH5);
+                        break;
+                }
+                sm.storeIndex((rsIndex - 1));
+            }
+        }
+
         dbController = new DBcontroller(getActivity().getApplicationContext(),this);
         dbController.execute(nameValuePairList);
     }
@@ -354,14 +405,11 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
     public void onResume() {
         super.onResume();
         if( pos == 1 ){
-            Log.d("return from settings","updating");
+            Log.d("return from settings", "updating");
             myLocManager.checkPlayServices();
             if (myLocManager.getmGoogleApiClient().isConnected() && !myLocManager.ismRequestingLocationUpdates()) {
+                Log.d("my location", "getmGoogleApiClient() true");
                 startLocationUpdates();
-            }
-            if (myLocManager.getmGoogleApiClient() != null) {
-                Log.d("my location", "creating location");
-                myLocManager.getmGoogleApiClient().connect();
             }
         }
     }

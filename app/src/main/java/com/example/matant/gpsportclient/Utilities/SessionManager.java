@@ -39,14 +39,33 @@ public class SessionManager  {
         this._context=context;
         pref = _context.getSharedPreferences(Constants.PREFER_NAME, Constants.PRIVATE_MODE);
         editor = pref.edit();
+        if(getSearchIndex() <= 0 )
+                    storeIndex(5);
         if(getUserDetails().get(Constants.TAG_CONNECTED) == null)
             StoreUserSession("false", Constants.TAG_CONNECTED);
     }
 
     public void StoreUserSession(String val,String Key ){
+
         editor.putString(Key, val);
         editor.commit();
-
+    }
+    public int getSearchIndex(){
+        int idx = pref.getInt(Constants.TAG_SEARCH_INDEX,0);
+        return  idx;
+    }
+    public void storeIndex(int num){
+        editor.putInt(Constants.TAG_SEARCH_INDEX,num);
+        editor.commit();
+    }
+    public HashMap<String,String> getRecentSearches(){
+        HashMap<String,String> rs = new HashMap<String,String>();
+        rs.put(Constants.TAG_SEARCH1,pref.getString(Constants.TAG_SEARCH1,null));
+        rs.put(Constants.TAG_SEARCH2,pref.getString(Constants.TAG_SEARCH2,null));
+        rs.put(Constants.TAG_SEARCH3,pref.getString(Constants.TAG_SEARCH3,null));
+        rs.put(Constants.TAG_SEARCH4,pref.getString(Constants.TAG_SEARCH4,null));
+        rs.put(Constants.TAG_SEARCH5,pref.getString(Constants.TAG_SEARCH5,null));
+        return rs;
     }
 
     public HashMap<String,String> getUserDetails(){

@@ -182,5 +182,15 @@ public final class Constants {
     public static final String TAG_PUBLIC = "public";
 
 
+    //Recent Searches
+    public static final String TAG_SEARCH1 = "5";
+    public static final String TAG_SEARCH2 = "4";
+    public static final String TAG_SEARCH3 = "3";
+    public static final String TAG_SEARCH4 = "2";
+    public static final String TAG_SEARCH5 = "1";
+    public static final String TAG_SEARCH_INDEX = "idx";
+
+
+
 
 }
