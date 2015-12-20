@@ -25,15 +25,19 @@ import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.InterfacesAndConstants.OnCompleteListener;
+import com.example.matant.gpsportclient.InterfacesAndConstants.OnLocationChangedListener;
 import com.example.matant.gpsportclient.InterfacesAndConstants.OnLocationFoundListener;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.DateAndTimeFunctions;
 import com.example.matant.gpsportclient.Utilities.DatePicker;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
 import com.example.matant.gpsportclient.Utilities.GPSportLocationManager;
+import com.example.matant.gpsportclient.Utilities.LocationTool;
 import com.example.matant.gpsportclient.Utilities.MyAdapter;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.example.matant.gpsportclient.Utilities.TimePicker;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -41,7 +45,7 @@ import org.apache.http.message.BasicNameValuePair;
 import java.util.ArrayList;
 
 
-public class SearchEventFragmentController extends Fragment implements AsyncResponse,OnLocationFoundListener,View.OnClickListener,OnCompleteListener {
+public class SearchEventFragmentController extends Fragment implements AsyncResponse,View.OnClickListener,OnCompleteListener,OnLocationChangedListener,com.google.android.gms.location.LocationListener {
     private RadioGroup searchRdg;
     private EditText streetAddress,radius,minimumAge;
     private Button dateFrom,dateTo,timeFrom,timeTo,searchEvent;
@@ -49,7 +53,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
     private int pos;
     private SessionManager sm;
     private DBcontroller dbController;
-    private GPSportLocationManager myLocManager;
+    private LocationTool myLocManager;
     private Location currentLocation;
     private ProgressDialog progress;
     private CheckBox cbPublic,cbPrivate;
@@ -89,7 +93,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         sm = SessionManager.getInstance(getActivity());
         pos = 0;
         dtFunctions = new DateAndTimeFunctions();
-        myLocManager = new GPSportLocationManager(getActivity(),this);
+        myLocManager = new LocationTool(this,this);
         dateFrom.setText(dtFunctions.getCurrentDate());
         dateTo.setText(dtFunctions.getCurrentDate());
         timeFrom.setText(dtFunctions.getCorrentTime());
@@ -135,7 +139,10 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
                     }
                     case 1: {
                         streetAddress.setEnabled(false);
-                        myLocManager.getLocation();
+                        Log.d("my location", "check getmGoogleApiClient location");
+                        if (myLocManager.getmGoogleApiClient() != null)
+                            Log.d("my location","creating location");
+                            myLocManager.getmGoogleApiClient().connect();
                         break;
                     }
                 }
@@ -182,34 +189,14 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
 
     }
 
-    @Override
-    public void onLocationFound(Location loc) {
-        progress.dismiss();
-        currentLocation = loc;
-        Log.d("position is",String.valueOf(pos));
-        Log.d("try locating",String.valueOf(myLocManager.isTryLocating()));
-            if(currentLocation != null){
-                String address = null;
-                Log.d("my coordinates are",currentLocation.getLatitude()+","+currentLocation.getLongitude());
-                address = myLocManager.getCompleteAddressString(currentLocation.getLatitude(),currentLocation.getLongitude(),getActivity());
-                if(address != null){
-                    Log.d("the real address is",address);
-                    streetAddress.setText(address);
-                }
-            }
 
-
-
-
-
-
-    }
-
-    @Override
+    /*@Override
     public void getLocationInProccess() {
         this.progress = ProgressDialog.show(getActivity(), "Retrieve Location",
                 "Locating your device...", true);
-    }
+    }*/
+
+
     private boolean isParamAreValid(){
 
             boolean valid = true;
@@ -338,15 +325,18 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
     @Override
     public void onPause() {
         super.onPause();
-        if(progress != null)
-            progress.dismiss();
+        /*if(progress != null)
+            progress.dismiss();*/
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if( pos == 1 && myLocManager.isTryLocating() == true){
-            myLocManager.getLocation();
+        if( pos == 1 ){
+            myLocManager.checkPlayServices();
+            if (myLocManager.getmGoogleApiClient().isConnected() && !myLocManager.ismRequestingLocationUpdates()) {
+                startLocationUpdates();
+            }
         }
     }
 
@@ -403,6 +393,48 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
                         .show();
                 break;
             }
+        }
+    }
+
+    @Override
+    public void startLocationUpdates() {
+        if(myLocManager.getmLocationRequest() != null)
+        {
+            Log.d("my location","startLocationUpdates location");
+            LocationServices.FusedLocationApi.requestLocationUpdates(myLocManager.getmGoogleApiClient(), myLocManager.getmLocationRequest(),this);
+        }
+
+    }
+
+    @Override
+    public void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(myLocManager.getmGoogleApiClient(), this);
+    }
+
+    @Override
+    public void updateUI() {
+        Log.d("my location","updateUI");
+        Log.d("get coordinates","my location");
+        String realAddress = myLocManager.getCompleteAddressString(myLocManager.getmLastLocation().getLatitude(),myLocManager.getmLastLocation().getLatitude(),getActivity());
+
+        Log.d("my coordinates", String.valueOf(myLocManager.getmLastLocation().getLatitude()+","+myLocManager.getmLastLocation().getLongitude()));
+        if(realAddress != null)
+            streetAddress.setText(realAddress);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.d("my location","onLocationChanged");
+        myLocManager.setmLastLocation(location);
+        updateUI();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        myLocManager.checkPlayServices();
+        if (myLocManager.getmGoogleApiClient().isConnected() && !myLocManager.ismRequestingLocationUpdates()) {
+            startLocationUpdates();
         }
     }
 }

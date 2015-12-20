@@ -25,14 +25,10 @@ import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.InterfacesAndConstants.OnLocationChangedListener;
 import com.example.matant.gpsportclient.R;
-import com.example.matant.gpsportclient.Utilities.AddressFetcher;
 import com.example.matant.gpsportclient.Utilities.LocationTool;
 import com.example.matant.gpsportclient.Utilities.MapMarker;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationRequest;
+
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -189,6 +185,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     }
 
     public void startLocationUpdates() {
+        if(locationTool.getmLocationRequest() != null)
         LocationServices.FusedLocationApi.requestLocationUpdates(locationTool.getmGoogleApiClient(), locationTool.getmLocationRequest(), this);
     }
 

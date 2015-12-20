@@ -1,12 +1,18 @@
 package com.example.matant.gpsportclient.Utilities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
@@ -16,6 +22,10 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.List;
+import java.util.Locale;
 
 /**
  *  * This class will manage the GoogleApiClient and the location changing handle
@@ -28,6 +38,8 @@ public class LocationTool implements GoogleApiClient.ConnectionCallbacks, Google
     private Location mLastLocation;
     private boolean mRequestingLocationUpdates;
     public OnLocationChangedListener delegate= null;
+    private LocationManager locationManager;
+    private boolean gpsEnabled,networkEnabled;
 
     public LocationTool (Fragment frag, OnLocationChangedListener onLocationChangedListener)
     {
@@ -77,11 +89,26 @@ public class LocationTool implements GoogleApiClient.ConnectionCallbacks, Google
     }
 
     private void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(Constants.UPDATE_INTERVAL);
-        mLocationRequest.setFastestInterval(Constants.FASTEST_INTERVAL);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setSmallestDisplacement(Constants.DISPLACEMENT);
+        locationManager = (LocationManager) frag.getActivity().getSystemService(Context.LOCATION_SERVICE);
+        gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        networkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        if(!gpsEnabled && !networkEnabled){
+            Log.d("Location Services is off","failed");
+            LocationAlertDialog();
+        }
+        else
+        {
+            Log.d("Location Services is on","OK");
+            mLocationRequest = new LocationRequest();
+            mLocationRequest.setInterval(Constants.UPDATE_INTERVAL);
+            mLocationRequest.setFastestInterval(Constants.FASTEST_INTERVAL);
+            if(gpsEnabled)
+                mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            else
+               // mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+            mLocationRequest.setSmallestDisplacement(Constants.DISPLACEMENT);
+        }
+
     }
 
     public boolean checkPlayServices() {
@@ -127,6 +154,90 @@ public class LocationTool implements GoogleApiClient.ConnectionCallbacks, Google
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Log.i(this.frag.getClass().toString(), "Connection failed: ConnectionResult.getErrorCode() = "
                 + connectionResult.getErrorCode());
+        Log.d("Location services is off","failed");
+    }
+
+    public void LocationAlertDialog() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(frag.getActivity());
+        alertDialog.setTitle("Location settings");
+        alertDialog.setMessage("We cannot retrieve your location. Please click on Settings and make sure your Location services is enabled");
+        alertDialog.setPositiveButton("Settings",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(
+                                Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        frag.getActivity().startActivity(intent);
+                    }
+                });
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        alertDialog.show();
+    }
+
+    /**
+     * this function get Longitude and Latitude coordinates and send back the real street address.
+     * @param LATITUDE
+     * @param LONGITUDE
+     * @param ctx
+     * @return
+     */
+    public String getCompleteAddressString(double LATITUDE, double LONGITUDE, Context ctx) {
+        String strAdd = "";
+        Geocoder geocoder = new Geocoder(ctx, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            if (addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("");
+
+                for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                }
+                strAdd = strReturnedAddress.toString();
+                Log.w("My Current location address", "" + strReturnedAddress.toString());
+            } else {
+                Log.w("My Current location address", "No Address returned!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.w("My Current location address", "Can not get Address!");
+        }
+        return strAdd;
+    }
+
+    /**
+     * this function convert real address to geographical coordinates.
+     * @param strAddress -real address
+     * @return LatLng object which contain the coordinates
+     */
+    public LatLng getLocationFromAddress(String strAddress) {
+        Geocoder coder = new Geocoder(frag.getActivity());
+        List<Address> address;
+        LatLng p1 = null;
+
+        try {
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                return null;
+            }
+            Address location = address.get(0);
+            location.getLatitude();
+            location.getLongitude();
+            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+            Log.d("coordinates",p1.latitude+""+p1.longitude);
+
+        } catch (Exception ex) {
+            Log.d("Location Exception", "error converting address");
+            ex.printStackTrace();
+        }
+
+        return p1;
     }
 
 
