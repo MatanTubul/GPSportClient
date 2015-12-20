@@ -40,9 +40,11 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class SearchEventFragmentController extends Fragment implements AsyncResponse,View.OnClickListener,OnCompleteListener,OnLocationChangedListener,com.google.android.gms.location.LocationListener {
@@ -63,6 +65,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
     private boolean SET_TIME =false;
     private DialogFragment tp = null;
     private  DialogFragment df = null;
+    private double lon,lat;
 
 
     @Override
@@ -163,45 +166,65 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
 
     @Override
     public void handleResponse(String resStr) {
-
+            progress.dismiss();
     }
 
     @Override
     public void sendDataToDBController() {
+
         if(pos == 0){
             LatLng loc = myLocManager.getLocationFromAddress(streetAddress.getText().toString());
+            lat = loc.latitude;
+            lon = loc.longitude;
             if(loc == null){
                 streetAddress.setError("Location was not found");
                 return;
             }
+        }else{
+
         }
         BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST,"search_event");
-        BasicNameValuePair lat_cord = new BasicNameValuePair(Constants.TAG_LAT,"latitude");
-        BasicNameValuePair lon_cord = new BasicNameValuePair(Constants.TAG_LONG,"longitude");
+        BasicNameValuePair lat_cord = new BasicNameValuePair(Constants.TAG_LAT,String.valueOf(lat));
+        BasicNameValuePair lon_cord = new BasicNameValuePair(Constants.TAG_LONG,String.valueOf(lon));
         BasicNameValuePair start_date = new BasicNameValuePair(Constants.TAG_START_DATE,dateFrom.getText().toString());
         BasicNameValuePair end_date = new BasicNameValuePair(Constants.TAG_END_DATE,dateTo.getText().toString());
+        BasicNameValuePair start_time = new BasicNameValuePair(Constants.TAG_START_TIME,timeFrom.getText().toString());
+        BasicNameValuePair end_time = new BasicNameValuePair(Constants.TAG_END_TIME,timeTo.getText().toString());
+        BasicNameValuePair min_age = new BasicNameValuePair(Constants.TAG_MIN_AGE,minimumAge.getText().toString());
+        BasicNameValuePair gender = new BasicNameValuePair(Constants.TAG_GEN,spinnerGender.getSelectedItem().toString());
+        BasicNameValuePair event_radius = new BasicNameValuePair(Constants.TAG_RADIUS,radius.getText().toString());
+        boolean eventPrivate,eventPublic;
+        eventPrivate = cbPrivate.isChecked();
+        eventPublic = cbPublic.isChecked();
+        BasicNameValuePair private_checkbox = new BasicNameValuePair(Constants.TAG_PRIVATE,String.valueOf(eventPrivate));
+        BasicNameValuePair public_checkbox = new BasicNameValuePair(Constants.TAG_PUBLIC,String.valueOf(eventPublic));
 
-
-
+        List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+        nameValuePairList.add(tagreq);
+        nameValuePairList.add(lat_cord);
+        nameValuePairList.add(lon_cord);
+        nameValuePairList.add(start_date);
+        nameValuePairList.add(end_date);
+        nameValuePairList.add(start_time);
+        nameValuePairList.add(end_time);
+        nameValuePairList.add(min_age);
+        nameValuePairList.add(gender);
+        nameValuePairList.add(event_radius);
+        nameValuePairList.add(private_checkbox);
+        nameValuePairList.add(public_checkbox);
+        dbController = new DBcontroller(getActivity().getApplicationContext(),this);
+        dbController.execute(nameValuePairList);
     }
 
     @Override
     public void preProcess() {
-
+        this.progress = ProgressDialog.show(getActivity(), "Searching Events",
+                "Loading...", true);
     }
-
-
-    /*@Override
-    public void getLocationInProccess() {
-        this.progress = ProgressDialog.show(getActivity(), "Retrieve Location",
-                "Locating your device...", true);
-    }*/
-
-
     private boolean isParamAreValid(){
 
             boolean valid = true;
-        if ((streetAddress.getText().toString().equals("")) && pos == 1){
+        if ((streetAddress.getText().toString().equals("")) && (pos == 0 || pos == 1)){
                 valid = false;
                 streetAddress.setError("Street Address is missing!");
             }
@@ -413,10 +436,9 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
     @Override
     public void updateUI() {
         Log.d("my location","updateUI");
-        Log.d("get coordinates","my location");
         String realAddress = myLocManager.getCompleteAddressString(myLocManager.getmLastLocation().getLatitude(),myLocManager.getmLastLocation().getLongitude(),this.getActivity().getApplicationContext());
-        Log.d("my coordinates", String.valueOf(myLocManager.getmLastLocation().getLatitude()+","+myLocManager.getmLastLocation().getLongitude()));
-        Log.d("my real address",realAddress);
+        lon = myLocManager.getmLastLocation().getLongitude();
+        lat = myLocManager.getmLastLocation().getLatitude();
         if(realAddress != null)
             streetAddress.setText(realAddress);
     }
