@@ -266,7 +266,6 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
                 sm.storeIndex((rsIndex - 1));
             }
         }
-
         dbController = new DBcontroller(getActivity().getApplicationContext(),this);
         dbController.execute(nameValuePairList);
     }
