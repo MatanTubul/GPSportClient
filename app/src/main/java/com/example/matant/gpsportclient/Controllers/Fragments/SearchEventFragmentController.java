@@ -193,6 +193,9 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         BasicNameValuePair min_age = new BasicNameValuePair(Constants.TAG_MIN_AGE,minimumAge.getText().toString());
         BasicNameValuePair gender = new BasicNameValuePair(Constants.TAG_GEN,spinnerGender.getSelectedItem().toString());
         BasicNameValuePair event_radius = new BasicNameValuePair(Constants.TAG_RADIUS,radius.getText().toString());
+        BasicNameValuePair typeOfSport = new BasicNameValuePair(Constants.TAG_KIND_OF_SPORT,spinnerKindOfSport.getSelectedItem().toString());
+
+
         boolean eventPrivate,eventPublic;
         eventPrivate = cbPrivate.isChecked();
         eventPublic = cbPublic.isChecked();
@@ -209,6 +212,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         nameValuePairList.add(end_time);
         nameValuePairList.add(min_age);
         nameValuePairList.add(gender);
+        nameValuePairList.add(typeOfSport);
         nameValuePairList.add(event_radius);
         nameValuePairList.add(private_checkbox);
         nameValuePairList.add(public_checkbox);
