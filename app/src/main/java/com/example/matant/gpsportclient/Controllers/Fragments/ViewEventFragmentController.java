@@ -430,7 +430,7 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
                     {
 
                         Log.d("sss",jsonObj.getString("status"));
-                        /*Fragment fragment = new ViewEventFragmentController();
+                        Fragment fragment = new ViewEventFragmentController();
                         Bundle args = new Bundle();
                         args.putString("event",eventDetailsJsonStr);
                         fragment.setArguments(args);
@@ -441,10 +441,9 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
                             fragTransaction.replace(R.id.content_frame, fragment).commit();
                         } else {
                             Log.e("GoogleMap Fragment", "Error in creating fragment");
-                        }*/
+                        }
                         break;
                     }
-
 
                     case Constants.TAG_REQUEST_FAILED:
                     {
