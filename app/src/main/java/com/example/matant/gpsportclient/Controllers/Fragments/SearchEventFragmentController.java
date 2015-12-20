@@ -141,8 +141,9 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
                         streetAddress.setEnabled(false);
                         Log.d("my location", "check getmGoogleApiClient location");
                         if (myLocManager.getmGoogleApiClient() != null)
-                            Log.d("my location","creating location");
+                            Log.d("my location", "creating location");
                             myLocManager.getmGoogleApiClient().connect();
+
                         break;
                     }
                 }
@@ -242,8 +243,6 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
             equ_type = "1";
         else
             equ_type = "2";
-
-
         switch (v.getId()){
             case R.id.checkBoxSearchPrivateEvents:
                    if(!cbPrivate.isChecked())
@@ -317,25 +316,25 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
             tp.setArguments(bundle);
             tp.setTargetFragment(this,0);
             tp.show(getFragmentManager(),dialog_type);
-
         }
-
     }
-
     @Override
     public void onPause() {
         super.onPause();
-        /*if(progress != null)
-            progress.dismiss();*/
     }
 
     @Override
     public void onResume() {
         super.onResume();
         if( pos == 1 ){
+            Log.d("return from settings","updating");
             myLocManager.checkPlayServices();
             if (myLocManager.getmGoogleApiClient().isConnected() && !myLocManager.ismRequestingLocationUpdates()) {
                 startLocationUpdates();
+            }
+            if (myLocManager.getmGoogleApiClient() != null) {
+                Log.d("my location", "creating location");
+                myLocManager.getmGoogleApiClient().connect();
             }
         }
     }
@@ -454,4 +453,6 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
             myLocManager.getmGoogleApiClient().disconnect();
         }
     }
+
+
 }
