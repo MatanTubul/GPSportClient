@@ -39,7 +39,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -74,7 +77,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
                              Bundle savedInstanceState) {
 
        final View rootView = inflater.inflate(R.layout.fragment_search_event_fragment_controller, container, false);
-
+        getActivity().setTitle("Search Events");
         searchRdg = (RadioGroup) rootView.findViewById(R.id.radioGroupSearchFragment);
         streetAddress = (EditText) rootView.findViewById(R.id.editTextSearchAddress);
         radius = (EditText) rootView.findViewById(R.id.editTextSearchRadius);
@@ -193,6 +196,21 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
                 }
                 lon = Double.valueOf(jsobj.getString(Constants.TAG_LONG));
                 lat = Double.valueOf(jsobj.getString(Constants.TAG_LAT));
+                Date currDate = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                try {
+                    Date date1 = sdf.parse(jsobj.getString(Constants.TAG_START_DATE).toString());
+                    Date date2 = sdf.parse(jsobj.getString(Constants.TAG_END_DATE).toString());
+                    if (date1.after(currDate)){
+                        dateFrom.setText(jsobj.getString(Constants.TAG_START_DATE).toString());
+                    }
+                    if(date2.after(currDate)){
+                        dateTo.setText(jsobj.getString(Constants.TAG_END_DATE).toString());
+                    }
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
 
             } catch (JSONException e) {
