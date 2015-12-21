@@ -2,9 +2,8 @@ package com.example.matant.gpsportclient.Controllers.Activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -30,7 +29,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 public class InviteUsersActivity extends AppCompatActivity implements AsyncResponse, View.OnClickListener{

@@ -3,20 +3,13 @@ package com.example.matant.gpsportclient.InterfacesAndConstants;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.location.Address;
-import android.location.Geocoder;
 import android.util.Base64;
 import android.util.Log;
 
-import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
-import com.google.android.gcm.GCMRegistrar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Nir B on 26/09/2015.

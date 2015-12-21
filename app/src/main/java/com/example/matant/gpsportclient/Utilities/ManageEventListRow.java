@@ -1,10 +1,5 @@
 package com.example.matant.gpsportclient.Utilities;
 
-import android.widget.ImageButton;
-
-import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**

@@ -1,10 +1,5 @@
 package com.example.matant.gpsportclient.Utilities;
 
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.example.matant.gpsportclient.R;
-
 /**
  * class that describe item in the Invited Users list.
  * Created by matant on 10/12/2015.

@@ -2,9 +2,7 @@ package com.example.matant.gpsportclient.Controllers;
 
 
 import android.content.Context;
-
 import android.os.AsyncTask;
-
 import android.util.Log;
 import android.widget.Toast;
 
@@ -25,6 +23,7 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;

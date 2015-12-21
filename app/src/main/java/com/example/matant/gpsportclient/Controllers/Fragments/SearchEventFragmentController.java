@@ -4,7 +4,6 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -16,10 +15,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
@@ -27,28 +24,22 @@ import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.InterfacesAndConstants.OnCompleteListener;
 import com.example.matant.gpsportclient.InterfacesAndConstants.OnLocationChangedListener;
-import com.example.matant.gpsportclient.InterfacesAndConstants.OnLocationFoundListener;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.DateAndTimeFunctions;
 import com.example.matant.gpsportclient.Utilities.DatePicker;
-import com.example.matant.gpsportclient.Utilities.ErrorHandler;
-import com.example.matant.gpsportclient.Utilities.GPSportLocationManager;
 import com.example.matant.gpsportclient.Utilities.LocationTool;
 import com.example.matant.gpsportclient.Utilities.MyAdapter;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.example.matant.gpsportclient.Utilities.TimePicker;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -469,6 +460,11 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         }
     }
 
+    /**
+     * function which handling the all callbacks from DatePicker and TimePicker classes
+     * @param flag
+     * @param res
+     */
     @Override
     public void onComplete(String flag, String res) {
         settime = 0;
@@ -541,6 +537,10 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         LocationServices.FusedLocationApi.removeLocationUpdates(myLocManager.getmGoogleApiClient(), this);
     }
 
+    /**
+     * function which updating the location of the Device and represent
+     * it as a real address on the UI.
+     */
     @Override
     public void updateUI() {
         Log.d("my location","updateUI");

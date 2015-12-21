@@ -2,23 +2,18 @@ package com.example.matant.gpsportclient.Utilities;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.matant.gpsportclient.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

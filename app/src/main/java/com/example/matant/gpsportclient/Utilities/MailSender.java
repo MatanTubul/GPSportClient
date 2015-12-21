@@ -1,7 +1,9 @@
 package com.example.matant.gpsportclient.Utilities;
 
 import android.util.Log;
+
 import java.util.Properties;
+
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;

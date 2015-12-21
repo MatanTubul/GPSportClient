@@ -5,9 +5,6 @@ package com.example.matant.gpsportclient.Utilities;
  */
 
 
-import java.util.ArrayList;
-import java.util.List;
-import com.example.matant.gpsportclient.R;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -19,6 +16,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.matant.gpsportclient.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class InviteUsersArrayAdapter extends ArrayAdapter<InviteUsersListRow> {
 

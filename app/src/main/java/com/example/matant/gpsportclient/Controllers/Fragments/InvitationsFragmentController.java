@@ -15,7 +15,6 @@ import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.InvitationsArrayAdapter;
 import com.example.matant.gpsportclient.Utilities.InvitationsRowModel;
-import com.example.matant.gpsportclient.Utilities.ManageEventListRow;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 
 import org.apache.http.NameValuePair;

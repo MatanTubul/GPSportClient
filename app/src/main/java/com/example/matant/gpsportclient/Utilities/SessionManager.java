@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.example.matant.gpsportclient.Controllers.Activities.Login;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
-import com.example.matant.gpsportclient.MainScreen;
 
 import java.util.HashMap;
 

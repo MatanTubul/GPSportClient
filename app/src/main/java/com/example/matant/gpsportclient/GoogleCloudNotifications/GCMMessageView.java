@@ -2,14 +2,11 @@ package com.example.matant.gpsportclient.GoogleCloudNotifications;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.matant.gpsportclient.Controllers.Activities.Login;
@@ -18,10 +15,7 @@ import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.R;
-import com.example.matant.gpsportclient.SplashScreen;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
-import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
-
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;

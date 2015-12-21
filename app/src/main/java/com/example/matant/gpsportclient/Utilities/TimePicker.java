@@ -8,7 +8,6 @@ import android.util.Log;
 
 import com.example.matant.gpsportclient.InterfacesAndConstants.OnCompleteListener;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

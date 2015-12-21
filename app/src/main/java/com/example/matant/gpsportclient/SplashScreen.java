@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
-
 import com.example.matant.gpsportclient.Controllers.Activities.Login;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.Utilities.SessionManager;

@@ -15,9 +15,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.Controllers.Fragments.AttendingListFragmentController;
 import com.example.matant.gpsportclient.Controllers.Fragments.CreateEventFragmentController;
-import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.Controllers.Fragments.GoogleMapFragmentController;
 import com.example.matant.gpsportclient.Controllers.Fragments.InvitationsFragmentController;
 import com.example.matant.gpsportclient.Controllers.Fragments.ManageEventFragmentController;

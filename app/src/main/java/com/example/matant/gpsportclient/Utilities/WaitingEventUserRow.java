@@ -1,7 +1,5 @@
 package com.example.matant.gpsportclient.Utilities;
 
-import android.widget.ArrayAdapter;
-
 /**
  * this class is representing a specific row in the Waiting Event List Adapter.
  * Created by matant on 12/16/2015.

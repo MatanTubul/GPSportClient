@@ -2,14 +2,13 @@ package com.example.matant.gpsportclient.Controllers.Fragments;
 
 import android.app.Activity;
 import android.app.DialogFragment;
-
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -17,24 +16,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.matant.gpsportclient.Controllers.Activities.InviteUsersActivity;
 import com.example.matant.gpsportclient.Controllers.Activities.SchedulePopUp;
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
-import com.example.matant.gpsportclient.Controllers.Activities.InviteUsersActivity;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
-import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.InterfacesAndConstants.OnCompleteListener;
+import com.example.matant.gpsportclient.MainScreen;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.CreateInviteUsersRow;
 import com.example.matant.gpsportclient.Utilities.CreateInvitedUsersAdapter;
@@ -51,16 +47,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 
 public class CreateEventFragmentController extends Fragment implements View.OnClickListener,OnCompleteListener,AsyncResponse {

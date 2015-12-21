@@ -1,7 +1,5 @@
 package com.example.matant.gpsportclient.Utilities;
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 

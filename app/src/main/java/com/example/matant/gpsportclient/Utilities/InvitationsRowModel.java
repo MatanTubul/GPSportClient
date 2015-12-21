@@ -1,7 +1,5 @@
 package com.example.matant.gpsportclient.Utilities;
 
-import android.widget.TextView;
-
 /**
  * Created by matant on 12/10/2015.
  */

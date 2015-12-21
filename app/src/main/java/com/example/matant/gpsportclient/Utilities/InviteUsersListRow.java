@@ -1,7 +1,6 @@
 package com.example.matant.gpsportclient.Utilities;
 
 import android.graphics.Bitmap;
-import android.widget.ImageView;
 
 /**
  * Created by matant on 9/22/2015.
