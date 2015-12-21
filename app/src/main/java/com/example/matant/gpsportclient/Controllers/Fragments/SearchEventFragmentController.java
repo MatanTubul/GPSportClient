@@ -147,6 +147,11 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
                 switch (pos) {
                     case 0: {
                         streetAddress.setEnabled(true);
+                        streetAddress.setText("");
+                        if (myLocManager.getmGoogleApiClient().isConnected()) {
+                            stopLocationUpdates();
+                            myLocManager.getmGoogleApiClient().disconnect();
+                        }
                         break;
                     }
                     case 1: {
@@ -452,6 +457,11 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         if( pos == 1 ){
             Log.d("return from settings", "updating");
             myLocManager.checkPlayServices();
+            if(!(myLocManager.getmGoogleApiClient().isConnected()))
+            {
+                myLocManager.buildGoogleApiClientAndCreateLocationRequest();
+                myLocManager.getmGoogleApiClient().connect();
+            }
             if (myLocManager.getmGoogleApiClient().isConnected() && !myLocManager.ismRequestingLocationUpdates()) {
                 Log.d("my location", "getmGoogleApiClient() true");
                 startLocationUpdates();

@@ -105,7 +105,7 @@ public class LocationTool implements GoogleApiClient.ConnectionCallbacks, Google
             if(gpsEnabled)
                 mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
             else
-               // mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+                mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
             mLocationRequest.setSmallestDisplacement(Constants.DISPLACEMENT);
         }
 
