@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.InterfacesAndConstants.OnLocationChangedListener;
+import com.example.matant.gpsportclient.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -159,6 +160,7 @@ public class LocationTool implements GoogleApiClient.ConnectionCallbacks, Google
     public void LocationAlertDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(frag.getActivity());
         alertDialog.setTitle("Location settings");
+        alertDialog.setIcon(R.drawable.warning_32);
         alertDialog.setMessage("We cannot retrieve your location. Please click on Settings and make sure your Location services is enabled");
         alertDialog.setPositiveButton("Settings",
                 new DialogInterface.OnClickListener() {
