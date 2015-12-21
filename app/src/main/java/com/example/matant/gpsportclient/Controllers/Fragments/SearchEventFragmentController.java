@@ -52,7 +52,6 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
     private SessionManager sm;
     private DBcontroller dbController;
     private LocationTool myLocManager;
-    private Location currentLocation;
     private ProgressDialog progress;
     private CheckBox cbPublic,cbPrivate;
     private DateAndTimeFunctions dtFunctions;
@@ -108,7 +107,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ;
+
             }
 
             @Override
@@ -185,11 +184,11 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
                 spinnerKindOfSport.setSelection(getIndexSpinnerByValue(spinnerKindOfSport, jsobj.getString(Constants.TAG_KIND_OF_SPORT)));
                 spinnerGender.setSelection(getIndexSpinnerByValue(spinnerGender, jsobj.getString(Constants.TAG_GEN)));
                 boolean tmp = Boolean.valueOf(jsobj.getString(Constants.TAG_PRIVATE));
-                if(tmp == true){
+                if(tmp){
                     cbPrivate.setChecked(true);
                 }
                 tmp = Boolean.valueOf(jsobj.getString(Constants.TAG_PUBLIC));
-                if(tmp == true)
+                if(tmp)
                 {
                     cbPublic.setChecked(true);
                 }
@@ -224,8 +223,6 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
                 streetAddress.setError("Location was not found");
                 return;
             }
-        }else{
-
         }
         BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST,"search_event");
         BasicNameValuePair lat_cord = new BasicNameValuePair(Constants.TAG_LAT,String.valueOf(lat));
@@ -356,7 +353,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         Bundle bundle = null;
         String string_date = dateFrom.getText().toString();
         String end_date = dateTo.getText().toString();
-        String equ_type ="";
+        String equ_type;
         String dialog_type ="";
         if(string_date.equals(end_date))
             equ_type = "1";
