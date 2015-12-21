@@ -48,7 +48,7 @@
         <item>Running</item>
     </string-array>
     <string-array name="search_kind_of_sport">
-        <item>All</item>
+        <item>General</item>
         <item>Soccer</item>
         <item>BasketBall</item>
         <item>Bicycle</item>

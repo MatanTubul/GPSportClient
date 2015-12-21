@@ -189,6 +189,9 @@ public final class Constants {
     public static final String TAG_SEARCH4 = "2";
     public static final String TAG_SEARCH5 = "1";
     public static final String TAG_SEARCH_INDEX = "idx";
+    public static final String TAG_REAL_ADDRESS = "real_address";
+    public static final String TAG_SEARCH_PARAMS_FROM_RECENT = "search_params";
+
 
 
 

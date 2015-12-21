@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
@@ -72,6 +73,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
     private double lon,lat;
 
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +109,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         timeTo.setText(dtFunctions.getCorrentTime());
 
         sm = SessionManager.getInstance(getActivity());
+
 
         //gender spinner
         spinnerGender.setAdapter(new MyAdapter(getActivity(), R.layout.custom_spinner, getResources().getStringArray(R.array.eventgender)));
@@ -169,6 +172,41 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         timeFrom.setOnClickListener(this);
         timeTo.setOnClickListener(this);
 
+        Bundle b = getArguments();
+        if(b != null){
+            JSONObject jsobj = null;
+            Log.d("get bundle params",b.toString());
+            try {
+                jsobj = new JSONObject(b.getString(Constants.TAG_SEARCH_PARAMS_FROM_RECENT));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            try {
+                Log.d("init all fields",jsobj.toString());
+                streetAddress.setText(jsobj.getString(Constants.TAG_REAL_ADDRESS));
+                minimumAge.setText(jsobj.getString(Constants.TAG_MIN_AGE));
+                radius.setText(jsobj.getString(Constants.TAG_RADIUS));
+                spinnerKindOfSport.setSelection(getIndexSpinnerByValue(spinnerKindOfSport, jsobj.getString(Constants.TAG_KIND_OF_SPORT)));
+                spinnerGender.setSelection(getIndexSpinnerByValue(spinnerGender, jsobj.getString(Constants.TAG_GEN)));
+                boolean tmp = Boolean.valueOf(jsobj.getString(Constants.TAG_PRIVATE));
+                if(tmp == true){
+                    cbPrivate.setChecked(true);
+                }
+                tmp = Boolean.valueOf(jsobj.getString(Constants.TAG_PUBLIC));
+                if(tmp == true)
+                {
+                    cbPublic.setChecked(true);
+                }
+                lon = Double.valueOf(jsobj.getString(Constants.TAG_LONG));
+                lat = Double.valueOf(jsobj.getString(Constants.TAG_LAT));
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
         return rootView;
     }
 
@@ -226,13 +264,14 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         nameValuePairList.add(event_radius);
         nameValuePairList.add(private_checkbox);
         nameValuePairList.add(public_checkbox);
-        Log.d("my nameValuePairList",nameValuePairList.toString());
 
         try {
             for(int i= 0;i < nameValuePairList.size();i++){
                 Log.d("loop index is",String.valueOf(i));
                 jobjRecentSearch.put(nameValuePairList.get(i).getName(),nameValuePairList.get(i).getValue());
             }
+            jobjRecentSearch.put("real_address",streetAddress.getText().toString());
+            Log.d("this is the real address",streetAddress.getText().toString());
             Log.d("json 1", jobjRecentSearch.toString());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -240,7 +279,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
 
         if(sm.getSearchIndex() >= 0)
         {
-            Log.d("search index is",String.valueOf(sm.getSearchIndex()));
+            Log.d("search index is", String.valueOf(sm.getSearchIndex()));
             int rsIndex = sm.getSearchIndex();
             if(rsIndex == 0)
                 rsIndex = 5;
@@ -298,12 +337,19 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
             }
 
         }
+        if(dateTo.getText().toString().equals(dateFrom.getText())){
+            if(timeFrom.getText().toString().equals(timeTo.getText().toString())){
+                valid = false;
+                Toast.makeText(getActivity(),"Time is not valid",Toast.LENGTH_LONG).show();
+            }
+        }
         if(!(minimumAge.getText().toString().equals(""))) {
             Log.d("field is not","empty");
             if(Integer.valueOf(minimumAge.getText().toString()) < 14 || Integer.valueOf(minimumAge.getText().toString()) > 40){
                 valid = false;
                 minimumAge.setError("Age is not in range");
             }
+
 
         }
         return valid ;
@@ -383,7 +429,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
                 df = new DatePicker();
             df.setArguments(bundle);
             df.setTargetFragment(this,0);
-            df.show(getFragmentManager(),dialog_type);
+            df.show(getFragmentManager(), dialog_type);
         }
         if(SET_TIME)
         {
@@ -392,7 +438,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
                 tp = new TimePicker();
             tp.setArguments(bundle);
             tp.setTargetFragment(this,0);
-            tp.show(getFragmentManager(),dialog_type);
+            tp.show(getFragmentManager(), dialog_type);
         }
     }
     @Override
@@ -431,6 +477,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
             }
             case "start_date":
                 dateFrom.setText(res);
+                dateTo.setText(res);
                 break;
             case "end_date":
                 dateTo.setText(res);
@@ -504,27 +551,42 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
     @Override
     public void onStart() {
         super.onStart();
-        myLocManager.checkPlayServices();
-        if (myLocManager.getmGoogleApiClient().isConnected() && !myLocManager.ismRequestingLocationUpdates()) {
-            startLocationUpdates();
+        if(pos == 1){
+            myLocManager.checkPlayServices();
+            if (myLocManager.getmGoogleApiClient().isConnected() && !myLocManager.ismRequestingLocationUpdates()) {
+                startLocationUpdates();
+            }
         }
+
     }
     @Override
     public void onStop() {
         super.onStop();
-        if (myLocManager.getmGoogleApiClient().isConnected()) {
-            myLocManager.getmGoogleApiClient().disconnect();
+        if(pos ==  1){
+            if (myLocManager.getmGoogleApiClient().isConnected()) {
+                myLocManager.getmGoogleApiClient().disconnect();
+            }
         }
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         if (myLocManager.getmGoogleApiClient().isConnected()) {
             stopLocationUpdates();
             myLocManager.getmGoogleApiClient().disconnect();
         }
+    }
+    private int getIndexSpinnerByValue(Spinner sp, String val) {
+        int index = 0;
+        for(int i=0; i < sp.getCount();i++) {
+            if (sp.getItemAtPosition(i).toString().equals(val)) {
+                index = i;
+                return  index;
+            }
+        }
+        return  index;
     }
 
 

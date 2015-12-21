@@ -22,6 +22,7 @@ import com.example.matant.gpsportclient.Controllers.Fragments.GoogleMapFragmentC
 import com.example.matant.gpsportclient.Controllers.Fragments.InvitationsFragmentController;
 import com.example.matant.gpsportclient.Controllers.Fragments.ManageEventFragmentController;
 import com.example.matant.gpsportclient.Controllers.Fragments.ProfileFragmentController;
+import com.example.matant.gpsportclient.Controllers.Fragments.RecentSearchesFragmentController;
 import com.example.matant.gpsportclient.Controllers.Fragments.SearchEventFragmentController;
 import com.example.matant.gpsportclient.Controllers.Fragments.WaitingEventListFragmentController;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
@@ -225,7 +226,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
                 break;
             case 8:
                 //Recent Searches
-                //fragment = new RecentSearchesFragmentController();
+                fragment = new RecentSearchesFragmentController();
                 break;
             case 9: { //Log Out
                 logout();
