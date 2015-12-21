@@ -357,10 +357,12 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                 switch(flg)
                 {
                     case "wrong input":
-                        if (jsonObj.getString(Constants.TAG_USRCHK).equals("user already exists"))
-                            editTextemail.setError("This email is taken");
-                        if (jsonObj.getString(Constants.TAG_MOBCHK).equals("mobile already exists"))
-                            editTextmobile.setError("This mobile is taken");
+                            if (jsonObj.getString(Constants.TAG_USRCHK).equals("user already exists"))
+                                editTextemail.setError("email already exist!");
+                            if (jsonObj.getString(Constants.TAG_MOBCHK).equals("mobile already exists"))
+                                editTextmobile.setError("Mobile already exist!");
+
+
                         break;
                     case "succeed":
                         Log.d("succeed", "register");
