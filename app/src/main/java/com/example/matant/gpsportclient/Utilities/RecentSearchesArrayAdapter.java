@@ -56,7 +56,7 @@ public class RecentSearchesArrayAdapter extends ArrayAdapter<RecentSearchRowMode
             holder = (ViewHolder) convertView.getTag();
         }
         String address = rowItem.getValue(Constants.TAG_REAL_ADDRESS);
-        address = address.replace("\n","");
+        address = address.replace("\n"," ");
         holder.txtLoc.setText(address);
         holder.txtKindOfSport.setText(rowItem.getValue(Constants.TAG_KIND_OF_SPORT));
         holder.txtTime.setText(rowItem.getValue(Constants.TAG_START_TIME)+" "+"-"+" "+rowItem.getValue(Constants.TAG_END_TIME));
