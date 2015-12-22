@@ -3,10 +3,10 @@ package com.example.matant.gpsportclient.Controllers.Fragments;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -59,14 +59,14 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     private HashMap<Marker, MapMarker> mMarkersHashMap;
     private SessionManager sm;
     private LatLng iniLoc;
-    private AddressResultReceiver mResultReceiver;
-    private boolean mAddressRequested = false;
-    private static final String TAG = GoogleMapFragmentController.class.getSimpleName();
     private DBcontroller dbController;
     private ProgressDialog progress;
     private LayoutInflater inflater;
     private Fragment fragment = null;
     private LocationTool locationTool;
+    private String mode;
+    private double lati, longi;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -126,14 +126,39 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         else
             Toast.makeText(this.getActivity(), "Unable to create Maps", Toast.LENGTH_SHORT).show();
 
+        Log.d("googleMap", "googleMap");
+
+        mode = Constants.MODE_SEARCH_DEF;
+        Bundle b = getArguments();
+        if(b != null) {
+            mode = b.getString(Constants.TAG_REQUEST);
+            lati = Double.valueOf(b.getString(Constants.TAG_LAT));
+            longi = Double.valueOf(b.getString(Constants.TAG_LONG));
+            Log.d("b!=null",b.getString(Constants.TAG_LAT) + " " + b.getString(Constants.TAG_LONG));
+            Log.d("mode",mode);
+
+            if (mode.equals(Constants.MODE_SEARCH_REQ)) {
+                getActivity().setTitle("Search Results");
+                Log.d("mode","==search by REQ");
+                try {
+                    JSONObject json = new JSONObject(b.getString("json"));
+                    Log.d("events from search", json.toString());
+                    GetEventsFromJSONToMapMarkers(json);
+                    updateUI();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         return v;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        if (locationTool.getmGoogleApiClient() != null)
-            locationTool.getmGoogleApiClient().connect();
+        if (mode.equals(Constants.MODE_SEARCH_DEF))
+            if (locationTool.getmGoogleApiClient() != null)
+                locationTool.getmGoogleApiClient().connect();
     }
 
     @Override
@@ -142,9 +167,11 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         mMapView.onResume();
         if(progress !=null)
             progress.dismiss();
-        locationTool.checkPlayServices();
-        if (locationTool.getmGoogleApiClient().isConnected() && !locationTool.ismRequestingLocationUpdates()) {
-            startLocationUpdates();
+        if (mode.equals(Constants.MODE_SEARCH_DEF)) {
+            locationTool.checkPlayServices();
+            if (locationTool.getmGoogleApiClient().isConnected() && !locationTool.ismRequestingLocationUpdates()) {
+               startLocationUpdates();
+             }
         }
     }
 
@@ -154,8 +181,9 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         mMapView.onPause();
         if(progress !=null)
             progress.dismiss();
-        if (locationTool.getmGoogleApiClient().isConnected())
-            stopLocationUpdates();
+        if (mode.equals(Constants.MODE_SEARCH_DEF))
+            if (locationTool.getmGoogleApiClient().isConnected())
+                stopLocationUpdates();
     }
 
     @Override
@@ -163,18 +191,21 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         super.onStop();
         if(progress !=null)
             progress.dismiss();
-        if (locationTool.getmGoogleApiClient().isConnected()) {
-            locationTool.getmGoogleApiClient().disconnect();
-        }
+        if (mode.equals(Constants.MODE_SEARCH_DEF))
+            if (locationTool.getmGoogleApiClient().isConnected())
+                locationTool.getmGoogleApiClient().disconnect();
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
-        if (locationTool.getmGoogleApiClient().isConnected()) {
-            stopLocationUpdates();
-            locationTool.getmGoogleApiClient().disconnect();
+        if (mode.equals(Constants.MODE_SEARCH_DEF)) {
+            if (locationTool.getmGoogleApiClient().isConnected()) {
+                stopLocationUpdates();
+                locationTool.getmGoogleApiClient().disconnect();
+            }
         }
     }
 
@@ -186,17 +217,19 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     }
 
     public void startLocationUpdates() {
-        if(locationTool.getmLocationRequest() != null)
-        LocationServices.FusedLocationApi.requestLocationUpdates(locationTool.getmGoogleApiClient(), locationTool.getmLocationRequest(), this);
+        if (mode.equals(Constants.MODE_SEARCH_DEF)) {
+            if (locationTool.getmLocationRequest() != null)
+                LocationServices.FusedLocationApi.requestLocationUpdates(locationTool.getmGoogleApiClient(), locationTool.getmLocationRequest(), this);
+        }
     }
 
     public void stopLocationUpdates() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(locationTool.getmGoogleApiClient(), this);
+        if (mode.equals(Constants.MODE_SEARCH_DEF))
+            LocationServices.FusedLocationApi.removeLocationUpdates(locationTool.getmGoogleApiClient(), this);
     }
     @Override
     public void handleResponse(String resStr) {
         progress.dismiss();
-
 
         if (resStr != null){
             Log.d("handleResponse events", resStr);
@@ -206,10 +239,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
                 switch (flg){
                     case Constants.TAG_REQUEST_SUCCEED:
                     {
-                        JSONArray jsonarr = jsonObj.getJSONArray("events");
-                        Log.d("creating list",jsonarr.toString());
-                        Log.d("array", jsonarr.toString());
-                        drawEventsMarkersOnMap(jsonarr);
+                        GetEventsFromJSONToMapMarkers(jsonObj);
                         break;
                     }
 
@@ -224,25 +254,58 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
             }
         }
     }
-    private void drawEventsMarkersOnMap(JSONArray jsonarr) {
-        if (googleMap != null && jsonarr.length() != 0)
-        {
-            if (eventsMarkers != null)
-                deletePreviousMarkers();
-            eventsMarkers = new ArrayList<MapMarker>();
-            Log.d("drawEventsMarkersOnMap", "before for loop");
-            for (int i = 0; i < jsonarr.length(); i++) {
-                try {
-                //adding marker to the arraylist eventsmarkers which every object is a class MapMarker variable
-                //marker info is saved upon MapMarker constructor
-                    eventsMarkers.add(new MapMarker(jsonarr.getJSONObject(i)));
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+    private void GetEventsFromJSONToMapMarkers (JSONObject jsonObj)
+    {
+        try {
+            JSONArray jsonarr = jsonObj.getJSONArray("events");
+            Log.d("creating list", jsonarr.toString());
+            drawEventsMarkersOnMap(jsonarr);
+        }catch (JSONException e) {
+            e.printStackTrace();
+    }
+
+    }
+
+
+    private void drawEventsMarkersOnMap(JSONArray jsonarr) {
+        if (googleMap != null)
+            if (jsonarr.length() != 0)
+            {
+                if (eventsMarkers != null)
+                    deletePreviousMarkers();
+                eventsMarkers = new ArrayList<MapMarker>();
+                Log.d("drawEventsMarkersOnMap", "before for loop");
+
+                for (int i = 0; i < jsonarr.length(); i++) {
+                    try {
+                    //adding marker to the arraylist eventsmarkers which every object is a class MapMarker variable
+                    //marker info is saved upon MapMarker constructor
+                        eventsMarkers.add(new MapMarker(jsonarr.getJSONObject(i)));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }//for
+                plotMarkers();
+            }//if
+        else {
+                //no events has found
+
+                if (mode.equals(Constants.MODE_SEARCH_REQ)) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("No events found")
+                            .setMessage("There is no results according to your search.")
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIconAttribute(android.R.attr.alertDialogIcon)
+                            .show();
                 }
-            }//for
-            plotMarkers();
-        }//if
+            }
     }
     private void deletePreviousMarkers()
     {
@@ -283,12 +346,14 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         Log.d("sendDataToDBController", "sendDataToDBController");
 
         BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, "search_events");
+        BasicNameValuePair search = new BasicNameValuePair(Constants.TAG_SEARCH,"search_by_default");
         BasicNameValuePair radius = new BasicNameValuePair(Constants.TAG_RADIUS, String.valueOf(Constants.DEFAULT_RADIUS));
         BasicNameValuePair lat = new BasicNameValuePair(Constants.TAG_LONG,String.valueOf(locationTool.getmLastLocation().getLongitude()));
         BasicNameValuePair lon = new BasicNameValuePair(Constants.TAG_LAT,String.valueOf(locationTool.getmLastLocation().getLatitude()));
 
         List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
         nameValuePairList.add(tagreq);
+        nameValuePairList.add(search);
         nameValuePairList.add(radius);
         nameValuePairList.add(lat);
         nameValuePairList.add(lon);
@@ -299,7 +364,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
     @Override
     public void preProcess() {
-        progress = ProgressDialog.show(this.getActivity(), "Search events", "Updating map with events near by ", true);
+        progress = ProgressDialog.show(this.getActivity(), "Search events", "Updating map with events near by...", true);
 
     }
 
@@ -329,17 +394,27 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
     @Override
     public void onLocationChanged(Location location) {
+        if (mode.equals(Constants.MODE_SEARCH_DEF)) {
             locationTool.setmLastLocation(location);
             updateUI();
+        }
     }
 
     public void updateUI() {
 
-        double latitude = locationTool.getmLastLocation().getLatitude(),
-               longitude =  locationTool.getmLastLocation().getLongitude();
+        double latitude, longitude;
+
+        if (mode.equals(Constants.MODE_SEARCH_DEF)) {
+            latitude = locationTool.getmLastLocation().getLatitude();
+            longitude =  locationTool.getmLastLocation().getLongitude();
+        }
+        else
+        {
+            latitude = lati;
+            longitude =  longi;
+        }
 
         Log.d("lat and long", latitude+" "+longitude );
-
 
         if (googleMap != null) {
             Log.d("googleMap", "googleMap");
@@ -357,7 +432,9 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
             currentMarker.setTitle(sm.getUserDetails().get("name") + " " + latitude + " " + longitude);
             currentMarker.showInfoWindow();
             currentMarker.setVisible(true);
-            sendDataToDBController();
+            if (mode.equals(Constants.MODE_SEARCH_DEF))
+                sendDataToDBController();
+
         }
     }
 
@@ -387,50 +464,5 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         }
         }
 
-    //---------------------------------
-
-    class AddressResultReceiver extends ResultReceiver {
-        public AddressResultReceiver(Handler handler) {
-            super(handler);
-        }
-
-        //Display the result address from the addFetcher
-        @Override
-        protected void onReceiveResult(int resultCode, Bundle resultData) {
-
-            // Display the address string
-            // or an error message sent from the intent service.
-            String mAddressOutput = resultData.getString(Constants.RESULT_DATA_KEY);
-            //displayAddressOutput();
-
-            // Show a toast message if an address was found.
-            if (resultCode == Constants.SUCCESS_RESULT) {
-                //showToast("address found");
-            }
-
-        }
-    }
-/*
-    public void fetchAddressButtonHandler(View view) {
-        // Only start the service to fetch the address if GoogleApiClient is
-        // connected.
-        if (mGoogleApiClient.isConnected() && mLastLocation != null) {
-            startIntentService();
-        }
-        // If GoogleApiClient isn't connected, process the user's request by
-        // setting mAddressRequested to true. Later, when GoogleApiClient connects,
-        // launch the service to fetch the address. As far as the user is
-        // concerned, pressing the Fetch Address button
-        // immediately kicks off the process of getting the address.
-        mAddressRequested = true;
-        //updateUIWidgets();
-    }
-
-    protected void startIntentService() {
-        Intent intent = new Intent(this.getActivity(), AddressFetcher.class);
-        intent.putExtra(Constants.RECEIVER, mResultReceiver);
-        intent.putExtra(Constants.LOCATION_DATA_EXTRA, mLastLocation);
-        getActivity().startService(intent);
-    }*/
 
 }

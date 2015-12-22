@@ -1,7 +1,9 @@
 package com.example.matant.gpsportclient.Controllers.Fragments;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.location.Location;
@@ -226,6 +228,41 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
     @Override
     public void handleResponse(String resStr) {
             progress.dismiss();
+        Log.d("handleResponse events", resStr);
+
+        if (resStr != null){
+            try {
+                JSONObject jsonObj = new JSONObject(resStr);
+                String flg = jsonObj.getString(Constants.TAG_FLG);
+                switch (flg){
+                    case Constants.TAG_REQUEST_SUCCEED:
+                    {
+                        Bundle bun = new Bundle();
+                        bun.putString(Constants.TAG_REQUEST,Constants.MODE_SEARCH_REQ);
+                        bun.putString("json",jsonObj.toString());
+
+                        bun.putString(Constants.TAG_LAT,String.valueOf(lat));
+                        bun.putString(Constants.TAG_LONG,String.valueOf(lon));
+
+                        Log.d("message from search",String.valueOf(lat)+ " " + String.valueOf(lat));
+
+                        Fragment fragment = new GoogleMapFragmentController();
+                        fragment.setArguments(bun);
+                        FragmentManager fragmentManager =  getActivity().getFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                        break;
+                    }
+
+                    case Constants.TAG_REQUEST_FAILED:
+                    {
+                        Log.d("message from server",jsonObj.getString("msg"));
+                        break;
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -241,7 +278,8 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
                 return;
             }
         }
-        BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST,"search_event");
+        BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST,"search_events");
+        BasicNameValuePair search = new BasicNameValuePair(Constants.TAG_SEARCH,"search_by_frag");
         BasicNameValuePair lat_cord = new BasicNameValuePair(Constants.TAG_LAT,String.valueOf(lat));
         BasicNameValuePair lon_cord = new BasicNameValuePair(Constants.TAG_LONG,String.valueOf(lon));
         BasicNameValuePair start_date = new BasicNameValuePair(Constants.TAG_START_DATE,dateFrom.getText().toString());
@@ -262,6 +300,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
 
         List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
         nameValuePairList.add(tagreq);
+        nameValuePairList.add(search);
         nameValuePairList.add(lat_cord);
         nameValuePairList.add(lon_cord);
         nameValuePairList.add(start_date);
@@ -274,6 +313,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         nameValuePairList.add(event_radius);
         nameValuePairList.add(private_checkbox);
         nameValuePairList.add(public_checkbox);
+        Log.d("my nameValuePairList", nameValuePairList.toString());
 
         try {
             for(int i= 0;i < nameValuePairList.size();i++){
@@ -372,6 +412,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         String end_date = dateTo.getText().toString();
         String equ_type;
         String dialog_type ="";
+        Log.d("dates",string_date + " "+ end_date);
         if(string_date.equals(end_date))
             equ_type = "1";
         else
@@ -485,6 +526,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         switch(flag) {
             case "start_time": {
                 timeFrom.setText(res);
+                Log.d("TimeFrom", res);
                 if (settime == 0)
                     timeTo.setText(res);
                 settime = 0;
@@ -492,6 +534,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
             }
             case "end_time": {
                 timeTo.setText(res);
+                Log.d("TimeTo", res);
                 settime = 1;
                 break;
             }

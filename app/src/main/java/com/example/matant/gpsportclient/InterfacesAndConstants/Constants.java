@@ -59,7 +59,7 @@ public final class Constants {
 
 
 
-
+    public static final String TAG_SEARCH = "search";
     public static final String COMP = "compress";
     public static final String NO_COMP = "no compress";
     public static final String TAG_NAME = "name";
@@ -95,6 +95,10 @@ public final class Constants {
     public static final String MODE_CREATE = "create_event";
     public static final String MODE_DELETE = "delete";
     public static final String TAG_MODE = "mode";
+    public static final String MODE_SEARCH_DEF = "default_search";
+    public static final String MODE_SEARCH_REQ = "request_search";
+
+
     //event
 
 
