@@ -36,6 +36,7 @@ import com.example.matant.gpsportclient.Utilities.CreateInviteUsersRow;
 import com.example.matant.gpsportclient.Utilities.CreateInvitedUsersAdapter;
 import com.example.matant.gpsportclient.Utilities.DateAndTimeFunctions;
 import com.example.matant.gpsportclient.Utilities.DatePicker;
+import com.example.matant.gpsportclient.Utilities.LocationTool;
 import com.example.matant.gpsportclient.Utilities.MyAdapter;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.example.matant.gpsportclient.Utilities.TimePicker;
@@ -80,6 +81,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     private JSONObject sched_res = null;
     private String currMaxParticipants;
     private DateAndTimeFunctions dtFunctions;
+    private LocationTool locationTool;
 
 
     public CreateEventFragmentController() {
@@ -113,6 +115,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         btnEndDate.setText(dtFunctions.getCurrentDate());
 
         sm = SessionManager.getInstance(getActivity());
+        locationTool = new LocationTool(this);
 
 
         maxParticipantsEdittext = (EditText) v.findViewById(R.id.editTextMaxPaticipants);
@@ -413,38 +416,6 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
 
     }
 
-///need to remove this function to global location class
-
-    /**
-     * this function convert real address to geographical coordinates.
-     * @param strAddress -real address
-     * @return LatLng object which contain the coordinates
-     */
-    public LatLng getLocationFromAddress(String strAddress) {
-
-        Geocoder coder = new Geocoder(getActivity());
-        List<Address> address;
-        LatLng p1 = null;
-
-        try {
-            address = coder.getFromLocationName(strAddress, 5);
-            if (address == null) {
-                return null;
-            }
-            Address location = address.get(0);
-            location.getLatitude();
-            location.getLongitude();
-            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
-            Log.d("coordinates",p1.latitude+""+p1.longitude);
-
-        } catch (Exception ex) {
-            Log.d("Location Exception","error converting address");
-            ex.printStackTrace();
-        }
-
-        return p1;
-    }
-
     @Override
     public void handleResponse(String resStr) {
         progress.dismiss();
@@ -539,7 +510,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     @Override
     public void sendDataToDBController() {
         BasicNameValuePair mode_req;
-        LatLng lonlat = getLocationFromAddress(addressEditText.getText().toString());
+        LatLng lonlat = locationTool.getLocationFromAddress(addressEditText.getText().toString());
         if(lonlat == null)
         {
             Log.d("location is:","location not found");
@@ -561,7 +532,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
              mode_req = new BasicNameValuePair(Constants.TAG_MODE, Constants.MODE_UPDATE);
         }
 
-
+        Log.d("addressEditText",addressEditText.getText().toString());
         BasicNameValuePair address = new BasicNameValuePair("address",addressEditText.getText().toString());
         BasicNameValuePair sport = new BasicNameValuePair("sport_type",sportSpinner.getSelectedItem().toString());
         Log.d("sport_type",sportSpinner.getSelectedItem().toString());
@@ -678,12 +649,15 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         for(int i=0;i<list.size();i++){
             age = list.get(i).getAge();
             gender = list.get(i).getGender();
-            if(!(gender.equals(genderSpinner.getSelectedItem().toString()))){
-                list.get(i).setImgViewUserError(R.drawable.user_warning);
-                invidedAdapter.notifyDataSetChanged();
-                Toast.makeText(getActivity(),"One or more users does not fit gender type!",Toast.LENGTH_LONG).show();
-                valid =  false;
+            if(!(genderSpinner.getSelectedItem().toString().equals("Unisex"))){
+                if(!(gender.equals(genderSpinner.getSelectedItem().toString()))){
+                    list.get(i).setImgViewUserError(R.drawable.user_warning);
+                    invidedAdapter.notifyDataSetChanged();
+                    Toast.makeText(getActivity(),"One or more users does not fit gender type!",Toast.LENGTH_LONG).show();
+                    valid =  false;
+                }
             }
+
             diff = year - (Integer.valueOf(age));
             if( diff < (Integer.valueOf(minAgeEditText.getText().toString()))){
                 list.get(i).setImgViewUserError(R.drawable.user_warning);

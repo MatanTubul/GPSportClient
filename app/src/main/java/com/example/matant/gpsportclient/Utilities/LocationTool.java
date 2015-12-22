@@ -41,6 +41,10 @@ public class LocationTool implements GoogleApiClient.ConnectionCallbacks, Google
     private LocationManager locationManager;
     private boolean gpsEnabled,networkEnabled;
 
+    public LocationTool(Fragment f){
+        this.frag = f;
+    }
+
     public LocationTool (Fragment frag, OnLocationChangedListener onLocationChangedListener)
     {
         mRequestingLocationUpdates = true;
