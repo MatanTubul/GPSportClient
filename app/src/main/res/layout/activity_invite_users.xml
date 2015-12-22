@@ -39,13 +39,7 @@
             android:layout_centerHorizontal="true" />
     </ScrollView>
 
-    <View
-        android:id="@+id/divider2"
-        android:layout_below="@+id/scrollViewListView"
 
-        android:layout_width="fill_parent"
-        android:layout_height="6dp"
-        android:background="@android:color/darker_gray"/>
 
     <LinearLayout
         android:id="@+id/linearLayoutBtn"
@@ -59,14 +53,20 @@
             android:id="@+id/ButtonSchedSave"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:background="#606060"
+            android:textColor="#ffffff">
         </Button>
         <Button android:text="Discard"
             android:id="@+id/ButtonDiscard"
             android:layout_toRightOf="@+id/ButtonSchedSave"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="#606060"
+            android:layout_margin="5dp"
+            android:textColor="#ffffff">
 
         </Button>
     </LinearLayout>
