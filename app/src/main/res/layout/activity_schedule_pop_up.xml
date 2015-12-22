@@ -159,14 +159,20 @@
                   android:id="@+id/ButtonSchedSave"
                   android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
-                  android:layout_weight="1">
+                  android:layout_weight="1"
+                  android:layout_margin="5dp"
+                  android:background="#606060"
+                  android:textColor="#ffffff">
               </Button>
               <Button android:text="Cancel"
                   android:id="@+id/ButtonSchedCancel"
                   android:layout_toRightOf="@+id/ButtonSchedSave"
                   android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
-                  android:layout_weight="1">
+                  android:layout_weight="1"
+                  android:layout_margin="5dp"
+                  android:textColor="#ffffff"
+                  android:background="#606060">
 
               </Button>
           </LinearLayout>

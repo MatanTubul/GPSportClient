@@ -22,75 +22,111 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
+
             android:id="@+id/relativeLayoutFromTo">
+
+
 
                 <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Start"
-                    android:id="@+id/textView3"
+                    android:id="@+id/textViewCreateStart"
                 android:layout_gravity="left|top"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:textStyle="bold"
-                android:textColor="#000000" />
+                    android:textStyle="bold"
+                android:textColor="#000000"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignLeft="@+id/row1"
+                    android:layout_alignStart="@+id/row1" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Button"
-                android:id="@+id/buttonFromDate"
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:id="@+id/row1"
+                    android:layout_margin="5dp"
+                    android:layout_below="@+id/textViewCreateStart"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Start Date"
+                        android:id="@+id/buttonFromDate"
+                        android:layout_below="@+id/textViewCreateStart"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_toLeftOf="@+id/buttonFromTime"
+                        android:layout_toStartOf="@+id/buttonFromTime"
+                        android:background="#606060"
+                        android:textColor="#ffffff"
+                        android:layout_weight="0.52" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Start Time"
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/buttonFromTime"
+                        android:textColor="#ffffff"
+                        android:background="#606060"
+                        android:layout_alignTop="@+id/buttonFromDate"
+                        android:layout_alignRight="@+id/buttonEndTime"
+                        android:layout_alignEnd="@+id/buttonEndTime" />
 
 
+                </TableRow>
 
-                android:layout_below="@+id/textView3"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_toLeftOf="@+id/buttonFromTime"
-                android:layout_toStartOf="@+id/buttonFromTime" />
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_below="@+id/textViewCreateEnd"
+                    android:id="@+id/createRow2">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Button"
-                android:id="@+id/buttonFromTime"
-                android:layout_alignBottom="@+id/buttonFromDate"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="End Date"
+                        android:id="@+id/buttonEndDate"
+                        android:layout_below="@+id/textViewCreateEnd"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_toLeftOf="@+id/buttonEndTime"
+                        android:layout_toStartOf="@+id/buttonEndTime"
+                        android:background="#606060"
+                        android:textColor="#ffffff"
+                        android:layout_weight="0.52" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="End Time"
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/buttonEndTime"
+                        android:layout_alignTop="@+id/buttonEndDate"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:textColor="#ffffff"
+                        android:background="#606060" />
+
+
+                </TableRow>
+
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="End"
-                android:id="@+id/textView4"
-                android:layout_below="@+id/buttonFromDate"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
+                android:id="@+id/textViewCreateEnd"
                 android:textStyle="bold"
-                android:textColor="#000000" />
+                android:textColor="#000000"
+                android:layout_below="@+id/row1"
+                android:layout_alignLeft="@+id/row1"
+                android:layout_alignStart="@+id/row1" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Button"
-                android:id="@+id/buttonEndDate"
-                android:layout_below="@+id/textView4"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_toLeftOf="@+id/buttonEndTime"
-                android:layout_toStartOf="@+id/buttonEndTime" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Button"
-                android:id="@+id/buttonEndTime"
-                android:layout_alignTop="@+id/buttonEndDate"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
 
             <CheckBox
                 android:layout_width="wrap_content"
@@ -101,13 +137,16 @@
                 android:checked="false"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/buttonEndDate"/>
+                android:layout_below="@+id/createRow2"/>
             <View
                 android:id="@+id/divider1"
                 android:layout_below="@+id/checkBoxRecurring"
                 android:layout_width="fill_parent"
                 android:layout_height="6dp"
+                android:layout_margin="5dp"
                 android:background="@android:color/darker_gray"/>
+
+
 
             </RelativeLayout>
 
@@ -115,66 +154,91 @@
             <RelativeLayout
             android:layout_width="match_parent"
             android:id="@+id/relativeLayoutSportRadius"
+            android:layout_margin="5dp"
             android:layout_below="@+id/relativeLayoutFromTo"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Sport"
-                android:id="@+id/textViewSport"
-
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:textStyle="bold"
-                android:textColor="#000000">
-
-            </TextView>
-
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:id="@+id/spinnerSports"
-                android:layout_below="@+id/textViewSport"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:background="#C0C0C0" />
-
-                <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:id="@+id/spinnerGender"
 
 
-                android:layout_below="@+id/textViewGender"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:background="#C0C0C0" />
-
-                <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Gender"
-                    android:layout_below="@+id/spinnerSports"
-
-                android:id="@+id/textViewGender"
-                android:textStyle="bold"
 
 
-                android:textColor="#000000" />
+
 
             <View
                 android:id="@+id/divider2"
                 android:layout_width="fill_parent"
                 android:layout_height="6dp"
+
                 android:layout_marginTop="5dp"
                 android:background="@android:color/darker_gray"
-                android:layout_below="@+id/spinnerGender" />
-             </RelativeLayout>
+                android:layout_below="@+id/createRow4" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/createRow3">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Sport"
+                        android:id="@+id/textViewSport"
+
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:textStyle="bold"
+                        android:textColor="#000000"
+                        android:layout_weight="1">
+
+                    </TextView>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Gender"
+                        android:layout_below="@+id/spinnerSports"
+
+                        android:id="@+id/textViewGender"
+                        android:textStyle="bold"
 
 
+                        android:textColor="#000000"
+                        android:layout_weight="0.97" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:id="@+id/createRow4"
+
+                    android:layout_below="@+id/createRow3"
+                    android:layout_height="match_parent">
+
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:id="@+id/spinnerSports"
+                        android:layout_marginRight="5dp"
+                        android:layout_below="@+id/createRow3"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:background="#606060"
+                        android:layout_weight="1" />
+
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:id="@+id/spinnerGender"
+                        android:layout_marginLeft="5dp"
+                        android:layout_below="@+id/createRow3"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:background="#606060"
+                        android:layout_weight="1" />
+
+                </TableRow>
+            </RelativeLayout>
 
 
             <RelativeLayout
@@ -190,10 +254,11 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Participants:"
                 android:id="@+id/textViewParticipants"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
                 android:textColor="#000000"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_alignParentTop="true"
+                android:layout_alignRight="@+id/textViewMinAge"
+                android:layout_alignEnd="@+id/textViewMinAge" />
 
             <EditText
                 android:layout_width="wrap_content"
@@ -215,12 +280,13 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Minimal Age:"
-                android:layout_below="@+id/editTextMaxPaticipants"
 
                 android:id="@+id/textViewMinAge"
-                android:layout_gravity="center_horizontal|top"
                 android:textColor="#000000"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_below="@+id/editTextMaxPaticipants"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
             <EditText
                 android:layout_width="wrap_content"
@@ -240,6 +306,7 @@
 
              <RelativeLayout
             android:layout_width="match_parent"
+            android:layout_margin="5dp"
             android:layout_below="@+id/frameLayout"
             android:layout_height="match_parent">
 
@@ -287,8 +354,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-
-
+                android:layout_margin="5dp"
                 android:id="@+id/firstLayout"
                 android:layout_alignParentTop="true">
 
@@ -333,6 +399,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_margin="5dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
             <Button android:text="Create Event"
