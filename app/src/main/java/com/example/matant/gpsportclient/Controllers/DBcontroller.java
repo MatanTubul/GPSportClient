@@ -89,7 +89,7 @@ public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
 
         String responseString = null;
         try {
-            post.setEntity(new UrlEncodedFormEntity(list));
+            post.setEntity(new UrlEncodedFormEntity(list,HTTP.UTF_8));
             HttpResponse response = client.execute(post);
             HttpEntity entity = response.getEntity();
             responseString = EntityUtils.toString(entity);
