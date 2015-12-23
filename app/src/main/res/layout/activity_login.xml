@@ -7,72 +7,114 @@
     android:background="#ffffffff"
     tools:context="com.example.matant.gpsportclient.Controllers.Login">
 
-    <EditText
-        android:layout_width="fill_parent"
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/loginTopLayout"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView2"
+            android:src="@drawable/gpsport_logo"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/loginEditTextLayout"
         android:layout_height="wrap_content"
-        android:id="@+id/userNameTF"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:layout_centerVertical="true"
+        android:layout_above="@+id/loginButtonLayout"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="27dp">
 
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/passwordTF"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:layout_below="@+id/userNameTF"
-        android:fontFamily="sans-serif"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/userNameTF"
+            android:hint="Email"
+            android:paddingLeft="5dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_edit_text"
+            android:inputType="textEmailAddress"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-    <Button
-        android:layout_marginRight="5dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:id="@+id/loginB"
-        android:onClick="onClick"
-        android:layout_below="@+id/passwordTF"
-        android:layout_alignRight="@+id/forgotPasswordTV"
-        android:layout_alignEnd="@+id/forgotPasswordTV"
-        android:background="#606060"
-        android:textColor="#ffffffff" />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/passwordTF"
+            android:hint="Password"
+            android:paddingLeft="5dp"
+            android:layout_margin="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/rounded_edit_text"
+            android:inputType="textPassword"
+            android:fontFamily="sans-serif"
+            android:layout_below="@+id/userNameTF"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Sign Up"
-        android:id="@+id/signUpB"
-        android:onClick="onClick"
-        android:layout_below="@+id/passwordTF"
-        android:layout_toEndOf="@+id/loginB"
-        android:layout_toRightOf="@+id/loginB"
-        android:background="#606060"
-        android:textColor="#ffffffff" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Forgot your password?"
-        android:textColor="#0000CD"
-        android:id="@+id/forgotPasswordTV"
-        android:layout_below="@+id/loginB"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"
-        android:textStyle="bold"
-        android:textIsSelectable="false" />
+    </RelativeLayout>
 
-    <ImageView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/loginButtonLayout"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView2"
-        android:src="@drawable/gpsport_logo"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="35dp">
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:id="@+id/loginB"
+            android:onClick="onClick"
+            android:layout_margin="5dp"
+            android:background="#606060"
+            android:textColor="#ffffffff"
+            android:layout_above="@+id/forgotPasswordTV"
+            android:layout_alignRight="@+id/forgotPasswordTV"
+            android:layout_alignEnd="@+id/forgotPasswordTV" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign Up"
+            android:id="@+id/signUpB"
+            android:layout_margin="5dp"
+            android:onClick="onClick"
+            android:layout_toEndOf="@+id/loginB"
+            android:layout_toRightOf="@+id/loginB"
+            android:background="#606060"
+            android:textColor="#ffffffff" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot your password?"
+            android:textColor="#0000CD"
+            android:id="@+id/forgotPasswordTV"
+            android:layout_below="@+id/signUpB"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="24dp"
+            android:textStyle="bold"
+            android:textIsSelectable="false" />
+
+    </RelativeLayout>
+
+
+
+
+
+
 
 
 </RelativeLayout>

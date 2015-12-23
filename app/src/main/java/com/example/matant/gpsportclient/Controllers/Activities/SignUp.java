@@ -32,6 +32,7 @@ import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.ErrorHandler;
+import com.example.matant.gpsportclient.Utilities.MyAdapter;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -42,6 +43,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -96,18 +98,17 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             years.add(Integer.toString(i));
 
         }
-        ageAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, years);
+        //ageAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, years);
 
-        ageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerAge.setAdapter(ageAdapter);
+        //ageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //spinnerAge.setAdapter(ageAdapter);
+        String[] yearscontent = new String[years.size()];
+        yearscontent = years.toArray(yearscontent);
+        spinnerAge.setAdapter(new MyAdapter(this, R.layout.custom_spinner, yearscontent));
 
         spinnerAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                TextView selectedText = (TextView) parent.getChildAt(0);
-                if (selectedText != null) {
-                    selectedText.setTextColor(Color.WHITE);
-                }
                 yearOfBirth = spinnerAge.getSelectedItem().toString();
 
             }
@@ -119,17 +120,14 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         });
 
         spinnerGender = (Spinner) findViewById(R.id.spinnerGender);
-        genderAdapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
-        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerGender.setAdapter(genderAdapter);
+        //genderAdapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
+       // genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //spinnerGender.setAdapter(genderAdapter);
+        spinnerGender.setAdapter(new MyAdapter(this,R.layout.custom_spinner,getResources().getStringArray(R.array.gender)));
         spinnerGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                TextView selectedText = (TextView) parent.getChildAt(0);
-                if (selectedText != null) {
-                    selectedText.setTextColor(Color.WHITE);
-                }
-                userGender = spinnerGender.getSelectedItem().toString();
+                //userGender = spinnerGender.getSelectedItem().toString();
             }
 
             @Override
@@ -394,8 +392,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         Log.d("prefferences id",GCMRegistrar.getRegistrationId(this));
         BasicNameValuePair name = new BasicNameValuePair("firstname", editTextname.getText().toString());
         BasicNameValuePair password = new BasicNameValuePair("password", editTextPassword.getText().toString());
-        BasicNameValuePair age = new BasicNameValuePair("birthyear", yearOfBirth);
-        BasicNameValuePair gender = new BasicNameValuePair("gender", userGender);
+        BasicNameValuePair age = new BasicNameValuePair("birthyear", spinnerAge.getSelectedItem().toString());
+        BasicNameValuePair gender = new BasicNameValuePair("gender", spinnerGender.getSelectedItem().toString());
 
         imgv.buildDrawingCache();
         Bitmap bmap = imgv.getDrawingCache();

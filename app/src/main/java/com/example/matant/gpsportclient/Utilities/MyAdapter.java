@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.matant.gpsportclient.Controllers.Activities.SignUp;
 import com.example.matant.gpsportclient.R;
 
 /**
@@ -22,7 +23,6 @@ public class MyAdapter extends ArrayAdapter<String> {
         context = ctx;
         values = objects;
     }
-
     @Override
     public View getDropDownView(int position, View cnvtView, ViewGroup prnt) {
         return getCustomView(position, cnvtView, prnt);
