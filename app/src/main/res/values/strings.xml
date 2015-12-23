@@ -62,9 +62,9 @@
     </string-array>
 
     <string-array name="eventgender">
+        <item>Unisex</item>
         <item>Male</item>
         <item>Female</item>
-        <item>Unisex</item>
     </string-array>
 
 

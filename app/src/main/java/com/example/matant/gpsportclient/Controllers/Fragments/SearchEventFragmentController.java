@@ -170,6 +170,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         dateFrom.setOnClickListener(this);
         timeFrom.setOnClickListener(this);
         timeTo.setOnClickListener(this);
+        cbPrivate.setChecked(true);
 
         Bundle b = getArguments();
         if(b != null){
