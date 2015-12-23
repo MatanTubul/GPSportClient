@@ -9,6 +9,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_margin="5dp"
         android:id="@+id/secondSearchLayout"
         android:layout_height="wrap_content">
 
@@ -42,6 +43,8 @@
                 android:layout_height="0dp"
                 android:inputType="textPostalAddress"
                 android:ems="10"
+                android:paddingLeft="5dp"
+                android:background="@drawable/rounded_edit_text"
                 android:id="@+id/editTextSearchAddress"
                 android:hint="Please insert real Street address"
                 android:layout_weight="1"
@@ -54,7 +57,8 @@
             android:id="@+id/divider1"
             android:layout_width="fill_parent"
             android:layout_height="6dp"
-            android:background="@android:color/darker_gray"
+            android:layout_marginTop="5dp"
+            android:background="#0091FF"
             android:layout_below="@+id/radioGroupSearchFragment"
             />
 
@@ -91,18 +95,24 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_alignParentEnd="true"
+                    android:layout_margin="10dp"
+                    android:background="#606060"
+                    android:textColor="#ffffff" />
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="To"
                     android:id="@+id/buttonSearchEventTo"
+                    android:layout_margin="10dp"
                     android:layout_below="@+id/buttonSearchEventFrom"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_alignParentEnd="true"
+                    android:background="#606060"
+                    android:textColor="#ffffff" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -152,17 +162,21 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="Start"
-
+                        android:layout_margin="10dp"
                         android:id="@+id/buttonSearchStartTime"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:textColor="#ffffff"
+                        android:background="#606060" />
 
                     <Button
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="End"
-
+                        android:layout_margin="10dp"
                         android:id="@+id/buttonSearchEndTime"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:textColor="#ffffff"
+                        android:background="#606060" />
                 </TableRow>
 
                 <TableRow
@@ -196,20 +210,23 @@
                     android:id="@+id/row4"
                     android:layout_marginTop="5dp"
                     android:layout_below="@+id/row3"
-                    android:layout_height="match_parent">
+                    android:layout_height="40dp">
 
                     <EditText
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:inputType="number"
+                        android:paddingLeft="5dp"
                         android:ems="10"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/rounded_edit_text"
                         android:id="@+id/editTextSearchMinAge"
                         android:layout_weight="1"
                         android:hint="Age between 14-40" />
 
                     <Spinner
                         android:layout_width="0dp"
-                        android:layout_height="40dp"
+                        android:layout_height="match_parent"
                         android:id="@+id/spinnerSearchGender"
                         android:layout_weight="1"
                         android:spinnerMode="dropdown" />
@@ -234,6 +251,9 @@
                         android:layout_width="136dp"
                         android:layout_height="wrap_content"
                         android:inputType="number"
+                        android:background="@drawable/rounded_edit_text"
+                        android:layout_marginLeft="5dp"
+                        android:paddingLeft="5dp"
                         android:ems="10"
                         android:id="@+id/editTextSearchRadius"
                         android:hint="1-30 KM" />
@@ -242,7 +262,8 @@
                     android:id="@+id/divider2"
                     android:layout_width="fill_parent"
                     android:layout_height="6dp"
-                    android:background="@android:color/darker_gray"
+                    android:layout_marginTop="5dp"
+                    android:background="#0091FF"
                     android:layout_below="@+id/rowRadius"
                     />
 
@@ -295,7 +316,18 @@
                         android:layout_weight="1"
                         android:checked="false" />
                 </TableRow>
-
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Search Event"
+                    android:layout_margin="10dp"
+                    android:layout_below="@+id/row6"
+                    android:id="@+id/buttonSearchEventExecute"
+                    android:textAllCaps="false"
+                    android:layout_alignParentBottom="true"
+                    android:textSize="18sp"
+                    android:background="#606060"
+                    android:textColor="#ffffff" />
 
             </RelativeLayout>
 
@@ -304,23 +336,5 @@
 
 
     </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/secondSearchLayout"
-        android:layout_height="wrap_content">
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Search Event"
-            android:id="@+id/buttonSearchEventExecute"
-            android:textAllCaps="false"
-            android:layout_alignParentBottom="true"
-            android:textSize="18sp" />
-
-    </RelativeLayout>
-
-
-
 
 </RelativeLayout>
