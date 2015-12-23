@@ -1,7 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#ffffffff"
     android:id="@+id/mainLayout">
 
@@ -12,21 +11,17 @@
         android:fillViewport="true"
         android:layout_height="wrap_content">
         <RelativeLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:id="@+id/scrollViewlayout">
 
 
             <RelativeLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
-
             android:id="@+id/relativeLayoutFromTo">
-
-
-
                 <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -144,7 +139,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="6dp"
                 android:layout_margin="5dp"
-                android:background="@android:color/darker_gray"/>
+                android:background="#0091FF"/>
 
 
 
@@ -170,7 +165,7 @@
                 android:layout_height="6dp"
 
                 android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray"
+                android:background="#0091FF"
                 android:layout_below="@+id/createRow4" />
 
                 <TableRow
@@ -252,13 +247,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Participants:"
+                android:text="Participants"
                 android:id="@+id/textViewParticipants"
                 android:textColor="#000000"
                 android:textStyle="bold"
                 android:layout_alignParentTop="true"
-                android:layout_alignRight="@+id/textViewMinAge"
-                android:layout_alignEnd="@+id/textViewMinAge" />
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
             <EditText
                 android:layout_width="wrap_content"
@@ -267,7 +262,8 @@
                 android:ems="10"
                 android:layout_below="@+id/textViewParticipants"
                 android:id="@+id/editTextMaxPaticipants"
-
+                android:background="@drawable/rounded_edit_text"
+                android:paddingLeft="5dp"
                 android:layout_gravity="left|top"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
@@ -279,7 +275,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Minimal Age:"
+                android:text="Minimal Age"
 
                 android:id="@+id/textViewMinAge"
                 android:textColor="#000000"
@@ -293,7 +289,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:ems="10"
-
+                android:background="@drawable/rounded_edit_text"
+                android:paddingLeft="5dp"
                 android:id="@+id/editTextMinAge"
                 android:layout_below="@+id/textViewMinAge"
                 android:hint="Please define minimal age (14-40)"
@@ -307,6 +304,7 @@
              <RelativeLayout
             android:layout_width="match_parent"
             android:layout_margin="5dp"
+                 android:id="@+id/privateCheckLayout"
             android:layout_below="@+id/frameLayout"
             android:layout_height="match_parent">
 
@@ -333,10 +331,11 @@
                 android:layout_alignParentStart="true" />
                  <View
                      android:id="@+id/divider4"
+                     android:layout_marginTop="5dp"
                      android:layout_below="@+id/buttonInviteUsers"
                      android:layout_width="fill_parent"
                      android:layout_height="6dp"
-                     android:background="@android:color/darker_gray"/>
+                     android:background="#0091FF"/>
 
                  <ListView
                      android:layout_width="fill_parent"
@@ -377,7 +376,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/editTextLocation"
                     android:hint="Please insert event address"
-
+                    android:paddingLeft="5dp"
+                    android:background="@drawable/rounded_edit_text"
                     android:layout_below="@+id/textViewLocation" />
 
                 <View
@@ -385,32 +385,35 @@
                     android:layout_width="fill_parent"
                     android:layout_height="6dp"
                     android:layout_marginTop="5dp"
-                    android:background="@android:color/darker_gray"
+                    android:background="#0091FF"
                     android:layout_below="@+id/editTextLocation" />
             </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutBtn"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="5dp"
+                android:layout_below="@+id/privateCheckLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+                <Button android:text="Create Event"
+                    android:id="@+id/ButtonSchedSave"
+                    android:background="#606060"
+                    android:textColor="#ffffff"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                </Button>
+            </LinearLayout>
 
         </RelativeLayout>
     </ScrollView>
 
 
-    <LinearLayout
-        android:id="@+id/linearLayoutBtn"
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="5dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-            <Button android:text="Create Event"
-                android:id="@+id/ButtonSchedSave"
-                android:background="#606060"
-                android:textColor="#ffffff"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-            </Button>
-    </LinearLayout>
+
 
 
 
