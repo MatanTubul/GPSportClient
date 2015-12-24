@@ -1,4 +1,4 @@
-package com.example.matant.gpsportclient.Utilities;
+package com.example.matant.gpsportclient.DataClasses;
 
 /**
  * Created by matant on 8/24/2015.

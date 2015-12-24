@@ -1,4 +1,4 @@
-package com.example.matant.gpsportclient.Utilities;
+package com.example.matant.gpsportclient.Adapters;
 
 /**
  * Created by matant on 9/24/2015.
@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.matant.gpsportclient.DataClasses.InviteUsersListRow;
 import com.example.matant.gpsportclient.R;
 
 import java.util.ArrayList;

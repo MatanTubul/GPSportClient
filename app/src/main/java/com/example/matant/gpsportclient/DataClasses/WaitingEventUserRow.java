@@ -1,4 +1,4 @@
-package com.example.matant.gpsportclient.Utilities;
+package com.example.matant.gpsportclient.DataClasses;
 
 /**
  * this class is representing a specific row in the Waiting Event List Adapter.

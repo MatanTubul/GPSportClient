@@ -1,4 +1,4 @@
-package com.example.matant.gpsportclient.Utilities;
+package com.example.matant.gpsportclient.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.matant.gpsportclient.R;
+import com.example.matant.gpsportclient.DataClasses.DrawerItem;
 
 /**
  * Created by matant on 8/24/2015.

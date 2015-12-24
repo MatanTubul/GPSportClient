@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -11,19 +13,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
+import com.example.matant.gpsportclient.DataClasses.SportsHash;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.ImageConvertor;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
-import com.example.matant.gpsportclient.Utilities.ViewEventArrayAdapter;
-import com.example.matant.gpsportclient.Utilities.ViewEventListRow;
+import com.example.matant.gpsportclient.Adapters.ViewEventArrayAdapter;
+import com.example.matant.gpsportclient.DataClasses.ViewEventListRow;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -44,6 +49,7 @@ public class ViewEventFragmentController extends Fragment implements View.OnClic
     private TextView kindOfSportText,startTimeText,addressText;
     private ImageView kindOfSportImage;
     private Button minAgeButton, privilegeButton, attendingButton, genderButton, participateButton, playingListViewHeadlineButton, waitingListViewHeadlineButton, invitedListViewHeadlineButton;
+    private ImageButton wazeButton;
     private ListView listViewPlayingList, listViewWaitingList, listViewInvitedList;
     private JSONObject eventIdJsonObj, eventDetailsJsonObj;
     private List<ViewEventListRow> playingList = null, invitedList = null, waitingList = null;
@@ -53,7 +59,9 @@ public class ViewEventFragmentController extends Fragment implements View.OnClic
     private SessionManager sm;
     private boolean isCurrentUserIsTheCurrentEventManager;
     private List<NameValuePair> nameValuePairList;
-
+    private double lati, longi;
+    private HashMap sh;
+    private FrameLayout frameLayout;
     public ViewEventFragmentController(){
         // Required empty public constructor
     }
@@ -63,6 +71,7 @@ public class ViewEventFragmentController extends Fragment implements View.OnClic
         // Inflate the layout for this fragment
         final View v = inflater.inflate(R.layout.fragment_view_event_fragment_controller, container, false);
         sm = SessionManager.getInstance(getActivity());
+        sh = SportsHash.getSportsHash();
         isCurrentUserIsTheCurrentEventManager = false;
         userStatusChoise = null;
         eventDetailsJsonStr = (String) getArguments().getString("event");
@@ -71,9 +80,7 @@ public class ViewEventFragmentController extends Fragment implements View.OnClic
         }catch (JSONException e) {
             e.printStackTrace();
         }
-
         //initialize the widgets
-
         kindOfSportText = (TextView) v.findViewById(R.id.kind_of_sport_text);
         kindOfSportImage = (ImageView) v.findViewById(R.id.kind_of_sport_img);
         startTimeText = (TextView) v.findViewById(R.id.time_text);
@@ -81,6 +88,7 @@ public class ViewEventFragmentController extends Fragment implements View.OnClic
         playingLinearLayout = (LinearLayout) v.findViewById(R.id.playing_list_layout);
         waitingLinearLayout = (LinearLayout) v.findViewById(R.id.waiting_list_layout);
         invitedLinearLayout = (LinearLayout) v.findViewById(R.id.invited_list_layout);
+        frameLayout = (FrameLayout) v.findViewById(R.id.background);
 
         //initialize disabled buttons for viewing the events details
         //using this for just simple design issues
@@ -95,6 +103,10 @@ public class ViewEventFragmentController extends Fragment implements View.OnClic
         //enabled button for user to attend on the event
         participateButton = (Button) v.findViewById(R.id.participate_button);
         participateButton.setOnClickListener(this);
+
+        //waze button
+        wazeButton = (ImageButton) v.findViewById(R.id.wazeButton);
+        wazeButton.setOnClickListener(this);
 
         //list view initializing
         listViewPlayingList = (ListView) v.findViewById(R.id.playing_list_view);
@@ -136,12 +148,22 @@ private void getEventDetailsFromDB() {
 
     private void initView()
     {
-
-        kindOfSportImage.setImageResource(R.drawable.round_soccer_event_view_img);
         Log.d("ViewEveFragController", "initView");
 
         try{
+            String sportKind = eventDetailsJsonObj.getString(Constants.TAG_KIND_OF_SPORT);
+            SportsHash.Sport sport=(SportsHash.Sport) sh.get(sportKind);
+            if (sport != null) {TODO:
+                kindOfSportImage.setImageResource(sport.getSportViewEventPicId());
+                frameLayout.setBackgroundColor(sport.getSportViewEventBackColour());
+            }else{
 
+                kindOfSportImage.setImageResource(R.drawable.round_soccer_event_view_img);
+                frameLayout.setBackgroundColor(0xFFE4852D);
+            }
+
+            lati = Double.valueOf(eventDetailsJsonObj.getString(Constants.LAT));
+            longi = Double.valueOf(eventDetailsJsonObj.getString(Constants.LONG));
             kindOfSportText.setText(eventDetailsJsonObj.getString(Constants.TAG_KIND_OF_SPORT));
             startTimeText.setText(eventDetailsJsonObj.getString(Constants.TAG_START_TIME));
             addressText.setText(eventDetailsJsonObj.getString(Constants.TAG_ADDRESS));
@@ -368,32 +390,13 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
                         participateOrAttendUserInEvent();
                     }
                 }
-
-                //public
-
-                //if he wants to leave -> waiting list or playing list
-                //delete from attending table
-                //if he was the manager -> //delete from attending table, delete manager
-                //in both cases check for a player in waiting list to add to playing list
-
-                //if he wants to participate ->
-                //checks: gender, min_age, max num participants
-                //if gender and min_age is good and there is a place in playing list -> insert raw on database with playing
-                //if there is place in waiting list ->insert raw on database with playing
-                // if there is no place or gender/min_age don't fit pop uo a msg
-
-                //or
-                //private
-
-                //if he wants not to attend -> invited list
-                //change status in attending table
-                //if he was the manager -> //delete from attending table, delete/change manager
-
-                //if he wants to attend ->
-                //checks: gender, min_age, max num participants this check should be on invite users..
-                //-> change status in attending table
-                //if this is the first user after the manager ->insert manager function
                 break;
+            case R.id.wazeButton:
+            {
+                final String url = String.format("waze://?ll=%f,%f&navigate=yes", lati, longi);
+                final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(intent);
+            }
             default:
                 Log.d("defualt",String.valueOf(v.getId()));
                 break;
@@ -429,10 +432,10 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
                         Log.d("ViewEveFragController", "sending users to lists");
                         break;
                     }
-                    case "sss":
+                    case Constants.TAG_REQUEST_VIEW_SUCCEED:
                     {
 
-                        Log.d("sss",jsonObj.getString("status"));
+                        Log.d("TAG_REQUEST_VIEW_SUCCEED","TAG_REQUEST_VIEW_SUCCEED");
                         Fragment fragment = new ViewEventFragmentController();
                         Bundle args = new Bundle();
                         args.putString("event",eventDetailsJsonStr);
@@ -440,7 +443,7 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
                         if (fragment != null) {
                             FragmentManager fragmentManager = getFragmentManager();
                             FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
-                            fragTransaction.remove(this).commit();
+                            fragTransaction.remove(this);
                             fragTransaction.replace(R.id.content_frame, fragment).commit();
                         } else {
                             Log.e("GoogleMap Fragment", "Error in creating fragment");
@@ -494,11 +497,13 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
     private void executeCommonFields(BasicNameValuePair tagreq){
 
         nameValuePairList = new ArrayList<NameValuePair>();
+        BasicNameValuePair fragid = new BasicNameValuePair(Constants.TAG_VIEW,Constants.TAG_VIEW);
         BasicNameValuePair userid = new BasicNameValuePair(Constants.TAG_USERID,currentUserId);
         BasicNameValuePair eventid = new BasicNameValuePair(Constants.TAG_EVENT_ID,eventId);
         BasicNameValuePair status = new BasicNameValuePair(Constants.TAG_USER_STAT,userStatusChoise);
         BasicNameValuePair eventisprivate = new BasicNameValuePair(Constants.TAG_IS_PRIVATE,eventPrivilege);
 
+        nameValuePairList.add(fragid);
         nameValuePairList.add(eventid);
         nameValuePairList.add(userid);
         nameValuePairList.add(tagreq);

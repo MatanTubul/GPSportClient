@@ -103,6 +103,7 @@ public class ProfileFragmentController extends Fragment implements View.OnClickL
         for (int i = 1970; i <= Constants.MINIMAL_YEAR_OF_BIRTH; i++) {
             years.add(Integer.toString(i));
         }
+        spinnerAge.setEnabled(false);
 
         ageAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, years);
         //ArrayAdapter<CharSequence> ageAdapter = ArrayAdapter.createFromResource(this, R.array.age, android.R.layout.simple_spinner_item);
@@ -139,6 +140,7 @@ public class ProfileFragmentController extends Fragment implements View.OnClickL
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
+        spinnerGender.setEnabled(false);
         spinnerCellCode = (Spinner) v.findViewById(R.id.spinnerMobile);
         mobileAdapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.area_code, android.R.layout.simple_spinner_item);
         mobileAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

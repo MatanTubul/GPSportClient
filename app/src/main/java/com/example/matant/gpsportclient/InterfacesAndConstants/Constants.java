@@ -107,6 +107,8 @@ public final class Constants {
 
     //ViewEventFragmentController Constants
 
+    public static final String TAG_VIEW = "view";
+    public static final String TAG_REQUEST_VIEW_SUCCEED = "view_succeed";
     public static final String TAG_GET_EVENT_USERS = "get_event_users";
     public static final String TAG_EVENT_ID = "event_id";
     public static final String TAG_USER_STAT= "user_status";
@@ -119,6 +121,8 @@ public final class Constants {
     public static final String TAG_CURR_PRT = "current_participants";
     public static final String TAG_MAX_PRT = "max_participants";
     public static final String TAG_PART_USR = "participate_user";
+    public static final String LAT = "latitude";
+    public static final String LONG = "longitude";
 
     //GoogleMapFragmentController Constants
     public static final int SUCCESS_RESULT = 0;

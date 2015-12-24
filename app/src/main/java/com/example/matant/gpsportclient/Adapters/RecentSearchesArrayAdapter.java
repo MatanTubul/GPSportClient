@@ -1,4 +1,4 @@
-package com.example.matant.gpsportclient.Utilities;
+package com.example.matant.gpsportclient.Adapters;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.matant.gpsportclient.Controllers.Fragments.SearchEventFragmentController;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.R;
+import com.example.matant.gpsportclient.DataClasses.RecentSearchRowModel;
 
 import java.util.List;
 

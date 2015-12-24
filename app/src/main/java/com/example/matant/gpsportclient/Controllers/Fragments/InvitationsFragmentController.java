@@ -13,8 +13,8 @@ import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.R;
-import com.example.matant.gpsportclient.Utilities.InvitationsArrayAdapter;
-import com.example.matant.gpsportclient.Utilities.InvitationsRowModel;
+import com.example.matant.gpsportclient.Adapters.InvitationsArrayAdapter;
+import com.example.matant.gpsportclient.DataClasses.InvitationsRowModel;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 
 import org.apache.http.NameValuePair;

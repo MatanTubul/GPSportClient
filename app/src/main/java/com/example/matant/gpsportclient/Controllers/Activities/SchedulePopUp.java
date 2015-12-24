@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.R;
-import com.example.matant.gpsportclient.Utilities.MyAdapter;
+import com.example.matant.gpsportclient.Adapters.MyAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;

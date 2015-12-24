@@ -1,4 +1,4 @@
-package com.example.matant.gpsportclient.Utilities;
+package com.example.matant.gpsportclient.DataClasses;
 
 /**
  * class that describe item in the Invited Users list.

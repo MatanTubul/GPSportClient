@@ -1,4 +1,4 @@
-package com.example.matant.gpsportclient.Utilities;
+package com.example.matant.gpsportclient.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.matant.gpsportclient.R;
+import com.example.matant.gpsportclient.DataClasses.ViewEventListRow;
 
 import java.util.List;
 

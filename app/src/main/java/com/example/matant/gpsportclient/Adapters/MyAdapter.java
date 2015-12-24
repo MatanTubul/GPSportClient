@@ -1,4 +1,4 @@
-package com.example.matant.gpsportclient.Utilities;
+package com.example.matant.gpsportclient.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

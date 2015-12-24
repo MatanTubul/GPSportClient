@@ -15,8 +15,8 @@ import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
-import com.example.matant.gpsportclient.Utilities.WaitingEventUserAdapter;
-import com.example.matant.gpsportclient.Utilities.WaitingEventUserRow;
+import com.example.matant.gpsportclient.Adapters.WaitingEventUserAdapter;
+import com.example.matant.gpsportclient.DataClasses.WaitingEventUserRow;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;

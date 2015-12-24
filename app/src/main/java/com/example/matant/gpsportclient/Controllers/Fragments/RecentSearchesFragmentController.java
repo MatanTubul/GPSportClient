@@ -9,8 +9,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.matant.gpsportclient.R;
-import com.example.matant.gpsportclient.Utilities.RecentSearchRowModel;
-import com.example.matant.gpsportclient.Utilities.RecentSearchesArrayAdapter;
+import com.example.matant.gpsportclient.DataClasses.RecentSearchRowModel;
+import com.example.matant.gpsportclient.Adapters.RecentSearchesArrayAdapter;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 
 import java.util.ArrayList;

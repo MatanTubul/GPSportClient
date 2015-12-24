@@ -1,4 +1,4 @@
-package com.example.matant.gpsportclient.Utilities;
+package com.example.matant.gpsportclient.DataClasses;
 
 import android.graphics.Bitmap;
 

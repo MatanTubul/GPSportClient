@@ -97,7 +97,8 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
                 @Override
                 public boolean onMarkerClick(com.google.android.gms.maps.model.Marker marker)
                 {
-                    marker.showInfoWindow();
+                    if (!marker.getId().equals(currentMarker.getId()))
+                        marker.showInfoWindow();
                     return true;
                 }
             });
@@ -282,6 +283,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
                     //adding marker to the arraylist eventsmarkers which every object is a class MapMarker variable
                     //marker info is saved upon MapMarker constructor
                         eventsMarkers.add(new MapMarker(jsonarr.getJSONObject(i)));
+                        Log.d("drawEventsMarkersOnMap inside loop", String.valueOf(i));
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -323,7 +325,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     private void plotMarkers()
     {
         if(eventsMarkers.size() > 0)
-        {   Log.d("plotMarkers","eventsMarkers.size() > 0");
+        {   Log.d("plotMarkers", String.valueOf(eventsMarkers.size()));
             for (MapMarker mapMarker : eventsMarkers)
             {
                 // Create event marker with custom icon and other options
@@ -331,10 +333,11 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
                 markerOption.icon(mapMarker.getmIcon());
                 markerOption.title(mapMarker.getmLabel() + String.valueOf(mapMarker.getmLatitude()) + String.valueOf(mapMarker.getmLongitude()));
                 // Save Marker pointer for updating later
-                currentMarker = googleMap.addMarker(markerOption);
-                mapMarker.setmMarker(currentMarker);
+                Marker currMarker;
+                currMarker = googleMap.addMarker(markerOption);
+                mapMarker.setmMarker(currMarker);
                 // Set Info for this marker and marker to hashmap for later use
-                mMarkersHashMap.put(currentMarker, mapMarker);
+                mMarkersHashMap.put(currMarker, mapMarker);
                 googleMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter());
             }
             Log.d("plotMarkers","after for loop");
@@ -396,6 +399,8 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     public void onLocationChanged(Location location) {
         if (mode.equals(Constants.MODE_SEARCH_DEF)) {
             locationTool.setmLastLocation(location);
+            if (eventsMarkers != null)
+                deletePreviousMarkers();
             updateUI();
         }
     }
@@ -466,3 +471,5 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
 
 }
+
+

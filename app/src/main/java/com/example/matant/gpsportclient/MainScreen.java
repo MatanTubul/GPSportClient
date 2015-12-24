@@ -27,8 +27,8 @@ import com.example.matant.gpsportclient.Controllers.Fragments.SearchEventFragmen
 import com.example.matant.gpsportclient.Controllers.Fragments.WaitingEventListFragmentController;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
-import com.example.matant.gpsportclient.Utilities.DrawerItem;
-import com.example.matant.gpsportclient.Utilities.DrawerItemCustomAdapter;
+import com.example.matant.gpsportclient.DataClasses.DrawerItem;
+import com.example.matant.gpsportclient.Adapters.DrawerItemCustomAdapter;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 
 import org.apache.http.NameValuePair;

@@ -1,6 +1,5 @@
 package com.example.matant.gpsportclient.Controllers.Fragments;
 
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -30,7 +29,7 @@ import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.DateAndTimeFunctions;
 import com.example.matant.gpsportclient.Utilities.DatePicker;
 import com.example.matant.gpsportclient.Utilities.LocationTool;
-import com.example.matant.gpsportclient.Utilities.MyAdapter;
+import com.example.matant.gpsportclient.Adapters.MyAdapter;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.example.matant.gpsportclient.Utilities.TimePicker;
 import com.google.android.gms.location.LocationServices;
@@ -150,8 +149,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
                     }
                     case 1: {
                         streetAddress.setEnabled(false);
-                        if (myLocManager.getmGoogleApiClient() != null)
-                        {
+                        if (myLocManager.getmGoogleApiClient() != null) {
                             Log.d("check if getmGoogleApiClient()", "check location");
                             myLocManager.buildGoogleApiClientAndCreateLocationRequest();
                             myLocManager.getmGoogleApiClient().connect();

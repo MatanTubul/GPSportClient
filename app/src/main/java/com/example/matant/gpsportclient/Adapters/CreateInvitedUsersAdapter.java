@@ -1,4 +1,4 @@
-package com.example.matant.gpsportclient.Utilities;
+package com.example.matant.gpsportclient.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.matant.gpsportclient.R;
+import com.example.matant.gpsportclient.DataClasses.CreateInviteUsersRow;
 
 import java.util.List;
 
