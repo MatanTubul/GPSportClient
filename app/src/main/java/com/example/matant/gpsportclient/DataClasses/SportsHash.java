@@ -31,10 +31,10 @@ public class SportsHash {
     {
         sportsHash = new HashMap<String,Sport>();
         Log.d("sportHash", "puts");
-        sportsHash.put(Constants.TAG_BASKETBALL, new Sport(Constants.TAG_BASKETBALL, 0xFFE4852D, R.drawable.round_basketball_event_view_img, R.drawable.basketball_32));
-        sportsHash.put(Constants.TAG_BICYCLE, new Sport(Constants.TAG_BICYCLE,0xFF84817E,R.drawable.bycicle_event_view_img,R.drawable.biking_32));
-        sportsHash.put(Constants.TAG_SOCCER, new Sport(Constants.TAG_SOCCER,0xFF2EC62C,R.drawable.round_soccer_event_view_img,R.drawable.soccer_32));
-        sportsHash.put(Constants.TAG_RUNNING, new Sport(Constants.TAG_RUNNING,0xFFFBEA04,R.drawable.running_event_view_img,R.drawable.running_32));
+        sportsHash.put(Constants.TAG_BASKETBALL, new Sport(Constants.TAG_BASKETBALL, 0xFFE4852D, R.drawable.round_basketball_event_view_img, R.drawable.basketball_32,R.drawable.basketball_marker_icon));
+        sportsHash.put(Constants.TAG_BICYCLE, new Sport(Constants.TAG_BICYCLE,0xFF84817E,R.drawable.bycicle_event_view_img,R.drawable.biking_32,R.drawable.tennis_marker_icon));
+        sportsHash.put(Constants.TAG_SOCCER, new Sport(Constants.TAG_SOCCER,0xFF2EC62C,R.drawable.round_soccer_event_view_img,R.drawable.soccer_32, R.drawable.soccer_marker_icon));
+        sportsHash.put(Constants.TAG_RUNNING, new Sport(Constants.TAG_RUNNING,0xFFFBEA04,R.drawable.running_event_view_img,R.drawable.running_32,R.drawable.football_marker_icon));
     }
 
     public class Sport {
@@ -63,13 +63,19 @@ public class SportsHash {
 
         private int sportViewEventIconForListsId;
 
-    public Sport (String name,int colour, int resourceForPicInEvent, int resourceForIconInLists)
+        public int getSportMapMarkerId() {
+            return sportMapMarkerId;
+        }
+
+        private int sportMapMarkerId;
+
+    public Sport (String name,int colour, int resourceForPicInEvent, int resourceForIconInLists, int resourceForMapMarkerIcon)
     {
         sportName = name;
         sportViewEventBackColour = colour;
         sportViewEventPicId= resourceForPicInEvent;
         sportViewEventIconForListsId= resourceForIconInLists;
-
+        sportMapMarkerId = resourceForMapMarkerIcon;
     }
 
 
