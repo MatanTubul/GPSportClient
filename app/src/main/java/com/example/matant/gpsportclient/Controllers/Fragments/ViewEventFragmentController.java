@@ -152,11 +152,14 @@ private void getEventDetailsFromDB() {
 
         try{
             String sportKind = eventDetailsJsonObj.getString(Constants.TAG_KIND_OF_SPORT);
+            Log.d("sportHash to string", sh.toString());
             SportsHash.Sport sport=(SportsHash.Sport) sh.get(sportKind);
             if (sport != null) {TODO:
+                Log.d("design", "hash");
                 kindOfSportImage.setImageResource(sport.getSportViewEventPicId());
                 frameLayout.setBackgroundColor(sport.getSportViewEventBackColour());
             }else{
+                Log.d("design", "local");
 
                 kindOfSportImage.setImageResource(R.drawable.round_soccer_event_view_img);
                 frameLayout.setBackgroundColor(0xFFE4852D);

@@ -1,5 +1,7 @@
 package com.example.matant.gpsportclient.DataClasses;
 
+import android.util.Log;
+
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.R;
 
@@ -10,20 +12,25 @@ import java.util.HashMap;
  */
 public class SportsHash {
 
-    private static HashMap<String,Sport> sportsHash = new HashMap<String,Sport>();
-
+    private static HashMap<String,Sport> sportsHash;
+    private static SportsHash sportHashClass = null;
 
     public static HashMap getSportsHash()
     {
-        if (sportsHash == null)
+        if (sportHashClass == null) //checking the class variable
         {
-            new SportsHash();
+            Log.d("sportHashClass", "isEmpty");
+            sportHashClass = new SportsHash();
+            Log.d("sportHashClass", "and now it's not");
+
         }
-        return sportsHash;
+        return sportsHash; //but returning hash map of the class variable
     }
 
     public SportsHash ()
     {
+        sportsHash = new HashMap<String,Sport>();
+        Log.d("sportHash", "puts");
         sportsHash.put(Constants.TAG_BASKETBALL, new Sport(Constants.TAG_BASKETBALL, 0xFFE4852D, R.drawable.round_basketball_event_view_img));
         sportsHash.put(Constants.TAG_BICYCLE, new Sport(Constants.TAG_BICYCLE,0xFF84817E,R.drawable.bycicle_event_view_img));
         sportsHash.put(Constants.TAG_SOCCER, new Sport(Constants.TAG_SOCCER,0xFF2EC62C,R.drawable.round_soccer_event_view_img));
