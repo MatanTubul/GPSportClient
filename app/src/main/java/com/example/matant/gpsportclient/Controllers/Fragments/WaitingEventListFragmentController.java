@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
+import com.example.matant.gpsportclient.DataClasses.SportsHash;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.R;
@@ -25,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -38,6 +40,8 @@ public class WaitingEventListFragmentController extends Fragment implements Asyn
     private ProgressDialog progress;
     List<WaitingEventUserRow> rowWaitingEventsList;
     private WaitingEventUserAdapter invitationsArrayAdapter;
+    private HashMap sh;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,6 +49,7 @@ public class WaitingEventListFragmentController extends Fragment implements Asyn
         getActivity().setTitle("Events WishList");
         WaitingEventList = (ListView) v.findViewById(R.id.listViewWaitingEvents);
         sm = SessionManager.getInstance(getActivity());
+        sh = SportsHash.getSportsHash();
         sendDataToDBController();
         return v;
 
@@ -83,20 +88,10 @@ public class WaitingEventListFragmentController extends Fragment implements Asyn
                                     eventObj.put("start_time", jsonarr.getJSONObject(i).getString("formatted_start_time"));
                                     eventObj.put("end_time", jsonarr.getJSONObject(i).getString("formatted_end_time"));
                                     participants = jsonarr.getJSONObject(i).getString("current_participants");
-                                    switch (title){
-                                        case Constants.TAG_SOCCER:
-                                            sportType = R.drawable.soccer_32;
-                                            break;
-                                        case Constants.TAG_BASKETBALL:
-                                            sportType = R.drawable.basketball_32;
-                                            break;
-                                        case Constants.TAG_RUNNING:
-                                            sportType = R.drawable.running_32;
-                                            break;
-                                        case Constants.TAG_BICYCLE:
-                                            sportType = R.drawable.biking_32;
-                                            break;
-                                    }
+
+                                    SportsHash.Sport sport=(SportsHash.Sport) sh.get(title);
+                                    sportType = sport.getSportViewEventIconForListsId();
+
                                     Log.d("my parameters:",Loc+","+event_time+","+date+","+participants+","+event_id+","+sportType);
                                     WaitingEventUserRow rowInvite = new WaitingEventUserRow(Loc,event_time,date,participants,event_id,"1",sportType);
                                     rowWaitingEventsList.add(rowInvite);

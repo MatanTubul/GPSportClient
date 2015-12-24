@@ -22,7 +22,7 @@ import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.InterfacesAndConstants.OnLocationChangedListener;
 import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.Utilities.LocationTool;
-import com.example.matant.gpsportclient.Utilities.MapMarker;
+import com.example.matant.gpsportclient.DataClasses.MapMarker;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;

@@ -1,4 +1,4 @@
-package com.example.matant.gpsportclient.Utilities;
+package com.example.matant.gpsportclient.DataClasses;
 
 import com.example.matant.gpsportclient.R;
 import com.google.android.gms.maps.model.BitmapDescriptor;
