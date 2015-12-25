@@ -129,6 +129,10 @@
                   android:layout_height="wrap_content"
                   android:inputType="number"
                   android:ems="10"
+                  android:background="@drawable/squared_edit_text_backgorund"
+                  android:paddingLeft="5dp"
+                  android:layout_marginLeft="5dp"
+                  android:layout_marginBottom="5dp"
                   android:id="@+id/editTextEventsNumber"
                   android:hint="Number of Events"
                   />
