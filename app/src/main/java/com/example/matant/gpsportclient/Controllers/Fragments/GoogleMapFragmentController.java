@@ -12,10 +12,10 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
@@ -66,6 +66,8 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     private LocationTool locationTool;
     private String mode;
     private double lati, longi;
+    private ImageButton goToLastLocation;
+    private LatLng lastLocation = null;
 
 
     @Override
@@ -77,6 +79,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         View v = inflater.inflate(R.layout.fragment_google_map_fragment_controller, container, false);
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
+        goToLastLocation = (ImageButton) v.findViewById(R.id.googleMapCurrentlocButton);
         mMapView.onResume();//    display map immediately
         sm = SessionManager.getInstance(getActivity());
         locationTool = new LocationTool(this, this);
@@ -151,6 +154,13 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
                 }
             }
         }
+        goToLastLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                float zoomLevel = (float) 16.0; //This goes up to 21
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, zoomLevel));
+            }
+        });
         return v;
     }
 
@@ -432,6 +442,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
             if (currentMarker != null)
                 currentMarker.remove();
             iniLoc = new LatLng(latitude, longitude);
+            lastLocation = iniLoc;
             CameraPosition cp = new CameraPosition.Builder().target(iniLoc).zoom(12).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cp));
             googleMap.getUiSettings().setZoomGesturesEnabled(true);
