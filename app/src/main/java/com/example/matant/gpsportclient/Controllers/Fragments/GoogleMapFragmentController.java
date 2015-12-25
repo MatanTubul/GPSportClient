@@ -156,6 +156,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
     @Override
     public void onStart() {
+        Log.d("this is","start");
         super.onStart();
         if (mode.equals(Constants.MODE_SEARCH_DEF))
             if (locationTool.getmGoogleApiClient() != null)
@@ -164,10 +165,11 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
     @Override
     public void onResume() {
+        Log.d("this is","resume");
         super.onResume();
         mMapView.onResume();
-        if(progress !=null)
-            progress.dismiss();
+        if(this.progress !=null)
+            this.progress.dismiss();
         if (mode.equals(Constants.MODE_SEARCH_DEF)) {
             locationTool.checkPlayServices();
             if (locationTool.getmGoogleApiClient().isConnected() && !locationTool.ismRequestingLocationUpdates()) {
@@ -179,9 +181,10 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     @Override
     public void onPause() {
         super.onPause();
+        Log.d("this is", "pause");
         mMapView.onPause();
-        if(progress !=null)
-            progress.dismiss();
+        if(this.progress !=null)
+            this.progress.dismiss();
         if (mode.equals(Constants.MODE_SEARCH_DEF))
             if (locationTool.getmGoogleApiClient().isConnected())
                 stopLocationUpdates();
@@ -189,9 +192,10 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
     @Override
     public void onStop() {
+        Log.d("this is","stop");
         super.onStop();
-        if(progress !=null)
-            progress.dismiss();
+        if(this.progress !=null)
+            this.progress.dismiss();
         if (mode.equals(Constants.MODE_SEARCH_DEF))
             if (locationTool.getmGoogleApiClient().isConnected())
                 locationTool.getmGoogleApiClient().disconnect();
@@ -200,8 +204,10 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
     @Override
     public void onDestroy() {
+        Log.d("this is","destroy");
         super.onDestroy();
         mMapView.onDestroy();
+        this.progress.dismiss();
         if (mode.equals(Constants.MODE_SEARCH_DEF)) {
             if (locationTool.getmGoogleApiClient().isConnected()) {
                 stopLocationUpdates();
@@ -230,7 +236,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     }
     @Override
     public void handleResponse(String resStr) {
-        progress.dismiss();
+        this.progress.dismiss();
 
         if (resStr != null){
             Log.d("handleResponse events", resStr);
@@ -367,8 +373,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
     @Override
     public void preProcess() {
-        progress = ProgressDialog.show(this.getActivity(), "Search events", "Updating map with events near by...", true);
-
+        this.progress = ProgressDialog.show(this.getActivity(), "Search events", "Updating map with events near by...",false,true);
     }
 
      /**
@@ -406,7 +411,8 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     }
 
     public void updateUI() {
-
+        if(this.progress!= null)
+            this.progress.dismiss();
         double latitude, longitude;
 
         if (mode.equals(Constants.MODE_SEARCH_DEF)) {
@@ -438,7 +444,11 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
             currentMarker.showInfoWindow();
             currentMarker.setVisible(true);
             if (mode.equals(Constants.MODE_SEARCH_DEF))
+            {
+                Log.d("this is","UpdateUI");
                 sendDataToDBController();
+            }
+
 
         }
     }
