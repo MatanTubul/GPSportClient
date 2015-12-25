@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * Created by nirb on 11/20/2015.
@@ -22,6 +23,7 @@ public class MapMarker implements Serializable{
     private BitmapDescriptor mIcon;
     private int mBitmap;
     private Marker mMarker;
+    private HashMap sh;
 
     public JSONObject getmJsonObject() {
         return mJsonObject;
@@ -68,22 +70,11 @@ public class MapMarker implements Serializable{
 
     private BitmapDescriptor getSportMarkerIcon()
     {
-    switch (mLabel) {
-        case "Soccer":
-            mBitmap = R.drawable.soccer_marker_icon;
-            return BitmapDescriptorFactory.fromResource(R.drawable.soccer_marker_icon);
-        case "Basketball":
-            mBitmap = R.drawable.basketball_marker_icon;
-            return BitmapDescriptorFactory.fromResource(R.drawable.basketball_marker_icon);
-        case "Football":
-            mBitmap = R.drawable.football_marker_icon;
-            return BitmapDescriptorFactory.fromResource(R.drawable.football_marker_icon);
-        case "Tennis":
-            mBitmap = R.drawable.tennis_marker_icon;
-            return BitmapDescriptorFactory.fromResource(R.drawable.tennis_marker_icon);
-        default:
-            return BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA);
-    }
+        sh = SportsHash.getSportsHash();
+        SportsHash.Sport sport=(SportsHash.Sport) sh.get(mLabel);
+        mBitmap = sport.getSportMapMarkerId();
+        return BitmapDescriptorFactory.fromResource(mBitmap);
+
     }
 
     public String getmLabel()
