@@ -1,14 +1,19 @@
 package com.example.matant.gpsportclient.Adapters;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.matant.gpsportclient.Controllers.Fragments.ViewEventFragmentController;
 import com.example.matant.gpsportclient.DataClasses.InvitationsRowModel;
 import com.example.matant.gpsportclient.R;
 
@@ -20,6 +25,7 @@ import java.util.List;
 public class InvitationsArrayAdapter extends ArrayAdapter<InvitationsRowModel> {
     Context context;
     List<InvitationsRowModel> invitationsList;
+    private Fragment fragment = null;
     public InvitationsArrayAdapter(Context ctx,int resourceId, List<InvitationsRowModel> items){
         super(ctx,resourceId, items);
         this.context = ctx;
@@ -60,6 +66,16 @@ public class InvitationsArrayAdapter extends ArrayAdapter<InvitationsRowModel> {
             @Override
             public void onClick(View v) {
                 //begin View event fragment
+                fragment = new ViewEventFragmentController();
+                Bundle args = new Bundle();
+                args.putString("event", rowItem.getEventRecord().toString());
+                fragment.setArguments(args);
+                if (fragment != null) {
+                    FragmentManager fragmentManager = ((Activity)context).getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                }else {
+                    Toast.makeText(context, "Failed to open event details", Toast.LENGTH_LONG).show();
+                }
             }
         });
         return convertView;

@@ -2,6 +2,7 @@ package com.example.matant.gpsportclient.Controllers.Fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,14 +37,22 @@ public class RecentSearchesFragmentController extends Fragment {
         rsListView = (ListView) v.findViewById(R.id.listViewRecentSearches);
         sm = SessionManager.getInstance(getActivity());
         getActivity().setTitle("Recent Searches");
-        HashMap<String,String> rs =sm.getRecentSearches();
-        if(rs.size() < 1)
-            Toast.makeText(getActivity(),"Recent Searches does not exist!",Toast.LENGTH_LONG).show();
+        HashMap<String,String> rs = sm.getRecentSearches();
+        Log.d("hash map size is",String.valueOf(rs.size()));
+        if(sm.getRecentSearchesStatus() == null)
+        {
+            Log.d("recent is empty", "empty list");
+            Toast.makeText(getActivity(),"Searches was not done yet!",Toast.LENGTH_LONG).show();
+        }
         else{
+            Log.d("recent is not empty", "list");
             rsTotalList = new ArrayList<RecentSearchRowModel>();
             for(int i=rs.size()-1; i >= 0;i--){
-                RecentSearchRowModel rsRow = new RecentSearchRowModel(rs.get(String.valueOf(i+1)));
-                rsTotalList.add(rsRow);
+                if(rs.get(String.valueOf(i+1) )!= null){
+                    RecentSearchRowModel rsRow = new RecentSearchRowModel(rs.get(String.valueOf(i+1)));
+                    rsTotalList.add(rsRow);
+                }
+
             }
             rsAdapter = new RecentSearchesArrayAdapter(getActivity(),R.layout.listview_recent_searches_row,rsTotalList);
             rsListView.setAdapter(rsAdapter);

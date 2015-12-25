@@ -86,7 +86,7 @@ public class InvitationsFragmentController extends Fragment implements AsyncResp
                             sportType = sport.getSportViewEventIconForListsId();
 
                             Log.d("my parameters:",Loc+","+event_time+","+date+","+participants+","+event_id+","+sportType);
-                            InvitationsRowModel rowInvite = new InvitationsRowModel(Loc,event_time,date,participants,event_id,sportType);
+                            InvitationsRowModel rowInvite = new InvitationsRowModel(Loc,event_time,date,participants,event_id,sportType,eventObj);
                             rowInvitations.add(rowInvite);
 
                         }

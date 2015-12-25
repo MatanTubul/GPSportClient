@@ -88,6 +88,7 @@ public final class Constants {
     public static final String TAG_ATTEND = "attend";
     public static final String TAG_NOT_ATTEND = "not attend";
     public static final String TAG_RES_INV_USR = "response_invited_user";
+    public static final String TAG_HM_STATUS = "hash_map_status";
 
 
     //event

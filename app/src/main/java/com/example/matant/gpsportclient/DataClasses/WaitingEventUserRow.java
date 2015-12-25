@@ -1,5 +1,7 @@
 package com.example.matant.gpsportclient.DataClasses;
 
+import org.json.JSONObject;
+
 /**
  * this class is representing a specific row in the Waiting Event List Adapter.
  * Created by matant on 12/16/2015.
@@ -8,8 +10,9 @@ public class WaitingEventUserRow  {
     private String place,time,event_date,event_curr_participants,id;
     private String queueIndex;
     private int sportImage;
+    private JSONObject eventRecord;
 
-    public WaitingEventUserRow(String loc,String time,String date,String curr,String id,String  placeInQueue,int sportType){
+    public WaitingEventUserRow(String loc,String time,String date,String curr,String id,String  placeInQueue,int sportType,JSONObject obj){
         this.place = loc;
         this.time = time;
         this.event_date = date;
@@ -17,6 +20,7 @@ public class WaitingEventUserRow  {
         this.id = id;
         this.queueIndex = placeInQueue;
         this.sportImage = sportType;
+        this.eventRecord = obj;
     }
 
     public String getPlace() {
@@ -73,5 +77,9 @@ public class WaitingEventUserRow  {
 
     public void setSportImage(int sportImage) {
         this.sportImage = sportImage;
+    }
+
+    public JSONObject getEventRecord() {
+        return eventRecord;
     }
 }

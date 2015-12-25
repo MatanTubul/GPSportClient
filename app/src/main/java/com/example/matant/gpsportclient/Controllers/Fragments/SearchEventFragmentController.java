@@ -315,6 +315,8 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         Log.d("my nameValuePairList", nameValuePairList.toString());
 
         try {
+            if(sm.getRecentSearchesStatus() == null)
+                sm.StoreUserSession("not_empty",Constants.TAG_HM_STATUS);
             for(int i= 0;i < nameValuePairList.size();i++){
                 Log.d("loop index is",String.valueOf(i));
                 jobjRecentSearch.put(nameValuePairList.get(i).getName(),nameValuePairList.get(i).getValue());

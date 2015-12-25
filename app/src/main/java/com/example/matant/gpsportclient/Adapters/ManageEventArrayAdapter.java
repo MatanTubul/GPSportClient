@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.Controllers.Fragments.CreateEventFragmentController;
+import com.example.matant.gpsportclient.Controllers.Fragments.ViewEventFragmentController;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.R;
@@ -47,6 +48,7 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
     private String mode;
     public String mananger_name = null;
     private  String user_id = null;
+    private Fragment fragment = null;
 
 
     public ManageEventArrayAdapter(Context ctx,int resourceId, List<ManageEventListRow> items,String mymode){
@@ -107,6 +109,7 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("mode is:",mode );
                 rowEvent = rowItem;
                 if(mode.equals("manage")){
                     Bundle bun = new Bundle();
@@ -126,7 +129,17 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
                 }
                 else{
                     //need to start ViewEventFragmentController
-                    Log.d("mode is:",mode );
+                    fragment = new ViewEventFragmentController();
+                    Bundle args = new Bundle();
+                    args.putString("event", rowEvent.getEventRecord().toString());
+                    fragment.setArguments(args);
+                    if (fragment != null) {
+                        FragmentManager fragmentManager = ((Activity)context).getFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                    }else {
+                        Toast.makeText(context,"Failed to open event details",Toast.LENGTH_LONG).show();
+                    }
+
                 }
 
 

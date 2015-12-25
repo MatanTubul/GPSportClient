@@ -63,8 +63,12 @@ public class SessionManager  {
         rs.put(Constants.TAG_SEARCH2,pref.getString(Constants.TAG_SEARCH2,null));
         rs.put(Constants.TAG_SEARCH3,pref.getString(Constants.TAG_SEARCH3,null));
         rs.put(Constants.TAG_SEARCH4,pref.getString(Constants.TAG_SEARCH4,null));
-        rs.put(Constants.TAG_SEARCH5,pref.getString(Constants.TAG_SEARCH5,null));
+        rs.put(Constants.TAG_SEARCH5, pref.getString(Constants.TAG_SEARCH5, null));
+        rs.put(Constants.TAG_HM_STATUS, pref.getString(Constants.TAG_HM_STATUS, null));
         return rs;
+    }
+    public String getRecentSearchesStatus(){
+        return pref.getString(Constants.TAG_HM_STATUS,null);
     }
 
     public HashMap<String,String> getUserDetails(){

@@ -1,19 +1,23 @@
 package com.example.matant.gpsportclient.DataClasses;
 
+import org.json.JSONObject;
+
 /**
  * Created by matant on 12/10/2015.
  */
 public class InvitationsRowModel {
     private String place,time,event_date,event_curr_participants,id;
     private int sportImage;
+     private JSONObject eventRecord;
 
-    public InvitationsRowModel(String loc,String time,String date,String curr,String id,int sportType){
+    public InvitationsRowModel(String loc,String time,String date,String curr,String id,int sportType,JSONObject obj){
         this.place = loc;
         this.time = time;
         this.event_date = date;
         this.event_curr_participants = curr;
         this.id = id;
         this.sportImage = sportType;
+        this.eventRecord = obj;
     }
 
     public String getPlace() {
@@ -62,5 +66,9 @@ public class InvitationsRowModel {
 
     public void setSportImage(int sportImage) {
         this.sportImage = sportImage;
+    }
+
+    public JSONObject getEventRecord() {
+        return eventRecord;
     }
 }

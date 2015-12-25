@@ -93,7 +93,7 @@ public class WaitingEventListFragmentController extends Fragment implements Asyn
                                     sportType = sport.getSportViewEventIconForListsId();
 
                                     Log.d("my parameters:",Loc+","+event_time+","+date+","+participants+","+event_id+","+sportType);
-                                    WaitingEventUserRow rowInvite = new WaitingEventUserRow(Loc,event_time,date,participants,event_id,"1",sportType);
+                                    WaitingEventUserRow rowInvite = new WaitingEventUserRow(Loc,event_time,date,participants,event_id,"1",sportType,eventObj);
                                     rowWaitingEventsList.add(rowInvite);
 
                                 }
