@@ -4,23 +4,27 @@
     >
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
+        android:layout_margin="5dp"
+        android:drawableLeft="@drawable/user_32"
+        android:background="@drawable/squared_edit_text_backgorund"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:id="@+id/editTextSearch"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:hint="Search..." />
+        android:hint="Search User by name" />
     <View
         android:id="@+id/divider1"
         android:layout_below="@+id/editTextSearch"
         android:layout_width="fill_parent"
+        android:layout_marginTop="5dp"
         android:layout_height="6dp"
-        android:background="@android:color/darker_gray"/>
+        android:background="#0091FF"/>
 
     <ScrollView
         android:layout_width="match_parent"
