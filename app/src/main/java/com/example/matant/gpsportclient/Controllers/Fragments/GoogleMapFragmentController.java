@@ -157,8 +157,11 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         goToLastLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                float zoomLevel = (float) 16.0; //This goes up to 21
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, zoomLevel));
+                if(lastLocation != null){
+                    float zoomLevel = (float) 16.0; //This goes up to 21
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, zoomLevel));
+                }
+
             }
         });
         return v;
@@ -166,7 +169,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
     @Override
     public void onStart() {
-        Log.d("this is","start");
+        Log.d("this is", "start");
         super.onStart();
         if (mode.equals(Constants.MODE_SEARCH_DEF))
             if (locationTool.getmGoogleApiClient() != null)
@@ -175,7 +178,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
     @Override
     public void onResume() {
-        Log.d("this is","resume");
+        Log.d("this is", "resume");
         super.onResume();
         mMapView.onResume();
         if(this.progress !=null)
@@ -202,7 +205,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
     @Override
     public void onStop() {
-        Log.d("this is","stop");
+        Log.d("this is", "stop");
         super.onStop();
         if(this.progress !=null)
             this.progress.dismiss();
@@ -214,7 +217,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
     @Override
     public void onDestroy() {
-        Log.d("this is","destroy");
+        Log.d("this is", "destroy");
         super.onDestroy();
         mMapView.onDestroy();
         if (this.progress != null)
@@ -437,7 +440,6 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         }
 
         Log.d("lat and long", latitude+" "+longitude );
-
         if (googleMap != null) {
             Log.d("googleMap", "googleMap");
             if (currentMarker != null)

@@ -103,7 +103,6 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         btnSave = (Button) v.findViewById(R.id.ButtonSchedSave);
         sv = (ScrollView) v.findViewById(R.id.scrollView);
         dtFunctions = new DateAndTimeFunctions();
-
         cal = Calendar.getInstance();
 
         btnstartTime.setText(dtFunctions.getCorrentTime());
@@ -695,7 +694,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
             onComplete("incorrect_time", "Please Provide end time of the event ");
             valid = false;
         }
-        if(currMaxParticipants!=null){
+        if(currMaxParticipants !=null && !(maxParticipantsEdittext.getText().toString().equals(""))){
+
             if((Integer.valueOf(currMaxParticipants)) > (Integer.valueOf(maxParticipantsEdittext.getText().toString()))){
                 maxParticipantsEdittext.setError("Maximum number of participants minor then the original.");
                 valid = false;
