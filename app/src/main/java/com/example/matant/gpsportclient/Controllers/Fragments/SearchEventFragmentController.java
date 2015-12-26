@@ -136,9 +136,11 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         searchRdg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+
                 pos = searchRdg.indexOfChild(rootView.findViewById(checkedId));
+                Log.d("radio pos is",String.valueOf(pos));
                 switch (pos) {
-                    case 0: {
+                    case 1: {
                         streetAddress.setEnabled(true);
                         streetAddress.setText("");
                         if (myLocManager.getmGoogleApiClient().isConnected()) {
@@ -147,7 +149,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
                         }
                         break;
                     }
-                    case 1: {
+                    case 2: {
                         streetAddress.setEnabled(false);
                         if (myLocManager.getmGoogleApiClient() != null) {
                             Log.d("check if getmGoogleApiClient()", "check location");
@@ -155,7 +157,6 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
                             myLocManager.getmGoogleApiClient().connect();
 
                         }
-
                         break;
                     }
                 }
