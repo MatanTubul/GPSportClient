@@ -217,7 +217,8 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         Log.d("this is","destroy");
         super.onDestroy();
         mMapView.onDestroy();
-        this.progress.dismiss();
+        if (this.progress != null)
+            this.progress.dismiss();
         if (mode.equals(Constants.MODE_SEARCH_DEF)) {
             if (locationTool.getmGoogleApiClient().isConnected()) {
                 stopLocationUpdates();

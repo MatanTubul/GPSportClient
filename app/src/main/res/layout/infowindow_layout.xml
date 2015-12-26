@@ -2,7 +2,7 @@
     android:id="@+id/station_info_layout"
     android:layout_width="205dp"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ImageView
@@ -13,8 +13,28 @@
     <TextView
         android:id="@+id/marker_label"
         android:layout_marginLeft="5dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_toLeftOf="@+id/marker_icon"/>
+
+    <TextView
+        android:id="@+id/km_from_current"
+        android:layout_marginLeft="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_toLeftOf="@+id/marker_icon"
+        android:layout_below="@+id/marker_label"/>
+
+    <TextView
+        android:id="@+id/test"
+        android:layout_marginLeft="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_toLeftOf="@+id/km_from_current"
+        android:layout_below="@+id/marker_label"/>
+
 
 </LinearLayout>

@@ -42,7 +42,7 @@ public class RecentSearchesFragmentController extends Fragment {
         if(sm.getRecentSearchesStatus() == null)
         {
             Log.d("recent is empty", "empty list");
-            Toast.makeText(getActivity(),"Searches was not done yet!",Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(),"No searches to display",Toast.LENGTH_LONG).show();
         }
         else{
             Log.d("recent is not empty", "list");

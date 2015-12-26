@@ -660,7 +660,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
             if( diff < (Integer.valueOf(minAgeEditText.getText().toString()))){
                 list.get(i).setImgViewUserError(R.drawable.user_warning);
                 invidedAdapter.notifyDataSetChanged();
-                Toast.makeText(getActivity(),"One or more users does not fit Minimum age!",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),"One or more users does not fit minimum age!",Toast.LENGTH_LONG).show();
                 valid =  false;
             }
         }
