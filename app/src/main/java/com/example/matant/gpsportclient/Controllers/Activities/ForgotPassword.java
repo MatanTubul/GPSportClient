@@ -117,10 +117,4 @@ public class ForgotPassword extends Activity implements AsyncResponse {
                     "Recovering your password...", true);
 
         }
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Toast.makeText(this, "Please log out!", Toast.LENGTH_LONG);
-    }
-
 }

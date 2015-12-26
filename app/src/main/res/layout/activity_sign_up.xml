@@ -40,8 +40,7 @@
                 android:hint="Name"
                 android:background="@drawable/rounded_edit_text"
                 android:paddingLeft="5dp"
-                android:layout_marginTop="160dp"
-                />
+                android:layout_marginTop="160dp" />
 
 
 
@@ -158,7 +157,9 @@
                 android:text="Gender:"
                 android:id="@+id/textViewGender"
                 android:layout_gravity="left|top"
-                android:layout_weight="5.18" />
+                android:layout_weight="5.18"
+                android:textColor="#000000"
+                android:textStyle="bold" />
 
             <Spinner
                 android:layout_width="129dp"
@@ -186,7 +187,9 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Year of Birth:"
                 android:id="@+id/textViewyearOfBirth"
-                android:layout_weight="5.18" />
+                android:layout_weight="5.18"
+                android:textColor="#000000"
+                android:textStyle="bold" />
             <Spinner
                 android:layout_width="129dp"
                 android:layout_height="30dp"
@@ -217,6 +220,7 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:id="@+id/rotateRow"
+                android:layout_marginLeft="20dp"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false">
 
