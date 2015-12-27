@@ -161,7 +161,7 @@ public final class Constants {
     public static final String SENDER_ID ="846271397731" ;
 
     //MainScreen Constants
-    public static final int MENU_SIZE = 10;
+    public static final int MENU_SIZE = 11;
 
 
     ////////////////////////Utilities Constants/////////////////////////

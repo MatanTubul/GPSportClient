@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.Controllers.Fragments.AttendingListFragmentController;
+import com.example.matant.gpsportclient.Controllers.Fragments.ContactUsFragmentController;
 import com.example.matant.gpsportclient.Controllers.Fragments.CreateEventFragmentController;
 import com.example.matant.gpsportclient.Controllers.Fragments.GoogleMapFragmentController;
 import com.example.matant.gpsportclient.Controllers.Fragments.InvitationsFragmentController;
@@ -80,7 +81,8 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
         drawerItems[6] = new DrawerItem(R.drawable.invite_24,"Invitations List");
         drawerItems[7] = new DrawerItem(R.drawable.watch_24,"Event WishList");
         drawerItems[8] = new DrawerItem(R.drawable.recent_search_24,"Recent Searches");
-        drawerItems[9] = new DrawerItem(R.drawable.logout,"Log Out");
+        drawerItems[9] = new DrawerItem(R.drawable.contact_card_26,"Contact Us");
+        drawerItems[10] = new DrawerItem(R.drawable.logout,"Log Out");
 
         DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(this, R.layout.listview_item_row, drawerItems);
         mDrawerList.setAdapter(adapter);
@@ -174,7 +176,6 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
         nameValuePairList.add(tagReq);
         nameValuePairList.add(userNameParam);
         dbController =  new DBcontroller(this,this);
-
         dbController.execute(nameValuePairList);
 
     }
@@ -228,12 +229,15 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
                 //Recent Searches
                 fragment = new RecentSearchesFragmentController();
                 break;
-            case 9: { //Log Out
+            case 9:
+                fragment = new ContactUsFragmentController();
+                break;
+
+            case 10: { //Log Out
                 logout();
                 finish(); //destroy the main activity
             }
                 break;
-
             default:
                 break;
         }
@@ -256,7 +260,6 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
