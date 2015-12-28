@@ -245,7 +245,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
 
         if (fragment != null) {
             FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
             mDrawerList.setItemChecked(position, true);
             mDrawerList.setSelection(position);
             getSupportActionBar().setTitle(mNavigationDrawerItemTitles[position]);
@@ -293,4 +293,12 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
         super.onDestroy();
         logout();
     }*/
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 1) {
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }
