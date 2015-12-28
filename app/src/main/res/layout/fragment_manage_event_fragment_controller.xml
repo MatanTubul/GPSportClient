@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/mainManageLayout"
-    tools:context="com.example.matant.gpsportclient.Controllers.Fragments.ManageEventFragmentController">
+    tools:context="com.example.matant.gpsportclient.Controllers.Fragments.ManageEventFragmentController"
+    android:background="#ffffff">
 
     <!-- TODO: Update blank fragment layout -->
 
