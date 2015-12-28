@@ -118,6 +118,9 @@ public class ForgotPassword extends Activity implements AsyncResponse {
 
         }
 
+    /**
+     * Override the back button on the device
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();

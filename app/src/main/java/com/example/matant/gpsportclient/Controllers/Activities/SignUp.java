@@ -431,12 +431,15 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         }
 
     }
+
     @Override
     public void preProcess() {
             progress = ProgressDialog.show(this, "Sign up", "Creating your account", true);
-
     }
 
+    /**
+     * Override the back button on the device
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
