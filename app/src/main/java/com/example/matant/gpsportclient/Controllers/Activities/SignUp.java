@@ -436,4 +436,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             progress = ProgressDialog.show(this, "Sign up", "Creating your account", true);
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(SignUp.this, Login.class));
+        finish();
+    }
 }
