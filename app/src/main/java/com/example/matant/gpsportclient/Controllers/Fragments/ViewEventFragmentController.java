@@ -161,7 +161,8 @@ private void getEventDetailsFromDB() {
             lati = Double.valueOf(eventDetailsJsonObj.getString(Constants.LAT));
             longi = Double.valueOf(eventDetailsJsonObj.getString(Constants.LONG));
             kindOfSportText.setText(eventDetailsJsonObj.getString(Constants.TAG_KIND_OF_SPORT));
-            startTimeText.setText(eventDetailsJsonObj.getString(Constants.TAG_START_TIME));
+            String StartTimeByDB = eventDetailsJsonObj.getString(Constants.TAG_START_TIME);
+            startTimeText.setText(StartTimeByDB.substring(0, StartTimeByDB.length() - 3));
             addressText.setText(eventDetailsJsonObj.getString(Constants.TAG_ADDRESS));
 
             eventGender = eventDetailsJsonObj.getString(Constants.TAG_GEN);
