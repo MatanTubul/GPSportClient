@@ -230,6 +230,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
                 fragment = new RecentSearchesFragmentController();
                 break;
             case 9:
+                //Contact us
                 fragment = new ContactUsFragmentController();
                 break;
 

@@ -93,7 +93,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         cbPrivate = (CheckBox) rootView.findViewById(R.id.checkBoxSearchPrivateEvents);
         cbPublic = (CheckBox) rootView.findViewById(R.id.checkBoxSearchPublicEvents);
         sm = SessionManager.getInstance(getActivity());
-        pos = 0;
+        pos = 1;
         dtFunctions = new DateAndTimeFunctions();
         myLocManager = new LocationTool(this,this);
         dateFrom.setText(dtFunctions.getCurrentDate());
@@ -269,7 +269,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
     public void sendDataToDBController() {
         JSONObject jobjRecentSearch = new JSONObject();
 
-        if(pos == 0){
+        if(pos == 1){
             LatLng loc = myLocManager.getLocationFromAddress(streetAddress.getText().toString());
             lat = loc.latitude;
             lon = loc.longitude;
@@ -369,7 +369,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
     private boolean isParamAreValid(){
 
             boolean valid = true;
-        if ((streetAddress.getText().toString().equals("")) && (pos == 0 || pos == 1)){
+        if ((streetAddress.getText().toString().equals("")) && (pos == 1 || pos == 2)){
                 valid = false;
                 streetAddress.setError("Street Address is missing!");
             }
@@ -502,7 +502,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
     @Override
     public void onResume() {
         super.onResume();
-        if( pos == 1 ){
+        if( pos == 2 ){
             Log.d("return from settings", "updating");
             myLocManager.checkPlayServices();
             if(!(myLocManager.getmGoogleApiClient().isConnected()))
@@ -620,7 +620,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
     @Override
     public void onStart() {
         super.onStart();
-        if(pos == 1){
+        if(pos == 2){
             myLocManager.checkPlayServices();
             if (myLocManager.getmGoogleApiClient().isConnected() && !myLocManager.ismRequestingLocationUpdates()) {
                 startLocationUpdates();
@@ -631,7 +631,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
     @Override
     public void onStop() {
         super.onStop();
-        if(pos ==  1){
+        if(pos ==  2){
             if (myLocManager.getmGoogleApiClient().isConnected()) {
                 myLocManager.getmGoogleApiClient().disconnect();
             }

@@ -1,6 +1,7 @@
 package com.example.matant.gpsportclient.Controllers.Fragments;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -57,8 +58,9 @@ public class RecentSearchesFragmentController extends Fragment {
             rsAdapter = new RecentSearchesArrayAdapter(getActivity(),R.layout.listview_recent_searches_row,rsTotalList);
             rsListView.setAdapter(rsAdapter);
         }
-
         return v;
 
     }
+
+
 }
