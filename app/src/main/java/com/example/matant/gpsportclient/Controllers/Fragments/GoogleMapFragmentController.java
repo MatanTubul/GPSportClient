@@ -392,9 +392,9 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
      /**
       * method which handling the requests for  back button in the  device
-      * @param savedInstanceState
+      * @param //savedInstanceState
       */
-    @Override
+   /* @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getView().setFocusableInTouchMode(true);
@@ -412,7 +412,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
                 return false;
             }
         });
-    }
+    }*/
 
     @Override
     public void onLocationChanged(Location location) {
@@ -492,8 +492,6 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
             return v;
         }
         }
-
-
 }
 
 

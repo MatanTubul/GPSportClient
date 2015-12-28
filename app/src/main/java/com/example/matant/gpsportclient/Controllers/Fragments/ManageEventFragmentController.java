@@ -161,7 +161,7 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
      * method which handling the requests for  back button in the  device
      * @param savedInstanceState
      */
-    @Override
+   /* @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getView().setFocusableInTouchMode(true);
@@ -178,5 +178,5 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
                 return false;
             }
         });
-    }
+    }*/
 }

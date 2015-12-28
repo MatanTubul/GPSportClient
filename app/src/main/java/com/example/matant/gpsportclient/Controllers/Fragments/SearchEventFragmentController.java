@@ -249,7 +249,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
                         Fragment fragment = new GoogleMapFragmentController();
                         fragment.setArguments(bun);
                         FragmentManager fragmentManager =  getActivity().getFragmentManager();
-                        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
                         break;
                     }
 
