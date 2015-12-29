@@ -288,11 +288,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
 
         sendDataToDBController();
     }
-    /*@Override
-    protected void onDestroy() {
-        super.onDestroy();
-        logout();
-    }*/
+
     @Override
     public void onBackPressed() {
         int stackSize = getFragmentManager().getBackStackEntryCount();
