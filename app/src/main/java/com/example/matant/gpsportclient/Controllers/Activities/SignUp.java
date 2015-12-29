@@ -17,6 +17,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -78,6 +79,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             Constants.MINIMAL_YEAR_OF_BIRTH++;
         }
 
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         buttonSignup = (Button) findViewById(R.id.ButtonSubmit);
         buttonSelectIMg = (Button) findViewById(R.id.buttonSelectImg);
         rotateLeft = (ImageButton)findViewById(R.id.imageButtonRleftt);
