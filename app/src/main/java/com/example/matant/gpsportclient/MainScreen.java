@@ -295,8 +295,10 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
     }*/
     @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 1) {
-            getFragmentManager().popBackStack();
+        int stackSize = getFragmentManager().getBackStackEntryCount();
+        if (stackSize > 1) {
+            for(int i=0;i<stackSize-1;i++)
+                getFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
         }
