@@ -232,7 +232,7 @@ private void getEventDetailsFromDB() {
                 }
                 //add manager details to list
                 String managerName = resManager.getString("fname");
-                String managerImg = resUsers.getJSONObject(0).getString("image");
+                String managerImg = resManager.getString("image");
                 addPlayerToPublicList(managerName, managerId, managerImg, mngStatus, true);
 
                 if (managerId.equals(currentUserId)) {
@@ -263,7 +263,7 @@ private void getEventDetailsFromDB() {
                 }
                 //add manager details to list
                 String managerName = resManager.getString("fname");
-                String managerImg = resUsers.getJSONObject(0).getString("image");
+                String managerImg = resManager.getString("image");
                 addPlayerToPrivateList(managerName, managerId, managerImg, mngStatus, true);
 
                 if (initParticipationTextButtonForPrivateEvent(managerId, mngStatus))
