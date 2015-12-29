@@ -657,6 +657,4 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
         }
         return  index;
     }
-
-
 }
