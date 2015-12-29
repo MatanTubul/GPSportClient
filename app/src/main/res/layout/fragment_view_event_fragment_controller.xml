@@ -170,13 +170,20 @@
             android:layout_height="wrap_content"
             android:text="participate"
             android:id="@+id/participate_button"
-            android:layout_weight="1" />
+            android:background="#606060"
+            android:textColor="#ffffff"
+            android:layout_weight="0.98"
+            android:layout_marginLeft="5dp" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/wazeButton"
-            android:src="@drawable/waze1" />
+            android:src="@drawable/waze1"
+            android:background="#606060"
+            android:textColor="#ffffff"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp" />
     </LinearLayout>
 
     <View
@@ -216,6 +223,14 @@
                 android:textStyle="bold"
                 android:background="#fffefe" />
 
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="fill_parent"
+                    android:layout_height="6dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#0091FF"
+                    android:layout_marginBottom="10dp" />
+
             <ListView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -242,6 +257,14 @@
                         android:layout_gravity="center_horizontal"
                         android:textStyle="bold"
                         android:background="#fffefe" />
+
+                    <View
+                        android:id="@+id/divider5"
+                        android:layout_width="fill_parent"
+                        android:layout_height="6dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#0091FF"
+                        android:layout_marginBottom="10dp" />
 
                     <ListView
                         android:layout_width="fill_parent"
@@ -270,6 +293,14 @@
                     android:layout_gravity="center_horizontal"
                     android:textStyle="bold"
                     android:background="#fffefe" />
+
+                <View
+                    android:id="@+id/divider6"
+                    android:layout_width="fill_parent"
+                    android:layout_height="6dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#0091FF"
+                    android:layout_marginBottom="10dp" />
 
                 <ListView
                     android:layout_width="fill_parent"

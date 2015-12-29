@@ -65,7 +65,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     private Fragment fragment = null;
     private LocationTool locationTool;
     private String mode;
-    private double lati, longi;
+    double latitude, longitude;
     private ImageButton goToLastLocation;
     private LatLng lastLocation = null;
 
@@ -136,8 +136,8 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         Bundle b = getArguments();
         if(b != null) {
             mode = b.getString(Constants.TAG_REQUEST);
-            lati = Double.valueOf(b.getString(Constants.TAG_LAT));
-            longi = Double.valueOf(b.getString(Constants.TAG_LONG));
+            latitude = Double.valueOf(b.getString(Constants.TAG_LAT));
+            longitude = Double.valueOf(b.getString(Constants.TAG_LONG));
             Log.d("b!=null",b.getString(Constants.TAG_LAT) + " " + b.getString(Constants.TAG_LONG));
             Log.d("mode",mode);
 
@@ -427,17 +427,12 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     public void updateUI() {
         if(this.progress!= null)
             this.progress.dismiss();
-        double latitude, longitude;
 
         if (mode.equals(Constants.MODE_SEARCH_DEF)) {
             latitude = locationTool.getmLastLocation().getLatitude();
             longitude =  locationTool.getmLastLocation().getLongitude();
         }
-        else
-        {
-            latitude = lati;
-            longitude =  longi;
-        }
+
 
         Log.d("lat and long", latitude+" "+longitude );
         if (googleMap != null) {
@@ -454,7 +449,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
             currentMarkerOption.position(iniLoc);
             currentMarker = googleMap.addMarker(currentMarkerOption);
             currentMarker.setIcon((BitmapDescriptorFactory.fromResource(R.drawable.current_location_marker_icon)));
-            currentMarker.setTitle(sm.getUserDetails().get("name") + " " + latitude + " " + longitude);
+            currentMarker.setTitle(sm.getUserDetails().get("name") + ", you are here!");
             currentMarker.showInfoWindow();
             currentMarker.setVisible(true);
             if (mode.equals(Constants.MODE_SEARCH_DEF))
@@ -486,12 +481,40 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
             if (marker != null) { //if marker == null this marker isn't in the hash => current location marker
                 ImageView markerIcon = (ImageView) v.findViewById(R.id.marker_icon);
                 TextView markerLabel = (TextView) v.findViewById(R.id.marker_label);
+                TextView markerDistanceFromAddOrCurrent = (TextView) v.findViewById(R.id.km_from_current);
+                TextView markerDate = (TextView) v.findViewById(R.id.event_date);
+                TextView markerLocation = (TextView) v.findViewById(R.id.event_time);
+                TextView markerTime = (TextView) v.findViewById(R.id.event_location);
+
                 markerIcon.setImageResource(marker.getmBitmap());
                 markerLabel.setText(marker.getmLabel());
+                markerDistanceFromAddOrCurrent.setText(getDistance(marker.getmLongitude(), marker.getmLatitude()));
+                String start = marker.getmStartTime(), end = marker.getmStartTime();
+                String startTime = start.substring(11), endTime = end.substring(11);
+                markerDate.setText("Date: " + start.substring(0, start.length() - 9));
+
+
+                markerTime.setText("Time: " +  startTime.substring(0, startTime.length() - 3)
+                        + " - " + endTime.substring(0, endTime.length() - 3));
+                markerLocation.setText("Address: " + marker.getmLocation());
             }
             return v;
         }
         }
+
+    String getDistance (double eventLongitude,double eventLatitude)
+    {
+        String distance = "Distance: "+ String.valueOf(Math.acos(Math.sin(eventLatitude * 0.0175) *
+                Math.sin(latitude * 0.0175)
+        + Math.cos(eventLatitude * 0.0175) * Math.cos(latitude * 0.0175) *
+        Math.cos((longitude * 0.0175) - (eventLongitude * 0.0175))) * 6371);
+
+        distance = distance.substring(0, distance.length() - 15);
+        return distance + " km";
+    }
 }
+
+
+
 
 

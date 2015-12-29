@@ -24,21 +24,30 @@ public class MapMarker implements Serializable{
     private int mBitmap;
     private Marker mMarker;
     private HashMap sh;
+    private String mLocation;
+    private String mStartTime;
+    private String mEndTime;
+
+    public String getmEndTime() {
+        return mEndTime;
+    }
+
+    public String getmStartTime() {
+        return mStartTime;
+    }
+
+    public String getmLocation() {
+        return mLocation;
+    }
+
 
     public JSONObject getmJsonObject() {
         return mJsonObject;
     }
 
-    public void setmJsonObject(JSONObject mJsonObject) {
-        this.mJsonObject = mJsonObject;
-    }
 
     public int getmBitmap() {
         return mBitmap;
-    }
-
-    public void setmBitmap(int mBitmap) {
-        this.mBitmap = mBitmap;
     }
 
     public Marker getmMarker() {
@@ -62,6 +71,9 @@ public class MapMarker implements Serializable{
             mLongitude = Double.parseDouble(mJsonObject.getString("longitude"));
             mLabel= mJsonObject.getString("kind_of_sport");
             mIcon = getSportMarkerIcon();
+            mStartTime = mJsonObject.getString("start_time");
+            mEndTime = mJsonObject.getString("end_time");
+            mLocation = mJsonObject.getString("address");
 
         }catch (JSONException e) {
             e.printStackTrace();
@@ -82,19 +94,9 @@ public class MapMarker implements Serializable{
         return mLabel;
     }
 
-    public void setmLabel(String mLabel)
-    {
-        this.mLabel = mLabel;
-    }
-
     public BitmapDescriptor getmIcon()
     {
         return mIcon;
-    }
-
-    public void setmIcon(BitmapDescriptor icon)
-    {
-        this.mIcon = icon;
     }
 
     public Double getmLatitude()
@@ -102,18 +104,10 @@ public class MapMarker implements Serializable{
         return mLatitude;
     }
 
-    public void setmLatitude(Double mLatitude)
-    {
-        this.mLatitude = mLatitude;
-    }
 
     public Double getmLongitude()
     {
         return mLongitude;
     }
 
-    public void setmLongitude(Double mLongitude)
-    {
-        this.mLongitude = mLongitude;
-    }
 }
