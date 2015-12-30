@@ -155,6 +155,6 @@ public class AttendingListFragmentController extends Fragment implements View.On
 
     @Override
     public void onClick(View v) {
-
     }
+
 }
