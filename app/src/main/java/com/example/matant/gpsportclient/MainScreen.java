@@ -79,7 +79,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
         drawerItems[4] = new DrawerItem(R.drawable.manage,"Manage Event");
         drawerItems[5] = new DrawerItem(R.drawable.attending,"Attending List");
         drawerItems[6] = new DrawerItem(R.drawable.invite_24,"Invitations List");
-        drawerItems[7] = new DrawerItem(R.drawable.watch_24,"Event WishList");
+        drawerItems[7] = new DrawerItem(R.drawable.watch_24,"Event Wish List");
         drawerItems[8] = new DrawerItem(R.drawable.recent_search_24,"Recent Searches");
         drawerItems[9] = new DrawerItem(R.drawable.contact_card_26,"Contact Us");
         drawerItems[10] = new DrawerItem(R.drawable.logout,"Log Out");
