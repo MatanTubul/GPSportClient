@@ -92,7 +92,7 @@ public class RecentSearchesArrayAdapter extends ArrayAdapter<RecentSearchRowMode
                 Fragment fragment = new SearchEventFragmentController();
                 fragment.setArguments(b);
                 FragmentManager fragmentManager =  activity.getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment,"back_to_recent").addToBackStack("back_to_recent").commit();
             }
         });
 

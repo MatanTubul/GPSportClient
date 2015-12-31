@@ -674,8 +674,15 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        String frag_name = getFragmentManager().getBackStackEntryAt(getFragmentManager().getBackStackEntryCount() - 1).getName();
+
                         Fragment fragment = null;
-                        fragment = new GoogleMapFragmentController();
+                        if(frag_name != null){
+                            fragment = new RecentSearchesFragmentController();
+                        }else{
+                            fragment = new GoogleMapFragmentController();
+                        }
+
                         if (fragment != null) {
                             FragmentManager fragmentManager = getFragmentManager();
                             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
