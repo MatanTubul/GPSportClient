@@ -104,7 +104,7 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
         holder.txtParticipants.setText(rowItem.getParticipants());
         holder.imageViewType.setImageResource(rowItem.getSportImage());
         if(rowItem.isManager())
-            holder.mngImageview.setImageResource(R.drawable.manager_32);
+            holder.mngImageview.setImageResource(R.drawable.manager_48);
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
