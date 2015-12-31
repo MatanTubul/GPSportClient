@@ -394,7 +394,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
       * method which handling the requests for  back button in the  device
       * @param //savedInstanceState
       */
-   /* @Override
+   @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getView().setFocusableInTouchMode(true);
@@ -405,14 +405,14 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     if (keyCode == KeyEvent.KEYCODE_BACK) {
-                        Toast.makeText(getActivity(), "Back Pressed", Toast.LENGTH_SHORT).show();
-                        return true;
+                       getActivity().moveTaskToBack(true);
                     }
+                    return true;
                 }
                 return false;
             }
         });
-    }*/
+    }
 
     @Override
     public void onLocationChanged(Location location) {

@@ -1,9 +1,11 @@
 package com.example.matant.gpsportclient.Controllers.Fragments;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,5 +134,34 @@ public class WaitingEventListFragmentController extends Fragment implements Asyn
     public void preProcess() {
         this.progress = ProgressDialog.show(getActivity(), "Retrieve Events",
                 "Loading...", true);
+    }
+
+    /**
+     * method which handling the requests for  back button in the  device
+     * @param //savedInstanceState
+     */
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        Fragment fragment = null;
+                        fragment = new GoogleMapFragmentController();
+                        if (fragment != null) {
+                            FragmentManager fragmentManager = getFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                        }
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 }

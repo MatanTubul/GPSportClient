@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -566,6 +567,57 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
 
     @Override
     public void preProcess() {
-
     }
+
+    /**
+     * method which handling the requests for  back button in the  device
+     * @param //savedInstanceState
+     */
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+                        String frag_name = getFragmentManager().getBackStackEntryAt(getFragmentManager().getBackStackEntryCount() - 1).getName();
+                        Log.d("fragment stack",frag_name);
+                        Fragment fragment = null;
+                        switch (frag_name){
+
+                            case "attending":
+                                fragment = new AttendingListFragmentController();
+                                break;
+                            case "invitations":
+                                fragment = new InvitationsFragmentController();
+                                break;
+                            case "waiting_list":
+                                fragment = new WaitingEventListFragmentController();
+                                break;
+                            case "recent_searches":
+                                fragment = new RecentSearchesFragmentController();
+                                break;
+                            default:
+                                break;
+                        }
+                        if(fragment != null){
+                            getFragmentManager().popBackStackImmediate();
+                            FragmentManager fragmentManager = getFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment,frag_name).addToBackStack(frag_name).commit();
+                        }
+
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+
+
 }

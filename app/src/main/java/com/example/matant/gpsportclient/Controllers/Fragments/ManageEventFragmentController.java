@@ -1,6 +1,7 @@
 package com.example.matant.gpsportclient.Controllers.Fragments;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -161,7 +162,7 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
      * method which handling the requests for  back button in the  device
      * @param savedInstanceState
      */
-   /* @Override
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getView().setFocusableInTouchMode(true);
@@ -171,12 +172,18 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     if (keyCode == KeyEvent.KEYCODE_BACK) {
-                        Toast.makeText(getActivity(), "Please navigate via the menu", Toast.LENGTH_SHORT).show();
+                        Fragment fragment = null;
+                        fragment = new GoogleMapFragmentController();
+                        if (fragment != null) {
+                            FragmentManager fragmentManager = getFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                        }
                         return true;
                     }
+
                 }
                 return false;
             }
         });
-    }*/
+    }
 }

@@ -197,6 +197,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
     private void selectItem(int position) {
 
         Fragment fragment = null;
+        String frag_name = null;
 
         switch (position) {
             case 0: //Home
@@ -216,17 +217,21 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
                 break;
             case 5: //Attending List
                 fragment = new AttendingListFragmentController();
+                frag_name = "attending";
                 break;
             case 6:
                 //invitations
                 fragment = new InvitationsFragmentController();
+                frag_name = "invitations";
                 break;
             case 7:
                 //Waiting list
                 fragment = new WaitingEventListFragmentController();
+                frag_name = "waiting_list";
                 break;
             case 8:
                 //Recent Searches
+                frag_name = "recent_searches";
                 fragment = new RecentSearchesFragmentController();
                 break;
             case 9:
@@ -245,7 +250,7 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
 
         if (fragment != null) {
             FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment,frag_name).addToBackStack(frag_name).commit();
             mDrawerList.setItemChecked(position, true);
             mDrawerList.setSelection(position);
             getSupportActionBar().setTitle(mNavigationDrawerItemTitles[position]);
@@ -287,19 +292,5 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
     {
 
         sendDataToDBController();
-    }
-
-    @Override
-    public void onBackPressed() {
-        int stackSize = getFragmentManager().getBackStackEntryCount();
-        if (stackSize > 1) {
-            for(int i=0;i<stackSize-1;i++){
-
-                getFragmentManager().popBackStack();
-            }
-
-        } else {
-            super.onBackPressed();
-        }
     }
 }

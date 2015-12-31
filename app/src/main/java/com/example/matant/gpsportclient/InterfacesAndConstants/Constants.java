@@ -139,12 +139,6 @@ public final class Constants {
     public static final int DISPLACEMENT = 10; // 10 meters
     public static final int DEFAULT_RADIUS = 5; // 5 km
 
-    //GPSportLocationManager
-    public static final long GPS_MIN_DISTANCE_CHANGE = 2; // 2
-    public static final long GPS_MIN_TIME_BETWEEN_UPDATE = 1000 * 5 * 1; // 5
-    public static final long NETWORK_MIN_DISTANCE_CHANGE = 5; // 5
-    public static final long NETWORK_MIN_TIME_BETWEEN_UPDATE = 1000 * 10 * 1; // 10
-    //GPSportLocationManager
 
     ////////////////////////Activities Constants/////////////////////////
 
@@ -194,6 +188,8 @@ public final class Constants {
     public static final String TAG_REAL_ADDRESS = "real_address";
     public static final String TAG_SEARCH_PARAMS_FROM_RECENT = "search_params";
 
+
+    public static final String TAG_FRAG_STACK = "fragment_stack";
 
 
 

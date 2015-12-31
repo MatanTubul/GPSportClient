@@ -1,9 +1,11 @@
 package com.example.matant.gpsportclient.Controllers.Fragments;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +43,7 @@ public class AttendingListFragmentController extends Fragment implements View.On
     List<ManageEventListRow> rowEvents;
     private ManageEventArrayAdapter ManageEventAdapter = null;
     private HashMap sh;
+    private boolean isResumed =false;
 
     public AttendingListFragmentController()
     {
@@ -50,7 +53,6 @@ public class AttendingListFragmentController extends Fragment implements View.On
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View v = inflater.inflate(R.layout.fragment_manage_event_fragment_controller, container, false);
-
         ListViewAttendingList = (ListView) v.findViewById(R.id.listViewManageEvent);
         ListViewAttendingList.setItemsCanFocus(true);
         sm = SessionManager.getInstance(getActivity());
@@ -109,10 +111,12 @@ public class AttendingListFragmentController extends Fragment implements View.On
                             }
                             if(ManageEventAdapter == null)
                             {
+                                Log.d("Resume to Attending","create new adapter");
                                 ManageEventAdapter = new ManageEventArrayAdapter(getActivity(),R.layout.manage_event_listview_event,rowEvents,"view");
                                 ManageEventAdapter.setUser_id(sm.getUserDetails().get(Constants.TAG_USERID));
                             }
                             else {
+                                Log.d("Resume to Attending","notify data changed");
                                 ManageEventAdapter.setData(rowEvents);
                                 ManageEventAdapter.notifyDataSetChanged();
                                 ManageEventAdapter.setUser_id(sm.getUserDetails().get(Constants.TAG_USERID));
@@ -157,4 +161,32 @@ public class AttendingListFragmentController extends Fragment implements View.On
     public void onClick(View v) {
     }
 
+    /**
+     * method which handling the requests for  back button in the  device
+     * @param //savedInstanceState
+     */
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        Fragment fragment = null;
+                        fragment = new GoogleMapFragmentController();
+                        if (fragment != null) {
+                            FragmentManager fragmentManager = getFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                        }
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+    }
 }
