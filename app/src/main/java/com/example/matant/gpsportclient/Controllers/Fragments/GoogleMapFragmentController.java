@@ -12,8 +12,10 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
@@ -49,7 +51,7 @@ import java.util.List;
  * Thia Fragment handle the Home screen and loading the events that close to the current user location
  * Created by matant on 8/24/2015.
  */
-public class GoogleMapFragmentController extends Fragment implements AsyncResponse, OnLocationChangedListener, com.google.android.gms.location.LocationListener{
+public class GoogleMapFragmentController extends Fragment implements AsyncResponse, CompoundButton.OnCheckedChangeListener, OnLocationChangedListener, com.google.android.gms.location.LocationListener{
 
     MapView mMapView;
     private GoogleMap googleMap;
@@ -68,8 +70,8 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     double latitude, longitude;
     private ImageButton goToLastLocation;
     private LatLng lastLocation = null;
-
-
+    private Switch searchEventsSwitch;
+    private BasicNameValuePair search;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -83,6 +85,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         mMapView.onResume();//    display map immediately
         sm = SessionManager.getInstance(getActivity());
         locationTool = new LocationTool(this, this);
+        search = new BasicNameValuePair(Constants.TAG_SEARCH,"search_by_default");
 
         if (mMapView!=null)
             Log.d("mMapView!=null", "mMapView!=null");
@@ -130,6 +133,10 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         else
             Toast.makeText(this.getActivity(), "Unable to create Maps", Toast.LENGTH_SHORT).show();
 
+        searchEventsSwitch = (Switch) v.findViewById(R.id.searchEventsSwitch);
+        searchEventsSwitch.setOnCheckedChangeListener(this);
+
+
         Log.d("googleMap", "googleMap");
 
         mode = Constants.MODE_SEARCH_DEF;
@@ -143,6 +150,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
             if (mode.equals(Constants.MODE_SEARCH_REQ)) {
                 getActivity().setTitle("Search Results");
+                searchEventsSwitch.setVisibility(View.GONE);
                 Log.d("mode","==search by REQ");
                 try {
                     JSONObject json = new JSONObject(b.getString("json"));
@@ -369,7 +377,6 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         Log.d("sendDataToDBController", "sendDataToDBController");
 
         BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, "search_events");
-        BasicNameValuePair search = new BasicNameValuePair(Constants.TAG_SEARCH,"search_by_default");
         BasicNameValuePair radius = new BasicNameValuePair(Constants.TAG_RADIUS, String.valueOf(Constants.DEFAULT_RADIUS));
         BasicNameValuePair lat = new BasicNameValuePair(Constants.TAG_LONG,String.valueOf(locationTool.getmLastLocation().getLongitude()));
         BasicNameValuePair lon = new BasicNameValuePair(Constants.TAG_LAT,String.valueOf(locationTool.getmLastLocation().getLatitude()));
@@ -460,6 +467,16 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
 
         }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean userWantsEventsNearBy) {
+        if (userWantsEventsNearBy == true)
+            search = new BasicNameValuePair(Constants.TAG_SEARCH,"search_by_default");
+        else
+            search = new BasicNameValuePair(Constants.TAG_SEARCH,"search_all_events");
+
+        sendDataToDBController();
     }
 
     public class MarkerInfoWindowAdapter implements GoogleMap.InfoWindowAdapter

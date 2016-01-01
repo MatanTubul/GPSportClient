@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.matant.gpsportclient.Controllers.Fragments.SearchEventFragmentController;
@@ -43,7 +44,7 @@ public class RecentSearchesArrayAdapter extends ArrayAdapter<RecentSearchRowMode
         TextView txtLoc;
         TextView txtTime;
         TextView txtKindOfSport;
-        ImageButton loadSearch;
+        RelativeLayout loadSearch;
         ImageView searchImg;
     }
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -58,7 +59,7 @@ public class RecentSearchesArrayAdapter extends ArrayAdapter<RecentSearchRowMode
             holder.txtTime = (TextView) convertView.findViewById(R.id.textViewRecentStime);
             holder.txtDate = (TextView) convertView.findViewById(R.id.textViewRSearchesDate);
             holder.txtKindOfSport = (TextView) convertView.findViewById(R.id.textViewRecentSKindOfSport);
-            holder.loadSearch = (ImageButton) convertView.findViewById(R.id.ImageButtonRecentSsent);
+            holder.loadSearch = (RelativeLayout) convertView.findViewById(R.id.RowLayout);
             holder.searchImg = (ImageView) convertView.findViewById(R.id.ImageRecentSearch);
             convertView.setTag(holder);
         }else{

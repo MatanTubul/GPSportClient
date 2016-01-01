@@ -21,4 +21,14 @@
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="40dp" />
 
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Display events near by only"
+        android:id="@+id/searchEventsSwitch"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/googleMapCurrentlocButton"
+        android:layout_alignStart="@+id/googleMapCurrentlocButton"
+        android:checked="true"/>
+
 </RelativeLayout>

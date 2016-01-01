@@ -22,7 +22,7 @@
         android:layout_alignParentStart="true" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
         android:inputType="textPersonName"
         android:ems="10"
@@ -36,7 +36,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:background="@drawable/rounded_edit_text"
+        android:paddingLeft="5dp" />
 
 
     <EditText
@@ -50,7 +52,10 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:hint="Email"
-        android:layout_below="@+id/editTextName" />
+        android:layout_below="@+id/editTextName"
+        android:background="@drawable/rounded_edit_text"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="5dp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -63,7 +68,10 @@
         android:layout_alignEnd="@+id/editTextEmail"
         android:hint="Mobile"
         android:layout_toRightOf="@+id/imageViewGallery"
-        android:layout_toEndOf="@+id/imageViewGallery" />
+        android:layout_toEndOf="@+id/imageViewGallery"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_edit_text"
+        android:paddingLeft="5dp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -77,7 +85,10 @@
         android:layout_alignEnd="@+id/editTextMobile"
         android:layout_alignParentLeft="true"
         android:fontFamily="sans-serif"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:background="@drawable/rounded_edit_text"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="5dp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -91,33 +102,23 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_edit_text"
+        android:paddingLeft="5dp" />
 
-
-    <LinearLayout
-        android:id="@+id/LinearLayout02"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-    </LinearLayout>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:text="Select Photo"
         android:id="@+id/buttonSelectImg"
-        android:layout_marginTop="5dp"
         android:background="#606060"
         android:textColor="#ffffffff"
-        android:layout_marginLeft="5dp"
-        android:layout_alignTop="@+id/imageViewGallery"
-        android:layout_alignRight="@+id/editTextName"
-        android:layout_alignEnd="@+id/editTextName"
+        android:layout_alignBottom="@+id/rottateLayout"
         android:layout_alignLeft="@+id/editTextMobile"
-        android:layout_alignStart="@+id/editTextMobile" />
+        android:layout_alignStart="@+id/editTextMobile"
+        android:layout_marginLeft="10dp" />
 
     <Spinner
         android:layout_width="wrap_content"
@@ -133,7 +134,8 @@
         android:layout_toLeftOf="@+id/buttonSelectImg"
         android:layout_toStartOf="@+id/buttonSelectImg"
         android:layout_below="@+id/editTextEmail"
-        android:layout_alignBottom="@+id/editTextMobile" />
+        android:layout_alignBottom="@+id/editTextMobile"
+        android:layout_marginTop="10dp" />
 
 
     <FrameLayout
@@ -143,7 +145,8 @@
         android:layout_alignRight="@+id/buttonSelectImg"
         android:layout_alignEnd="@+id/buttonSelectImg"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -154,7 +157,9 @@
             android:layout_below="@+id/editTextConfirmPass"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_gravity="left|top" />
+            android:layout_gravity="left|top"
+            android:textColor="#000000"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -167,14 +172,16 @@
             android:layout_gravity="left|center_vertical"
             android:layout_below="@+id/textView2"
             android:layout_toLeftOf="@+id/editTextMobile"
-            android:layout_toStartOf="@+id/editTextMobile" />
+            android:layout_toStartOf="@+id/editTextMobile"
+            android:textColor="#000000"
+            android:textStyle="bold" />
 
         <Spinner
             android:layout_width="129dp"
             android:layout_height="30dp"
             android:id="@+id/spinnerGender"
             android:background="#606060"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="50dp"
 
             android:layout_alignTop="@+id/textView2"
             android:layout_alignRight="@+id/buttonSelectImg"
@@ -187,9 +194,8 @@
             android:layout_width="129dp"
             android:layout_height="30dp"
             android:id="@+id/spinnerAge"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="50dp"
             android:background="#606060"
-            android:layout_marginRight="5dp"
 
             android:layout_below="@+id/editTextConfirmPass"
             android:layout_alignRight="@+id/editTextConfirmPass"
@@ -207,7 +213,7 @@
         android:layout_height="wrap_content"
 
         android:layout_alignParentBottom="true"
-        >
+        android:layout_marginTop="10dp">
 
     </Button>
 
@@ -221,28 +227,33 @@
         android:layout_alignLeft="@+id/buttonSelectImg"
         android:layout_alignStart="@+id/buttonSelectImg">
 
+    </FrameLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/buttonSelectImg"
+        android:layout_alignRight="@+id/buttonSelectImg"
+        android:layout_alignEnd="@+id/buttonSelectImg"
+        android:layout_marginRight="10dp">
+
         <ImageButton
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/imageButtonRleftt"
-
-            android:src="@drawable/rotate_left"
-            android:layout_alignBottom="@+id/imageViewGallery"
-            android:layout_alignLeft="@+id/buttonSelectImg"
-            android:layout_alignStart="@+id/buttonSelectImg"
-            android:layout_marginLeft="78dp"
-            android:layout_marginStart="58dp" />
+            android:background="@drawable/rotate_left_24"
+            android:layout_gravity="center"
+            android:layout_weight="1" />
 
         <ImageButton
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/imageButtonRright"
-            android:src="@drawable/rotate_right"
-            android:onClick="rottateRight"
-            android:layout_alignTop="@+id/imageButtonRleftt"
-            android:layout_toRightOf="@+id/imageButtonRleftt"
-            android:layout_toEndOf="@+id/imageButtonRleftt" />
-    </FrameLayout>
+            android:background="@drawable/rotate_right_24"
+            android:layout_gravity="center"
+            android:layout_weight="1" />
+    </LinearLayout>
 
 
 </RelativeLayout>
