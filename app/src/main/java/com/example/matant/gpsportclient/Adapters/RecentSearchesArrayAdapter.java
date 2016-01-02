@@ -67,7 +67,7 @@ public class RecentSearchesArrayAdapter extends ArrayAdapter<RecentSearchRowMode
         }
 
         String address = rowItem.getValue(Constants.TAG_REAL_ADDRESS);
-        address = "Address: " + address.replace("\n"," ");
+        address = address.replace("\n"," ");
         holder.txtLoc.setText(address);
         String sport = rowItem.getValue(Constants.TAG_KIND_OF_SPORT);
         if (sport.equals("General"))
@@ -77,11 +77,10 @@ public class RecentSearchesArrayAdapter extends ArrayAdapter<RecentSearchRowMode
             holder.searchImg.setImageResource(sportHash.getSportMapMarkerId());
         }
 
-        sport = "Search For Sport: " + sport;
         holder.txtKindOfSport.setText(sport);
-        String timeRange = "Time Range: " + rowItem.getValue(Constants.TAG_START_TIME)+" "+"-"+" "+rowItem.getValue(Constants.TAG_END_TIME);
+        String timeRange =  rowItem.getValue(Constants.TAG_START_TIME)+" "+"-"+" "+rowItem.getValue(Constants.TAG_END_TIME);
         holder.txtTime.setText(timeRange);
-        String dateRange = "Date Range: " + rowItem.getValue(Constants.TAG_START_DATE)+" "+"-"+" "+rowItem.getValue(Constants.TAG_END_DATE);
+        String dateRange = rowItem.getValue(Constants.TAG_START_DATE)+" "+"-"+" "+rowItem.getValue(Constants.TAG_END_DATE);
         holder.txtDate.setText(dateRange);
         holder.loadSearch.setOnClickListener(new View.OnClickListener() {
             @Override

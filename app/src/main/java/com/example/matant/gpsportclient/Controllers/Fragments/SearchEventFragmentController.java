@@ -272,12 +272,13 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
 
         if(pos == 1){
             LatLng loc = myLocManager.getLocationFromAddress(streetAddress.getText().toString());
-            lat = loc.latitude;
-            lon = loc.longitude;
+
             if(loc == null){
                 streetAddress.setError("Location was not found");
                 return;
             }
+            lat = loc.latitude;
+            lon = loc.longitude;
         }
         BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST,"search_events");
         BasicNameValuePair search = new BasicNameValuePair(Constants.TAG_SEARCH,"search_by_frag");

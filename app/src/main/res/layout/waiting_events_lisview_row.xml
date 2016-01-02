@@ -3,17 +3,11 @@
     android:orientation="vertical" android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="#ffffff">
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/stadium_50"
-        android:id="@+id/imageViewWaitingEvents" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="50dp"
         android:id="@+id/textLayout"
         android:layout_toRightOf="@+id/imageViewWaitingEvents">
 
@@ -23,7 +17,7 @@
             android:text="Location:"
             android:id="@+id/textViewWaitingStaticLocatiom"
             android:layout_alignParentTop="true"
-            />
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -31,7 +25,7 @@
             android:text="Time:"
             android:id="@+id/textViewWaitingStaticTime"
             android:layout_below="@+id/textViewWaitingStaticLocatiom"
-            />
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -39,7 +33,7 @@
             android:text="Date:"
             android:id="@+id/textViewWaitingStaticDate"
             android:layout_below="@+id/textViewWaitingStaticTime"
-            />
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,7 +41,7 @@
             android:text="Current Participants:"
             android:id="@+id/txtViewWaitingStaticParticipants"
             android:layout_below="@+id/textViewWaitingStaticDate"
-            />
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -56,7 +50,8 @@
             android:id="@+id/textViewWaitingLocVal"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/textViewWaitingStaticLocatiom"
-            android:layout_toEndOf="@+id/textViewWaitingStaticLocatiom" />
+            android:layout_toEndOf="@+id/textViewWaitingStaticLocatiom"
+            android:layout_marginLeft="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -65,7 +60,8 @@
             android:id="@+id/textViewWaitingTimeVal"
             android:layout_above="@+id/textViewWaitingStaticDate"
             android:layout_toRightOf="@+id/textViewWaitingStaticTime"
-            android:layout_toEndOf="@+id/textViewWaitingStaticTime" />
+            android:layout_toEndOf="@+id/textViewWaitingStaticTime"
+            android:layout_marginLeft="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -83,25 +79,26 @@
             android:id="@+id/textViewWaitingInvParticipantVal"
             android:layout_below="@+id/textViewWaitingDateVal"
             android:layout_toRightOf="@+id/txtViewWaitingStaticParticipants"
-            android:layout_toEndOf="@+id/txtViewWaitingStaticParticipants" />
+            android:layout_toEndOf="@+id/txtViewWaitingStaticParticipants"
+            android:layout_marginLeft="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Place in Queue:"
+            android:text="Place In Queue:"
             android:id="@+id/textViewWaitingQueue"
             android:layout_below="@+id/txtViewWaitingStaticParticipants"
-             />
+            android:textStyle="bold" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/soccer_32"
-            android:id="@+id/ImageViewWaitingSportType"
-            android:layout_marginRight="5dp"
-            android:layout_centerVertical="true"
+            android:background="@drawable/waiting_img"
+            android:id="@+id/imageViewWaitingEvents"
+            android:layout_alignBottom="@+id/textViewWaitingInvParticipantVal"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:layout_margin="10dp" />
 
     </RelativeLayout>
 
@@ -112,6 +109,15 @@
         android:background="@android:color/darker_gray"
         android:layout_below="@+id/textLayout"
         />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ImageViewWaitingSportType"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="true"
+        android:layout_margin="10dp" />
 
 
 </RelativeLayout>

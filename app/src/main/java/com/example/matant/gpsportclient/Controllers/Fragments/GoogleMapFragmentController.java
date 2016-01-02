@@ -456,7 +456,9 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
             currentMarkerOption.position(iniLoc);
             currentMarker = googleMap.addMarker(currentMarkerOption);
             currentMarker.setIcon((BitmapDescriptorFactory.fromResource(R.drawable.current_location_marker_icon)));
-            currentMarker.setTitle(sm.getUserDetails().get("name") + ", you are here!");
+            String title = sm.getUserDetails().get("name") + ", you are here!";
+            Log.d("test", title);
+            currentMarker.setTitle(title);
             currentMarker.showInfoWindow();
             currentMarker.setVisible(true);
             if (mode.equals(Constants.MODE_SEARCH_DEF))

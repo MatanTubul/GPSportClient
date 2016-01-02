@@ -14,26 +14,29 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageViewSporttype"
+
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="20dp" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:id="@+id/rowLayout"
         android:layout_height="100dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageViewSporttype"
-
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
 
         <RelativeLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/imageViewSporttype"
-            android:id="@+id/relativeLayout">
+            android:id="@+id/relativeLayout"
+            android:layout_marginLeft="50dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -50,7 +53,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Location"
+                android:text="Location:"
                 android:id="@+id/textViewloc"
                 android:textColor="#000000"
                 android:layout_below="@+id/textViewtime"
@@ -60,7 +63,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date"
+                android:text="Date:"
                 android:id="@+id/textViewDate"
                 android:textColor="#000000"
                 android:layout_below="@+id/textViewTitle"
@@ -90,7 +93,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Participants"
+                android:text="Participants:"
 
                 android:id="@+id/textViewParticipants"
                 android:textColor="#000000"
@@ -115,20 +118,21 @@
                 android:background="@drawable/delete_50"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:layout_margin="10dp" />
             <View
                 android:id="@+id/divider2"
                 android:layout_width="1dp"
                 android:layout_height="100dp"
                 android:background="@android:color/darker_gray"
-                android:layout_alignParentBottom="true"
-                android:layout_alignLeft="@+id/imageViewDeleteEvent"
-                android:layout_alignStart="@+id/imageViewDeleteEvent" />
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/imageViewDeleteEvent"
+                android:layout_toStartOf="@+id/imageViewDeleteEvent" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Time"
+                android:text="Time:"
                 android:id="@+id/textViewtime"
                 android:textColor="#000000"
                 android:layout_below="@+id/textViewDate"
@@ -144,25 +148,17 @@
                 android:layout_alignLeft="@+id/textViewDateValue"
                 android:layout_alignStart="@+id/textViewDateValue" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageViewManager"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_above="@+id/imageViewDeleteEvent"
-                android:layout_toLeftOf="@+id/imageViewDeleteEvent"
-                android:layout_toStartOf="@+id/imageViewDeleteEvent" />
         </RelativeLayout>
 
-        <View
-            android:id="@+id/divider3"
-            android:layout_width="1dp"
-            android:layout_height="100dp"
-            android:background="@android:color/darker_gray"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/relativeLayout"
-            android:layout_toStartOf="@+id/relativeLayout" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageViewManager"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentLeft="false"
+            android:layout_marginRight="100dp"
+            android:layout_marginTop="20dp" />
 
     </RelativeLayout>
 

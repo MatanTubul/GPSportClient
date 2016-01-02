@@ -100,7 +100,7 @@ public class ManageEventFragmentController extends Fragment implements View.OnCl
                                 participants = jsonarr.getJSONObject(i).getString("current_participants");
 
                                 SportsHash.Sport sport=(SportsHash.Sport) sh.get(title);
-                                sportType = sport.getSportViewEventIconForListsId();
+                                sportType = sport.getSportMapMarkerId();
 
                                 ManageEventListRow rowEvent = new ManageEventListRow(sportType,title,Loc,date,participants,event_id,event_time,eventObj , true);
                                 rowEvents.add(rowEvent);

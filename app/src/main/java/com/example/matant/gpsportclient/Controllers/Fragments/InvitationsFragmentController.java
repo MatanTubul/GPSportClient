@@ -85,7 +85,7 @@ public class InvitationsFragmentController extends Fragment implements AsyncResp
                             participants = jsonarr.getJSONObject(i).getString("current_participants");
 
                             SportsHash.Sport sport=(SportsHash.Sport) sh.get(title);
-                            sportType = sport.getSportViewEventIconForListsId();
+                            sportType = sport.getSportMapMarkerId();
 
                             Log.d("my parameters:",Loc+","+event_time+","+date+","+participants+","+event_id+","+sportType);
                             InvitationsRowModel rowInvite = new InvitationsRowModel(Loc,event_time,date,participants,event_id,sportType,eventObj);

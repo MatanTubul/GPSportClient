@@ -9,8 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ImageRecentSearch"
-        android:src="@drawable/general_sport_search_marker"
-        android:layout_margin="5dp" />
+        android:layout_margin="10dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,11 +23,11 @@
             android:layout_height="wrap_content"
             android:background="@drawable/magnifier_img"
             android:id="@+id/ImageButtonRecentSsent"
-            android:layout_marginRight="5dp"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:clickable="false" />
+            android:clickable="false"
+            android:layout_margin="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -36,25 +35,19 @@
             android:text="kind of sport"
             android:id="@+id/textViewRecentSKindOfSport"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:textColor="#000000"
-            android:layout_toLeftOf="@+id/ImageButtonRecentSsent"
-            android:layout_toStartOf="@+id/ImageButtonRecentSsent"
-            android:textStyle="bold" />
+            android:layout_toRightOf="@+id/textView3"
+            android:layout_toEndOf="@+id/textView3"
+            android:layout_marginLeft="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="place"
             android:id="@+id/textViewRecentSplace"
-            android:layout_below="@+id/textViewRecentSKindOfSport"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:textColor="#000000"
-            android:layout_toLeftOf="@+id/ImageButtonRecentSsent"
-            android:layout_toStartOf="@+id/ImageButtonRecentSsent"
-            android:textStyle="bold" />
+            android:layout_below="@+id/textView3"
+            android:layout_toRightOf="@+id/textView12"
+            android:layout_toEndOf="@+id/textView12"
+            android:layout_marginLeft="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -62,24 +55,58 @@
             android:text="Date"
             android:id="@+id/textViewRSearchesDate"
             android:layout_below="@+id/textViewRecentSplace"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:textColor="#000000"
-            android:layout_alignRight="@+id/textViewRecentSplace"
-            android:layout_alignEnd="@+id/textViewRecentSplace"
-            android:textStyle="bold" />
+            android:layout_toRightOf="@+id/textView13"
+            android:layout_toEndOf="@+id/textView13"
+            android:layout_marginLeft="10dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Time"
             android:id="@+id/textViewRecentStime"
-            android:textColor="#000000"
-            android:layout_below="@+id/textViewRSearchesDate"
+            android:layout_alignBaseline="@+id/textView14"
+            android:layout_alignBottom="@+id/textView14"
+            android:layout_alignLeft="@+id/textViewRSearchesDate"
+            android:layout_alignStart="@+id/textViewRSearchesDate" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search For Sport:"
+            android:id="@+id/textView3"
+            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignRight="@+id/textViewRSearchesDate"
-            android:layout_alignEnd="@+id/textViewRSearchesDate"
             android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location:"
+            android:id="@+id/textView12"
+            android:layout_below="@+id/textView3"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date Range:"
+            android:id="@+id/textView13"
+            android:layout_alignTop="@+id/textViewRSearchesDate"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time Range:"
+            android:id="@+id/textView14"
+            android:textStyle="bold"
+            android:layout_below="@+id/textView13"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
 
