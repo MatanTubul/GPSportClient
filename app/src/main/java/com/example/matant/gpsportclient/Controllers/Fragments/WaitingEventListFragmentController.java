@@ -75,7 +75,7 @@ public class WaitingEventListFragmentController extends Fragment implements Asyn
                             }else{
                                 JSONArray jsonarr = jsonObj.getJSONArray("events");
                                 Log.d("array", jsonarr.toString());
-                                String title, date, Loc, participants, event_time, event_id;
+                                String title, date, Loc, participants, event_time, event_id, queuePlace;
 
                                 rowWaitingEventsList = new ArrayList<WaitingEventUserRow>();
                                 int sportType = -1;
@@ -90,12 +90,12 @@ public class WaitingEventListFragmentController extends Fragment implements Asyn
                                     eventObj.put("start_time", jsonarr.getJSONObject(i).getString("formatted_start_time"));
                                     eventObj.put("end_time", jsonarr.getJSONObject(i).getString("formatted_end_time"));
                                     participants = jsonarr.getJSONObject(i).getString("current_participants");
-
+                                    queuePlace = jsonarr.getJSONObject(i).getString("waiting_stamp");
                                     SportsHash.Sport sport=(SportsHash.Sport) sh.get(title);
                                     sportType = sport.getSportMapMarkerId();
 
                                     Log.d("my parameters:",Loc+","+event_time+","+date+","+participants+","+event_id+","+sportType);
-                                    WaitingEventUserRow rowInvite = new WaitingEventUserRow(Loc,event_time,date,participants,event_id,"1",sportType,eventObj);
+                                    WaitingEventUserRow rowInvite = new WaitingEventUserRow(Loc,event_time,date,participants,event_id,queuePlace,sportType,eventObj);
                                     rowWaitingEventsList.add(rowInvite);
 
                                 }

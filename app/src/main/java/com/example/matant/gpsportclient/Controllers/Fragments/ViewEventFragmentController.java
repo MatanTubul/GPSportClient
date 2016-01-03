@@ -210,7 +210,7 @@ private void getEventDetailsFromDB() {
             Log.d("res jsonarray", resUsers.toString());
             Log.d("ViewEveFragController", currentUserId);
 
-            if (eventPrivilege.equals("false")) //if this is a public event there's is two viewlists we want to create:
+            if (eventPrivilege.equals("false")) //if this is a public event there are two viewlists we want to create:
             {
                 participateButton.setText("JOIN EVENT");
 

@@ -53,7 +53,7 @@ public class WaitingEventUserAdapter extends ArrayAdapter<WaitingEventUserRow> {
             holder.txtTime = (TextView) convertView.findViewById(R.id.textViewWaitingTimeVal);
             holder.txtDate = (TextView) convertView.findViewById(R.id.textViewWaitingDateVal);
             holder.txtParticipants = (TextView) convertView.findViewById(R.id.textViewWaitingInvParticipantVal);
-            holder.placeInQueue = (TextView) convertView.findViewById(R.id.textViewWaitingQueue);
+            holder.placeInQueue = (TextView) convertView.findViewById(R.id.waiting_place);
             holder.sportType = (ImageView) convertView.findViewById(R.id.ImageViewWaitingSportType);
             convertView.setTag(holder);
         }else{
@@ -61,6 +61,7 @@ public class WaitingEventUserAdapter extends ArrayAdapter<WaitingEventUserRow> {
         }
         holder.txtLoc.setText(rowItem.getPlace());
         holder.txtTime.setText(rowItem.getTime());
+        holder.placeInQueue.setText(rowItem.getPlaceInQueue());
         holder.txtDate.setText(rowItem.getEvent_date());
         holder.txtParticipants.setText(rowItem.getEvent_curr_participants());
         holder.sportType.setImageResource(rowItem.getSportImage());
