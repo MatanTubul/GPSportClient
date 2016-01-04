@@ -83,7 +83,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         mMapView.onCreate(savedInstanceState);
         goToLastLocation = (ImageButton) v.findViewById(R.id.googleMapCurrentlocButton);
         mMapView.onResume();//    display map immediately
-        sm = SessionManager.getInstance(getActivity());
+        sm = SessionManager.getInstance(this.getActivity());
         locationTool = new LocationTool(this, this);
         search = new BasicNameValuePair(Constants.TAG_SEARCH,"search_by_default");
 
@@ -298,18 +298,21 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
 
     private void drawEventsMarkersOnMap(JSONArray jsonarr) {
-        if (googleMap != null)
-            if (jsonarr.length() != 0)
-            {
-                if (eventsMarkers != null)
-                    deletePreviousMarkers();
+        if (googleMap != null) {
+            if (eventsMarkers != null) {
+                deletePreviousMarkers();
+                Log.d("eventsMarkers", "!= null");
+
+            }
+            if (jsonarr.length() != 0) {
+
                 eventsMarkers = new ArrayList<MapMarker>();
                 Log.d("drawEventsMarkersOnMap", "before for loop");
 
                 for (int i = 0; i < jsonarr.length(); i++) {
                     try {
-                    //adding marker to the arraylist eventsmarkers which every object is a class MapMarker variable
-                    //marker info is saved upon MapMarker constructor
+                        //adding marker to the arraylist eventsmarkers which every object is a class MapMarker variable
+                        //marker info is saved upon MapMarker constructor
                         eventsMarkers.add(new MapMarker(jsonarr.getJSONObject(i)));
                         Log.d("drawEventsMarkersOnMap inside loop", String.valueOf(i));
 
@@ -319,23 +322,29 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
                 }//for
                 plotMarkers();
             }//if
-        else {
+            else {
                 //no events has found
+                String msg = "There are no results ";
+                if (mode.equals(Constants.MODE_SEARCH_REQ))
+                    msg = msg + "according to your search. Try again a different search.";
+                else if (mode.equals(Constants.MODE_SEARCH_DEF))
+                    msg = msg + "near by. Try search from a specific address or change your location.";
+                else
+                    msg = msg + "on data base. Ask the app administrators";
 
-                if (mode.equals(Constants.MODE_SEARCH_REQ)) {
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle("No events found")
-                            .setMessage("There is no results according to your search.")
-                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .setIconAttribute(android.R.attr.alertDialogIcon)
-                            .show();
-                }
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("No events found")
+                        .setMessage(msg)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setIconAttribute(android.R.attr.alertDialogIcon)
+                        .show();
             }
+        }
     }
     private void deletePreviousMarkers()
     {
@@ -343,8 +352,11 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         Log.d("deletePreviousMarkers", "before for loop");
         for (int i = 0; i < eventsMarkersSize; i++) {
             Log.d("deletePreviousMarkers", "remove marker: " + String.valueOf(i));
-            mMarkersHashMap.remove(eventsMarkers.get(i).getmMarker()); //remove MapMarker from hash
-            eventsMarkers.get(i).getmMarker().remove();                //remove Marker from MapMarker
+            Marker thisMarker = eventsMarkers.get(i).getmMarker();
+
+            mMarkersHashMap.remove(thisMarker); //remove MapMarker from hash
+            thisMarker.remove();                //remove Marker from Map
+
         }
         eventsMarkers.clear();                                          //remove all MapMarkers from list
         Log.d("deletePreviousMarkers", "markers removed");
@@ -459,8 +471,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
             String title = sm.getUserDetails().get("name") + ", you are here!";
             Log.d("test", title);
             currentMarker.setTitle(title);
-            currentMarker.showInfoWindow();
-            currentMarker.setVisible(true);
+            //currentMarker.showInfoWindow();
             if (mode.equals(Constants.MODE_SEARCH_DEF))
             {
                 Log.d("this is","UpdateUI");
@@ -473,10 +484,13 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean userWantsEventsNearBy) {
-        if (userWantsEventsNearBy == true)
-            search = new BasicNameValuePair(Constants.TAG_SEARCH,"search_by_default");
-        else
+        if (userWantsEventsNearBy == true) {
+            search = new BasicNameValuePair(Constants.TAG_SEARCH, "search_by_default");
+            Log.d("this is","search_by_default");
+        }else{
             search = new BasicNameValuePair(Constants.TAG_SEARCH,"search_all_events");
+            Log.d("this is","search_all_events");
+        }
 
         sendDataToDBController();
     }
