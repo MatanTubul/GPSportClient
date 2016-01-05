@@ -156,7 +156,6 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
                         Toast.makeText(getApplicationContext(),"Error Connection",Toast.LENGTH_LONG).show();
                         break;
                     }
-
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
