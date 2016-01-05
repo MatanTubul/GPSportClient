@@ -34,7 +34,6 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/imageViewSporttype"
             android:id="@+id/relativeLayout"
             android:layout_marginLeft="50dp">
 
@@ -148,18 +147,23 @@
                 android:layout_alignLeft="@+id/textViewDateValue"
                 android:layout_alignStart="@+id/textViewDateValue" />
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageViewManager"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/divider2"
+                android:layout_toStartOf="@+id/divider2" />
+
+
         </RelativeLayout>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageViewManager"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="false"
-            android:layout_alignParentLeft="false"
-            android:layout_marginRight="100dp"
-            android:layout_marginTop="20dp" />
+
 
     </RelativeLayout>
+
+
 
 </RelativeLayout>
