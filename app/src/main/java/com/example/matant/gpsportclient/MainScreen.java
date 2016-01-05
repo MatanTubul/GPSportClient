@@ -140,7 +140,6 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
             finally {
             this.progress = null;
         }
-
         Log.d("handleResponse", resStr);
         if(resStr!=null)
         {
