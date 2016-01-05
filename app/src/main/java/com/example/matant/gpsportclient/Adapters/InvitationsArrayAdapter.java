@@ -66,16 +66,13 @@ public class InvitationsArrayAdapter extends ArrayAdapter<InvitationsRowModel> {
             @Override
             public void onClick(View v) {
                 //begin View event fragment
-                fragment = new ViewEventFragmentController();
                 Bundle args = new Bundle();
                 args.putString("event", rowItem.getEventRecord().toString());
+                final  Activity activity = (Activity) context;
+                Fragment fragment = new ViewEventFragmentController();
                 fragment.setArguments(args);
-                if (fragment != null) {
-                    FragmentManager fragmentManager = ((Activity)context).getFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-                }else {
-                    Toast.makeText(context, "Failed to open event details", Toast.LENGTH_LONG).show();
-                }
+                FragmentManager fragmentManager = activity.getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment, "back_to_invitations").addToBackStack("back_to_invitations").commit();
             }
         });
         return convertView;

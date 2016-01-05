@@ -125,21 +125,17 @@ public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> im
                     Fragment fragment = new CreateEventFragmentController();
                     fragment.setArguments(bun);
                     FragmentManager fragmentManager =  activity.getFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                    fragmentManager.beginTransaction().replace(R.id.content_frame, fragment,"back_to_manage").addToBackStack("back_to_manage").commit();
                 }
                 else{
                     //need to start ViewEventFragmentController
-                    fragment = new ViewEventFragmentController();
                     Bundle args = new Bundle();
                     args.putString("event", rowEvent.getEventRecord().toString());
+                    final  Activity activity = (Activity) context;
+                    Fragment fragment = new ViewEventFragmentController();
                     fragment.setArguments(args);
-                    if (fragment != null) {
-                        FragmentManager fragmentManager = ((Activity)context).getFragmentManager();
-                        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-                    }else {
-                        Toast.makeText(context,"Failed to open event details",Toast.LENGTH_LONG).show();
-                    }
-
+                    FragmentManager fragmentManager = activity.getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.content_frame,fragment,"back_to_attending").addToBackStack("back_to_attending").commit();
                 }
 
 

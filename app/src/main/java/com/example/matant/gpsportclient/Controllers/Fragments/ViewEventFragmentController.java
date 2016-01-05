@@ -528,7 +528,6 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
 
         Calendar calendar = Calendar.getInstance();
         int thisYear = calendar.get(Calendar.YEAR);
-
         Log.d("userCanParticipateInPublicEvent",userDetails.get(Constants.TAG_AGE) + " " + eventMinAge );
 
         if (thisYear - Integer.valueOf(userDetails.get(Constants.TAG_AGE)) < Integer.valueOf(eventMinAge))
@@ -537,7 +536,6 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
             publicEventError = "This event is for " + eventMinAge +" year old and above";;
             return false;
         }
-
         return true;
     }
 
@@ -553,7 +551,6 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
             Log.d("delete participant",String.valueOf(isCurrentUserIsTheCurrentEventManager));
             tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, "remove_participant");
         }
-
         executeCommonFields(tagreq);
     }
 
@@ -584,30 +581,27 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     if (keyCode == KeyEvent.KEYCODE_BACK) {
-
                         String frag_name = getFragmentManager().getBackStackEntryAt(getFragmentManager().getBackStackEntryCount() - 1).getName();
-                        Log.d("fragment stack",frag_name);
+                        Log.d("frag name is", frag_name);
                         Fragment fragment = null;
                         switch (frag_name){
-
-                            case "attending":
+                            case "back_to_attending":
                                 fragment = new AttendingListFragmentController();
                                 break;
-                            case "invitations":
+                            case "back_to_invitations":
                                 fragment = new InvitationsFragmentController();
                                 break;
                             case "waiting_list":
                                 fragment = new WaitingEventListFragmentController();
                                 break;
-                            case "recent_searches":
-                                fragment = new RecentSearchesFragmentController();
-                                break;
                             default:
                                 break;
                         }
+
                         if(fragment != null){
-                            getFragmentManager().popBackStackImmediate();
+
                             FragmentManager fragmentManager = getFragmentManager();
+                            fragmentManager.popBackStackImmediate();
                             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment,frag_name).addToBackStack(frag_name).commit();
                         }
 

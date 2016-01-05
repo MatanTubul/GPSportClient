@@ -65,8 +65,6 @@ public class AttendingListFragmentController extends Fragment implements View.On
     @Override
     public void handleResponse(String resStr) {
         progress.dismiss();
-
-
         if (resStr != null){
             Log.d("attending event handleResponse", resStr);
             try {
@@ -159,6 +157,13 @@ public class AttendingListFragmentController extends Fragment implements View.On
 
     @Override
     public void onClick(View v) {
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(this.progress != null)
+            this.progress.dismiss();
     }
 
     /**

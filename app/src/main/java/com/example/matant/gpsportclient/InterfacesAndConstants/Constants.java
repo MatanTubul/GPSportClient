@@ -15,7 +15,6 @@ import java.io.IOException;
  * Created by Nir B on 26/09/2015.
  */
 public final class Constants {
-
     ////////////////////////Global Constants/////////////////////////
 
     public static final void reloadApp(Context fromContext, Class toClass){
@@ -190,9 +189,5 @@ public final class Constants {
 
 
     public static final String TAG_FRAG_STACK = "fragment_stack";
-
-
-
-
 
 }

@@ -82,14 +82,13 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
         goToLastLocation = (ImageButton) v.findViewById(R.id.googleMapCurrentlocButton);
-        mMapView.onResume();//    display map immediately
+        //mMapView.onResume();//    display map immediately
         sm = SessionManager.getInstance(this.getActivity());
         locationTool = new LocationTool(this, this);
         search = new BasicNameValuePair(Constants.TAG_SEARCH,"search_by_default");
 
         if (mMapView!=null)
             Log.d("mMapView!=null", "mMapView!=null");
-
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
@@ -108,7 +107,6 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
                     return true;
                 }
             });
-
             googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 
                 @Override
@@ -128,7 +126,6 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
                     }
                 }
             });
-
         }
         else
             Toast.makeText(this.getActivity(), "Unable to create Maps", Toast.LENGTH_SHORT).show();
@@ -186,7 +183,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
     @Override
     public void onResume() {
-        Log.d("this is", "resume");
+        Log.d("this is map", "resume");
         super.onResume();
         mMapView.onResume();
         if(this.progress !=null)
