@@ -51,6 +51,10 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ *Fragment that provide to the use the ability to updaing is profile
+ * Created by nirb on 9/14/2015.
+ */
 public class ProfileFragmentController extends Fragment implements View.OnClickListener,AsyncResponse {
 
     private Button buttonSignup, buttonSelectIMg;

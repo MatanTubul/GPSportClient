@@ -34,6 +34,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ *Class that give the user the ability to define what is a scheduled event
+ * can define the duration of the scheduler
+ */
+
 public class SchedulePopUp extends Activity implements View.OnClickListener {
     private RadioGroup rdg;
     private EditText editTextEventNumber;
@@ -318,6 +323,11 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
                 break;
         }
     }
+
+    /**
+     * function that return the current date + year
+     * @return
+     */
     public String getNextYearDate(){
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.YEAR, 1); // to get previous year add -1
@@ -327,6 +337,13 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
         return output;
 
     }
+
+    /**
+     * function that return the type of the scheduled
+     * if its based on daily, monthly or yearly.
+     * @param s
+     * @return
+     */
     public String getRepeat(String s){
         if(s.equals("Daily")){
             return "days";
@@ -339,6 +356,10 @@ public class SchedulePopUp extends Activity implements View.OnClickListener {
         else
             return null;
     }
+
+    /**
+     * function which present a text that summarize the user selection
+     */
     public void setSumText(){
 
         switch (pos){

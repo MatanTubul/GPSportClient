@@ -47,6 +47,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ *Fragment that provide the user the ability to search events by predefined parameters\
+ * such as radius,current location or specific address and more
+ * Created by matant on 11/23/2015.
+ */
 
 public class SearchEventFragmentController extends Fragment implements AsyncResponse,View.OnClickListener,OnCompleteListener,OnLocationChangedListener,com.google.android.gms.location.LocationListener {
     private RadioGroup searchRdg;

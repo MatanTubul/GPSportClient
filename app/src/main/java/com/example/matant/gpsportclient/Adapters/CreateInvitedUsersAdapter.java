@@ -20,7 +20,8 @@ import com.example.matant.gpsportclient.DataClasses.CreateInviteUsersRow;
 import java.util.List;
 
 /**
- * Custom adapter for the invited user list
+ * Custom adapter for the invited user list. this class presenting the list of all the users that was found
+ * by searching a specific name before creating a private event.
  * Created by matant on 10/12/2015.
  */
 public class CreateInvitedUsersAdapter extends ArrayAdapter<CreateInviteUsersRow> {

@@ -36,7 +36,7 @@ import java.util.List;
 
 /**
  * this class define tha adapter of the event management and handling
- * all the event delete requests.
+ * all the event delete/update requests.
  * Created by matant on 11/4/2015.
  */
 public class ManageEventArrayAdapter extends ArrayAdapter<ManageEventListRow> implements AsyncResponse {

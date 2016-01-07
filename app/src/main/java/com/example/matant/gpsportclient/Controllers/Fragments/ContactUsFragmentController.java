@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.matant.gpsportclient.R;
 
 /**
+ * Fragment which provide the user the abilty to contact with the support team of the application
  * Created by matant on 12/27/2015.
  */
 public class ContactUsFragmentController extends Fragment implements View.OnClickListener {

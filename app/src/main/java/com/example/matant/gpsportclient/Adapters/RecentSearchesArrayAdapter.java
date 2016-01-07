@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ * Class that holding a list of Recent searches and present it on the UI
+ * handling in case the user click on the search button and opening the new search.
  * Created by matant on 12/21/2015.
  */
 public class RecentSearchesArrayAdapter extends ArrayAdapter<RecentSearchRowModel> {

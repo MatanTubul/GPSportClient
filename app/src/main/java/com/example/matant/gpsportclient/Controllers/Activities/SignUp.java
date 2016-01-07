@@ -47,6 +47,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * Class the handling the user registration
+ * including:
+ * selecting photo, user details, and params checks
+ */
+
+
 public class SignUp extends AppCompatActivity implements View.OnClickListener,AsyncResponse {
 
     private Button buttonSignup, buttonSelectIMg;
@@ -91,7 +98,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         editTextConfirmPass = (EditText) findViewById(R.id.editTextConfirmPass);
         imgv = (ImageView) findViewById(R.id.imageViewGallery);
 
-        //resetFields();
 
         spinnerAge = (Spinner) findViewById(R.id.spinnerAge);
         ArrayList<String> years = new ArrayList<String>();
@@ -99,10 +105,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             years.add(Integer.toString(i));
 
         }
-        //ageAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, years);
-
-        //ageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //spinnerAge.setAdapter(ageAdapter);
         String[] yearscontent = new String[years.size()];
         yearscontent = years.toArray(yearscontent);
         spinnerAge.setAdapter(new MyAdapter(this, R.layout.custom_spinner, yearscontent));
@@ -121,14 +123,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
         });
 
         spinnerGender = (Spinner) findViewById(R.id.spinnerGender);
-        //genderAdapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
-       // genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //spinnerGender.setAdapter(genderAdapter);
         spinnerGender.setAdapter(new MyAdapter(this,R.layout.custom_spinner,getResources().getStringArray(R.array.gender)));
         spinnerGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //userGender = spinnerGender.getSelectedItem().toString();
             }
 
             @Override
@@ -267,19 +265,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
             }
 
         }
-    }
-
-
-    /**
-     * reset the edittext fields
-     */
-    public void resetFields() {
-        editTextname.setHint("Name");
-        editTextConfirmPass.setHint("Confirm Password");
-        editTextPassword.setHint("Password");
-        editTextmobile.setHint("Mobile");
-        editTextemail.setHint("Email");
-        imgv.setImageResource(R.drawable.camera);
     }
 
     @Override

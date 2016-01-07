@@ -13,6 +13,7 @@ import com.example.matant.gpsportclient.R;
 import com.example.matant.gpsportclient.DataClasses.DrawerItem;
 
 /**
+ * Class that holding the view of the main menu including design and data.
  * Created by matant on 8/24/2015.
  */
 public class DrawerItemCustomAdapter extends ArrayAdapter<DrawerItem> {

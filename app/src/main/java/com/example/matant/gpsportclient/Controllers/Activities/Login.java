@@ -30,6 +30,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Login Screen- boot in case the user did not logged in
+ * handling the Login request
+ */
+
 public class Login extends AppCompatActivity implements View.OnClickListener,AsyncResponse {
 
     EditText userNameEditText, passwordEditText;

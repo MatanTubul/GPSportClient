@@ -31,6 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ * Fragment that provide the user to manage all is events invitations and changing his decision any time
+ * the user can approve/reject participation in the event via this fragment.
  * Created by matant on 12/10/2015.
  */
 public class InvitationsFragmentController extends Fragment implements AsyncResponse {

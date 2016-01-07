@@ -52,6 +52,11 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * Fragment which provide the user the ability to create an event private/public
+ * and invite users to the event
+ * the user should provide a real street address
+ */
 
 public class CreateEventFragmentController extends Fragment implements View.OnClickListener,OnCompleteListener,AsyncResponse {
 

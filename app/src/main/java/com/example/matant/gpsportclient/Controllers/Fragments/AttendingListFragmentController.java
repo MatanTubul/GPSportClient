@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ * Fragment that presenting all the event that the user is part of them
+ * the user have the ability to leave event by entering into the event or directly from the list.
  * Created by matant on 11/29/2015.
  */
 public class AttendingListFragmentController extends Fragment implements View.OnClickListener,AsyncResponse {

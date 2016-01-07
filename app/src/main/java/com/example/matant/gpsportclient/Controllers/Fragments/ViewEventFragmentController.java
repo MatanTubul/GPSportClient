@@ -43,6 +43,9 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ * Fragment that hold all the data on a specific event
+ * in this view the user can leave/join to event
+ * he can also see other users status related to this event.
  * Created by nirb on 11/23/2015.
  */
 public class ViewEventFragmentController extends Fragment implements View.OnClickListener, AsyncResponse {

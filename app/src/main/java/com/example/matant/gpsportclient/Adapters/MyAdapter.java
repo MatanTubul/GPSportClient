@@ -11,6 +11,7 @@ import com.example.matant.gpsportclient.Controllers.Activities.SignUp;
 import com.example.matant.gpsportclient.R;
 
 /**
+ * this class is a custom adapter for our spinner widgets
  * Created by matant on 9/10/2015.
  */
 public class MyAdapter extends ArrayAdapter<String> {

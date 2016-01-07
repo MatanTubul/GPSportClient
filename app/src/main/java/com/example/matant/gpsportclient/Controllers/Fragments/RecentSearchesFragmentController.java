@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ * Fragment that show the user is recent 5 searches
  * Created by matant on 12/21/2015.
  */
 public class RecentSearchesFragmentController extends Fragment {

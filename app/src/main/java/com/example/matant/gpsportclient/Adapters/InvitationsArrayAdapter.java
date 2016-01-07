@@ -20,6 +20,8 @@ import com.example.matant.gpsportclient.R;
 import java.util.List;
 
 /**
+ * Class that holding the view of how the invitations list should be view
+ * holding a list of items which presenting a row data related to invitations list.
  * Created by matant on 12/10/2015.
  */
 public class InvitationsArrayAdapter extends ArrayAdapter<InvitationsRowModel> {

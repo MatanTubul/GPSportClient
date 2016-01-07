@@ -31,6 +31,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class which provide the user the ability to search users and invite them into private event
+ */
+
 public class InviteUsersActivity extends AppCompatActivity implements AsyncResponse, View.OnClickListener{
     private EditText editTextSearch;
     private Button btnSave,btnDiscard;

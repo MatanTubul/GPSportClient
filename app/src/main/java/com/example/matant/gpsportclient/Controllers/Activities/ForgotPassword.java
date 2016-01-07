@@ -26,8 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
-
+/**
+ * Controller that handling the forgot password request
+ */
 
 
 

@@ -1,6 +1,7 @@
 package com.example.matant.gpsportclient.Adapters;
 
 /**
+ * class that holding all the users that invited to a private event
  * Created by matant on 9/24/2015.
  */
 

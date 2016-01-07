@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Properties;
 
 /**
+ * Class that managed all our requests to the servers
+ * each instance of this class is holding a reference to the class that call him
  * Created by Nir b on 11/08/2015.
  * test
  */
@@ -53,18 +55,29 @@ public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
     }
 
 
-
+    /**
+     * working before the request is execute
+     */
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         delegate.preProcess();
     }
 
+    /**
+     * executing the request
+     * @param params
+     * @return
+     */
     @Override
     protected String doInBackground(List<NameValuePair>... params) {
         return postDataToServer(params[0]);
     }
 
+    /**
+     * function that run in case there is a connection time out
+     * @param resStr
+     */
     @Override
     protected void onPostExecute(String resStr) {
         super.onPostExecute(resStr);
@@ -75,6 +88,12 @@ public class DBcontroller extends AsyncTask <List<NameValuePair>, Void, String>{
 
 
     }
+
+    /**
+     * executing the request
+     * @param list - parameters that send to the server by the application.
+     * @return
+     */
     private String postDataToServer(List<NameValuePair> list) {
         //check
         for (int i=0;i<list.size();i++)

@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ * Fragment which provide the user the ability to handle all the events that he wish to join in case there
+ * is available spot.
  * Created by matant on 12/16/2015.
  */
 public class WaitingEventListFragmentController extends Fragment implements AsyncResponse {

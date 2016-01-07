@@ -18,6 +18,7 @@ import com.example.matant.gpsportclient.DataClasses.ViewEventListRow;
 import java.util.List;
 
 /**
+ * Class that holding data about all the users that was invited to event and users in the waiting list.
  * Created by nirb on 11/25/2015.
  */
 public class ViewEventArrayAdapter extends ArrayAdapter<ViewEventListRow> {
@@ -95,28 +96,6 @@ public class ViewEventArrayAdapter extends ArrayAdapter<ViewEventListRow> {
         holder.imageView.setImageBitmap(rowItem.getPlayerImg());
         if (isPrivate)
             holder.txtTitle2.setText(rowItem.getPlayerStatus());
-
-        //this func can be later implement for manager only
-        /*convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("data changed", "changing data");
-
-                if (rowItem.getImageStatus() == R.drawable.add_user_50) {
-                    rowItem.setImagestatus(R.drawable.remove_user_50);
-                    index++;
-                    checkedUsers.add(index, rowItem);
-                    Toast.makeText(getContext(), "user added", Toast.LENGTH_SHORT).show();
-                } else {
-                    rowItem.setImagestatus(R.drawable.add_user_50);
-                    checkedUsers.remove(index);
-                    index--;
-                    Toast.makeText(getContext(), "user removed", Toast.LENGTH_SHORT).show();
-                }
-                notifyDataSetChanged();
-
-            }
-        });*/
 
         return convertView;
     }

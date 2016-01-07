@@ -20,6 +20,7 @@ import com.example.matant.gpsportclient.R;
 import java.util.List;
 
 /**
+ * Class that holding the list of all the events that the user waiting for available spot in the event.
  * Created by matant on 12/16/2015.
  */
 public class WaitingEventUserAdapter extends ArrayAdapter<WaitingEventUserRow> {
