@@ -30,12 +30,11 @@ public class TimePicker extends DialogFragment implements TimePickerDialog.OnTim
     private int start_min = -1;
     private int end_min = -1;
     private String chosen_date;
-    private  Calendar cal;
-    private Calendar startDate;
-    private Date toDate;
     private boolean datecompre;
-    private boolean dateFlag;
     private int equation_type = 1;
+    private int curr_minute;
+    private Date start_date;
+    private Date date1;
 
 
     @Override
@@ -53,9 +52,9 @@ public class TimePicker extends DialogFragment implements TimePickerDialog.OnTim
     public Dialog onCreateDialog(Bundle savedInstance){
         final Calendar cal = Calendar.getInstance();
         hour = cal.get(Calendar.HOUR_OF_DAY);
-        int minute = cal.get(Calendar.MINUTE);
+        curr_minute = cal.get(Calendar.MINUTE);
         Bundle bundle = this.getArguments();
-        Log.d("Calendar",String.valueOf(hour)+":"+String.valueOf(minute));
+        Log.d("Calendar",String.valueOf(hour)+":"+String.valueOf(curr_minute));
         String type = "";
         if(bundle!=null){
             type = bundle.getString("type");
@@ -72,9 +71,10 @@ public class TimePicker extends DialogFragment implements TimePickerDialog.OnTim
             Date tmp = new Date();
             Log.d("current date",tmp.toString());
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Date date1 = sdf.parse(chosen_date);
-            //Date date2 = sdf.parse(tmp.toString());
+             date1 = sdf.parse(chosen_date);
+
             Date date2 = new Date();
+            start_date = date2;
 
             if(date1.after(date2)){
                 datecompre = true;
@@ -91,13 +91,14 @@ public class TimePicker extends DialogFragment implements TimePickerDialog.OnTim
         {
             case START_TIME: {
                 Time_Picker = START_TIME;
-                return new TimePickerDialog(getActivity(), this, hour, minute, android.text.format.DateFormat.is24HourFormat(getActivity()));
+                start_date = date1;
+                return new TimePickerDialog(getActivity(), this, hour, curr_minute, android.text.format.DateFormat.is24HourFormat(getActivity()));
             }
             case END_TIME:
             {
                 Time_Picker = END_TIME;
                 Log.d("datecompare",String.valueOf(datecompre));
-                return new TimePickerDialog(getActivity(), this, hour, minute, android.text.format.DateFormat.is24HourFormat(getActivity()));
+                return new TimePickerDialog(getActivity(), this, hour, curr_minute, android.text.format.DateFormat.is24HourFormat(getActivity()));
             }
         }
         return null;
@@ -145,10 +146,20 @@ public class TimePicker extends DialogFragment implements TimePickerDialog.OnTim
                 }
             }
         }else{
-            setMyTime(s,hourOfDay,min);
+            Date curr_date = new Date();
+            if(start_date.after(curr_date))
+                setMyTime(s,hourOfDay,min);
+            else{
+                if((hour > hourOfDay || (hour == hourOfDay && curr_minute > minute)) && Time_Picker == START_TIME)
+                {
+                    this.end_hour = -1;
+                    this.start_hour = -1;
+                    mListener.onComplete("incorrect_time", "Please insert valid time");
+                }
+                else
+                    setMyTime(s,hourOfDay,min);
+            }
         }
-
-
     }
 
     public void setMyTime(String s,int hourOfDay,String min){
