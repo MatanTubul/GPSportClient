@@ -24,8 +24,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/marker_icon"
-        android:layout_below="@+id/marker_label"
-        android:layout_gravity="center" />
+        android:layout_below="@+id/event_location"
+        android:layout_gravity="center"
+        android:text="date" />
 
     <TextView
         android:id="@+id/event_time"
@@ -33,15 +34,17 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/marker_icon"
         android:layout_below="@+id/event_date"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:text="time" />
 
     <TextView
         android:id="@+id/event_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/marker_icon"
-        android:layout_below="@+id/event_time"
-        android:layout_gravity="center" />
+        android:layout_below="@+id/marker_label"
+        android:layout_gravity="center"
+        android:text="loc" />
 
     <TextView
         android:id="@+id/km_from_current"

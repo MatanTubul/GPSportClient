@@ -548,13 +548,24 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
     String getDistance (double eventLongitude,double eventLatitude)
     {
-        String distance = "Distance: "+ String.valueOf(Math.acos(Math.sin(eventLatitude * 0.0175) *
+        Double distanceVal = Math.acos(Math.sin(eventLatitude * 0.0175) *
                 Math.sin(latitude * 0.0175)
-        + Math.cos(eventLatitude * 0.0175) * Math.cos(latitude * 0.0175) *
-        Math.cos((longitude * 0.0175) - (eventLongitude * 0.0175))) * 6371);
+                + Math.cos(eventLatitude * 0.0175) * Math.cos(latitude * 0.0175) *
+                Math.cos((longitude * 0.0175) - (eventLongitude * 0.0175))) * 6371;
 
-        distance = distance.substring(0, distance.length() - 15);
-        return distance + " km";
+        String distance = null;
+        if (distanceVal < 1) {
+            distanceVal *= 1000;
+            distance= distanceVal.toString();
+            distance = "Distance: " + distance.substring(0, distance.indexOf(".")) + " m";
+        }
+        else
+        {
+            distance= distanceVal.toString();
+            distance = "Distance: " + distance.substring(0, distance.indexOf(".")) + " km";
+        }
+        return distance;
+
     }
 }
 
