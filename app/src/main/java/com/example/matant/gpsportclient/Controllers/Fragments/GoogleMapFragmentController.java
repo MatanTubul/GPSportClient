@@ -384,21 +384,35 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
     @Override
     public void sendDataToDBController() {
         Log.d("sendDataToDBController", "sendDataToDBController");
+        if (locationTool.getmLastLocation()!=null) {
 
-        BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, "search_events");
-        BasicNameValuePair radius = new BasicNameValuePair(Constants.TAG_RADIUS, String.valueOf(Constants.DEFAULT_RADIUS));
-        BasicNameValuePair lat = new BasicNameValuePair(Constants.TAG_LONG,String.valueOf(locationTool.getmLastLocation().getLongitude()));
-        BasicNameValuePair lon = new BasicNameValuePair(Constants.TAG_LAT,String.valueOf(locationTool.getmLastLocation().getLatitude()));
+            BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, "search_events");
+            BasicNameValuePair radius = new BasicNameValuePair(Constants.TAG_RADIUS, String.valueOf(Constants.DEFAULT_RADIUS));
+            BasicNameValuePair lat = new BasicNameValuePair(Constants.TAG_LONG,String.valueOf(locationTool.getmLastLocation().getLongitude()));
+            BasicNameValuePair lon = new BasicNameValuePair(Constants.TAG_LAT,String.valueOf(locationTool.getmLastLocation().getLatitude()));
 
-        List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
-        nameValuePairList.add(tagreq);
-        nameValuePairList.add(search);
-        nameValuePairList.add(radius);
-        nameValuePairList.add(lat);
-        nameValuePairList.add(lon);
+            List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+            nameValuePairList.add(tagreq);
+            nameValuePairList.add(search);
+            nameValuePairList.add(radius);
+            nameValuePairList.add(lat);
+            nameValuePairList.add(lon);
 
-        dbController = new DBcontroller(getActivity().getApplicationContext(),this);
-        dbController.execute(nameValuePairList);
+            dbController = new DBcontroller(getActivity().getApplicationContext(),this);
+            dbController.execute(nameValuePairList);
+        }
+        else
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Can't get current location")
+                    .setMessage("Please enable location service.")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .setIconAttribute(android.R.attr.alertDialogIcon)
+                    .show();
     }
 
     @Override

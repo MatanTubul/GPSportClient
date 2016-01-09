@@ -55,7 +55,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
 
 
         userNameEditText=(EditText)findViewById(R.id.userNameTF);
+        userNameEditText.setOnClickListener(this);
         passwordEditText=(EditText)findViewById(R.id.passwordTF);
+        passwordEditText.setOnClickListener(this);
         forgotPasswordTV=(TextView)findViewById(R.id.forgotPasswordTV);
 
         loginB=(Button)findViewById(R.id.loginB);
@@ -72,8 +74,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
 
     public void onClick (View v) {
         Intent i = null;
+        clearErrors();
         switch(v.getId()) {
-
             case R.id.loginB:
                 if (validateLoginFields() == true)
                     sendDataToDBController();
@@ -90,6 +92,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
       if (i!=null)
            startActivity(i);
 
+    }
+
+    private void clearErrors()
+    {
+        userNameEditText.setError(null);
+        passwordEditText.setError(null);
     }
 
     private boolean validateLoginFields()

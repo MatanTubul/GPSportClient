@@ -382,7 +382,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
             }
         if ((minimumAge.getText().toString().equals(""))){
             valid = false;
-            minimumAge.setError("Minimum age  is missing!");
+            minimumAge.setError("Minimum age is missing!");
         }
         if ((radius.getText().toString().equals(""))) {
             valid = false;
