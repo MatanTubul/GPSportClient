@@ -84,7 +84,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
         goToLastLocation = (ImageButton) v.findViewById(R.id.googleMapCurrentlocButton);
         //mMapView.onResume();//    display map immediately
         sm = SessionManager.getInstance(this.getActivity());
-        locationTool = new LocationTool(this, this);
+
         search = new BasicNameValuePair(Constants.TAG_SEARCH,"search_by_default");
 
         if (mMapView!=null)
@@ -169,6 +169,8 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
             }
         });
+        if (!(mode.equals(Constants.MODE_SEARCH_REQ)))
+                 locationTool = new LocationTool(this, this);
         return v;
     }
 
