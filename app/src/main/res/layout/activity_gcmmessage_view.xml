@@ -23,7 +23,7 @@
         android:id="@+id/textlayout"
         android:layout_marginTop="5dp"
         android:layout_below="@+id/separatorUp"
-        android:background="@drawable/edit_text_style_focused"
+        android:background="@drawable/squared_edit_text_backgorund"
         android:layout_margin="10dp"
         android:layout_height="wrap_content"
         >
@@ -108,7 +108,7 @@
         android:id="@+id/relativeLayoutTextVals"
         android:layout_marginTop="20dp"
         android:layout_margin="10dp"
-        android:background="@drawable/edit_text_style_focused"
+        android:background="@drawable/squared_edit_text_backgorund"
         android:layout_below="@+id/textlayout"
         android:layout_height="wrap_content">
 
