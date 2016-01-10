@@ -323,13 +323,13 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
             }//if
             else {
                 //no events has found
-                String msg = "There are no results ";
+                String msg = "There are no ";
                 if (mode.equals(Constants.MODE_SEARCH_REQ))
-                    msg = msg + "according to your search. Try again a different search.";
+                    msg = msg + "results according to your search. Try again a different search.";
                 else if (mode.equals(Constants.MODE_SEARCH_DEF))
-                    msg = msg + "near by. Try search from a specific address or change your location.";
+                    msg = msg + "events nearby. Try search from a specific address or change your location.";
                 else
-                    msg = msg + "on data base. Ask the app administrators";
+                    msg = msg + "events on data base. Ask the app administrators";
 
                 new AlertDialog.Builder(getActivity())
                         .setTitle("No events found")
@@ -419,7 +419,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
 
     @Override
     public void preProcess() {
-        this.progress = ProgressDialog.show(this.getActivity(), "Search events", "Updating map with events near by...",false,true);
+        this.progress = ProgressDialog.show(this.getActivity(), "Search events", "Updating map with events nearby...",false,true);
     }
 
      /**

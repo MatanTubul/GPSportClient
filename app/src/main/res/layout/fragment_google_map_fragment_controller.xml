@@ -24,7 +24,7 @@
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Display events near by only"
+        android:text="Display events nearby only"
         android:id="@+id/searchEventsSwitch"
         android:checked="true"
         android:layout_alignBottom="@+id/googleMapCurrentlocButton"
