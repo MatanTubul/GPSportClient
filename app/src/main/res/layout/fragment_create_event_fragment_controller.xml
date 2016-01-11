@@ -393,6 +393,7 @@
                     android:id="@+id/editTextLocation"
                     android:hint="Please insert event address"
                     android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:background="@drawable/rounded_edit_text"
                     android:layout_below="@+id/textViewLocation" />
 
