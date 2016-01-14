@@ -95,6 +95,8 @@ public class AttendingListFragmentController extends Fragment implements View.On
                                 mng_id = jsonarr.getJSONObject(i).getString("manager_id");
                                 if(mng_id.equals(sm.getUserDetails().get(Constants.TAG_USERID)))
                                     isManager = true;
+                                else
+                                    isManager = false;
                                 event_time = jsonarr.getJSONObject(i).getString("formatted_start_time")+" "+"-"+" "+jsonarr.getJSONObject(i).getString("formatted_end_time");;
                                 event_id = jsonarr.getJSONObject(i).getString("event_id");
                                 eventObj.put("start_time",jsonarr.getJSONObject(i).getString("formatted_start_time"));

@@ -345,8 +345,20 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
                         break;
                     case "succeed":
                         Log.d("succeed", "register");
-                        startActivity(new Intent(SignUp.this, Login.class));
-                        finish();
+                        new android.support.v7.app.AlertDialog.Builder(this)
+                                .setTitle("Registration Succeeded")
+                                .setMessage("Registration finished successfully.")
+                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        startActivity(new Intent(SignUp.this, Login.class));
+                                        finish();
+
+                                    }
+                                })
+                                .setIconAttribute(android.R.attr.alertDialogIcon)
+                                .show();
                         break;
                 }
 
