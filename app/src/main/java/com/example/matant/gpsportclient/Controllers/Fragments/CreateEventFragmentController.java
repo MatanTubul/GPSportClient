@@ -214,7 +214,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                     }
                     sportSpinner.setSelection(getIndexSpinnerByValue(sportSpinner, json.getString("kind_of_sport")));
                     genderSpinner.setSelection(getIndexSpinnerByValue(genderSpinner, json.getString("gender")));
-                    currMaxParticipants = json.getString("max_participants");
+                    currMaxParticipants = json.getString("current_participants");
                     maxParticipantsEdittext.setText(json.getString("max_participants"));
                     minAgeEditText.setText(json.getString("min_age"));
                     String event_mode = json.getString("private");
@@ -703,7 +703,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         if(currMaxParticipants !=null && !(maxParticipantsEdittext.getText().toString().equals(""))){
 
             if((Integer.valueOf(currMaxParticipants)) > (Integer.valueOf(maxParticipantsEdittext.getText().toString()))){
-                maxParticipantsEdittext.setError("Maximum number of participants minor then the original.");
+                maxParticipantsEdittext.setError("You can't specify maximum participants lower then the current amount of participants in the event.");
                 valid = false;
             }
         }

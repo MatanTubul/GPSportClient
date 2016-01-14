@@ -50,7 +50,7 @@ public class WaitingEventListFragmentController extends Fragment implements Asyn
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_waiting_event_list_fragment_controller, container, false);
-        getActivity().setTitle("Events WishList");
+        getActivity().setTitle("Events Wish List");
         WaitingEventList = (ListView) v.findViewById(R.id.listViewWaitingEvents);
         sm = SessionManager.getInstance(getActivity());
         sh = SportsHash.getSportsHash();
