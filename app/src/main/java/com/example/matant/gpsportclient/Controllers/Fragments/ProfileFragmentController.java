@@ -107,7 +107,7 @@ public class ProfileFragmentController extends Fragment implements View.OnClickL
         spinnerAge = (Spinner) v.findViewById(R.id.spinnerAge);
         ArrayList<String> years = new ArrayList<String>();
         int thisYear = Calendar.getInstance().get(Calendar.YEAR);
-        for (int i = 1970; i <= Constants.MINIMAL_YEAR_OF_BIRTH; i++) {
+        for (int i = 1950; i <= Constants.MINIMAL_YEAR_OF_BIRTH; i++) {
             years.add(Integer.toString(i));
         }
         spinnerAge.setEnabled(false);

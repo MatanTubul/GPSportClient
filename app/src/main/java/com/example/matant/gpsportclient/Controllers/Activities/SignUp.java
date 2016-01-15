@@ -101,7 +101,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
         spinnerAge = (Spinner) findViewById(R.id.spinnerAge);
         ArrayList<String> years = new ArrayList<String>();
-        for (int i = 1970; i <= Constants.MINIMAL_YEAR_OF_BIRTH; i++) {
+        for (int i = 1950; i <= Constants.MINIMAL_YEAR_OF_BIRTH; i++) {
             years.add(Integer.toString(i));
 
         }
