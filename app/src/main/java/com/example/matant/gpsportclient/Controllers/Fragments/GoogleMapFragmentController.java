@@ -535,7 +535,7 @@ public class GoogleMapFragmentController extends Fragment implements AsyncRespon
                 markerIcon.setImageResource(marker.getmBitmap());
                 markerLabel.setText(marker.getmLabel());
                 markerDistanceFromAddOrCurrent.setText(getDistance(marker.getmLongitude(), marker.getmLatitude()));
-                String start = marker.getmStartTime(), end = marker.getmStartTime();
+                String start = marker.getmStartTime(), end = marker.getmEndTime();
                 String startTime = start.substring(11), endTime = end.substring(11);
                 markerDate.setText("Date: " + start.substring(0, start.length() - 9));
 
