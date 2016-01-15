@@ -41,6 +41,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
     Button loginB, signUpB;
     DBcontroller dbController;
     TextView forgotPasswordTV;
+    TextView errorTV;
     boolean userCanLogIn;
     private ErrorHandler err;
     private ProgressDialog progress;
@@ -59,7 +60,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
         passwordEditText=(EditText)findViewById(R.id.passwordTF);
         passwordEditText.setOnClickListener(this);
         forgotPasswordTV=(TextView)findViewById(R.id.forgotPasswordTV);
-
+        errorTV = (TextView)findViewById(R.id.errorText);
         loginB=(Button)findViewById(R.id.loginB);
         signUpB=(Button)findViewById(R.id.signUpB);
 
@@ -98,6 +99,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
     {
         userNameEditText.setError(null);
         passwordEditText.setError(null);
+        errorTV.setVisibility(View.GONE);
+
     }
 
     private boolean validateLoginFields()
@@ -110,7 +113,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
         if (err.fieldIsEmpty(editTextArrayList,"Field can't be empty"))
             return false;
         if (!err.validateEmailAddress(userNameEditText.getText().toString())) {
-            userNameEditText.setError("email is invalid");
+            errorTV.setVisibility(View.VISIBLE);
             return false;
         }
         return true;
@@ -164,13 +167,16 @@ public class Login extends AppCompatActivity implements View.OnClickListener,Asy
                 {
 
                     case "User was not found":
-                        userNameEditText.setError("User/Password is incorrect");
+                        errorTV.setVisibility(View.VISIBLE);
+                        errorTV.setText("User/Password is incorrect");
                         break;
                     case "Password is incorrect":
-                        userNameEditText.setError("User/Password is incorrect");
+                        errorTV.setVisibility(View.VISIBLE);
+                        errorTV.setText("User/Password is incorrect");
                         break;
                     case "already connected":
-                        passwordEditText.setError("user already connected");//pdialog
+                        errorTV.setVisibility(View.VISIBLE);
+                        errorTV.setText("user already connected");
                         break;
                     case "verified":
                         sm.StoreUserSession(jsonObj.getString("name"),Constants.TAG_NAME);

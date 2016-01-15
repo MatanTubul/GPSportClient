@@ -67,7 +67,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="35dp">
+        android:layout_marginBottom="35dp"
+        android:text="User/Password is incorrect">
 
         <Button
             android:layout_width="fill_parent"
@@ -108,11 +109,17 @@
 
     </RelativeLayout>
 
-
-
-
-
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/errorText"
+        android:layout_above="@+id/loginButtonLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:textColor="#f81c1c" />
 
 
 </RelativeLayout>
