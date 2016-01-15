@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.matant.gpsportclient.Controllers.Activities.Login;
 import com.example.matant.gpsportclient.Controllers.DBcontroller;
 import com.example.matant.gpsportclient.InterfacesAndConstants.AsyncResponse;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
@@ -480,7 +481,6 @@ public class ProfileFragmentController extends Fragment implements View.OnClickL
                             editTextmobile.setError("This mobile is taken");
                         break;
                     case "succeed":
-
                         Log.d("succeed", "profile");
                         sm.StoreUserSession(editTextemail.getText().toString(), Constants.TAG_EMAIL);
                         sm.StoreUserSession(editTextname.getText().toString(), Constants.TAG_NAME);
@@ -490,12 +490,22 @@ public class ProfileFragmentController extends Fragment implements View.OnClickL
 
                         String userMobile = areaCode;
                         userMobile += editTextmobile.getText().toString();
-                        sm.StoreUserSession(userMobile,Constants.TAG_MOB);
+                        sm.StoreUserSession(userMobile, Constants.TAG_MOB);
 
                         if(picture!=null)
                             sm.StoreUserSession(picture,Constants.TAG_IMG);
-
-                        Constants.reloadApp(getActivity(), MainScreen.class);
+                        new android.support.v7.app.AlertDialog.Builder(getActivity())
+                                .setTitle("Update Succeeded")
+                                .setMessage("Details were updated successfully.")
+                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        Constants.reloadApp(getActivity(), MainScreen.class);
+                                    }
+                                })
+                                .setIcon(R.drawable.ok_32)
+                                .show();
 
                         //resetFields();
                         break;

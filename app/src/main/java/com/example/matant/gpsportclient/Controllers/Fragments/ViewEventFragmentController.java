@@ -487,7 +487,7 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
                                 dialog.dismiss();
                             }
                         })
-                        .setIconAttribute(android.R.attr.alertDialogIcon)
+                        .setIcon(R.drawable.error_32)
                         .show();
                 return;
             }

@@ -433,7 +433,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
                     case "success": {
                         Log.d("event created", "success to create event");
                         alert = new AlertDialog.Builder(getActivity());
-                        alert.setTitle("Event");
+                        alert.setTitle("Event Creation Succeeded");
                         alert.setMessage("Event was created successfully");
                         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override

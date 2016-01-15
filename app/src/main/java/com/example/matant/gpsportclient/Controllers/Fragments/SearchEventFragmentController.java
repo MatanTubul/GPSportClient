@@ -556,7 +556,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
                 break;
             case "incorrect_time": {
                 new AlertDialog.Builder(getActivity())
-                        .setTitle("Select Time Error")
+                        .setTitle("Time Selection Error")
                         .setMessage(res)
                         .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
@@ -572,7 +572,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
             case "Date_not_valid":
             {
                 new AlertDialog.Builder(getActivity())
-                        .setTitle("Date Error!")
+                        .setTitle("Date Selection Error")
                         .setMessage(res)
                         .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override

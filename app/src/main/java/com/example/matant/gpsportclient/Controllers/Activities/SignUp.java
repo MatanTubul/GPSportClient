@@ -357,7 +357,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,As
 
                                     }
                                 })
-                                .setIconAttribute(android.R.attr.alertDialogIcon)
+                                .setIcon(R.drawable.ok_32)
                                 .show();
                         break;
                 }
