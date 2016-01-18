@@ -410,7 +410,6 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
     @Override
     public void handleResponse(String resStr) {
         this.progress.dismiss();
-
         if (resStr != null){
             Log.d("ViewEveFragController", resStr);
             try {
