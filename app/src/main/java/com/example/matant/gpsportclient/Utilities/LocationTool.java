@@ -228,7 +228,7 @@ public class LocationTool implements GoogleApiClient.ConnectionCallbacks, Google
         LatLng p1 = null;
 
         try {
-            address = coder.getFromLocationName(strAddress, 5);
+            address = coder.getFromLocationName(strAddress,1);
             if (address == null) {
                 return null;
             }
@@ -241,6 +241,7 @@ public class LocationTool implements GoogleApiClient.ConnectionCallbacks, Google
         } catch (Exception ex) {
             Log.d("Location Exception", "error converting address");
             ex.printStackTrace();
+            Log.d("exception message",ex.getMessage());
         }
 
         return p1;
