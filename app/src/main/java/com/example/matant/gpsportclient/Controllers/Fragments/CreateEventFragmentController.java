@@ -514,14 +514,8 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
     public void sendDataToDBController() {
         BasicNameValuePair mode_req;
         Log.d("this is my location",addressEditText.getText().toString());
-        int locationCap = 0;
         LatLng lonlat = null;
-
-        do {
-             lonlat = locationTool.getLocationFromAddress(addressEditText.getText().toString());
-             locationCap++;
-        }while (locationCap < 3 || lonlat !=null);
-
+        lonlat = locationTool.getLocationFromAddress(addressEditText.getText().toString());
         if(lonlat == null)
         {
             Log.d("location is:","location not found");
