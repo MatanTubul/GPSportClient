@@ -516,6 +516,7 @@ public class CreateEventFragmentController extends Fragment implements View.OnCl
         Log.d("this is my location",addressEditText.getText().toString());
         int locationCap = 0;
         LatLng lonlat = null;
+
         do {
              lonlat = locationTool.getLocationFromAddress(addressEditText.getText().toString());
              locationCap++;
