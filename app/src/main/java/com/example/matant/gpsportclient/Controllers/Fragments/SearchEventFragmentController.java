@@ -282,8 +282,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
                 streetAddress.setError("Location was not found");
                 return;
             }
-            lat = loc.latitude;
-            lon = loc.longitude;
+
         }
         BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST,"search_events");
         BasicNameValuePair search = new BasicNameValuePair(Constants.TAG_SEARCH,"search_by_frag");
@@ -592,7 +591,7 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
     public void startLocationUpdates() {
         if(myLocManager.getmLocationRequest() != null)
         {
-            Log.d("my location","startLocationUpdates location");
+            Log.d("my location", "startLocationUpdates location");
             LocationServices.FusedLocationApi.requestLocationUpdates(myLocManager.getmGoogleApiClient(), myLocManager.getmLocationRequest(), this);
         }
 
@@ -609,12 +608,13 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
      */
     @Override
     public void updateUI() {
-        Log.d("my location","updateUI");
         String realAddress = myLocManager.getCompleteAddressString(myLocManager.getmLastLocation().getLatitude(),myLocManager.getmLastLocation().getLongitude(),this.getActivity().getApplicationContext());
         lon = myLocManager.getmLastLocation().getLongitude();
         lat = myLocManager.getmLastLocation().getLatitude();
-        if(realAddress != null)
+        if(realAddress != null){
             streetAddress.setText(realAddress);
+            Log.d("my location address", realAddress);
+        }
     }
 
     @Override
