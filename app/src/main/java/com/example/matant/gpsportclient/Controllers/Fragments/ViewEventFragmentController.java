@@ -3,6 +3,7 @@ package com.example.matant.gpsportclient.Controllers.Fragments;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -66,6 +67,8 @@ public class ViewEventFragmentController extends Fragment implements View.OnClic
     private double lati, longi;
     private HashMap sh;
     private FrameLayout frameLayout;
+    private ProgressDialog progress;
+
     public ViewEventFragmentController(){
         // Required empty public constructor
     }
@@ -406,7 +409,7 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
 
     @Override
     public void handleResponse(String resStr) {
-        //progress.dismiss();
+        this.progress.dismiss();
 
         if (resStr != null){
             Log.d("ViewEveFragController", resStr);
@@ -567,6 +570,8 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
 
     @Override
     public void preProcess() {
+        this.progress = ProgressDialog.show(getActivity(), "View Event Details",
+                "Loading event details...", true);
     }
 
     /**
