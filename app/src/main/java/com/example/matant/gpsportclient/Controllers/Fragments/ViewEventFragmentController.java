@@ -133,27 +133,27 @@ public class ViewEventFragmentController extends Fragment implements View.OnClic
         getActivity().setTitle("View Event Details");
         getEventDetailsFromDB();
 
-    return v;
+        return v;
     }
 
-private void getEventDetailsFromDB() {
-    Log.d("getUsersFromDB", "sendDataToDBController");
-    try {
-        eventId = eventIdJsonObj.getString(Constants.TAG_EVENT_ID);
-    }catch (JSONException e) {
-        e.printStackTrace();
+    private void getEventDetailsFromDB() {
+        Log.d("getUsersFromDB", "sendDataToDBController");
+        try {
+            eventId = eventIdJsonObj.getString(Constants.TAG_EVENT_ID);
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, Constants.TAG_GET_EVENT_USERS);
+        BasicNameValuePair tageventid = new BasicNameValuePair(Constants.TAG_EVENT_ID, eventId);
+
+        List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+        nameValuePairList.add(tagreq);
+        nameValuePairList.add(tageventid);
+
+        dbController = new DBcontroller(getActivity().getApplicationContext(), this);
+        dbController.execute(nameValuePairList);
     }
-
-    BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST, Constants.TAG_GET_EVENT_USERS);
-    BasicNameValuePair tageventid = new BasicNameValuePair(Constants.TAG_EVENT_ID, eventId);
-
-    List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
-    nameValuePairList.add(tagreq);
-    nameValuePairList.add(tageventid);
-
-    dbController = new DBcontroller(getActivity().getApplicationContext(), this);
-    dbController.execute(nameValuePairList);
-}
 
     private void initView()
     {
@@ -317,21 +317,21 @@ private void getEventDetailsFromDB() {
         }
     }
 
-private boolean initParticipationTextButtonForPrivateEvent (String id, String status) {
-    if (id.equals(currentUserId)) {
-        participateButton.setEnabled(true);
-        if (status.equals("awaiting reply") || status.equals("not attend")) {
-            participateButton.setText("ATTENDING");
-            userStatusChoise = "attend";
+    private boolean initParticipationTextButtonForPrivateEvent (String id, String status) {
+        if (id.equals(currentUserId)) {
+            participateButton.setEnabled(true);
+            if (status.equals("awaiting reply") || status.equals("not attend")) {
+                participateButton.setText("ATTENDING");
+                userStatusChoise = "attend";
+            }
+            else {
+                participateButton.setText("NOT ATTENDING");
+                userStatusChoise = "not attend";
+            }
+            return true;
         }
-        else {
-            participateButton.setText("NOT ATTENDING");
-            userStatusChoise = "not attend";
-        }
-        return true;
+        return false;
     }
-    return false;
-}
 
     @Override
     public void onClick(View v) {
@@ -368,7 +368,7 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
 
                     }
                 }
-                    else//private event
+                else//private event
                 {
                     if (participateButton.getText().equals("NOT ATTENDING")) {
                         new AlertDialog.Builder(getActivity())
@@ -529,8 +529,8 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
             if(!userDetails.get(Constants.TAG_GEN).equals(eventGender))
             {
                 Log.d("userCanParticipateInPublicEvent",userDetails.get(Constants.TAG_GEN) + " " + eventGender );
-            publicEventError = "This event is for " + eventGender +" only";
-            return false;
+                publicEventError = "This event is for " + eventGender +" only";
+                return false;
             }
 
         Calendar calendar = Calendar.getInstance();
@@ -584,7 +584,6 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
         super.onActivityCreated(savedInstanceState);
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
-
         getView().setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -608,7 +607,6 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
                         }
 
                         if(fragment != null){
-
                             FragmentManager fragmentManager = getFragmentManager();
                             fragmentManager.popBackStackImmediate();
                             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment,frag_name).addToBackStack(frag_name).commit();
@@ -620,7 +618,4 @@ private boolean initParticipationTextButtonForPrivateEvent (String id, String st
             }
         });
     }
-
-
-
 }
