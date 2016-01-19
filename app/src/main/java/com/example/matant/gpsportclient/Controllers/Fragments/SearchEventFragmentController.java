@@ -285,8 +285,8 @@ public class SearchEventFragmentController extends Fragment implements AsyncResp
             }
             lat = loc.latitude;
             lon = loc.longitude;
-
         }
+
         BasicNameValuePair tagreq = new BasicNameValuePair(Constants.TAG_REQUEST,"search_events");
         BasicNameValuePair search = new BasicNameValuePair(Constants.TAG_SEARCH,"search_by_frag");
         BasicNameValuePair lat_cord = new BasicNameValuePair(Constants.TAG_LAT,String.valueOf(lat));
