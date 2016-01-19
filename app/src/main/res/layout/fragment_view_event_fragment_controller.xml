@@ -4,7 +4,9 @@
     android:layout_height="match_parent"
     android:weightSum="1"
     android:nestedScrollingEnabled="false"
-    android:background="#ffffff">
+    android:background="#ffffff"
+    android:visibility="gone"
+    android:id="@+id/fragLayout">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -14,7 +16,6 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="#e4852d"
             android:id="@+id/background">
 
             <ImageView
@@ -23,14 +24,12 @@
                 android:id="@+id/kind_of_sport_img"
                 android:layout_weight="0.34"
                 android:layout_gravity="center_horizontal|top"
-                android:layout_marginTop="24dp"
-                android:src="@drawable/round_soccer_event_view_img" />
+                android:layout_marginTop="24dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Kind Of Sport Here"
                 android:id="@+id/kind_of_sport_text"
                 android:layout_weight="0.06"
                 android:gravity="center"
@@ -46,7 +45,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Time And Date Here"
                 android:id="@+id/time_text"
                 android:layout_weight="0.06"
                 android:gravity="center"
@@ -61,7 +59,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Address Here"
                 android:id="@+id/address_text"
                 android:layout_weight="0.06"
                 android:gravity="center"
@@ -88,7 +85,6 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="WOMEN ONLY"
             android:layout_weight="1"
             android:id="@+id/gender_button"
             android:textSize="12dp"
@@ -108,7 +104,6 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="19+"
             android:layout_weight="1"
             android:id="@+id/min_age_button"
             android:textSize="25dp"
@@ -129,7 +124,6 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="PUBLIC EVENT"
             android:layout_weight="1"
             android:id="@+id/privilege_button"
             android:textSize="12dp"
@@ -149,7 +143,6 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="27 / 30"
             android:layout_weight="1"
             android:id="@+id/attending_button"
             android:textSize="15dp"

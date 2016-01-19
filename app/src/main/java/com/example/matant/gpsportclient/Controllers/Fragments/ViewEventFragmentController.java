@@ -68,6 +68,7 @@ public class ViewEventFragmentController extends Fragment implements View.OnClic
     private HashMap sh;
     private FrameLayout frameLayout;
     private ProgressDialog progress;
+    private LinearLayout fragLayout;
 
     public ViewEventFragmentController(){
         // Required empty public constructor
@@ -96,6 +97,7 @@ public class ViewEventFragmentController extends Fragment implements View.OnClic
         waitingLinearLayout = (LinearLayout) v.findViewById(R.id.waiting_list_layout);
         invitedLinearLayout = (LinearLayout) v.findViewById(R.id.invited_list_layout);
         frameLayout = (FrameLayout) v.findViewById(R.id.background);
+        fragLayout = (LinearLayout) v.findViewById(R.id.fragLayout);
 
         //initialize disabled buttons for viewing the events details
         //using this for just simple design issues
@@ -156,7 +158,7 @@ private void getEventDetailsFromDB() {
     private void initView()
     {
         Log.d("ViewEveFragController", "initView");
-
+        fragLayout.setVisibility(View.VISIBLE);
         try{
             String sportKind = eventDetailsJsonObj.getString(Constants.TAG_KIND_OF_SPORT);
             Log.d("sportHash to string", sh.toString());
