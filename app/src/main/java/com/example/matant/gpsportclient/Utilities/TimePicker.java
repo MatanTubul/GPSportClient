@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
+ * class that presenting our custom TimePicker widget.
  * Created by matant on 9/7/2015.
  */
 public class TimePicker extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
@@ -103,7 +104,13 @@ public class TimePicker extends DialogFragment implements TimePickerDialog.OnTim
         }
         return null;
     }
-    @Override
+
+    /**
+     * execute when the user pick a time.
+     * @param view - which view is related to
+     * @param hourOfDay - user hour choice
+     * @param minute - user minute choice
+     */
     public void onTimeSet(android.widget.TimePicker view, int hourOfDay, int minute) {
         String s ="";
         String min;

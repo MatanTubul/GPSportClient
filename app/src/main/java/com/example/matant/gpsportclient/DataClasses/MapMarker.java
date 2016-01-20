@@ -12,6 +12,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 /**
+ * Class which holding individual data on a specifc marker
+ * on the map.
  * Created by nirb on 11/20/2015.
  */
 public class MapMarker implements Serializable{

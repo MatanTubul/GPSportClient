@@ -49,6 +49,7 @@ import java.util.List;
 
 /**
  * Thia Fragment handle the Home screen and loading the events that close to the current user location
+ * or in addition the user can get a full overview of all the events that exists in the same day on the map.
  * Created by matant on 8/24/2015.
  */
 public class GoogleMapFragmentController extends Fragment implements AsyncResponse, CompoundButton.OnCheckedChangeListener, OnLocationChangedListener, com.google.android.gms.location.LocationListener{

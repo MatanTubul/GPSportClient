@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
+ * class that presenting our custom DatePicker widget.
  * Created by matant on 9/10/2015.
  */
 public class DatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
@@ -74,6 +75,13 @@ public class DatePicker extends DialogFragment implements DatePickerDialog.OnDat
 
     }
 
+    /**
+     * execute when the user pick a date.
+     * @param view - which view the widget is related to
+     * @param year - the year that the user choose
+     * @param monthOfYear - the month that the user choose
+     * @param dayOfMonth - the day that the user choose
+     */
     @Override
     public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 

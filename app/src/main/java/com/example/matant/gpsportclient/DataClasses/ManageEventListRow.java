@@ -3,6 +3,8 @@ package com.example.matant.gpsportclient.DataClasses;
 import org.json.JSONObject;
 
 /**
+ * this class demonstrate an individual row from the
+ *  list of the events that the user is manage
  * Created by matant on 11/4/2015.
  */
 public class ManageEventListRow {

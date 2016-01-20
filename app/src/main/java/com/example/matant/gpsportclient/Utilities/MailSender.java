@@ -14,6 +14,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 /**
+ * class that provide the application the ability to send emails
+ * within the application without the user interaction.
  * Created by nir b on 17/08/2015.
  */
 public class MailSender {
@@ -33,6 +35,9 @@ public class MailSender {
         this.setMailSubject("GPSport: Forgotten Password");
     }
 
+    /**
+     * configure our mail sender connection
+     */
     private void mailEnginePrepare()
     {
         props = new Properties();
@@ -50,6 +55,11 @@ public class MailSender {
 
     }
 
+    /**
+     * sending mail into specific email which contain is private password to is account in GPSport
+     * @param Recipient - email address
+     * @param recoveredPassword - the user recoverd password.
+     */
     public void sendMailTo(String Recipient, String recoveredPassword)
     {
         try {

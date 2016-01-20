@@ -3,6 +3,9 @@ package com.example.matant.gpsportclient.DataClasses;
 import android.graphics.Bitmap;
 
 /**
+ * this class demonstrate an individual user that was
+ * found in the search user activity. each instance is holding
+ * a specifc data about the use.
  * Created by matant on 9/22/2015.
  */
 public class InviteUsersListRow {

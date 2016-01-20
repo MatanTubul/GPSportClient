@@ -44,11 +44,21 @@ public class SessionManager  {
             StoreUserSession("false", Constants.TAG_CONNECTED);
     }
 
+    /**
+     * store data into our shared file
+     * @param val - value
+     * @param Key - key of the value
+     */
     public void StoreUserSession(String val,String Key ){
 
         editor.putString(Key, val);
         editor.commit();
     }
+
+    /**
+     * method the return the last available index in the recent searches.
+     * @return
+     */
     public int getSearchIndex(){
         int idx = pref.getInt(Constants.TAG_SEARCH_INDEX,0);
         return  idx;
@@ -57,6 +67,11 @@ public class SessionManager  {
         editor.putInt(Constants.TAG_SEARCH_INDEX,num);
         editor.commit();
     }
+
+    /**
+     * method that return the last 5 recent searches
+     * @return
+     */
     public HashMap<String,String> getRecentSearches(){
         HashMap<String,String> rs = new HashMap<String,String>();
         rs.put(Constants.TAG_SEARCH1,pref.getString(Constants.TAG_SEARCH1,null));
@@ -67,10 +82,19 @@ public class SessionManager  {
         rs.put(Constants.TAG_HM_STATUS, pref.getString(Constants.TAG_HM_STATUS, null));
         return rs;
     }
+
+    /**
+     * get the status of the recent searches
+     * @return - null in case none search as been done otherwise "search"
+     */
     public String getRecentSearchesStatus(){
         return pref.getString(Constants.TAG_HM_STATUS,null);
     }
 
+    /**
+     * function that return all the current data about the user that currently connected.
+     * @return
+     */
     public HashMap<String,String> getUserDetails(){
         HashMap<String,String> user = new HashMap<String,String>();
 
@@ -88,11 +112,11 @@ public class SessionManager  {
         return user;
     }
 
+    /**
+     * logout from the application, in addition updating user connection status in
+     * the shared file.
+     */
     public void logoutUser(){
-        //clean pref
-        //editor.clear();
-        //editor.commit();
-        //this.isConnected = false;
         StoreUserSession("false", Constants.TAG_CONNECTED);
         editor.commit();
         editor.apply();

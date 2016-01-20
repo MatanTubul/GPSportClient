@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
+ * our main class that managed all our message notifications from the application
  * Created by matant on 10/28/2015.
  */
 public class GcmBroadcastReceiver extends BroadcastReceiver {

@@ -3,6 +3,8 @@ package com.example.matant.gpsportclient.DataClasses;
 import org.json.JSONObject;
 
 /**
+ * this class demonstrate an individual row from the
+ * invitations list that the user have.
  * Created by matant on 12/10/2015.
  */
 public class InvitationsRowModel {

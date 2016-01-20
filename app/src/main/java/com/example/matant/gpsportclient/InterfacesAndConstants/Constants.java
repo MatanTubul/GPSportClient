@@ -12,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 /**
+ * Class that hold all of our constants variables.
  * Created by Nir B on 26/09/2015.
  */
 public final class Constants {

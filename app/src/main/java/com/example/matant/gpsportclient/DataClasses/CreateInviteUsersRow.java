@@ -2,6 +2,8 @@ package com.example.matant.gpsportclient.DataClasses;
 
 /**
  * class that describe item in the Invited Users list.
+ * usually this is executed after the user is invited some other
+ * users while he creates a private event.
  * Created by matant on 10/12/2015.
  */
 public class CreateInviteUsersRow {

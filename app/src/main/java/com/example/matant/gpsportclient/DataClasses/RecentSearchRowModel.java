@@ -4,6 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
+ * this class demonstrate an individual row from the
+ * recent searches list
  * Created by matant on 12/21/2015.
  */
 public class RecentSearchRowModel {

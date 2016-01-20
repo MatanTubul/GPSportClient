@@ -3,6 +3,8 @@ package com.example.matant.gpsportclient.Utilities;
 import java.util.Calendar;
 
 /**
+ * class that holds sets of functions that return
+ * current time and date.
  * Created by matant on 12/18/2015.
  */
 public class DateAndTimeFunctions {

@@ -3,6 +3,8 @@ package com.example.matant.gpsportclient.DataClasses;
 import android.graphics.Bitmap;
 
 /**
+ * class which demonstrate individual list of players in
+ * the view event fragment
  * Created by nirb on 11/25/2015.
  */
 public class ViewEventListRow {

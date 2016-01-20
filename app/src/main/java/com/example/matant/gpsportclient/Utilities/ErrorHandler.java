@@ -7,6 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * class that holds some functions that can run a tests on our widgets
+ * and return error in case of failure.
  * Created by matant on 8/13/2015.
  */
 public class ErrorHandler {

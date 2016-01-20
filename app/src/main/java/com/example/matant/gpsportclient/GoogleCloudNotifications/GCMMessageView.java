@@ -25,6 +25,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * class that create an instance of the push notification
+ * with all the data that send by the GCM server
+ */
+
 public class GCMMessageView extends AppCompatActivity implements AsyncResponse, View.OnClickListener {
     private TextView message,date,time,user,location;
     private String intentUser,intentDate,intentTime,intentMessage,EventId = "",place,msg_type = null;

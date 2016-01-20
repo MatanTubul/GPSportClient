@@ -15,6 +15,12 @@ import com.example.matant.gpsportclient.Controllers.Activities.Login;
 import com.example.matant.gpsportclient.InterfacesAndConstants.Constants;
 import com.example.matant.gpsportclient.Utilities.SessionManager;
 
+/**
+ * Class that represent our Splash Screen.
+ * containing our application logo and the
+ * class run by a thread for 3 sec.
+ */
+
 public class SplashScreen extends Activity {
 
     // Splash screen timer

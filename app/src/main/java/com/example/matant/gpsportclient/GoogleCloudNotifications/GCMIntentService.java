@@ -1,6 +1,7 @@
 package com.example.matant.gpsportclient.GoogleCloudNotifications;
 
 /**
+ * class that create an instance of the GCM service
  * Created by matant on 10/28/2015.
  */
 
@@ -23,7 +24,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     private static final String TAG = "GCM Tutorial::Service";
 
-    // Use your PROJECT ID from Google API into SENDER_ID
+    //  PROJECT ID from Google API into SENDER_ID
     public static final String SENDER_ID = "846271397731";
 
     public GCMIntentService() {
@@ -42,6 +43,11 @@ public class GCMIntentService extends GCMBaseIntentService {
         Log.i(TAG, "onUnregistered: registrationId=" + registrationId);
     }
 
+    /**
+     * execute in each time that the user get a push notification
+     * @param context - which context its should be related to
+     * @param data - all the data that send by the GCM server.
+     */
     @Override
     protected void onMessage(Context context, Intent data) {
         String message;

@@ -115,6 +115,11 @@ public class LocationTool implements GoogleApiClient.ConnectionCallbacks, Google
 
     }
 
+    /**
+     * function that check if the device have version of Google Play Services
+     * extension in order to get the map services.
+     * @return false in case its failed otherwise true
+     */
     public boolean checkPlayServices() {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(frag.getActivity());
         if (resultCode != ConnectionResult.SUCCESS) {
@@ -129,12 +134,15 @@ public class LocationTool implements GoogleApiClient.ConnectionCallbacks, Google
         return true;
     }
 
-
+    /**
+     *  Gets the best and most recent location currently available,
+     * which may be null in rare cases when a location is not available.
+     * @param bundle
+     */
     @Override
     public void onConnected(Bundle bundle) {
 
-            // Gets the best and most recent location currently available,
-            // which may be null in rare cases when a location is not available.
+
             Log.d("Connected", "Connected");
 
             if (mRequestingLocationUpdates) {
@@ -161,6 +169,10 @@ public class LocationTool implements GoogleApiClient.ConnectionCallbacks, Google
         Log.d("Location services is off","failed");
     }
 
+    /**
+     * alert dialog that pop up in case the location services in the devices
+     * is off.
+     */
     public void LocationAlertDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(frag.getActivity());
         alertDialog.setTitle("Location settings");

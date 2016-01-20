@@ -42,6 +42,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * our Main class, this class holding our main menu
+ * and give the user the ability to navigate between fragments.
+ */
 
 public class MainScreen extends AppCompatActivity implements AsyncResponse {
 
@@ -126,6 +130,10 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
         super.onSaveInstanceState(outState);
     }
 
+    /**
+     * execute when the user click on logout
+     * @param resStr - result from the server
+     */
     @Override
     public void handleResponse(String resStr) {
         try
@@ -166,6 +174,11 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
 
     }
 
+    /**
+     * our main method to send a request to the server.
+     * in this case the user request is to logout from the application
+     */
+
     @Override
     public void sendDataToDBController() {
 
@@ -180,6 +193,10 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
 
     }
 
+    /**
+     * presenting a spinner with relevant message while
+     * the user is waiting for a response from the server.
+     */
     @Override
     public void preProcess() {
         this.progress = ProgressDialog.show(this, "Log Out",
@@ -194,6 +211,10 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
         }
     }
 
+    /**
+     * method that execute when the user click on one of the entries in the menu
+     * @param position
+     */
     private void selectItem(int position) {
 
         Fragment fragment = null;
@@ -307,6 +328,10 @@ public class MainScreen extends AppCompatActivity implements AsyncResponse {
         // Pass any configuration change to the drawer toggles
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
+
+    /**
+     * execute the logout method.
+     */
     public void logout()
     {
         sendDataToDBController();

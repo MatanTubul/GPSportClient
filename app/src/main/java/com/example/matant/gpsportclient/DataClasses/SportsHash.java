@@ -8,6 +8,9 @@ import com.example.matant.gpsportclient.R;
 import java.util.HashMap;
 
 /**
+ * Hash map that holding a description of our sport category by
+ * an images. each category name is the key and each value is the
+ * image that describe this kind of work.
  * Created by nirb on 12/24/2015.
  */
 public class SportsHash {

@@ -8,6 +8,9 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
+ * this class goal is to open a properties file.
+ * in our application we have a "config.properties" file that holding
+ * the url to our server API.
  * Created by matant on 8/20/2015.
  */
 public class PropertyReader {
@@ -20,6 +23,11 @@ public class PropertyReader {
         properties = new Properties();
     }
 
+    /**
+     * return properties object
+     * @param file - path to our config file
+     * @return properties object
+     */
     public Properties getMyProperties(String file){
         try{
             AssetManager assetManager = context.getAssets();
