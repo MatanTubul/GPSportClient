@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GPSportClient</string>
+    <string name="app_name">GPSport</string>
 
     <string name="hello_world">Please enter your email  to recover your password.</string>
     <string name="action_settings">Settings</string>
